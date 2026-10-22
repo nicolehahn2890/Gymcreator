@@ -1,9 +1,11 @@
 import { defineConfig, devices } from '@playwright/test';
 
-// In CI installiert der Workflow den passenden Chromium. Lokal/in der Sandbox kann ein vorhandener
-// Chromium ueber PW_CHROMIUM_PATH genutzt werden (z. B. /opt/pw-browsers/chromium).
+// Browser: PW_CHROMIUM_PATH (vorhandener Chromium, z. B. /opt/pw-browsers/chromium in der Sandbox),
+// sonst PW_CHANNEL (in CI "chrome": das vorinstallierte Chrome des Runners, spart die Installation),
+// sonst der von Playwright installierte Chromium.
 const executablePath = process.env.PW_CHROMIUM_PATH;
-const launchOptions = executablePath ? { executablePath } : {};
+const channel = process.env.PW_CHANNEL;
+const launchOptions = executablePath ? { executablePath } : channel ? { channel } : {};
 
 export default defineConfig({
   testDir: 'tests/e2e',

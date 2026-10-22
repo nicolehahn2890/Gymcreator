@@ -1,107 +1,90 @@
-// Prueft data/goals.json + data/templates.json: Slot-IDs, Saetze je Tag, anteilige Saetze je Muskel und Einheit,
-// Wochenvolumen je Kategorie, Frequenz der Prio-3-Kategorien, Reihenfolge-Regel, und Peach 4/3 Tage gegen P4/P3.
+// Prueft data/goals.json + data/templates.json (+ data/exercises.json) mit dem echten Generator aus src/core:
+// alle Ziele x Stufen x 3/4/5 Tage erzeugen und gegen die Grenzen pruefen (Saetze je Einheit, anteilige Saetze
+// je Muskel und Einheit, Frequenz Prio 3, Prio 0 ohne Saetze), Apfel 4/3 Tage gegen Nicoles Plantabellen
+// (tests/fixtures/peach-p4.json / peach-p3.json) und die Uebungsbibliothek gegen Kategorien und Slots.
+// Aufruf: node scripts/verify-plan-data.mjs  (im Repo-Root, Node >= 22.18 wegen TypeScript-Import).
+// Liegt die Trainingsapp read-only daneben (../Trainingsapp/index.html oder PEACH_INDEX), wird zusaetzlich
+// geprueft, dass die Fixtures noch P4/P3 entsprechen. Die Trainingsapp wird dabei NIE veraendert.
 import fs from 'node:fs';
-import vm from 'node:vm';
-// Aufruf: node scripts/verify-plan-data.mjs  (im Repo-Root). Peach-Regression nur, wenn die Trainingsapp
-// read-only daneben liegt (../Trainingsapp/index.html) oder PEACH_INDEX gesetzt ist — sie wird NIE veraendert.
 import path from 'node:path';
+import vm from 'node:vm';
 import { fileURLToPath } from 'node:url';
+import { buildPlan } from '../src/core/generator/buildPlan.ts';
+import { totalSets, validatePlan, weeklySets } from '../src/core/generator/validate.ts';
+import { checkExercises } from '../src/core/model/exerciseCheck.ts';
+
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const G = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/goals.json'), 'utf8'));
-const T = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/templates.json'), 'utf8'));
-const rangeRank = r => G.ranges.indexOf(r);
-let fails = 0, warns = 0;
-const fail = m => { fails++; console.log('  FAIL ' + m); };
-const warn = m => { warns++; console.log('  WARN ' + m); };
-function buildDays(goal, days) {
-  const g = G.goals[goal], tpl = T.goals[goal][String(days)];
-  const byId = Object.fromEntries(g.slots.map(s => [s.id, s]));
-  const seen = new Set();
-  return tpl.days.map(d => {
-    const rows = d.slots.map(e => {
-      const id = typeof e === 'string' ? e : e.id, sets = typeof e === 'string' ? undefined : e.sets;
-      const s = byId[id];
-      if (!s) fail(`${goal}/${days}: unbekannter Slot ${id}`);
-      if (seen.has(id)) fail(`${goal}/${days}: Slot ${id} doppelt in der Woche`);
-      seen.add(id);
-      return { ...s, sets: sets ?? s.sets, tplOrder: 0 };
-    }).map((r, i) => ({ ...r, tplOrder: i }));
-    const order = g.categoryOrder;
-    rows.sort((a, b) => order.indexOf(a.cat) - order.indexOf(b.cat) || rangeRank(a.range) - rangeRank(b.range) || a.tplOrder - b.tplOrder);
-    return { name: d.name, focus: d.focus, rows };
-  });
-}
-for (const goal of Object.keys(G.goals)) {
-  const g = G.goals[goal];
-  const ids = g.slots.map(s => s.id);
+const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
+const data = { goals: readJson('data/goals.json'), templates: readJson('data/templates.json') };
+let fails = 0;
+let warns = 0;
+const fail = (m) => { fails++; console.log('  FAIL ' + m); };
+const warn = (m) => { warns++; console.log('  WARN ' + m); };
+
+for (const goal of Object.keys(data.goals.goals)) {
+  const pool = data.goals.goals[goal].slots;
+  const ids = pool.map((s) => s.id);
   if (new Set(ids).size !== ids.length) fail(`${goal}: doppelte Slot-IDs im Pool`);
-  for (const s of g.slots) { if (!G.categories[s.cat]) fail(`${goal}: Kategorie ${s.cat} fehlt`); if (!G.ranges.includes(s.range)) fail(`${goal}: Bereich ${s.range}`); }
-  const poolTotal = g.slots.reduce((a, s) => a + s.sets, 0);
-  console.log(`\n=== ${goal} — Pool ${g.slots.length} Slots, ${poolTotal} Saetze`);
-  for (const days of [3, 4, 5]) {
-    const plan = buildDays(goal, days);
-    const used = new Set();
-    const weekly = {}, freq = {};
-    let total = 0;
-    const lines = [];
-    for (const d of plan) {
-      const sets = d.rows.reduce((a, r) => a + r.sets, 0); total += sets;
-      const frac = {};
-      for (const r of d.rows) {
-        used.add(r.id);
-        weekly[r.cat] = (weekly[r.cat] || 0) + r.sets;
-        (freq[r.cat] = freq[r.cat] || new Set()).add(d.name);
-        for (const [m, w] of Object.entries(G.categories[r.cat].muscles)) frac[m] = (frac[m] || 0) + r.sets * w;
+  console.log(`\n=== ${goal} - Pool ${pool.length} Slots, ${pool.reduce((a, s) => a + s.sets, 0)} Saetze`);
+  for (const level of Object.keys(data.goals.levels)) {
+    for (const days of [3, 4, 5]) {
+      let plan;
+      try {
+        plan = buildPlan(data, { goal, level, days });
+      } catch (e) {
+        fail(e.message);
+        continue;
       }
-      if (sets > G.limits.maxSetsPerSession) fail(`${goal}/${days} ${d.name}: ${sets} Saetze > ${G.limits.maxSetsPerSession}`);
-      else if (sets > G.limits.warnSetsPerSession) warn(`${goal}/${days} ${d.name}: ${sets} Saetze > ${G.limits.warnSetsPerSession} (lange Einheit)`);
-      for (const [m, v] of Object.entries(frac)) if (v > G.limits.maxFractionalSetsPerMusclePerSession) fail(`${goal}/${days} ${d.name}: ${m} ${v} anteilige Saetze > ${G.limits.maxFractionalSetsPerMusclePerSession}`);
-      const top = Object.entries(frac).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([m, v]) => `${m} ${v}`).join(', ');
-      lines.push(`  ${d.name}: ${d.rows.length} Uebungen, ${sets} Saetze (${top})`);
-      // Bauch zuletzt, wenn vorhanden
-      const absIdx = d.rows.findIndex(r => r.cat === 'abs');
-      if (absIdx >= 0 && absIdx !== d.rows.length - 1 && d.rows.slice(absIdx).some(r => r.cat !== 'abs')) fail(`${goal}/${days} ${d.name}: Bauch nicht zuletzt`);
+      for (const issue of validatePlan(data, plan)) (issue.level === 'error' ? fail : warn)(issue.message);
+      const perDay = plan.dayPlans.map((d) => d.rows.reduce((a, r) => a + r.sets, 0)).join('/');
+      console.log(`-- ${level} ${days} Tage: ${totalSets(plan)} Saetze (${perDay})` + (plan.paused.length ? ` pausiert: ${plan.paused.join(', ')}` : ''));
+      if (level === 'advanced') {
+        for (const d of plan.dayPlans) console.log(`   ${d.letter} ${d.name}: ${d.rows.map((r) => `${r.category} ${r.sets}x${r.repRange}`).join(' · ')}`);
+        console.log('   Woche: ' + Object.entries(weeklySets(plan)).map(([c, v]) => `${c} ${v}`).join(' · '));
+      }
     }
-    for (const [cat, p] of Object.entries(g.priorities)) {
-      if (p === 3 && (!freq[cat] || freq[cat].size < G.limits.minFrequencyPrio3)) fail(`${goal}/${days}: Prio-3-Kategorie ${cat} nur ${freq[cat] ? freq[cat].size : 0}x pro Woche`);
-      if (p === 0 && weekly[cat]) fail(`${goal}/${days}: Prio-0-Kategorie ${cat} hat ${weekly[cat]} Saetze`);
-    }
-    const unused = g.slots.filter(s => !used.has(s.id)).map(s => s.id);
-    console.log(`-- ${days} Tage: ${total} Saetze/Woche` + (unused.length ? ` (pausiert: ${unused.join(', ')})` : ''));
-    lines.forEach(l => console.log(l));
-    console.log('  Woche je Kategorie: ' + Object.entries(weekly).map(([c, v]) => `${c} ${v}`).join(' · '));
   }
 }
-// Peach-Regression gegen P4/P3 aus der Trainingsapp (nur gelesen)
+
+// Regression: Apfel, Fortgeschritten = Nicoles Plantabellen
+const table = (plan) => plan.dayPlans.map((d) => ({ name: d.name, focus: d.focus, rows: d.rows.map((r) => ({ category: r.category, sets: r.sets, range: r.repRange })) }));
+const fixtures = { 4: readJson('tests/fixtures/peach-p4.json').days, 3: readJson('tests/fixtures/peach-p3.json').days };
+for (const days of [4, 3]) {
+  const got = JSON.stringify(table(buildPlan(data, { goal: 'apfel', level: 'advanced', days })));
+  console.log(`\n=== Regression Apfel ${days} Tage gegen tests/fixtures (Nicoles Plan)`);
+  if (got !== JSON.stringify(fixtures[days])) fail(`Apfel ${days} Tage weicht von der Plantabelle ab`);
+  else console.log('  identisch (Tagesnamen, Fokus, Kategorie, Saetze, Bereich, Reihenfolge)');
+}
+
 const PEACH = process.env.PEACH_INDEX || path.join(ROOT, '..', 'Trainingsapp', 'index.html');
-if (!fs.existsSync(PEACH)) {
-  console.log(`\n(Peach-Regression uebersprungen: ${PEACH} nicht vorhanden — Trainingsapp-Repo read-only neben das Gymcreator-Repo legen)`);
-  console.log(fails ? `\n${fails} FEHLER, ${warns} Warnungen` : `\nALLE PRUEFUNGEN GRUEN (${warns} Warnungen: lange Einheiten)`);
-  process.exit(fails ? 1 : 0);
+if (fs.existsSync(PEACH)) {
+  // nur lesen
+  const src = fs.readFileSync(PEACH, 'utf8');
+  const grab = (name) => { const i = src.indexOf('const ' + name + '=['); const j = src.indexOf('\n];', i); return src.slice(i + ('const ' + name + '=').length, j + 2); };
+  const ctx = {};
+  vm.createContext(ctx);
+  const byLabel = Object.fromEntries(Object.entries(data.goals.categories).map(([id, c]) => [c.label.de, id]));
+  for (const [name, days] of [['P4', 4], ['P3', 3]]) {
+    const ref = vm.runInContext('(' + grab(name) + ')', ctx).map((d) => ({ name: d.l, focus: d.f, rows: d.e.map((e) => ({ category: byLabel[e.c], sets: e.s, range: `${e.r[0]}-${e.r[1]}` })) }));
+    if (JSON.stringify(ref) !== JSON.stringify(fixtures[days])) fail(`tests/fixtures/peach-${name.toLowerCase()}.json entspricht nicht mehr ${name} in der Trainingsapp`);
+    else console.log(`  Fixture ${name} = Trainingsapp ${name}`);
+  }
+} else {
+  console.log(`  (Abgleich Fixture <-> Trainingsapp uebersprungen: ${PEACH} nicht vorhanden)`);
 }
-const src = fs.readFileSync(PEACH, 'utf8');
-const grab = name => { const i = src.indexOf('const ' + name + '=['); const j = src.indexOf('\n];', i); return src.slice(i + ('const ' + name + '=').length, j + 2); };
-const ctx = {}; vm.createContext(ctx);
-const P4 = vm.runInContext('(' + grab('P4') + ')', ctx), P3 = vm.runInContext('(' + grab('P3') + ')', ctx);
-const label = cat => G.categories[cat].label.de;
-function compare(days, ref, tag) {
-  const before = fails;
-  const plan = buildDays('apfel', days);
-  console.log(`\n=== Regression Apfel (= Peach-Plan) ${days} Tage gegen ${tag}`);
-  if (plan.length !== ref.length) fail(`${tag}: ${plan.length} Tage statt ${ref.length}`);
-  ref.forEach((rd, di) => {
-    const pd = plan[di]; if (!pd) return;
-    if (pd.name !== rd.l) fail(`${tag} Tag ${di}: Name "${pd.name}" statt "${rd.l}"`);
-    if (pd.focus !== rd.f) fail(`${tag} Tag ${di}: Fokus "${pd.focus}" statt "${rd.f}"`);
-    if (pd.rows.length !== rd.e.length) fail(`${tag} ${rd.l}: ${pd.rows.length} Zeilen statt ${rd.e.length}`);
-    rd.e.forEach((re, ei) => {
-      const pr = pd.rows[ei]; if (!pr) return;
-      const want = `${re.c} ${re.s}x${re.r[0]}-${re.r[1]}`, got = `${label(pr.cat)} ${pr.sets}x${pr.range}`;
-      if (want !== got) fail(`${tag} ${rd.l} Zeile ${ei + 1}: ${got} statt ${want}`);
-    });
-  });
-  console.log('  ' + (fails > before ? 'ABWEICHUNG, siehe FAIL' : 'identisch (Tagesnamen, Fokus, Kategorie, Saetze, Bereich, Reihenfolge)'));
+
+// Uebungsbibliothek
+const exPath = path.join(ROOT, 'data/exercises.json');
+if (fs.existsSync(exPath)) {
+  const exercises = JSON.parse(fs.readFileSync(exPath, 'utf8'));
+  console.log(`\n=== Uebungsbibliothek: ${exercises.exercises.length} Uebungen`);
+  const result = checkExercises(data, exercises);
+  result.errors.forEach(fail);
+  result.warnings.forEach(warn);
+  result.summary.forEach((l) => console.log('  ' + l));
+} else {
+  fail('data/exercises.json fehlt');
 }
-compare(4, P4, 'P4'); compare(3, P3, 'P3');
-console.log(fails ? `\n${fails} FEHLER, ${warns} Warnungen` : `\nALLE PRUEFUNGEN GRUEN (${warns} Warnungen: lange Einheiten)`);
+
+console.log(fails ? `\n${fails} FEHLER, ${warns} Warnungen` : `\nALLE PRUEFUNGEN GRUEN (${warns} Warnungen)`);
 process.exit(fails ? 1 : 0);

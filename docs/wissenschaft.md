@@ -18,7 +18,7 @@ Stand der Recherche: 22.10.2026. Diese Datei begründet die Zahlen in `data/goal
 | Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne/Fokus-Hinweise hinterlegt | Chaves 2020 (Schrägbank, klein, Untrainierte), Maeo 2023, Pedrosa 2023, Kassiano 2025 |
 | Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst; Autoregulation ≈ fest (Greig 2021, Larsen 2021) |
 | Deload | Standard: keine. Opt-in in den Einstellungen | Coleman 2024 (n = 39 Trainierte, 9 Wochen: Hypertrophie gleich, Kraft eher ohne Deload-Woche), Pancar 2026 (Untrainierte: kein Unterschied) |
-| Einsteiger | Alle Slots 2 Sätze, Bereiche ab 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten (≈ 0,7–0,8× Volumen), Maschinen bevorzugt | Currier 2023 (BJSM: mehrere Sätze > ein Satz, jede Last wächst), Lopez 2021 (Untrainierte reagieren auf jede Last) |
+| Einsteiger | Alle Slots 2 Sätze, Bereiche ab 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten – nur von einem Tag, an dem die Kategorie doppelt vorkommt, damit die Frequenz bleibt (≈ 0,66–0,77× Volumen), Maschinen bevorzugt | Currier 2023 (BJSM: mehrere Sätze > ein Satz, jede Last wächst), Lopez 2021 (Untrainierte reagieren auf jede Last) |
 | Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Praxis (Peach), keine Studienfrage |
 
 ## Korrekturen und Vorbehalte aus der Recherche

@@ -29,8 +29,10 @@ jobs:
       - run: npm run test
       - run: npm run verify:data
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
+      # Chrome ist auf dem Runner vorinstalliert; kein Playwright-Browser-Download noetig
       - run: npm run test:e2e
+        env:
+          PW_CHANNEL: chrome
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

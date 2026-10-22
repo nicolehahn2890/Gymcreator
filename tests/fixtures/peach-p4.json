@@ -1,0 +1,184 @@
+{
+  "_doc": "Nicoles eigener 4-Tage-Plan (P4, Stand 4ad13af) als Regressionsziel: Apfel, Fortgeschritten, 4 Tage muss exakt so herauskommen. Nur die Plantabelle, keine Datei aus der Trainingsapp.",
+  "days": [
+    {
+      "name": "Tag A – Po Kraft",
+      "focus": "Beinvorderseite · Innenschenkel",
+      "rows": [
+        {
+          "category": "gmax",
+          "sets": 3,
+          "range": "4-8"
+        },
+        {
+          "category": "gmax",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gmed",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gmed",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gquad",
+          "sets": 3,
+          "range": "6-10"
+        },
+        {
+          "category": "ghams",
+          "sets": 2,
+          "range": "4-8"
+        },
+        {
+          "category": "add",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "abs",
+          "sets": 2,
+          "range": "8-12"
+        }
+      ]
+    },
+    {
+      "name": "Tag B – Oberkörper & Po",
+      "focus": "Rücken · Schultern",
+      "rows": [
+        {
+          "category": "gmax",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gmed",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "back",
+          "sets": 3,
+          "range": "6-10"
+        },
+        {
+          "category": "back",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "shoulders",
+          "sets": 3,
+          "range": "8-12"
+        },
+        {
+          "category": "shoulders",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "chest",
+          "sets": 2,
+          "range": "6-10"
+        },
+        {
+          "category": "abs",
+          "sets": 2,
+          "range": "8-12"
+        }
+      ]
+    },
+    {
+      "name": "Tag C – Po & Beinrückseite",
+      "focus": "Hüftbeuge · Beinbeuger",
+      "rows": [
+        {
+          "category": "gmax",
+          "sets": 3,
+          "range": "6-10"
+        },
+        {
+          "category": "gmax",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gmed",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "ghams",
+          "sets": 3,
+          "range": "6-10"
+        },
+        {
+          "category": "hams",
+          "sets": 3,
+          "range": "8-12"
+        },
+        {
+          "category": "back",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "shoulders",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "abs",
+          "sets": 2,
+          "range": "8-12"
+        }
+      ]
+    },
+    {
+      "name": "Tag D – Po-Volumen & Beine",
+      "focus": "Beinstrecker · Innenschenkel",
+      "rows": [
+        {
+          "category": "gmax",
+          "sets": 3,
+          "range": "4-8"
+        },
+        {
+          "category": "gmed",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "gquad",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "ghams",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "quads",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "add",
+          "sets": 2,
+          "range": "8-12"
+        },
+        {
+          "category": "abs",
+          "sets": 2,
+          "range": "8-12"
+        }
+      ]
+    }
+  ]
+}

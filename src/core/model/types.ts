@@ -129,6 +129,42 @@ export interface Plan {
   paused: string[];
 }
 
+// ---------- Uebungsbibliothek (data/exercises.json) ----------
+
+export interface Exercise {
+  /** Stabile ID, wird in Eintraegen gespeichert. Nie umbenennen. */
+  id: string;
+  name: Localized;
+  category: CategoryId;
+  /** Mitarbeitende Kategorien (nur Info, keine Volumenzaehlung). */
+  secondary: CategoryId[];
+  /** Benoetigte Ausstattung (alle Eintraege noetig). */
+  equipment: string[];
+  pattern: string;
+  /** Passt zu Slot-Hinweisen (z. B. "vertical" fuer Latzug). */
+  focus: Focus[];
+  /** Ziele, fuer die die Uebung eine Top-Wahl ist (Stern). */
+  stars: GoalId[];
+  /** Geeignet fuer schwere Saetze im Bereich 4-8. */
+  heavy: boolean;
+  /** Last in der gedehnten Position (Stretch-Bias). */
+  stretch: boolean;
+  unilateral: boolean;
+  /** Gegengewicht: weniger Gewicht = schwerer (Vergleich dreht sich um). */
+  assisted: boolean;
+  /** Haltezeit statt Wiederholungen (Sekunden ins Wdh.-Feld). */
+  timed: boolean;
+  /** "Einstellung: ...\nAusfuehrung: ...", geraeteneutral. Englisch folgt in Phase 2. */
+  tip: { de: string; en?: string };
+}
+
+export interface ExercisesData {
+  schema: 1;
+  equipment: string[];
+  patterns: string[];
+  exercises: Exercise[];
+}
+
 // ---------- Gespeicherte Daten (Phase 1, Form schon festgelegt) ----------
 
 export interface SetValue {

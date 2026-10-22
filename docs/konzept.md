@@ -76,7 +76,7 @@ Kurzfassung; vollständige Tabelle mit Vorbehalten und 26 Quellen in `docs/wisse
 | Progression | Doppelte Progression: Obergrenze im 1. Satz → nächstes Mal mehr Gewicht (Peach-Regel) | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst, aber die sinnvolle Umsetzung beider |
 | Deload | Standard: keine (wie Peach). Opt-in in den Einstellungen | Coleman 2024: kein Hypertrophie-Unterschied, Kraft eher **ohne** Deload-Woche; Pancar 2026 ebenso |
 | Zyklus | 12 Wochen, Woche 1 = leichter Einstieg ohne Vergleich (Peach-Regel), unbegrenzt viele Zyklen | Praxis, keine Studienfrage |
-| Einsteiger | Alle Slots 2 Sätze, 4–8 → 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten Slot (≈ 0,7–0,8× Volumen), Maschinen bevorzugt (Stern). Gleiche Tagesvorlagen wie Fortgeschrittene (Vereinfachung im MVP) | Currier 2023 (BJSM): mehrere Sätze schlagen einen, jede Last wächst; Lopez 2021 |
+| Einsteiger | Alle Slots 2 Sätze, 4–8 → 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten Slot – nur von einem Tag, an dem die Kategorie doppelt vorkommt, damit die Frequenz bleibt (≈ 0,66–0,77× Volumen, Regeln in `data/goals.json` `levels`), Maschinen bevorzugt (Stern). Gleiche Tagesvorlagen wie Fortgeschrittene (Vereinfachung im MVP) | Currier 2023 (BJSM): mehrere Sätze schlagen einen, jede Last wächst; Lopez 2021 |
 | Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls – als Sterne hinterlegt, nicht als eigene Kategorien | Chaves 2020, Maeo 2023, Pedrosa 2023, Kassiano 2025 |
 
 **Verifizierte Volumen je Archetyp** (Sätze/Woche, 4 Tage, Fortgeschritten; Quelle `data/goals.json` + `data/templates.json`, geprüft mit `scripts/verify-plan-data.mjs`):
@@ -200,7 +200,7 @@ Angepasst:
 
 ### 4.1 Stack (entschieden, Abschnitt 7)
 
-- **React 18 + Vite + TypeScript**, PWA über `vite-plugin-pwa` (Service Worker, Manifest, Offline)
+- **React 19 + Vite 8 + TypeScript 6** (strict), PWA über `vite-plugin-pwa` 2 (Service Worker, Manifest, Offline). TypeScript 7 wird von typescript-eslint noch nicht unterstützt (Stand 22.10.2026), deshalb 6.0. Schriften selbst gehostet über `@fontsource` (offline, kein Google-Abruf)
 - State: leichtgewichtig (Zustand), keine schwere Bibliothek
 - Speicher: **Dexie (IndexedDB)** hinter einem `Storage`-Interface; localStorage nur für UI-Position (wie `peach_ui`)
 - Tests: **Vitest** (Generator + Progression), **Playwright** (Flows, iPhone 390/430 px, wie Peach `tests/`)
@@ -353,12 +353,12 @@ Fakten, die den Plan beeinflussen:
 
 ## 7b. Phase 0 – Stand und Reihenfolge (Details in `UEBERGABE.md`)
 
-1. ⬜ Projekt-Gerüst: Vite + React + TypeScript, ESLint, Vitest, Playwright, `vite-plugin-pwa`, GitHub-Actions-Workflow (Test → Build → Pages)
-2. ⬜ `src/ui/theme/tokens.css` mit allen Peach-Tokens (Cream-Basis, Zielakzente, Tagesfarben A–E, Kategorie- und Fortschrittsfarben, Schatten, Radien, Fonts)
+1. ✅ Projekt-Gerüst: Vite + React + TypeScript, ESLint, Vitest, Playwright, `vite-plugin-pwa`, GitHub-Actions-Workflow (Test → Build → Pages)
+2. ✅ `src/ui/theme/tokens.css` mit allen Peach-Tokens (Cream-Basis, Zielakzente, Tagesfarben A–E, Kategorie- und Fortschrittsfarben, Schatten, Radien, Fonts)
 3. ✅ `docs/konzept.md` (dieses Dokument), `docs/wissenschaft.md` (Tabelle 3.2 mit 26 Quellen), `docs/store-weg.md`; Entscheidungen stehen in Abschnitt 7 (keine eigene Datei)
-4. ✅ `data/goals.json` (Prioritäten + Slot-Pools), `data/templates.json` (Splits 3.3), `scripts/verify-plan-data.mjs` (grün, Peach 4/3 = P4/P3) · ⬜ `data/exercises.json` v1 (Peach-Liste bereinigt, Sterne je Ziel, Equipment, Stretch-Flag, geräteneutrale Tipps)
-5. ⬜ `src/core/model/types.ts` (Datenmodell 4.3) + `src/core/generator/` mit Tests, inklusive Regressionstest: `apfel`, 4 Tage, Fortgeschritten ⇒ exakt dein Peach-P4 (Kategorien, Bereiche, Sätze, Reihenfolge je Tag)
-6. ⬜ Platzhalter-Startseite live auf Pages, damit der Deploy-Weg von Anfang an steht
+4. ✅ `data/goals.json` (Prioritäten + Slot-Pools), `data/templates.json` (Splits 3.3), `scripts/verify-plan-data.mjs` (grün, Peach 4/3 = P4/P3) · ✅ `data/exercises.json` v1 (180 Übungen, Peach-Liste bereinigt, Sterne je Ziel, Equipment, Stretch-Flag, geräteneutrale Tipps)
+5. ✅ `src/core/model/types.ts` (Datenmodell 4.3) + `src/core/generator/` mit Tests, inklusive Regressionstest: `apfel`, 4 Tage, Fortgeschritten ⇒ exakt dein Peach-P4 (Kategorien, Bereiche, Sätze, Reihenfolge je Tag)
+6. ✅ Platzhalter-Startseite live auf Pages, damit der Deploy-Weg von Anfang an steht
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 
