@@ -6,7 +6,7 @@ Für die nächste Claude-Session, die die Umsetzung übernimmt. Reihenfolge zum 
 
 | Thema | Entscheidung |
 |---|---|
-| Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`; der Apfel ist Nicoles Peach-Ziel, Umbenennung 22.10.2026) |
+| Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`, Label Apfel/Apple, Akzent Pink). Final: "Herz" wurde abgewogen und verworfen. Der Apfel ist inhaltlich Nicoles Peach-Ziel, aber **"Peach" ist der Name eines gekauften Fremdprogramms und erscheint nirgends in der Gymcreator-Oberfläche** |
 | Stack | React + Vite + TypeScript als PWA auf GitHub Pages; später Capacitor 8 + Codemagic (iOS ohne Mac) |
 | Plan-Erzeugung | Generator aus Slot-Pools und Tagesvorlagen (`data/`), kein handgebauter Plan im Code |
 | Design | Neobrutalism aus Peach, neutrale Cream-Basis `#FBF3E7`, Zielfarbe als Akzent (V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Apfel Pink `#F18FB6`), kein Pfirsich, nur hell |
