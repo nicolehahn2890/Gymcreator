@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "_doc": "Tagesverteilung je Ziel und Tagesanzahl. Jeder Tag listet Slot-IDs aus goals.json (ein Slot = eine Uebungszeile). Ein Eintrag darf {\"id\":..., \"sets\":n} sein, wenn der Slot in dieser Wochenart mehr/weniger Basis-Saetze hat (Peach: Glute Med in 3 Tagen 3 statt 2). Slots, die in einer Wochenart fehlen, pausieren dort. Die Reihenfolge innerhalb eines Tages wird vom Generator nach categoryOrder und Wdh.-Bereich (schwer zuerst) sortiert; die Listen hier sind nur Zugehoerigkeit. Tagesfarben kommen vom Index (A Peach, B Pink, C Lime, D Sky, E Yellow).",
+  "goals": {
+    "peach": {
+      "3": { "days": [
+        { "name": "Tag A – Po Kraft", "focus": "Beinvorderseite · Rücken · Schultern",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", { "id": "gmed_8-12_a", "sets": 3 }, "gquad_6-10_a", "ghams_4-8_a", "add_8-12_a", "back_6-10_a", "shoulders_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Po & Beinrückseite", "focus": "Hüftbeuge · Beinbeuger",
+          "slots": ["gmax_6-10_a", "gmax_8-12_c", { "id": "gmed_8-12_d", "sets": 3 }, "ghams_6-10_a", "hams_8-12_a", "back_8-12_b", "chest_6-10_a", "abs_8-12_c"] },
+        { "name": "Tag C – Hüfte & Sanduhr", "focus": "Glute Med doppelt · Beinstrecker",
+          "slots": ["gmax_4-8_b", "gmed_8-12_e", "gmed_8-12_c", "gquad_8-12_a", "ghams_8-12_a", "quads_8-12_a", "add_8-12_b", "shoulders_8-12_c", "abs_8-12_d"] }
+      ] },
+      "4": { "days": [
+        { "name": "Tag A – Po Kraft", "focus": "Beinvorderseite · Innenschenkel",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", "gmed_8-12_a", "gmed_8-12_b", "gquad_6-10_a", "ghams_4-8_a", "add_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Oberkörper & Po", "focus": "Rücken · Schultern",
+          "slots": ["gmax_8-12_b", "gmed_8-12_c", "back_6-10_a", "back_8-12_a", "shoulders_8-12_a", "shoulders_8-12_b", "chest_6-10_a", "abs_8-12_b"] },
+        { "name": "Tag C – Po & Beinrückseite", "focus": "Hüftbeuge · Beinbeuger",
+          "slots": ["gmax_6-10_a", "gmax_8-12_c", "gmed_8-12_d", "ghams_6-10_a", "hams_8-12_a", "back_8-12_b", "shoulders_8-12_c", "abs_8-12_c"] },
+        { "name": "Tag D – Po-Volumen & Beine", "focus": "Beinstrecker · Innenschenkel",
+          "slots": ["gmax_4-8_b", "gmed_8-12_e", "gquad_8-12_a", "ghams_8-12_a", "quads_8-12_a", "add_8-12_b", "abs_8-12_d"] }
+      ] },
+      "5": { "days": [
+        { "name": "Tag A – Po Kraft", "focus": "Beinvorderseite · Innenschenkel",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", "gmed_8-12_a", "gquad_6-10_a", "ghams_4-8_a", "add_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Oberkörper", "focus": "Rücken · Schultern · Brust",
+          "slots": ["back_6-10_a", "back_8-12_a", "shoulders_8-12_a", "shoulders_8-12_b", "chest_6-10_a", "abs_8-12_b"] },
+        { "name": "Tag C – Po & Beinrückseite", "focus": "Hüftbeuge · Beinbeuger",
+          "slots": ["gmax_6-10_a", "gmax_8-12_c", "gmed_8-12_d", "ghams_6-10_a", "hams_8-12_a", "abs_8-12_c"] },
+        { "name": "Tag D – Beine & Po", "focus": "Beinstrecker · Innenschenkel",
+          "slots": ["gmax_4-8_b", "gmed_8-12_e", "gquad_8-12_a", "ghams_8-12_a", "quads_8-12_a", "add_8-12_b"] },
+        { "name": "Tag E – Po-Pump & Schultern", "focus": "Leichter Tag · Glute Med doppelt",
+          "slots": ["gmax_8-12_b", "gmax_12-15_a", "gmed_8-12_b", "gmed_8-12_c", "back_8-12_b", "shoulders_8-12_c", "abs_8-12_d"] }
+      ] }
+    },
+    "sanduhr": {
+      "3": { "days": [
+        { "name": "Tag A – Po & Beine schwer", "focus": "Hüftstoß · Beinstrecker · Schultern",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", "gmed_8-12_a", "gquad_6-10_a", "quads_8-12_a", "add_8-12_a", "shoulders_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Rücken & Schultern", "focus": "Lat · Seitheben · Glute Med",
+          "slots": ["gmax_6-10_a", "gmed_8-12_b", "gmed_12-15_a", "back_6-10_a", "back_8-12_b", "shoulders_8-12_b", "chest_8-12_a", "biceps_8-12_a", "abs_8-12_b"] },
+        { "name": "Tag C – Po-Volumen & Beine", "focus": "Hüftbeuge · Beinbeuger · Bauch",
+          "slots": ["gmax_8-12_b", "gmax_8-12_c", "gmed_8-12_c", "ghams_6-10_a", "hams_8-12_a", "gquad_8-12_a", "back_8-12_a", "shoulders_12-15_a", "abs_8-12_c"] }
+      ] },
+      "4": { "days": [
+        { "name": "Tag A – Po & Beine schwer", "focus": "Hüftstoß · Beinstrecker · Innenschenkel",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", "gmed_8-12_a", "gquad_6-10_a", "quads_8-12_a", "add_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Rücken & Schultern", "focus": "Lat · Seitheben · Brust",
+          "slots": ["back_6-10_a", "back_8-12_b", "shoulders_8-12_a", "shoulders_8-12_b", "chest_8-12_a", "biceps_8-12_a", "abs_8-12_b"] },
+        { "name": "Tag C – Po & Beinrückseite", "focus": "Hüftbeuge · Beinbeuger · Glute Med",
+          "slots": ["gmax_6-10_a", "gmax_8-12_b", "gmed_8-12_b", "gmed_12-15_a", "ghams_6-10_a", "hams_8-12_a", "add_8-12_b"] },
+        { "name": "Tag D – Schultern & Po-Pump", "focus": "Seitheben · Rücken-Volumen · Bauch",
+          "slots": ["gmax_8-12_c", "gmed_8-12_c", "gquad_8-12_a", "ghams_8-12_a", "back_8-12_a", "back_8-12_c", "shoulders_12-15_a", "triceps_8-12_a", "abs_8-12_c"] }
+      ] },
+      "5": { "days": [
+        { "name": "Tag A – Po schwer", "focus": "Hüftstoß · Hüftbeuge · Innenschenkel",
+          "slots": ["gmax_4-8_a", "gmax_8-12_a", "gmed_8-12_a", "ghams_6-10_a", "add_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Rücken & Schultern", "focus": "Lat · Seitheben · Brust",
+          "slots": ["back_6-10_a", "back_8-12_b", "shoulders_8-12_a", "shoulders_8-12_b", "chest_8-12_a"] },
+        { "name": "Tag C – Beine & Po", "focus": "Beinstrecker · Beinbeuger · Innenschenkel",
+          "slots": ["gmax_6-10_a", "gquad_6-10_a", "quads_8-12_a", "hams_8-12_a", "add_8-12_b", "abs_8-12_b"] },
+        { "name": "Tag D – Schultern & Arme", "focus": "Seitheben · Rücken-Volumen · Bauch",
+          "slots": ["shoulders_12-15_a", "shoulders_8-12_c", "back_8-12_c", "biceps_8-12_a", "triceps_8-12_a", "abs_8-12_c"] },
+        { "name": "Tag E – Po-Volumen & Hüfte", "focus": "Glute Med dreifach · Hüftbeuge",
+          "slots": ["gmax_8-12_b", "gmax_8-12_c", "gmed_8-12_b", "gmed_8-12_c", "gmed_12-15_a", "gquad_8-12_a", "ghams_8-12_a", "back_8-12_a"] }
+      ] }
+    },
+    "vform": {
+      "3": { "days": [
+        { "name": "Tag A – Drücken & Beine", "focus": "Brust · Schulterdrücken · Beinvorderseite",
+          "slots": ["chest_4-8_a", "chest_6-10_a", "shoulders_6-10_a", "shoulders_8-12_a", "triceps_8-12_a", "gquad_6-10_a", "quads_8-12_a"] },
+        { "name": "Tag B – Ziehen & Schultern", "focus": "Lat · Rudern · Seitheben",
+          "slots": ["back_6-10_a", "back_4-8_a", "back_8-12_a", "shoulders_12-15_a", "shoulders_12-15_b", "biceps_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag C – Oberkörper & Beine leicht", "focus": "Rücken-Volumen · Arme · Beinrückseite",
+          "slots": ["back_6-10_b", "back_8-12_b", "chest_8-12_a", "shoulders_12-15_c", "biceps_8-12_b", "triceps_8-12_b", "ghams_6-10_a", "hams_8-12_a", "abs_8-12_b"] }
+      ] },
+      "4": { "days": [
+        { "name": "Tag A – Ziehen", "focus": "Lat · Rudern · Bizeps",
+          "slots": ["back_6-10_a", "back_4-8_a", "back_8-12_a", "shoulders_12-15_b", "biceps_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag B – Beine & Bauch", "focus": "Beinvorderseite · Beinrückseite · Waden",
+          "slots": ["gquad_6-10_a", "ghams_6-10_a", "hams_8-12_a", "quads_8-12_a", "gmax_8-12_a", "calves_8-12_a", "abs_8-12_b"] },
+        { "name": "Tag C – Drücken", "focus": "Brust · Schulterdrücken · Trizeps",
+          "slots": ["chest_4-8_a", "chest_6-10_a", "chest_8-12_a", "shoulders_6-10_a", "shoulders_8-12_a", "triceps_8-12_a"] },
+        { "name": "Tag D – Schultern & Oberkörper-Volumen", "focus": "Seitheben · Rudern · Arme",
+          "slots": ["shoulders_12-15_a", "shoulders_12-15_c", "back_6-10_b", "back_8-12_b", "chest_8-12_b", "biceps_8-12_b", "triceps_8-12_b", "calves_12-15_a", "abs_8-12_c"] }
+      ] },
+      "5": { "days": [
+        { "name": "Tag A – Ziehen", "focus": "Lat · Rudern · Bizeps",
+          "slots": ["back_6-10_a", "back_4-8_a", "back_8-12_a", "shoulders_12-15_b", "biceps_8-12_a"] },
+        { "name": "Tag B – Drücken", "focus": "Brust · Schulterdrücken · Trizeps",
+          "slots": ["chest_4-8_a", "chest_6-10_a", "chest_8-12_a", "shoulders_6-10_a", "triceps_8-12_a"] },
+        { "name": "Tag C – Beine & Bauch", "focus": "Beinvorderseite · Beinrückseite · Waden",
+          "slots": ["gquad_6-10_a", "ghams_6-10_a", "hams_8-12_a", "quads_8-12_a", "gmax_8-12_a", "calves_8-12_a", "abs_8-12_a"] },
+        { "name": "Tag D – Schultern & Arme", "focus": "Seitheben · Bizeps · Trizeps",
+          "slots": ["shoulders_8-12_a", "shoulders_12-15_a", "shoulders_12-15_c", "biceps_8-12_b", "triceps_8-12_b", "abs_8-12_b"] },
+        { "name": "Tag E – Oberkörper-Volumen", "focus": "Rudern · Brust · Beine leicht",
+          "slots": ["back_6-10_b", "back_8-12_b", "back_8-12_c", "chest_8-12_b", "gquad_8-12_a", "calves_12-15_a", "abs_8-12_c"] }
+      ] }
+    }
+  }
+}
