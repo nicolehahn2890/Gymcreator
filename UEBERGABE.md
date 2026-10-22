@@ -1,74 +1,64 @@
-# Übergabe – Stand 22.10.2026
+# Übergabe – Stand 22.10.2026 (Abend)
 
-Für die nächste Claude-Session, die die Umsetzung übernimmt. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln, 2 Minuten) → diese Datei → `docs/konzept.md` (freigegebener Plan) → `data/README.md`.
+Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln, 2 Minuten) → diese Datei → `docs/konzept.md` (freigegebener Plan) → `data/README.md`.
+
+> **Das Repo `nicolehahn2890/Trainingsapp` ist NUR ZUM LESEN.** Nichts ändern, nichts committen, nichts pushen. Gearbeitet wird ausschließlich in `nicolehahn2890/Gymcreator`, direkt auf `main`.
 
 ## 1. Entscheidungen (von Nicole bestätigt, 22.10.2026)
 
 | Thema | Entscheidung |
 |---|---|
-| Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`, Label Apfel/Apple, Akzent Pink). Final: "Herz" wurde abgewogen und verworfen. Der Apfel ist inhaltlich Nicoles Peach-Ziel, aber **"Peach" ist der Name eines gekauften Fremdprogramms und erscheint nirgends in der Gymcreator-Oberfläche** |
-| Stack | React + Vite + TypeScript als PWA auf GitHub Pages; später Capacitor 8 + Codemagic (iOS ohne Mac) |
+| Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`, Label Apfel/Apple, Akzent Pink). Final. Der Apfel ist inhaltlich Nicoles Peach-Ziel, aber **"Peach" erscheint nirgends in der Gymcreator-Oberfläche** (gekauftes Fremdprogramm) |
+| Stack | React 19 + Vite 8 + TypeScript 6 als PWA auf GitHub Pages; später Capacitor 8 + Codemagic (iOS ohne Mac) |
 | Plan-Erzeugung | Generator aus Slot-Pools und Tagesvorlagen (`data/`), kein handgebauter Plan im Code |
-| Design | Neobrutalism aus Peach, neutrale Cream-Basis `#FBF3E7`, Zielfarbe als Akzent (V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Apfel Pink `#F18FB6`), kein Pfirsich, nur hell |
+| Design | Neobrutalism aus Peach, Cream-Basis `#FBF3E7`, Zielfarbe als Akzent (V-Form Sky, Sanduhr Lilac, Apfel Pink), kein Pfirsich, nur hell |
 | MVP | Onboarding, Plan, geführtes Training, Progression (Peach 1:1), flexible Woche 3/4/5, eigene Übungen, Backup. Form-Tracker, Kurz-Modus, Feinjustierung, Illustrationen, Englisch, Dark Mode = Phase 2 |
 | Branch | **Alles direkt auf `main`**, keine Feature-Branches, keine PRs |
-| Peach-App | Trainingsapp nur lesen, nie ändern, keine Dateien kopieren |
-| Figma | Connector darf genutzt werden (Pro-Account von Florian) für Icon, Ziel-Glyphen, Store-Grafiken; eigene Datei anlegen |
+| Figma | Connector darf genutzt werden (Pro-Account von Florian); eigene Datei anlegen, nichts Fremdes ändern |
 
-## 2. Was in dieser Session erledigt wurde
+## 2. Phase 0 – erledigt (22.10.2026)
 
-- **Konzept** erarbeitet, kritisch geprüft, von Nicole freigegeben → `docs/konzept.md` (Produkt, Wissenschaft, Splits, flexible Woche, Übungsbibliothek, Progression, UI für Einsteiger, Design-System, Architektur, Datenmodell, Phasen, Verifikation).
-- **Recherche Trainingswissenschaft 2023–2026** → `docs/wissenschaft.md` (Regeln mit Evidenz, Vorbehalte, 26 Quellen).
-- **Recherche Store-Weg** → `docs/store-weg.md` (Capacitor 8 + Codemagic, Apple 4.2, Google 12-Tester-Regel, Speicher auf iOS, Pflichten ohne Server).
-- **Peach-Code gelesen** (read-only, Stand `4ad13af`): 1957 Zeilen, 199 CSS / 1664 JS, 96 Funktionen. Port-Tabelle mit Zeilennummern in `docs/konzept.md` 4.5. Kernbefund: Logik sauber, hängt aber an Globals (`S`, `plan()`, `mk()`) und positionsbasierten Keys → Port mit explizitem Kontext und Slot-IDs.
-- **Plan-Daten für alle drei Ziele × 3/4/5 Tage** → `data/goals.json`, `data/templates.json`, geprüft mit `scripts/verify-plan-data.mjs`: alle Grenzen eingehalten, Apfel (= Peach-Plan) 4 Tage = P4 und 3 Tage = P3 identisch (Tagesnamen, Fokus, Kategorie, Sätze, Bereich, Reihenfolge). 5 bewusste Warnungen (3-Tage-Einheiten mit 21–23 Sätzen).
-- **Umgebung geprüft:** Node 22.22.0, npm 10.9.4, pnpm und yarn vorhanden, Playwright-Chromium vorinstalliert unter `/opt/pw-browsers` (`PLAYWRIGHT_BROWSERS_PATH` gesetzt, **kein** `playwright install` nötig), npm-Registry über den Proxy erreichbar. Aktuelle Versionen laut `npm view` am 22.10.2026: vite 8.3.5, react 19.3.1, vite-plugin-pwa 2.0.0, vitest 5.0.5, @playwright/test 1.64.1, dexie 4.4.6, typescript 7.0.2. Vite 8 und TypeScript 7 sind sehr neu: Kompatibilität mit ESLint/Vitest prüfen, notfalls eine Major zurück (Vite 7, TS 5.9).
-- Die Pages-Seite der Trainingsapp (`github.io`) ist aus der Sandbox nicht erreichbar (Proxy 403); `git clone` des Repos funktioniert.
+| Schritt | Ergebnis |
+|---|---|
+| 3.1 Gerüst | Vite 8, React 19, TS 6 strict (`noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`), ESLint 10 Flat Config + typescript-eslint strict + react-hooks, Vitest 5, Playwright 1.64, vite-plugin-pwa 2 (`base: '/Gymcreator/'`, `display: standalone`). Scripts: `dev`, `build`, `preview`, `test`, `test:e2e`, `lint`, `typecheck`, `verify:data`, `check` (alles außer E2E) |
+| CI | `.github/workflows/ci.yml`: Lint → Typecheck → Vitest → `verify:data` → Build → Playwright-Smoke (390 + 430 px, mit dem vorinstallierten Chrome des Runners, `PW_CHANNEL=chrome`) → Pages-Deploy. Dauer ca. 1 Minute |
+| 3.2 Tokens | `src/ui/theme/tokens.css` (alle Peach-Tokens neu, `--orange` statt Pfirsich-Name, `--accent` über `html[data-goal]`, Tagesfarben A–E, `--cat-<id>` wie `goals.json`, Fortschritt), `base.css` (Press, Disabled, Fokus-Ring, 16-px-Inputs, reduced motion). Test prüft Kategorie-Farben gegen `goals.json`. Schriften selbst gehostet über `@fontsource` (offline) |
+| 3.3 Übungen | `data/exercises.json`: **180 Übungen**, Hersteller-Varianten zusammengeführt, Tipps neu und geräteneutral ("Einstellung: …\nAusführung: …"), Namen DE + EN, `stars[]` je Ziel, `heavy` (für 4–8), `stretch`, `unilateral`, `assisted` (nur die beiden assistierten Klimmzüge), `timed` (Planks). Reihenfolge je Kategorie = Vorzugsreihenfolge. Englische Tipps und "Warum"-Satz: Phase 2 |
+| 3.4 Kern | `src/core/model/types.ts` (Datenmodell inkl. `Entry`, `Exercise`), `src/core/generator/buildPlan.ts` + `validate.ts`, `src/core/model/exerciseCheck.ts`. Einsteiger-Regeln stehen in `data/goals.json` → `levels` |
+| 3.5 Seite | Platzhalter-Startseite (Wortmarke, Pixel-Hantel, drei Zielkarten mit Pixel-Glyphen, Hinweis "Im Aufbau", Version + Commit). Icons aus `scripts/make-icons.mjs` (Pixel-Hantel, Platzhalter bis Florian) |
+| Extra (Phase 1 vorgezogen) | `src/core/progression/weight.ts` + `compare.ts`: `parseWeight`, `weightBounds`, `cmpWeight`, `progressStatus` (= Peach `prog`), `repZone` (= Peach `rcol`), Logik 1:1, alle Peach-Funktionsfälle als Vitest |
 
-## 3. Nächste Schritte – Phase 0 in dieser Reihenfolge
+**Tests:** 67 Vitest (Generator alle 3 Ziele × 2 Stufen × 3/4/5 Tage ohne Fehler, deterministisch, Apfel 4/3 = Nicoles P4/P3 aus `tests/fixtures/`, Wochensummen, Einsteiger-Regel, Bibliothek, Tokens, Progression) + 6 Playwright. `node scripts/verify-plan-data.mjs` nutzt jetzt den echten TS-Generator und meldet `ALLE PRUEFUNGEN GRUEN (5 Warnungen)`.
 
-### 3.1 Projekt-Gerüst (⬜)
-- Vite + React + TypeScript (strict), ESLint (Flat Config, typescript-eslint, react-hooks), Vitest, `@playwright/test`, `vite-plugin-pwa`.
-- `vite.config.ts`: `base: '/Gymcreator/'` (GitHub Pages unter `https://nicolehahn2890.github.io/Gymcreator/`), PWA-Manifest `display: standalone`, Name "Gymcreator", `theme_color` Cream.
-- Scripts: `dev`, `build`, `preview`, `test` (vitest run), `test:e2e` (playwright), `lint`, `typecheck`, `verify:data` (`node scripts/verify-plan-data.mjs`).
-- `.github/workflows/ci.yml`: bei Push auf `main`: `npm ci` → lint → typecheck → vitest → `verify:data` → build → Playwright-Smoke (Chromium) → `actions/configure-pages` (`enablement: true`) → `upload-pages-artifact` (`dist`) → `deploy-pages`. Permissions `pages: write`, `id-token: write`, `contents: read`. Falls der erste Deploy scheitert: Nicole muss in den Repo-Einstellungen Pages → Source "GitHub Actions" wählen.
-- `.gitignore` liegt schon bereit (node_modules, dist, Playwright-Ausgaben).
-- Nicole braucht lokal nichts; alles baut in Actions.
+**Geänderte Regel (bitte beachten):** Einsteiger-Stufe – der wegfallende Slot kommt nur von einem Tag, an dem die Kategorie doppelt vorkommt. Vorher fiel bei V-Form die einzige Brust-Zeile eines Tages weg (Brust nur noch 1×/Woche, Prio 3 verlangt 2×). Steht in `data/README.md`, `docs/wissenschaft.md`, `docs/konzept.md`.
 
-### 3.2 Design-Tokens (⬜)
-`src/ui/theme/tokens.css`: alle Tokens aus Peachs `:root` (Trainingsapp `index.html` Z. 18–51, read-only lesen) neu anlegen, mit diesen Änderungen: `--bg` = Cream `#FBF3E7` (Lavendel bleibt `--lilac`), `--accent` je Ziel über `html[data-goal="vform|sanduhr|peach"]`, Tagesfarben A–E = Peach/Pink/Lime/Sky/Yellow, Kategorie-Farben aus `data/goals.json` (`color`), Fortschrittsfarben (grün/blau/gelb/rot) wie Peach, Fokus-Ring, Disabled, Press-Interaktion, Fonts Archivo Black + Space Grotesk (Google Fonts). Kein Dark Mode.
+## 3. Offen für Nicole
 
-### 3.3 Übungsbibliothek v1 (⬜, größte Inhaltsarbeit)
-`data/exercises.json` nach dem Format in `data/README.md`. Basis: Peachs `EXERCISES` (Z. 292–306, 142 Übungen), `TIPS` (Z. 307–448), `REC` (Z. 691), `ASSIST` (Z. 697), `RETIRED` (Z. 786) – **nur lesen, Inhalte neu formulieren**. Regeln: Hersteller-Varianten zu je einer Übung zusammenführen ("Rudermaschine (Panatta)/(Precor)" → "Rudermaschine"); Tipps geräteneutral ("Drehachse auf Kniehöhe", keine 169-cm-Hinweise, keine Hebel-Nummern), Format "Einstellung: … / Ausführung: …", 2–3 Sätze; `stars {vform,sanduhr,apfel}` je Ziel nach `docs/wissenschaft.md` (Stretch-Bias; Po: Hip Thrust, tiefe Kniebeuge, direkte Abduktion; V-Form: vertikaler Zug, schweres Rudern, Seitheben, Schrägbank, Überkopf-Trizeps, Preacher Curls); `focus`-Tags passend zu den Slot-Hinweisen (`vertical`, `horizontal`, `lateral`, `rear`, `press`, `incline`, `fly`, `overhead`, `pump`); `assisted: true` für die assistierten Klimmzüge; Ergänzungen: Bizeps/Trizeps-Breite, Waden, Körpergewicht- und Band-Varianten → 150–180 Übungen, Namen DE + EN. Danach Konsistenz-Check (jede Übung hat Kategorie aus `goals.json`, keine Duplikate, jede Slot-Kategorie hat ≥ 3 Übungen, jeder Stern zeigt auf eine existierende Übung).
+1. **GitHub Pages auf "GitHub Actions" umstellen** (Repo → Settings → Pages → Build and deployment → Source: *GitHub Actions*). Bis dahin läuft bei jedem Push zusätzlich der alte Branch-Build (`pages build and deployment`) und kann unseren Deploy überschreiben – dann zeigt die Seite eine leere Seite. Notlösung: Workflow "CI und Pages" in Actions per "Run workflow" neu starten.
+2. **Gewicht pro Satz oder pro Übung?** (Entscheidung vor dem Progressions-Port, Abschnitt 4.3). Empfehlung: pro Satz (wie `docs/konzept.md` 4.3 und die Fokusansicht "Gewicht · Reps · Haken"). Peachs Vergleich bleibt 1:1, indem die Satzgewichte als Spanne gelesen werden (kleinstes–größtes = Peach `"40-45"`).
+3. Remote-Branch `claude/serene-mccarthy-xx7xko` existiert auf GitHub (beim Session-Start angelegt, Stand = alter `main`). Nach Regel 1 unerwünscht; darf gelöscht werden.
 
-### 3.4 Datenmodell + Generator in TypeScript (⬜)
-- `src/core/model/types.ts` nach `docs/konzept.md` 4.3.
-- `src/core/generator/`: `buildPlan(goal, level, days)` = Logik aus `scripts/verify-plan-data.mjs` (Pool laden → Template anwenden, `{id, sets}`-Override beachten → sortieren nach `categoryOrder`, dann Bereich schwer zuerst, dann Template-Reihenfolge → `validate()` mit `limits`: Fehler vs. Warnung). Einsteiger-Regel: alle Slots 2 Sätze, `4-8` → `6-10`, Kategorien mit ≥ 3 Slots verlieren den letzten Slot. Slot-IDs bleiben dabei stabil (Bereich ist ein Feld).
-- Tests (Vitest): alle 3 Ziele × 3/4/5 Tage × 2 Stufen ohne Fehler; deterministisch; **Peach-Regression als Fixture im Repo** (die P4/P3-Tabellen aus `docs/konzept.md` bzw. Peach-Skill als `tests/fixtures/peach-p4.json` / `peach-p3.json` – das sind Nicoles eigene Plan-Tabellen, keine Peach-Dateien), weil CI die Trainingsapp nicht hat.
+## 4. Nächste Schritte – Phase 1 (`docs/konzept.md` Abschnitt 5)
 
-### 3.5 Platzhalter-Seite live (⬜)
-Startseite im Design-System: Wortmarke, die drei Ziele als Karten mit Zielfarbe, Hinweis "im Aufbau". Zweck: Deploy-Weg steht, Nicole sieht das Design auf dem iPhone.
+1. **Storage + Backup:** `src/storage/interface.ts` (Profile, Plan-Version, Entries unter `cycle:week:slotId`, Weeks, ExerciseNote, CustomExercise), `dexie.ts` (Dexie 4), `backup.ts` (`{app:'gymcreator', schema:1, …}`, Import validiert und fragt), Migrations-Gerüst mit Sicherheitskopie. Tests mit `fake-indexeddb`.
+2. **Progression fertig portieren** (Trainingsapp dafür wieder read-only anhängen): Port-Tabelle `docs/konzept.md` 4.5. Noch offen: `history.ts` (findLastExData: gleicher Bereich im aktuellen Zyklus → zuletzt trainierter Zyklus davor → Orientierung; eigener Slot zuerst; laufende Woche nie), `state.ts` (exState/exDone/weekStats), `rules.ts` (incDue, autoExtraSets ab Woche 4, max. 5 Sätze), `inherit.ts` (Übung über Lücken, "nur diese Woche" über `baseExerciseId`), `cycle.ts` (carryMap nach Kategorie + Bereich, keine Dopplung je Tag), `week.ts` (Wochen-Art, Vorauswahl = Vorwoche). Peach-Szenarien (`tests/*.test.js` in der Trainingsapp: vorwert-vorwoche, vorwert-zyklusstart, verlauf-woche1-2, verlauf-planwechsel, steigerung, uebungswechsel, flex-woche, randfaelle) als Vitest nachbauen.
+3. **Standard-Übung je Slot** (Vorschlag): erste Übung der Bibliothek mit passender Kategorie und Fokus, Stern für das Ziel, bei 4–8 `heavy`, Ausstattung vorhanden, am selben Tag noch nicht vergeben; sonst ohne Stern; sonst ohne Fokus. Einsteiger: Maschinen zuerst.
+4. UI: Onboarding (Ziel → Erfahrung → Tage → Mein Gym → Plan fertig) → Plan-Ansicht → Heute + Training → flexible Woche → Fortschritt → Einstellungen/Backup → PWA-Feinschliff.
 
-Danach Phase 1 (`docs/konzept.md` Abschnitt 5): Storage + Backup → Generator → Progressions-Port → Onboarding → Training → flexible Woche → Fortschritt → PWA-Feinschliff.
-
-## 4. Verbindliche Details für die Umsetzung
+## 5. Verbindliche Details
 
 - **Entry-Key** `cycle:week:slotId`; Eintrag trägt `category`, `repRange`, `baseSets`, `exerciseId`, `sets[{w,r}]`, `extraSets`, optional `once`/`baseExerciseId`.
 - **Flexible Woche:** gleiche Slot-ID in 3/4/5 Tagen = dieselbe Zeile; Slots außerhalb der Wochenvorlage pausieren; Vorwert über Übung + Bereich (eigener Slot zuerst, laufende Woche nie).
-- **Progression:** Port-Tabelle in `docs/konzept.md` 4.5 (Peach-Funktion → Datei → Änderung). Peach-Szenario-Tests als Vitest nachbauen.
-- **Texte:** kurz, sachlich, ohne KI-Ton; alles in `src/i18n/de.json`, Englisch später.
+- **Texte:** kurz, sachlich, ohne KI-Ton; alles in `src/i18n/de.json`.
+- **Farben nur über Tokens**; neue Kategorie = Farbe in `goals.json` **und** `--cat-<id>` in `tokens.css` (Test prüft).
 - **Keine Modell-Namen** in Commits oder Dateien.
-
-## 5. Offene Punkte und Risiken
-
-- **GitHub Pages aktivieren**: Source "GitHub Actions" in den Repo-Einstellungen, falls `configure-pages` es nicht selbst kann.
-- **Google Play**: 12 Tester über 14 Tage – Tester (Partner, Freunde, Gym) früh sammeln; die Nutzertester aus Phase 1 sind dafür gedacht.
-- **Figma**: In dieser Session war der Figma-Plugin-Server nicht verbunden (Proxy 403); die direkten `Figma`-Tools waren gelistet, aber ungetestet. Vor der Nutzung Session-Hinweis `create_session` beachten, eigene Datei anlegen, nichts von Florian ändern.
-- **Versionen**: Vite 8 / TS 7 sehr neu (siehe 2.).
 
 ## 6. Prüfen
 
 ```
-node scripts/verify-plan-data.mjs
+npm run check                                   # Lint, Typecheck, Vitest, verify:data, Build
+PW_CHROMIUM_PATH=/opt/pw-browsers/chromium npm run test:e2e   # in der Claude-Sandbox
+node scripts/verify-plan-data.mjs               # nach jeder Änderung an data/: ALLE PRUEFUNGEN GRUEN
 ```
-Mit der Trainingsapp read-only unter `../Trainingsapp` läuft zusätzlich die Peach-Regression; ohne sie wird sie übersprungen. Am Ende muss `ALLE PRUEFUNGEN GRUEN` stehen.
+
+Umgebung (Sandbox): Node 22.22 (TypeScript-Import in Node ohne Flag), Chromium unter `/opt/pw-browsers/chromium` (Playwright 1.64 erwartet eine neuere Revision, deshalb `PW_CHROMIUM_PATH`). `github.io` ist aus der Sandbox nicht erreichbar (Proxy 403); den Deploy über die Actions-Läufe prüfen.

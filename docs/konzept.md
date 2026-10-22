@@ -270,8 +270,8 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 
 | Peach-Funktion (Zeile) | Gymcreator `src/core/progression/` | Änderung beim Port |
 |---|---|---|
-| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` | 1:1, inklusive assistierter Richtung (`inv`) |
-| `prog` (1234), `rcol` (1196) | `compare.ts` | 1:1: Gewicht zuerst, Reps als Durchschnitt; `isAssist` kommt aus dem Übungsdatensatz (`assisted: true`) statt aus dem Set `ASSIST` |
+| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`) |
+| `prog` (1234), `rcol` (1196) | `compare.ts` ✅ (`progressStatus`, `repZone`) | 1:1: Gewicht zuerst, Reps als Durchschnitt; `isAssist` kommt aus dem Übungsdatensatz (`assisted: true`) statt aus dem Set `ASSIST` |
 | `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `history.ts` | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie |
 | `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
 | `incCand`/`incDue` (1557/1565) | `rules.ts` | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
