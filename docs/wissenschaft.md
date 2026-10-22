@@ -31,7 +31,7 @@ Stand der Recherche: 22.10.2026. Diese Datei begründet die Zahlen in `data/goal
 
 ## Verifizierte Volumen je Ziel (4 Tage, Fortgeschritten, Sätze/Woche aus `data/`)
 
-| Kategorie | Peach | Sanduhr | V-Form |
+| Kategorie | Apfel | Sanduhr | V-Form |
 |---|---|---|---|
 | Glute Max | 15 | 12 | 3 |
 | Glute Med | 10 | 8 | 0 |
@@ -49,7 +49,7 @@ Stand der Recherche: 22.10.2026. Diese Datei begründet die Zahlen in `data/goal
 | Bauch | 8 | 6 | 6 |
 | **Summe** | **70** | **71** | **72** |
 
-3 Tage: Peach 62, Sanduhr 62, V-Form 61. 5 Tage: Peach 72, Sanduhr 73, V-Form 77. Die Peach-Spalte ist exakt der 4-Tage-Plan P4 (3 Tage = P3) aus der Trainingsapp, per Skript gegengeprüft.
+3 Tage: Apfel 62, Sanduhr 62, V-Form 61. 5 Tage: Apfel 72, Sanduhr 73, V-Form 77. Die Apfel-Spalte ist exakt der Peach-4-Tage-Plan P4 (3 Tage = P3) aus der Trainingsapp, per Skript gegengeprüft.
 
 ## Quellen
 

@@ -1,6 +1,6 @@
 # Gymcreator – Arbeitsregeln für Claude-Sessions
 
-Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Peach), 3/4/5 Tage, Generator aus wissenschaftlich begründeten Volumen-Zielen, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
+Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Apfel – der Apfel ist Nicoles Peach-Ziel), 3/4/5 Tage, Generator aus wissenschaftlich begründeten Volumen-Zielen, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
 
 ## Feste Regeln
 

@@ -162,16 +162,16 @@
     }
   },
   "goals": {
-    "peach": {
+    "apfel": {
       "label": {
-        "de": "Peach",
-        "en": "Peach"
+        "de": "Apfel",
+        "en": "Apple"
       },
       "tagline": {
         "de": "Schlanker Oberkörper, schmale Taille, großer Po, definierte Beine",
         "en": "Lean upper body, narrow waist, big glutes, defined legs"
       },
-      "accent": "peach",
+      "accent": "pink",
       "priorities": {
         "gmax": 3,
         "gmed": 3,

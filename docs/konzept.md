@@ -7,7 +7,7 @@
 **Ausgangslage.** Peach ist deine persönliche Trainingsapp: ein Gym (Panatta/Precor-Namen), ein Ziel, deine Intensität. Die Progressionslogik darin ist stark (Vorwert pro Übung + Wdh.-Bereich, Gewicht schlägt Reps, Auto-Zusatzsatz, flexible 3/4-Tage-Woche, Übungswechsel "nur diese Woche"). Die Oberfläche ist aber dicht: viele Kacheln, Pills, Badges, drei Schriftgrößen pro Karte. Für dich perfekt, für Einsteiger zu viel.
 
 **Gymcreator** ist die verallgemeinerte Version für andere Menschen:
-- Einstieg über ein **Körperziel** (V-Form / Sanduhr / Peach), daraus wissenschaftlich begründete Sätze pro Muskelgruppe und Woche
+- Einstieg über ein **Körperziel** (V-Form / Sanduhr / Apfel), daraus wissenschaftlich begründete Sätze pro Muskelgruppe und Woche
 - **3, 4 oder 5 Trainingstage**, mit flexibler Umrechnung pro Woche (wie in Peach)
 - **breite Übungsbibliothek** ohne Gerätehersteller, Stern-Markierung der besten Übungen je Ziel, eigene Übungen
 - **Progressionsmodell 1:1 aus Peach**
@@ -52,7 +52,7 @@
 |---|---|---|---|---|---|
 | **V-Form** | breite Schultern, breiter Lat, schmale Hüfte | Lat (vertikal + horizontal), seitliche Schulter, Brust, Arme | Bauch, Quads, Hams | Po, Glute Med, Adduktoren | keine schweren Seitbeugen |
 | **Sanduhr** | trainierte Schultern, schmale Taille, runder Po, feste Beine | Glute Max + Med, seitliche Schulter | Lat, Hams, Quads, Bauch | Brust, Arme (indirekt) | keine schweren Obliques |
-| **Peach** | schlanker trainierter Oberkörper, schmale Taille, großer Po, schlanke definierte Beine | Glute Max (sehr hoch), Glute Med, Hüftbeuge (Hams), Adduktoren | Rücken, Schultern, Bauch | Brust, Arme (indirekt), Quads po-betont | Bauch als Abschluss, leicht |
+| **Apfel** (dein Peach-Ziel) | schlanker trainierter Oberkörper, schmale Taille, großer Po, schlanke definierte Beine | Glute Max (sehr hoch), Glute Med, Hüftbeuge (Hams), Adduktoren | Rücken, Schultern, Bauch | Brust, Arme (indirekt), Quads po-betont | Bauch als Abschluss, leicht |
 
 **Innovation dahinter:** Ein Archetyp ist intern nur ein **Prioritäts-Profil** (jeder Muskel 0–3). Daraus rechnet der Generator die Sätze. Das macht zwei Dinge möglich, die drei starre Pläne nicht können:
 - **Feinjustierung** nach der Wahl über 3–4 Schieber ("mehr Schultern", "weniger Beine", "Arme dazu") → Plan wird neu gerechnet (Phase 2, Datenmodell ab Tag 1 so angelegt).
@@ -81,7 +81,7 @@ Kurzfassung; vollständige Tabelle mit Vorbehalten und 26 Quellen in `docs/wisse
 
 **Verifizierte Volumen je Archetyp** (Sätze/Woche, 4 Tage, Fortgeschritten; Quelle `data/goals.json` + `data/templates.json`, geprüft mit `scripts/verify-plan-data.mjs`):
 
-| Kategorie | V-Form | Sanduhr | Peach |
+| Kategorie | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
 | Glute Max (direkt) | 3 | 12 | 15 |
 | Glute Med | 0 | 8 | 10 |
@@ -99,13 +99,13 @@ Kurzfassung; vollständige Tabelle mit Vorbehalten und 26 Quellen in `docs/wisse
 | Waden | 4 | 0 | 0 |
 | **Summe** | **72** | **71** | **70** |
 
-3 Tage: 61 / 62 / 62. 5 Tage: 77 / 73 / 72. Die Peach-Spalte ist exakt dein 4-Tage-Plan P4, 3 Tage exakt P3 (per Skript gegen die Trainingsapp geprüft). Die Daten sind die **einzige Stelle**, an der Trainingswissen steht – alles andere rechnet der Generator. Änderungen (z. B. "Glute Med +2") sind ein Slot in `goals.json`, kein Plan-Umbau an 9 Stellen.
+3 Tage: 61 / 62 / 62. 5 Tage: 77 / 73 / 72. Die Apfel-Spalte ist exakt dein Peach-4-Tage-Plan P4, 3 Tage exakt P3 (per Skript gegen die Trainingsapp geprüft). Die Daten sind die **einzige Stelle**, an der Trainingswissen steht – alles andere rechnet der Generator. Änderungen (z. B. "Glute Med +2") sind ein Slot in `goals.json`, kein Plan-Umbau an 9 Stellen.
 
 ### 3.3 Splits je Tagesanzahl
 
 Je Archetyp ein Satz Vorlagen in `data/templates.json`. Die Vorlage legt nur fest, welche Slots an welchem Tag liegen; die Reihenfolge innerhalb eines Tages sortiert der Generator (`categoryOrder` des Ziels, dann schwerer Bereich zuerst, dann Template-Reihenfolge – Prio-Muskel zuerst, Grundübung vor Isolation, Bauch zuletzt, deine Peach-Regel). Die Satzzahlen kommen aus dem Slot-Pool in `data/goals.json`.
 
-| Tage | V-Form | Sanduhr | Peach |
+| Tage | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
 | 3 | A Push + Beine · B Pull + Schultern · C Oberkörper komplett + Beine leicht | A Po & Beine schwer + Schultern · B Rücken & Schultern + Glute Med · C Po-Volumen + Beine + Bauch | dein P3 (Po Kraft · Po & Beinrückseite · Hüfte & Sanduhr) |
 | 4 | A Oberkörper Pull · B Unterkörper + Bauch · C Oberkörper Push · D Schultern, Arme, Rücken-Volumen | A Po & Beine schwer · B Rücken & Schultern · C Po & Beinrückseite + Glute Med · D Schultern + Po-Pump + Bauch | dein P4 (Po Kraft · Oberkörper & Po · Po & Beinrückseite · Po-Volumen & Beine) |
@@ -174,8 +174,8 @@ Regeln für Übersichtlichkeit:
 Übernommen aus Peach: Neobrutalism, nur hell, alle Tokens in einem `:root`, Ink `#181016`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Archivo Black (Display, Uppercase) + Space Grotesk (Body 400–700), Fokus-Ring, Disabled-Stil, Press-Interaktion, 16-px-Inputs, Tagesfarben A Peach / B Pink / C Lime / D Sky (+ E Yellow für 5 Tage), Kategorie-Farben CC, Fortschrittsfarben.
 
 Angepasst:
-- **Kein Pfirsich.** Marke: Pixel-Art-Wortmarke "GC" oder eine Pixel-Hantel im Cream-Kreis mit Ink-Rahmen (gleiche Bauweise wie das Peach-Icon). Die drei Ziele bekommen je ein abstraktes Pixel-Glyph (V, Sanduhr, Peach-Silhouette) für Onboarding und Profil.
-- **Zielfarbe als Akzent:** V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Peach Peach `#F4A45E`.
+- **Kein Pfirsich.** Marke: Pixel-Art-Wortmarke "GC" oder eine Pixel-Hantel im Cream-Kreis mit Ink-Rahmen (gleiche Bauweise wie das Peach-Icon). Die drei Ziele bekommen je ein abstraktes Pixel-Glyph (V, Sanduhr, Apfel) für Onboarding und Profil.
+- **Zielfarbe als Akzent:** V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Apfel Pink `#F18FB6` (Feld `accent` in `data/goals.json`, leicht änderbar).
 - **Hintergrund:** neutrale Cream-Basis `#FBF3E7` statt Lavendel für alle (Lavendel bleibt Sanduhr-Akzent). Entschieden, Abschnitt 7.
 - **Dark Mode:** nicht im MVP (wie Peach). Weil alle Farben Tokens sind, bleibt er als späterer Token-Satz möglich – Store-Nutzer fragen danach.
 
@@ -184,7 +184,7 @@ Angepasst:
 **MVP (Phase 1):** Onboarding, Generator (3 Ziele × 3/4/5 Tage, 2 Erfahrungsstufen), geführtes Training, Progression komplett, flexible Woche, Zyklen unbegrenzt, Übersicht/Verlauf, eigene Übungen, Mein Gym (einfach), Pausentimer, Backup Export/Import, PWA installierbar + offline.
 
 **Phase 2 (Einsteiger-Polish + Differenzierung):**
-- **Form-Tracker:** Umfänge (Schulter, Brust, Taille, Hüfte, Po, Oberschenkel, Arm) monatlich eintragen; die App zeigt die **Kennzahl des gewählten Ziels** (V-Form: Schulter/Taille, Sanduhr: Hüfte/Taille, Peach: Po/Taille) als Verlauf. Passt exakt zur Positionierung, 1 Screen.
+- **Form-Tracker:** Umfänge (Schulter, Brust, Taille, Hüfte, Po, Oberschenkel, Arm) monatlich eintragen; die App zeigt die **Kennzahl des gewählten Ziels** (V-Form: Schulter/Taille, Sanduhr: Hüfte/Taille, Apfel: Po/Taille) als Verlauf. Passt exakt zur Positionierung, 1 Screen.
 - Kurz-Modus, 2-Tage-Notfallwoche, Feinjustierungs-Schieber, Plateau-Tausch, Gym-Wechsel-Modus
 - Übungs-Piktogramme/Illustrationen, "Warum diese Übung?"-Satz
 - Englisch komplett, Hantelscheiben-Rechner, Körpergewicht-Log, Plan als PDF/Bild teilen
@@ -230,7 +230,7 @@ Gymcreator/
 ### 4.3 Datenmodell (Kern, TypeScript-Interfaces)
 
 ```ts
-Profile   { goal:'vform'|'sanduhr'|'peach', level:'beginner'|'advanced', days:3|4|5,
+Profile   { goal:'vform'|'sanduhr'|'apfel', level:'beginner'|'advanced', days:3|4|5,
             priorities: Record<Category,0|1|2|3>, equipment: Equipment[], increments: {...},
             deload:boolean, lang:'de'|'en' }
 Slot      { id:'gmax_4-8_a', category, repRange:'4-8', baseSets:3, priority:1..3, order }
@@ -262,7 +262,7 @@ validate(plan)                  → Fehlerliste: >10 anteilige Sätze je Muskel/
                                   Prio-Muskel <2×/Woche, gleiche Übung 2× am Tag, Abweichung vom Ziel >1 Satz
 ```
 
-Tests: für alle 3 × 3 × 2 Kombinationen `validate` leer, Summen innerhalb ±2 Sätze der Tabelle, Determinismus (gleiche Eingabe → gleicher Plan), Peach-Kombination (`peach`, 4 Tage, advanced) ergibt genau deinen P4 (Regressionstest gegen deine Tabelle).
+Tests: für alle 3 × 3 × 2 Kombinationen `validate` leer, Summen innerhalb ±2 Sätze der Tabelle, Determinismus (gleiche Eingabe → gleicher Plan), Apfel-Kombination (`apfel`, 4 Tage, advanced) ergibt genau deinen Peach-P4 (Regressionstest gegen deine Tabelle).
 
 ### 4.5 Progressions-Engine (Port aus Peach, Quelle `/home/user/Trainingsapp/index.html`)
 
@@ -305,8 +305,6 @@ Fakten, die den Plan beeinflussen:
 - **Store-Pflichten auch ohne Server:** öffentliche Datenschutz-URL bei beiden (GitHub-Pages-Seite, kein PDF), Apple-Label "Keine Daten erhoben", Google Data-Safety-Formular + Health-Apps-Erklärung ("Activity and fitness"), kurzer Gesundheits-Disclaimer ("vor dem Training ärztlich abklären"), keine medizinischen oder Genauigkeits-Versprechen, Impressum (DE). Konto-Löschpflicht greift nur, wenn es Konten gibt – gibt es nicht.
 - Kein Store nimmt eine PWA direkt. Apple braucht ein natives Binary.
 
-**Nebenbei, betrifft Peach:** Seit iOS 26 öffnet Safari jede zum Home-Screen hinzugefügte Seite standardmäßig als Web-App. Prüf bei Gelegenheit, ob Peachs `display: browser`-Trick auf deinem iPhone noch greift – sonst liegen die Daten nach einem Icon-Neuanlegen wieder im falschen Container.
-
 ---
 
 ## 5. Phasenplan
@@ -345,7 +343,7 @@ Fakten, die den Plan beeinflussen:
 
 1. **Stack:** React + Vite + TypeScript als PWA, später Capacitor + Codemagic
 2. **Plan-Erzeugung:** Generator aus Volumen-Zielen (Tabelle 3.2 als einzige Wissensquelle)
-3. **Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Peach)
+3. **Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Pink)
 4. **MVP-Umfang:** Kern – Onboarding, Plan, geführtes Training, Progression, flexible Woche, eigene Übungen, Backup
 
 ## 7a. Noch offen (blockiert nichts in Phase 0)
@@ -359,7 +357,7 @@ Fakten, die den Plan beeinflussen:
 2. ⬜ `src/ui/theme/tokens.css` mit allen Peach-Tokens (Cream-Basis, Zielakzente, Tagesfarben A–E, Kategorie- und Fortschrittsfarben, Schatten, Radien, Fonts)
 3. ✅ `docs/konzept.md` (dieses Dokument), `docs/wissenschaft.md` (Tabelle 3.2 mit 26 Quellen), `docs/store-weg.md`; Entscheidungen stehen in Abschnitt 7 (keine eigene Datei)
 4. ✅ `data/goals.json` (Prioritäten + Slot-Pools), `data/templates.json` (Splits 3.3), `scripts/verify-plan-data.mjs` (grün, Peach 4/3 = P4/P3) · ⬜ `data/exercises.json` v1 (Peach-Liste bereinigt, Sterne je Ziel, Equipment, Stretch-Flag, geräteneutrale Tipps)
-5. ⬜ `src/core/model/types.ts` (Datenmodell 4.3) + `src/core/generator/` mit Tests, inklusive Regressionstest: `peach`, 4 Tage, Fortgeschritten ⇒ exakt dein P4 (Kategorien, Bereiche, Sätze, Reihenfolge je Tag)
+5. ⬜ `src/core/model/types.ts` (Datenmodell 4.3) + `src/core/generator/` mit Tests, inklusive Regressionstest: `apfel`, 4 Tage, Fortgeschritten ⇒ exakt dein Peach-P4 (Kategorien, Bereiche, Sätze, Reihenfolge je Tag)
 6. ⬜ Platzhalter-Startseite live auf Pages, damit der Deploy-Weg von Anfang an steht
 
 ## 8. Annahmen, solange nichts anderes gesagt ist

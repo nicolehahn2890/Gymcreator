@@ -86,8 +86,8 @@ const P4 = vm.runInContext('(' + grab('P4') + ')', ctx), P3 = vm.runInContext('(
 const label = cat => G.categories[cat].label.de;
 function compare(days, ref, tag) {
   const before = fails;
-  const plan = buildDays('peach', days);
-  console.log(`\n=== Regression Peach ${days} Tage gegen ${tag}`);
+  const plan = buildDays('apfel', days);
+  console.log(`\n=== Regression Apfel (= Peach-Plan) ${days} Tage gegen ${tag}`);
   if (plan.length !== ref.length) fail(`${tag}: ${plan.length} Tage statt ${ref.length}`);
   ref.forEach((rd, di) => {
     const pd = plan[di]; if (!pd) return;
