@@ -1,0 +1,126 @@
+/* Gymcreator Design-Tokens. Neobrutalism, nur hell. Einzige Stelle mit Farbwerten:
+   Komponenten nutzen ausschliesslich var(--...). Kategorie-Farben muessen mit data/goals.json
+   (categories.*.color) uebereinstimmen, geprueft in src/ui/theme/tokens.test.ts. */
+:root {
+  color-scheme: light;
+
+  /* Ink: Rahmen, harte Schatten, Text auf hellen Flaechen */
+  --ink: #181016;
+  --on-accent: #181016;
+
+  /* Helle Akzentpalette */
+  --orange: #F4A45E;
+  --pink: #F18FB6;
+  --lilac: #B49DF2;
+  --lime: #B6DD57;
+  --sky: #8CCBE8;
+  --yellow: #F5CB44;
+  --cream: #FBF3E7;
+  --paper: #FFFDF7;
+  --white: #FFFFFF;
+
+  /* Status */
+  --gold: #F5B53C;
+  --green: #6FC36A;
+  --blue: #5EA8E0;
+  --red: #EC6A6A;
+  --scrim: rgba(24, 16, 22, 0.35);
+
+  /* Seite */
+  --bg: var(--cream);
+  --drop-bg: var(--cream);
+  --scroll: var(--accent);
+
+  /* Zielfarbe (Standard ohne Ziel: Gelb; je Ziel unten ueberschrieben) */
+  --accent: var(--yellow);
+
+  /* Textstufen */
+  --text: #181016;
+  --text-soft: #45343D;
+  --text-mid: #5E4C55;
+  --text-dim: #7E6C76;
+  --text-faint: #A2929C;
+  --text-ghost: #C7B8C0;
+
+  /* Flaechen und Felder */
+  --surface: var(--cream);
+  --chip-bg: var(--cream);
+  --field-bg: var(--white);
+  --input-bg: var(--white);
+  --input-border: var(--ink);
+  --border: var(--ink);
+  --bar-empty: rgba(24, 16, 22, 0.10);
+  --ring: var(--ink);
+  --focus: var(--orange);
+
+  /* Tagesfarben A-E */
+  --day-a: var(--orange);
+  --day-b: var(--pink);
+  --day-c: var(--lime);
+  --day-d: var(--sky);
+  --day-e: var(--yellow);
+
+  /* Kategorie-Farben (Muskelgruppen, IDs wie data/goals.json) */
+  --cat-gmax: #EE8FB4;
+  --cat-gmed: #B49DF2;
+  --cat-gquad: #E8B86A;
+  --cat-ghams: #A7D98C;
+  --cat-hams: #D7A0E8;
+  --cat-quads: #F9B98A;
+  --cat-add: #7FD1C1;
+  --cat-back: #84C3E0;
+  --cat-shoulders: #C2DB7E;
+  --cat-chest: #F0A0A0;
+  --cat-biceps: #E6C57E;
+  --cat-triceps: #93B6E0;
+  --cat-calves: #C9C2B8;
+  --cat-abs: #D6D080;
+
+  /* Fortschritt: gesteigert / mehr Wdh. / gleich / weniger */
+  --prog-up: var(--green);
+  --prog-reps: var(--blue);
+  --prog-same: var(--yellow);
+  --prog-down: var(--red);
+
+  /* Schriften */
+  --font-display: 'Archivo Black', 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --fs-body: 16px;
+  --fs-small: 13px;
+  --fs-input: 16px; /* nie kleiner: iOS zoomt sonst beim Fokus */
+
+  /* Radien */
+  --r-sm: 10px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 20px;
+  --r-pill: 999px;
+
+  /* Rahmenbreite */
+  --bw: 2.5px;
+
+  /* Harte Schatten (Ink, ohne Blur) */
+  --sh-xs: 2px 2px 0 var(--ink);
+  --sh-sm: 3px 3px 0 var(--ink);
+  --sh-card: 4px 4px 0 var(--ink);
+  --sh-header: 0 3px 0 var(--ink);
+  --sh-drop: 5px 5px 0 var(--ink);
+  --sh-press: 1px 1px 0 var(--ink);
+
+  /* Bewegung */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --dur-fast: 0.08s;
+  --dur-base: 0.12s;
+  --dur-anim: 0.22s;
+  --dur-drop: 0.14s;
+  --dur-bar: 0.45s;
+
+  /* Abstaende */
+  --gutter: 16px;
+  --content-max: 680px;
+}
+
+/* Zielakzent: data-goal am <html>, Werte aus data/goals.json (accent) */
+html[data-goal="vform"] { --accent: var(--sky); }
+html[data-goal="sanduhr"] { --accent: var(--lilac); }
+html[data-goal="apfel"] { --accent: var(--pink); }
