@@ -85,9 +85,9 @@
   --prog-down: var(--red);
 
   /* Schriften: Bowlby One SC (ein Schnitt, immer Grossbuchstaben, ohne verringerten Buchstabenabstand)
-     und Inter 400-700 */
-  --font-display: 'Bowlby One SC', 'Inter', system-ui, sans-serif;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+     und Inter 400-700 (variabel, fonts.css) */
+  --font-display: 'Bowlby One SC', 'Inter Variable', system-ui, sans-serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, sans-serif;
   --fs-display: 34px;
   --fs-section: 22px;
   --fs-logo: 20px;

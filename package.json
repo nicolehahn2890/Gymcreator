@@ -17,8 +17,8 @@
     "check": "npm run lint && npm run typecheck && npm run test && npm run verify:data && npm run build"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
     "@fontsource/bowlby-one-sc": "^5.3.0",
-    "@fontsource/inter": "^5.3.0",
     "dexie": "^4.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
