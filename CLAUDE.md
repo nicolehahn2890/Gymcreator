@@ -16,7 +16,7 @@ Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Pea
 8. **Kleine Wünsche klein umsetzen.** Keine unnötige Komplexität, keine Absicherungen für Daten, die es nicht gibt. Nebeneffekte aktiv nennen.
 9. **Vor jedem Push:** Lint, Typecheck, Vitest, Build grün. Bei Logik-Änderungen am Kern zusätzlich die betroffenen Szenario-Tests. Erst melden, wenn geprüft.
 10. **Keine Modell-Namen** in Commits, Code oder Dateien (nur im Chat).
-11. **Figma-Connector darf genutzt werden** (Pro-Account von Florian, mit Erlaubnis) für Icon, Ziel-Glyphen, Store-Grafiken. Nichts in fremden Figma-Dateien ändern, eigene Datei anlegen.
+11. **Figma-Connector darf genutzt werden** (Pro-Account von Florian, mit Erlaubnis) für Icon, Rexe, Store-Grafiken. Nichts in fremden Figma-Dateien ändern, eigene Datei anlegen.
 12. **Der Name "Peach" erscheint nirgends in der Gymcreator-Oberfläche, in Texten oder Store-Material.** Er gehört zu einem gekauften Fremdprogramm. Der dritte Archetyp heißt Apfel (final, 22.10.2026). "Peach" nur intern in Doku und Kommentaren, wenn Nicoles Trainingsapp gemeint ist.
 13. **Kein Grad-Zeichen und keine exotischen Sonderzeichen in JS-Strings** (Peach-Erfahrung); "Grad" ausschreiben.
 
