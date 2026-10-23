@@ -98,6 +98,8 @@ export interface Timing {
   restSeconds: Record<RepRange, number>;
   /** Wechsel, Einstellen und Aufwaermen je Uebung in Sekunden. */
   exerciseSeconds: number;
+  /** Zeiten (Minuten), die der Kurz-Modus anbietet. */
+  shortMinutes: number[];
 }
 
 export interface GoalsData {
@@ -235,6 +237,13 @@ export interface Week {
   cycle: number;
   week: number;
   days: DaysPerWeek;
+  /** Kurz-Modus dieser Woche je Slot-ID: gewaehlte Zeit und gekuerzte Satzzahl. Gilt nur fuer diese Woche. */
+  short?: Record<string, ShortSlot>;
+}
+
+export interface ShortSlot {
+  minutes: number;
+  sets: number;
 }
 
 export interface Profile {

@@ -34,6 +34,11 @@
   font-weight: 600;
 }
 
+.plan-day-short {
+  justify-self: start;
+  margin-top: 2px;
+}
+
 .plan-day-rows {
   display: grid;
   gap: 3px;

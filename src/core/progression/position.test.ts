@@ -37,7 +37,7 @@ describe('Position und Dauer', () => {
   it('Dauer-Schaetzung je Tag in 5-Minuten-Schritten, jeder Bereich hat eine Pause', () => {
     for (const r of planData.goals.ranges) expect(planData.goals.timing.restSeconds[r], r).toBeGreaterThan(0);
     for (const day of plans[4].dayPlans) {
-      const min = estimateMinutes(day, planData.goals.timing);
+      const min = estimateMinutes(day.rows, planData.goals.timing);
       expect(min % 5).toBe(0);
       expect(min).toBeGreaterThanOrEqual(20);
       expect(min).toBeLessThanOrEqual(75);

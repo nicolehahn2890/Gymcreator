@@ -122,7 +122,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
               </span>
             )}
           </span>
-          <span className="muted">{timed ? fmt(t.setsLineTimed, { sets: st.totalSets }) : fmt(t.setsLine, { sets: st.totalSets, range: range(st.repRange) })}</span>
+          <span className="muted">{timed ? fmt(t.setsLineTimed, { sets: st.targetSets }) : fmt(t.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
         </span>
         <span className="exercise-row-side">
           {st.once && <span className="pill pill-dashed">{t.once}</span>}
@@ -170,14 +170,17 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                   const prevSet = prev?.sets[i];
                   const zone = timed ? null : repZone(set.r, st.repRange);
                   const filled = set.r !== null && set.r > 0;
+                  // Kurz-Modus: Saetze ueber der gekuerzten Zahl sind freiwillig
+                  const optional = i >= st.targetSets;
+                  const aria = (field: string) => fmt(optional ? t.optionalSetAria : t.setAria, { n: i + 1, field });
                   return (
-                    <div key={i} className="set-row">
+                    <div key={i} className={`set-row${optional ? ' set-optional' : ''}`}>
                       <span className="set-label">{i + 1}</span>
                       <input
                         className="input"
                         inputMode="decimal"
                         autoComplete="off"
-                        aria-label={fmt(t.setAria, { n: i + 1, field: weightLabel })}
+                        aria-label={aria(weightLabel)}
                         value={set.w}
                         onChange={(e) => setValue(i, 'w', e.target.value)}
                       />
@@ -186,7 +189,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                         inputMode="numeric"
                         pattern="[0-9]*"
                         autoComplete="off"
-                        aria-label={fmt(t.setAria, { n: i + 1, field: repLabel })}
+                        aria-label={aria(repLabel)}
                         value={set.r ?? ''}
                         onChange={(e) => setValue(i, 'r', e.target.value)}
                       />

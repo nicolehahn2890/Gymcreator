@@ -32,7 +32,7 @@ const entry = (week: number, slotId = 'gmax_6-8_a', w = '100'): Entry => ({
 const sample = (): StoredData => ({
   profile,
   entries: [entry(1), entry(2, 'gmax_6-8_a', '102,5'), { ...entry(2, 'gmax_8-12_a'), once: true, baseExerciseId: 'kickback_machine' }],
-  weeks: [{ cycle: 1, week: 2, days: 3 }],
+  weeks: [{ cycle: 1, week: 2, days: 3, short: { 'gmax_6-8_a': { minutes: 30, sets: 2 } } }],
   notes: [{ exerciseId: 'hip_thrust_barbell', note: 'Polster dick', setting: 'Stufe 4' }],
   custom: [{ id: 'custom_1', name: 'Kettlebell Swing', category: 'ghams', equipment: ['bodyweight'], note: '' }],
 });
@@ -125,6 +125,7 @@ describe('Backup', () => {
     expect(parseBackup(JSON.stringify({ ...good, custom: [{ id: 'x', name: 'a', category: 'gmax', equipment: [], note: '' }] }))).toEqual({ ok: false, error: 'shape' });
     expect(parseBackup(JSON.stringify({ ...good, profile: { ...profile, increments: { barbell: '2.5' } } }))).toEqual({ ok: false, error: 'shape' });
     expect(parseBackup(JSON.stringify({ ...good, entries: [{ ...entry(1), week: 0 }] }))).toEqual({ ok: false, error: 'shape' });
+    expect(parseBackup(JSON.stringify({ ...good, weeks: [{ cycle: 1, week: 2, days: 3, short: { x: { minutes: 30, sets: 0 } } }] }))).toEqual({ ok: false, error: 'shape' });
   });
 
   it('nimmt Leerzeichen und Zeilenumbrueche um den Text an', () => {

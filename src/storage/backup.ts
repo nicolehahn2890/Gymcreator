@@ -64,7 +64,13 @@ function isEntry(v: unknown): v is Entry {
 }
 
 function isWeek(v: unknown): v is Week {
-  return isObj(v) && isInt(v.cycle) && isInt(v.week) && DAY_COUNTS.includes(v.days as never);
+  return (
+    isObj(v) &&
+    isInt(v.cycle) &&
+    isInt(v.week) &&
+    DAY_COUNTS.includes(v.days as never) &&
+    (v.short === undefined || (isObj(v.short) && Object.values(v.short).every((s) => isObj(s) && isInt(s.minutes) && isInt(s.sets) && s.sets >= 1)))
+  );
 }
 
 export function parseBackup(text: string): ParseResult {

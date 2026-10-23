@@ -1,8 +1,10 @@
+import { planData } from '../../core/model/data';
+import { shortSets } from '../../core/progression/short';
 import { AppHeader } from '../components/AppHeader';
 import { RestTimer } from '../components/RestTimer';
-import { planFor, rowContext, type AppModel } from '../state/model';
-import type { Position } from '../state/actions';
-import { text } from '../../i18n';
+import { dayMinutes, dayRows, planFor, rowContext, type AppModel } from '../state/model';
+import { setShort, type Position } from '../state/actions';
+import { fmt, text } from '../../i18n';
 import { ExerciseItem } from './ExerciseItem';
 import './Workout.css';
 
@@ -24,6 +26,14 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
   const dayPlan = plan.dayPlans[day];
   if (!dayPlan) return null;
   const ctx = rowContext(model, pos.cycle, pos.week);
+  const t = text.workout;
+  const timing = planData.goals.timing;
+  // Kurz-Modus: gewaehlte Zeit dieses Tages; angeboten werden nur Zeiten, die kuerzer sind und erreichbar
+  const short = model.data.weeks.find((w) => w.cycle === pos.cycle && w.week === pos.week)?.short;
+  const active = dayPlan.rows.map((r) => short?.[r.slotId]?.minutes).find((m) => m !== undefined) ?? null;
+  const rows = dayRows(ctx, dayPlan, pos);
+  const options = [...timing.shortMinutes].sort((a, b) => b - a).filter((m) => shortSets(rows, timing, m) !== null);
+  const choose = (minutes: number | null) => setShort(model, pos, dayPlan, minutes);
 
   return (
     <main className="screen">
@@ -35,6 +45,27 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
         <h1 className="next-title">{dayPlan.name}</h1>
         <p className="next-focus">{dayPlan.focus}</p>
       </header>
+      {(options.length > 0 || active !== null) && (
+        <section className="day-time" aria-labelledby="day-time-label">
+          <p className="day-time-head">
+            <span id="day-time-label" className="field-label">
+              {t.time}
+            </span>
+            <span className="muted">{fmt(t.timeEstimate, { min: dayMinutes(ctx, dayPlan, pos) })}</span>
+          </p>
+          <div className="segmented" role="group" aria-labelledby="day-time-label">
+            <button type="button" className="btn btn-small" aria-pressed={active === null} onClick={() => choose(null)}>
+              {t.timeNormal}
+            </button>
+            {[...new Set([...options, ...(active !== null ? [active] : [])])].sort((a, b) => b - a).map((m) => (
+              <button key={m} type="button" className="btn btn-small" aria-pressed={active === m} onClick={() => choose(m)}>
+                {fmt(t.timeShort, { min: m })}
+              </button>
+            ))}
+          </div>
+          {active !== null && <p className="muted day-time-note">{t.shortNote}</p>}
+        </section>
+      )}
       <ol className="exercise-list">
         {dayPlan.rows.map((row, i) => {
           const next = dayPlan.rows[i + 1];

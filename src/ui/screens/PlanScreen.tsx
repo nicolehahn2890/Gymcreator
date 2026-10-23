@@ -27,6 +27,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
   const days = daysFor(model, pos.cycle, pos.week);
   const plan = model.plans[days];
   const ctx = rowContext(model, pos.cycle, pos.week);
+  const short = model.data.weeks.find((w) => w.cycle === pos.cycle && w.week === pos.week)?.short;
 
   const chooseDays = (d: DaysPerWeek) => {
     if (d === days) return;
@@ -72,13 +73,16 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
           <button key={day.index} type="button" className="card plan-day" style={{ background: `var(--day-${day.letter.toLowerCase()})` }} onClick={() => onOpenDay(day.index)}>
             <span className="plan-day-title">{day.name}</span>
             <span className="plan-day-focus">{day.focus}</span>
+            {day.rows.some((r) => short?.[r.slotId]) && (
+              <span className="pill plan-day-short">{fmt(t.shortActive, { min: day.rows.map((r) => short?.[r.slotId]?.minutes).find((m) => m !== undefined) ?? 0 })}</span>
+            )}
             <span className="plan-day-rows">
               {day.rows.map((row) => {
                 const st = rowState(ctx, row, pos);
                 return (
                   <span key={row.slotId} className="plan-day-row">
                     <span>{st.exerciseId ? exerciseName(model, st.exerciseId) : slotLabel(row)}</span>
-                    <span className="plan-day-sets">{fmt(text.workout.setsLine, { sets: st.totalSets, range: range(st.repRange) })}</span>
+                    <span className="plan-day-sets">{fmt(text.workout.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
                   </span>
                 );
               })}

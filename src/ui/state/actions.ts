@@ -1,13 +1,14 @@
-// Aenderungen aus der Oberflaeche: Eintraege anlegen/aendern, Wochenart festhalten, Profil uebernehmen.
+// Aenderungen aus der Oberflaeche: Eintraege anlegen/aendern, Wochenart festhalten, Profil uebernehmen, Kurz-Modus.
 import { buildPlan } from '../../core/generator/buildPlan';
 import { planData } from '../../core/model/data';
-import type { Entry, Plan, PlanRow, Profile, SetValue } from '../../core/model/types';
+import type { Entry, Plan, PlanDay, PlanRow, Profile, SetValue, ShortSlot, Week } from '../../core/model/types';
 import { getEntry, hasValues } from '../../core/progression/entries';
 import { createEntry } from '../../core/progression/inherit';
 import { followingWeek } from '../../core/progression/position';
 import type { RowState } from '../../core/progression/state';
+import { shortSets } from '../../core/progression/short';
 import { pausedSlotsWithValues } from '../../core/progression/week';
-import type { AppModel } from './model';
+import { dayRows, daysFor, rowContext, type AppModel } from './model';
 import { store } from './store';
 
 export interface Position {
@@ -70,4 +71,18 @@ export function withSetValue(entry: Entry, totalSets: number, index: number, pat
   // leere Saetze am Ende nicht speichern
   while (sets.length && sets[sets.length - 1]?.w === '' && sets[sets.length - 1]?.r === null) sets.pop();
   return { ...entry, sets };
+}
+
+/** Kurz-Modus fuer einen Tag: Saetze so kuerzen, dass er in `minutes` passt, oder mit null aufheben. Gilt nur fuer diese Woche. */
+export function setShort(model: AppModel, pos: Position, day: PlanDay, minutes: number | null): void {
+  const existing = model.data.weeks.find((w) => w.cycle === pos.cycle && w.week === pos.week);
+  const inDay = new Set(day.rows.map((r) => r.slotId));
+  // "Normal" ohne aktiven Kurz-Modus: nichts speichern (ein Wochen-Eintrag legt sonst die Wochenart fest)
+  if (minutes === null && !Object.keys(existing?.short ?? {}).some((slotId) => inDay.has(slotId))) return;
+  const short: Record<string, ShortSlot> = Object.fromEntries(Object.entries(existing?.short ?? {}).filter(([slotId]) => !inDay.has(slotId)));
+  const sets = minutes === null ? null : shortSets(dayRows(rowContext(model, pos.cycle, pos.week), day, pos), planData.goals.timing, minutes);
+  if (minutes !== null && sets) for (const [slotId, n] of Object.entries(sets)) short[slotId] = { minutes, sets: n };
+  const week: Week = { cycle: pos.cycle, week: pos.week, days: existing?.days ?? daysFor(model, pos.cycle, pos.week) };
+  if (Object.keys(short).length) week.short = short;
+  void store.putWeek(week);
 }

@@ -2,10 +2,11 @@
 // Progressions-Kern. Wird bei jeder Datenaenderung neu gebaut (unveraenderlich).
 import { buildPlan, effectiveDays } from '../../core/generator/buildPlan';
 import { exerciseData, planData } from '../../core/model/data';
-import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanRow, type Profile } from '../../core/model/types';
+import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanDay, type PlanRow, type Profile } from '../../core/model/types';
 import { carryOver } from '../../core/progression/cycle';
 import { indexEntries, type EntryIndex } from '../../core/progression/entries';
-import type { RowContext } from '../../core/progression/state';
+import { rowState, type RowContext } from '../../core/progression/state';
+import { estimateMinutes } from '../../core/progression/position';
 import { weekDays } from '../../core/progression/week';
 import { text } from '../../i18n';
 import type { StoredData } from '../../storage/interface';
@@ -78,13 +79,28 @@ export function rowContext(model: AppModel, cycle: number, week: number): RowCon
     model.carryCache.set(key, carried);
   }
   const carriedMap = carried;
+  const short = model.data.weeks.find((w) => w.cycle === cycle && w.week === week)?.short;
   return {
     index: model.index,
     limits: planData.goals.limits,
     rules: planData.goals.progression,
     isAssisted: (id) => model.exercises.get(id)?.assisted ?? false,
     carried: (slotId) => carriedMap[slotId],
+    ...(short && { short: Object.fromEntries(Object.entries(short).map(([slotId, s]) => [slotId, s.sets])) }),
   };
+}
+
+/** Geschaetzte Minuten eines Tages mit den Saetzen dieser Woche (Zusatzsaetze, Kurz-Modus). */
+export function dayMinutes(ctx: RowContext, day: PlanDay, pos: { cycle: number; week: number }): number {
+  return estimateMinutes(dayRows(ctx, day, pos).map((r) => ({ repRange: r.repRange, sets: r.target })), planData.goals.timing);
+}
+
+/** Zeilen eines Tages mit den Saetzen dieser Woche (Zusatzsaetze, Kurz-Modus) fuer Dauer-Schaetzung und Kurz-Modus. */
+export function dayRows(ctx: RowContext, day: PlanDay, pos: { cycle: number; week: number }) {
+  return day.rows.map((row) => {
+    const st = rowState(ctx, row, pos);
+    return { slotId: row.slotId, repRange: st.repRange, priority: row.priority, sets: st.totalSets, target: st.targetSets };
+  });
 }
 
 /** Muskelgruppe der Zeile, mit Hinweis aus dem Slot: "Rücken · Ziehen von oben". */

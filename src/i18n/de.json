@@ -72,6 +72,12 @@
     "install": "Füge die App zum Home-Bildschirm hinzu, damit deine Daten zuverlässig gespeichert bleiben."
   },
   "workout": {
+    "time": "Zeit heute",
+    "timeEstimate": "ca. {min} Min.",
+    "timeNormal": "Normal",
+    "timeShort": "{min} Min.",
+    "shortNote": "Jede Übung mit weniger Sätzen. Ausgegraute Sätze sind freiwillig.",
+    "optionalSetAria": "Satz {n}, freiwillig, {field}",
     "setsLine": "{sets} × {range} Wdh.",
     "setsLineTimed": "{sets} Sätze halten",
     "done": "erledigt",
@@ -145,6 +151,7 @@
   "plan": {
     "title": "Plan",
     "yourPlan": "Dein Plan",
+    "shortActive": "Kurz-Modus: {min} Min.",
     "summary": "Dein Plan: {goal} · {level} · {days} Tage pro Woche",
     "setup": "Plan neu einrichten",
     "cycleNote": "Ein Zyklus hat {weeks} Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit {from}–{to} % weniger Gewicht und steigerst dich wieder.",

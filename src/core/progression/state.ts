@@ -16,6 +16,8 @@ export interface RowContext {
   isAssisted: (exerciseId: string) => boolean;
   /** Aus dem Zyklus davor uebernommene Uebung (carryOver), falls vorhanden. */
   carried: (slotId: string) => string | undefined;
+  /** Kurz-Modus dieser Woche: gekuerzte Satzzahl je Slot-ID. */
+  short?: Record<string, number>;
 }
 
 export interface RowState {
@@ -31,6 +33,8 @@ export interface RowState {
   extraSets: number;
   autoExtra: number;
   totalSets: number;
+  /** Saetze fuer "fertig": im Kurz-Modus weniger, die uebrigen sind freiwillig. */
+  targetSets: number;
   sets: SetValue[];
   weight: string;
   previous: PreviousResult | null;
@@ -66,7 +70,9 @@ export function rowState(ctx: RowContext, row: PlanRow, q: { cycle: number; week
   const sets = (raw?.sets ?? []).slice(0, totalSets);
   const weight = combinedWeight(sets);
   const noCompare = q.week < ctx.rules.compareFromWeek || !!previous?.orientation;
-  const done = !!exerciseId && filledCount(sets) >= totalSets;
+  const short = ctx.short?.[row.slotId];
+  const targetSets = short === undefined ? totalSets : Math.min(totalSets, short);
+  const done = !!exerciseId && filledCount(sets) >= targetSets;
   const status = noCompare || !previous ? null : progressStatus({ weight, reps: sets.map((s) => s.r) }, performanceOf(previous.entry.sets), assisted);
 
   // Steigerungsregel: Obergrenze im 1. Satz beim Vorwert aus dieser oder der Vorwoche desselben Zyklus
@@ -94,6 +100,7 @@ export function rowState(ctx: RowContext, row: PlanRow, q: { cycle: number; week
     extraSets,
     autoExtra,
     totalSets,
+    targetSets,
     sets,
     weight,
     previous,

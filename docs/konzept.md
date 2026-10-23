@@ -94,7 +94,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 - Vorwert-Suche läuft über **Übung + Wdh.-Bereich** (Peach `exKey`), eigener Slot zuerst, laufende Woche zählt nie (Peach-Regel 07.10.).
 
 **Zusätzlich (neu, Phase 2):**
-- **Kurz-Modus** "Heute nur 45 Minuten": die App streicht die Slots mit der niedrigsten Priorität des Tages, der Rest bleibt vergleichbar. Einsteiger-Alltag, kein anderer Tracker macht das sauber.
+- **Kurz-Modus** (umgesetzt 23.10.2026): oben in der Tagesansicht "Zeit heute: Normal / 45 Min. / 30 Min." (angeboten wird nur, was kürzer und erreichbar ist). Alle Übungen bleiben, **jede bekommt weniger Sätze** (immer einen Satz bei der Übung mit den meisten, bei Gleichstand bei niedrigerer Priorität, mindestens 1). Die weggefallenen Sätze stehen ausgegraut als freiwillig da; "fertig" zählt mit der gekürzten Zahl. Gilt nur für diesen Tag in dieser Woche (`Week.short`, Schlüssel = Slot-ID), der Plan zeigt "Kurz-Modus: 30 Min." am Tag.
 - **2-Tage-Notfallwoche**: zwei Ganzkörper-Einheiten nur mit Prio-3/2-Slots (Urlaub, Krankheit). Erhält den Zyklus statt ihn zu brechen.
 
 ### 3.5 Übungsbibliothek
@@ -131,7 +131,7 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 |---|---|---|
 | **Onboarding** (5 Schritte, je ein Screen) | Ziel per Pixel-Glyph → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen je Tag | gibt es in Peach nicht |
 | **Heute** (Startscreen) | Wochenwahl mit Pfeilen wie im Plan ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
-| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
+| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Oben "Zeit heute" mit geschätzter Dauer und Kurz-Modus (Normal / 45 / 30 Min.). Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
 | **Plan** | Oben "Dein Plan: Ziel · Stufe · Tage" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
 | **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage) mit "Plan neu einrichten", Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
@@ -160,7 +160,7 @@ Angepasst:
 
 **Phase 2 (Einsteiger-Polish + Differenzierung):**
 - **Form-Tracker:** Umfänge (Schulter, Brust, Taille, Hüfte, Po, Oberschenkel, Arm) monatlich eintragen; die App zeigt die **Kennzahl des gewählten Ziels** (V-Form: Schulter/Taille, Sanduhr: Hüfte/Taille, Apfel: Po/Taille) als Verlauf. Passt exakt zur Positionierung, 1 Screen.
-- Kurz-Modus, 2-Tage-Notfallwoche, Feinjustierungs-Schieber, Plateau-Tausch, Gym-Wechsel-Modus
+- Kurz-Modus ✅ (23.10.), 2-Tage-Notfallwoche, Feinjustierungs-Schieber, Plateau-Tausch, Gym-Wechsel-Modus
 - Übungs-Piktogramme/Illustrationen, "Warum diese Übung?"-Satz
 - Englisch komplett, Hantelscheiben-Rechner, Körpergewicht-Log, Plan als PDF/Bild teilen
 - Dark Mode
@@ -305,7 +305,7 @@ Fakten, die den Plan beeinflussen:
 7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup
 8. 🟡 PWA-Feinschliff: Icon ✅, Manifest `display: standalone` ✅ (anders als Peach, weil der Speicher in der App lebt), Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅, Installierbarkeit (Chrome) und Lighthouse in CI ✅. Offen: Nutzertest mit 3–5 Personen (später auch die 12 Play-Tester)
 
-**Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
+**Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus ✅, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
 
 **Phase 3 – Store** (Capacitor, Icons/Splash, Datenschutzseite, TestFlight + Play Closed Test, Release)
 
@@ -342,6 +342,7 @@ Fakten, die den Plan beeinflussen:
 18. **Wochenwahl auch auf "Heute"**, gleiche Pfeile und gleiches Raster wie im Plan (23.10.)
 19. **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.)
 20. **Dark Mode kommt später** (Phase 2) als eigener Token-Satz; bis dahin nur hell (23.10.)
+21. **Kurz-Modus:** bei jeder Übung weniger Sätze statt ganze Übungen weglassen; Zeit wählen (30 oder 45 Min.); Schalter oben in der Tagesansicht; weggefallene Sätze ausgegraut, trotzdem eintragbar (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

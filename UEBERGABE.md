@@ -24,6 +24,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
 | Namen | **Muskelgruppen behalten ihre Namen** (Glute Max, Glute & Quad …). Tage heißen nach Körperbereich („Tag A – Po & Beine“), darunter die Belastung („Schwere Grundübungen“) |
 | Training | Übungen **in der Tagesliste aufklappen**. Ab Woche 2 Vorwoche je Satz, Steigerungshinweis, Bewertung (assistiert: Weniger/Mehr Hilfe) |
+| Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / 45 / 30 Min. **Jede Übung bekommt weniger Sätze** (keine fällt weg), weggefallene Sätze ausgegraut und freiwillig, gilt nur für den Tag dieser Woche |
 | Pausentimer | **Nur per Knopf** "Pause starten" in der aufgeklappten Übung, startet nie von selbst |
 | Aufbau | Wochenwahl mit Pfeilen auf **Heute und Plan** (gleiches Raster). **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung vorausgefüllt erneut, Verlauf bleibt |
 
@@ -37,7 +38,7 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 | Generator | `src/core/generator/` | `buildPlan` (Vorlage + Stufe → Tage), `validatePlan` (alle Grenzen und Wochenziele), `weeklyMuscles` |
 | Progression | `src/core/progression/` | `weight`, `compare`, `entries`, `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Bewertung, Steigerungshinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, "Nur diese Woche"), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (nächster Tag, Dauer). Peach-Szenarien in `scenarios.test.ts` |
 | Speicher | `src/storage/` | Dexie (IndexedDB) hinter einer Schnittstelle, Backup (Export/Import mit Prüfung), Sicherheitskopie vor Import, Migrations-Gerüst (Schema 1) |
-| Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Wochenwahl (`components/WeekNav`, Heute und Plan), Onboarding (5 Schritte, auch als "Plan neu einrichten"), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Profilzeile, Woche, Tage je Woche), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` |
+| Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Wochenwahl (`components/WeekNav`, Heute und Plan), Kurz-Modus (Tagesansicht, Kern `core/progression/short.ts`), Onboarding (5 Schritte, auch als "Plan neu einrichten"), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Profilzeile, Woche, Tage je Woche), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` |
 | Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 15 Pläne (Einsteiger ohne 5 Tage), prüft Grenzen, Wochenziele und die Bibliothek, druckt Pläne und Wochenvolumen je Muskel |
 
 **Selbsttest am 23.10.** (Browser-Durchläufe aller Pläne und Abläufe, unabhängiger Code-Review). Behoben:
@@ -51,9 +52,9 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 - Zeilen mit gewählter Übung, aber ohne Werte, behielten nach dem Umstellen der Wochenart die alten Sätze.
 - Kleineres: Backup-Download auf iOS, Gewichtsschritte nach Import, Prüfung der Backup-Werte, Speicherfehler-Hinweis, Löschen eigener Übungen.
 
-Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. ACSM-Abgleich: Apfel Glute Med 8 → 10, Sanduhr Schultern bei 4 Tagen 9 → 10, V-Form Brust 8 → 10 (dritte Brustübung, Flys 2 × 12–15, am Rücken-Tag; Tagesname dort „Oberkörper“ bzw. „Rücken & Brust“). Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Dauer-Schätzung rechnet jetzt Wechsel und Aufwärmen mit (120 s je Übung). ACSM-Abgleich: Apfel Glute Med 8 → 10, Sanduhr Schultern bei 4 Tagen 9 → 10, V-Form Brust 8 → 10 (dritte Brustübung, Flys 2 × 12–15, am Rücken-Tag; Tagesname dort „Oberkörper“ bzw. „Rücken & Brust“). Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
-**Tests:** 127 Vitest + 15 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Tests:** 132 Vitest + 16 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Kurz-Modus, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
@@ -61,14 +62,14 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - **Ziel- oder Stufenwechsel mitten im Zyklus**: Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID). Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
 - **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
 - **Wissenschaft**: ACSM Position Stand 2026 eingearbeitet, aber nur über Abstract, Pressemitteilung und Sekundärquellen (Volltext aus der Sandbox gesperrt). Die Tabelle mit den genauen Empfehlungen bei Gelegenheit im Volltext prüfen.
-- **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
+- **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
 ## 4. Nächste Schritte
 
-1. Kurz-Modus (Nicoles Wahl 23.10.), vorher Fragen an Nicole.
-2. Phase 2 danach: Plateau-Tausch, Form-Tracker.
-3. Nutzertest, wenn Nicole Zeit hat.
+1. Phase 2: Plateau-Tausch oder Form-Tracker (vorher Nicole fragen, welches zuerst).
+2. Nutzertest vorbereiten und die 12 Play-Tester sammeln.
+3. Store-Vorbereitung (Capacitor, Datenschutzseite, Icon).
 
 ## 5. Verbindliche Details
 

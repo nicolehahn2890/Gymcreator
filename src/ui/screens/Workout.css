@@ -287,3 +287,25 @@
   margin-bottom: 12px;
   font-size: 15px;
 }
+
+/* Kurz-Modus */
+.day-time {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.day-time-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.day-time-note {
+  font-size: var(--fs-small);
+}
+
+.set-optional {
+  opacity: 0.45;
+}
