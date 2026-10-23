@@ -210,3 +210,34 @@ export interface Week {
   week: number;
   days: DaysPerWeek;
 }
+
+export interface Profile {
+  goal: GoalId;
+  level: Level;
+  /** Standard-Wochenart; je Woche umstellbar (Week). */
+  days: DaysPerWeek;
+  /** Vorhandene Ausstattung ("Mein Gym"). */
+  equipment: string[];
+  /** Eigene Schrittweiten je Ausstattung; fehlt ein Eintrag, gilt data/exercises.json increments. */
+  increments: Record<string, number | null>;
+  lang: 'de' | 'en';
+  /** ISO-Datum der Einrichtung. */
+  createdAt: string;
+}
+
+/** Notiz und Geraete-Einstellung je Uebung, gilt fuer alle Wochen und Zyklen (Peach tip__ex__ / set__ex__). */
+export interface ExerciseNote {
+  exerciseId: string;
+  note: string;
+  setting: string;
+}
+
+/** Eigene Uebung; laeuft in Progression und Verlauf wie jede andere, ohne Stern und Tipp. */
+export interface CustomExercise {
+  /** Beginnt mit "custom_". */
+  id: string;
+  name: string;
+  category: CategoryId;
+  equipment: string[];
+  note: string;
+}
