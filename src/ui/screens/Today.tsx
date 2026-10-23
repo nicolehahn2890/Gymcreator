@@ -1,0 +1,111 @@
+import { planData } from '../../core/model/data';
+import { dayProgress, estimateMinutes, followingWeek, nextDayIndex } from '../../core/progression/position';
+import { weekStats } from '../../core/progression/state';
+import { fmt, shortDayName, text } from '../../i18n';
+import { DUMBBELL } from '../brand/pixels';
+import { PixelGlyph } from '../brand/PixelGlyph';
+import { Check } from '../components/Check';
+import { planFor, rowContext, type AppModel } from '../state/model';
+import './Today.css';
+
+interface Props {
+  model: AppModel;
+  cycle: number;
+  week: number;
+  onOpenDay: (day: number) => void;
+  onGoToWeek: (cycle: number, week: number) => void;
+}
+
+const standalone = () =>
+  window.matchMedia?.('(display-mode: standalone)').matches || (navigator as Navigator & { standalone?: boolean }).standalone === true;
+
+export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
+  const t = text.today;
+  const rules = planData.goals.progression;
+  const plan = planFor(model, cycle, week);
+  const ctx = rowContext(model, cycle, week);
+  const progress = plan.dayPlans.map((d) => dayProgress(ctx, d, { cycle, week }));
+  const next = nextDayIndex(progress);
+  const nextDay = next === null ? null : plan.dayPlans[next];
+  const stats = weekStats(ctx, plan.dayPlans, { cycle, week });
+  const trained = progress.filter((p) => p.started).length;
+  const following = followingWeek(rules, cycle, week);
+
+  return (
+    <main className="screen today">
+      <header className="today-head">
+        <span className="brand-badge-small">
+          <PixelGlyph pattern={DUMBBELL} size={28} />
+        </span>
+        <div>
+          <p className="wordmark-small">{text.app.name}</p>
+          <p className="muted">{fmt(t.weekLine, { cycle, week, weeks: rules.cycleWeeks })}</p>
+        </div>
+      </header>
+
+      {week < rules.compareFromWeek && <p className="note today-note">{t.firstWeek}</p>}
+      {week === rules.cycleWeeks && <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>}
+
+      {nextDay ? (
+        <section className="card next-day" style={{ background: `var(--day-${nextDay.letter.toLowerCase()})` }} aria-labelledby="next-day-title">
+          <p className="next-label">{t.nextUp}</p>
+          <h1 id="next-day-title" className="next-title">
+            {nextDay.name}
+          </h1>
+          <p className="next-focus">{nextDay.focus}</p>
+          <p className="next-meta">{fmt(t.meta, { n: nextDay.rows.length, min: estimateMinutes(nextDay, planData.goals.timing) })}</p>
+          <button type="button" className="btn btn-block" onClick={() => onOpenDay(nextDay.index)}>
+            {t.start}
+          </button>
+        </section>
+      ) : (
+        <section className="card next-day" aria-labelledby="week-done-title">
+          <h1 id="week-done-title" className="next-title">
+            {fmt(t.weekDone, { week })}
+          </h1>
+          <p className="next-focus">{t.weekDoneText}</p>
+          <button type="button" className="btn btn-primary btn-block" onClick={() => onGoToWeek(following.cycle, following.week)}>
+            {t.nextWeek}
+          </button>
+        </section>
+      )}
+
+      <p className="today-stats">
+        {fmt(t.daysDone, { done: trained, total: plan.dayPlans.length })}
+        {stats.total > 0 && (
+          <>
+            <br />
+            {fmt(t.balance, { improved: stats.improved, total: stats.total })}
+          </>
+        )}
+      </p>
+
+      <h2 className="section-title">{t.allDays}</h2>
+      <ul className="day-list">
+        {plan.dayPlans.map((day, i) => {
+          const p = progress[i];
+          return (
+            <li key={day.index}>
+              <button type="button" className="day-row" onClick={() => onOpenDay(day.index)}>
+                <span className="day-letter" style={{ background: `var(--day-${day.letter.toLowerCase()})` }}>
+                  {day.letter}
+                </span>
+                <span className="day-row-name">{shortDayName(day.name)}</span>
+                <span className="day-row-count">
+                  {p?.done ?? 0}/{p?.total ?? 0}
+                </span>
+                {p && p.total > 0 && p.done === p.total && (
+                  <span className="done-dot">
+                    <Check />
+                  </span>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      {!standalone() && <p className="note today-note">{t.install}</p>}
+    </main>
+  );
+}

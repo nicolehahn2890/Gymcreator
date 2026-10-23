@@ -7,13 +7,14 @@ import '@fontsource/space-grotesk/latin-600.css';
 import '@fontsource/space-grotesk/latin-700.css';
 import './ui/theme/tokens.css';
 import './ui/theme/base.css';
-import { Home } from './ui/screens/Home';
+import './ui/theme/ui.css';
+import { App } from './ui/App';
 
 const root = document.getElementById('root');
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <Home />
+      <App />
     </StrictMode>,
   );
 }

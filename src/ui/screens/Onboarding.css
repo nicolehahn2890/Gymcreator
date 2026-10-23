@@ -1,0 +1,69 @@
+.onboarding {
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+
+.onboarding .goal-glyph {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+  border: var(--bw) solid var(--ink);
+  border-radius: var(--r-lg);
+}
+
+.choice-compact {
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+.onboarding-actions {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px var(--gutter) max(12px, env(safe-area-inset-bottom));
+  background: var(--cream);
+  border-top: var(--bw) solid var(--ink);
+}
+
+.onboarding-actions .btn {
+  flex: 1;
+  max-width: 240px;
+}
+
+.day-preview {
+  padding: 14px;
+}
+
+.day-preview-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.day-preview-list {
+  list-style: none;
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.day-preview-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.day-preview-sets {
+  flex-shrink: 0;
+  font-weight: 700;
+}

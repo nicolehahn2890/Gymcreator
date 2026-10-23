@@ -76,12 +76,20 @@ export interface ProgressionRules {
   autoExtraSets: number;
 }
 
+export interface Timing {
+  /** Geschaetzte Dauer eines Satzes in Sekunden (ohne Pause). */
+  setSeconds: number;
+  /** Pausenvorgabe je Wdh.-Bereich in Sekunden. */
+  restSeconds: Record<RepRange, number>;
+}
+
 export interface GoalsData {
   schema: 1;
   ranges: RepRange[];
   limits: Limits;
   levels: Record<Level, LevelRules>;
   progression: ProgressionRules;
+  timing: Timing;
   categories: Record<CategoryId, CategoryDef>;
   goals: Record<GoalId, GoalDef>;
 }

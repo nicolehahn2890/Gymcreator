@@ -1,0 +1,71 @@
+.settings-label {
+  margin: 16px 0 8px;
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 6px 12px;
+  background: var(--field-bg);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chip[aria-checked='true'] {
+  background: var(--accent);
+  box-shadow: var(--sh-xs);
+}
+
+.increments {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.increment .input {
+  font-weight: 700;
+}
+
+.custom-list {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.backup-card {
+  background: var(--paper);
+}
+
+.backup-actions {
+  flex-wrap: wrap;
+}
+
+.backup-status {
+  min-height: 20px;
+  font-size: var(--fs-small);
+  font-weight: 700;
+}
+
+.safety {
+  padding-top: 10px;
+  border-top: 2px dashed var(--ink);
+}
+
+.version-line {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-dim);
+}

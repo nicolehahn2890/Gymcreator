@@ -1,0 +1,113 @@
+.today-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.brand-badge-small {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  border: var(--bw) solid var(--ink);
+  border-radius: 50%;
+  box-shadow: var(--sh-xs);
+}
+
+.wordmark-small {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.today-note {
+  margin-bottom: 14px;
+}
+
+.next-day {
+  display: grid;
+  gap: 6px;
+  padding: 18px;
+}
+
+.next-label {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.next-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}
+
+.next-focus {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.next-meta {
+  margin-bottom: 8px;
+  font-size: 15px;
+}
+
+.today-stats {
+  margin-top: 14px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.day-list {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.day-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--ink);
+  border: var(--bw) solid var(--ink);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-xs);
+  text-align: left;
+}
+
+.day-letter {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-size: 15px;
+}
+
+.day-row-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.day-row-count {
+  font-weight: 700;
+  font-size: var(--fs-small);
+}

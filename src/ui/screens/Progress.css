@@ -1,0 +1,62 @@
+.progress-balance {
+  margin: 12px 0;
+}
+
+.progress-day {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.progress-day-label {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: -0.3px;
+  padding: 4px 12px;
+}
+
+.progress-card {
+  padding: 12px 14px;
+  box-shadow: var(--sh-xs);
+}
+
+.progress-name {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 48px;
+  margin-top: 8px;
+}
+
+.bar {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--bar-empty);
+  border: 2px solid var(--ink);
+  border-radius: var(--r-pill);
+}
+
+.bar-fill {
+  width: 100%;
+  background: var(--accent);
+  border-radius: var(--r-pill);
+}
+
+.bar-fill.current {
+  background: var(--orange);
+}
+
+.bar-fill.other {
+  background: var(--text-ghost);
+}
