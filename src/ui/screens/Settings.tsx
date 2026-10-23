@@ -4,6 +4,7 @@ import { DAY_COUNTS, GOAL_IDS, type Profile } from '../../core/model/types';
 import { fmt, num, text } from '../../i18n';
 import { createBackup, parseBackup, serializeBackup } from '../../storage/backup';
 import type { StoredData } from '../../storage/interface';
+import { REX } from '../brand/rex';
 import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { Sheet } from '../components/Sheet';
@@ -90,11 +91,12 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
           <button
             key={id}
             type="button"
-            className="btn btn-small"
+            className="btn btn-small goal-option"
             aria-pressed={profile.goal === id}
             style={{ '--accent': `var(--${goals[id].accent})` } as CSSProperties}
             onClick={() => save({ goal: id })}
           >
+            <img src={REX[id].icon} alt="" width={21} height={32} />
             {goals[id].label.de}
           </button>
         ))}
@@ -171,7 +173,7 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
       )}
 
       <h2 className="section-title">{t.backup}</h2>
-      <div className="card stack backup-card">
+      <div className="card stack">
         <p>{t.backupText}</p>
         <div className="row backup-actions">
           <button type="button" className="btn btn-primary" onClick={() => void copy()}>

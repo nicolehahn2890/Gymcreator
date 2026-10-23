@@ -10,7 +10,7 @@ import { DUMBBELL, pixelRuns } from '../src/ui/brand/pixels.ts';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUB = path.join(ROOT, 'public');
-// Werte wie in src/ui/theme/tokens.css (--ink, --cream, --yellow)
+// Farben der Marke vor Rexy; Icon und Favicon werden mit der Store-Vorbereitung neu gestaltet
 const INK = '#181016';
 const CREAM = '#FBF3E7';
 const YELLOW = '#F5CB44';

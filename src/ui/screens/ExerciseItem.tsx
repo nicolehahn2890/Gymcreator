@@ -9,6 +9,7 @@ import { rowState, type RowContext } from '../../core/progression/state';
 import { fmt, mmss, num, range, text } from '../../i18n';
 import { Check } from '../components/Check';
 import { ExercisePicker, StarIcon } from '../components/ExercisePicker';
+import { PlusMinus } from '../components/PlusMinus';
 import { Sheet } from '../components/Sheet';
 import { StatusPill } from '../components/StatusPill';
 import { addShortSet, entryForEdit, saveEntry, withExtraSets, withSetValue, type Position } from '../state/actions';
@@ -113,28 +114,28 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
   return (
     <li className={`exercise-item${open ? ' open' : ''}${st.skipped ? ' skipped' : ''}`} style={{ '--cat': `var(--cat-${row.category})` } as CSSProperties}>
       <button ref={headRef} type="button" className="exercise-row" aria-expanded={open} aria-controls={panelId} onClick={onToggle}>
-        <span className="exercise-row-main">
+        <span className="exercise-row-top">
           <span className="exercise-row-cat">{slotLabel(row)}</span>
-          <span className={`exercise-row-name${st.exerciseId ? '' : ' empty'}`}>
-            {st.exerciseId ? exerciseName(model, st.exerciseId) : t.chooseExercise}
-            {ex?.stars.includes(goal) && (
-              <span className="star" aria-label={t.starred}>
-                <StarIcon />
+          <span className="exercise-row-side">
+            {st.once && <span className="pill pill-dashed">{t.once}</span>}
+            {st.status && <StatusPill status={st.status} assisted={st.assisted} timed={timed} />}
+            {st.done && (
+              <span className="done-dot" aria-label={t.done}>
+                <Check />
               </span>
             )}
+            <Chevron open={open} />
           </span>
-          <span className="muted">{setsText(model, st)}</span>
         </span>
-        <span className="exercise-row-side">
-          {st.once && <span className="pill pill-dashed">{t.once}</span>}
-          {st.status && <StatusPill status={st.status} assisted={st.assisted} timed={timed} />}
-          {st.done && (
-            <span className="done-dot" aria-label={t.done}>
-              <Check />
+        <span className={`exercise-row-name${st.exerciseId ? '' : ' empty'}`}>
+          {st.exerciseId ? exerciseName(model, st.exerciseId) : t.chooseExercise}
+          {ex?.stars.includes(goal) && (
+            <span className="star" aria-label={t.starred}>
+              <StarIcon />
             </span>
           )}
-          <Chevron open={open} />
         </span>
+        <span className="muted">{setsText(model, st)}</span>
       </button>
 
       {open && (
@@ -204,11 +205,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
               </div>
 
               <div className="row set-actions">
-                <button type="button" className="btn btn-small" disabled={!canAdd} onClick={() => changeSets(1)}>
-                  {t.addSet}
+                <button type="button" className="btn btn-icon btn-add" aria-label={t.addSet} disabled={!canAdd} onClick={() => changeSets(1)}>
+                  <PlusMinus sign="plus" />
                 </button>
-                <button type="button" className="btn btn-small" disabled={st.extraSets === 0} onClick={() => changeSets(-1)}>
-                  {t.removeSet}
+                <button type="button" className="btn btn-icon" aria-label={t.removeSet} disabled={st.extraSets === 0} onClick={() => changeSets(-1)}>
+                  <PlusMinus sign="minus" />
                 </button>
                 {restSeconds > 0 && (
                   <button type="button" className="btn btn-small" onClick={() => onRest(restUntil(restSeconds))}>

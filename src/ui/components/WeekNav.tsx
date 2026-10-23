@@ -5,6 +5,7 @@ import { followingWeek } from '../../core/progression/position';
 import { fmt, text } from '../../i18n';
 import type { Position } from '../state/actions';
 import type { AppModel } from '../state/model';
+import { Arrow } from './Arrow';
 import { Sheet } from './Sheet';
 
 interface Props {
@@ -28,7 +29,7 @@ export function WeekNav({ model, pos, onGoToWeek }: Props) {
         <button type="button" className="btn btn-icon" aria-label={t.prevWeek} disabled={!prev} onClick={() => prev && onGoToWeek(prev.cycle, prev.week)}>
           <Arrow dir="left" />
         </button>
-        <button type="button" className="btn week-label" onClick={() => setPicker(true)}>
+        <button type="button" className="week-label" onClick={() => setPicker(true)}>
           {fmt(text.today.weekLine, { cycle: pos.cycle, week: pos.week, weeks: rules.cycleWeeks })}
         </button>
         <button type="button" className="btn btn-icon" aria-label={t.nextWeek} onClick={() => onGoToWeek(next.cycle, next.week)}>
@@ -61,13 +62,5 @@ export function WeekNav({ model, pos, onGoToWeek }: Props) {
         </Sheet>
       )}
     </>
-  );
-}
-
-function Arrow({ dir }: { dir: 'left' | 'right' }) {
-  return (
-    <svg width="18" height="18" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d={dir === 'left' ? 'M10 3L5 8l5 5' : 'M6 3l5 5-5 5'} fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
   );
 }

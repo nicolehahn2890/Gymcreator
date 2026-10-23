@@ -134,26 +134,26 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 | **Onboarding** (4 Schritte, je ein Screen) | Ziel per Pixel-Glyph → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen, Übungszahl und Dauer je Tag | gibt es in Peach nicht |
 | **Heute** (Startscreen) | Wochenwahl mit Pfeilen wie im Plan ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
 | **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Oben "Zeit heute" mit geschätzter Dauer und Kurz-Modus (Normal / 30–45 Min.). Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
-| **Plan** | Oben "Dein Plan: Ziel · Tage pro Woche" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen (Halteübungen als "Sätze halten") | wie Peach, aber ruhiger |
+| **Plan** | Oben das Ziel (Rex und Ziel-Pille) und "Tage pro Woche" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen (Halteübungen als "Sätze halten") | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
 | **Einstellungen** | Profil (Ziel, Trainingstage) mit "Plan neu einrichten", Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
 - **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
-- **Eine Akzentfarbe pro Screen** (Tagesfarbe im Training, Zielfarbe sonst). Muskelgruppe als kleine Zeile mit Farbpunkt über dem Übungsnamen.
-- **Max. zwei Schriftgrößen pro Karte**, Body 16 px, Display nur für Zahlen und Titel.
+- **Eine Akzentfarbe pro Screen** (Tagesfarbe im Training, Zielfarbe sonst). Muskelgruppe als farbiges Badge über dem Übungsnamen.
+- **Max. zwei Schriftgrößen pro Karte**, Schriftgrößen aus der Rexy-Skala (Titel 34, Abschnitt 22, Text 16 / 14, Meta 12 px), Display nur für Titel.
 - **Status als Text + Farbe**, nie nur Farbe (a11y).
 - **Progressive Disclosure:** Vorwert-Herkunft, Tipp, Notiz, Einstellung sind eingeklappt; Badge klein, erklärender Text nur in der aufgeklappten Übung.
 - Peach-Dichte bleibt als **Option** denkbar ("Kompakt-Ansicht" im Training, Phase 2) – nicht im MVP.
 
 ### 3.8 Design-System
 
-Übernommen aus Peach: Neobrutalism, vorerst nur hell (Dark Mode siehe unten), alle Tokens in einem `:root`, Ink `#181016`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Archivo Black (Display, Uppercase) + Space Grotesk (Body 400–700), Fokus-Ring, Disabled-Stil, Press-Interaktion, 16-px-Inputs, Tagesfarben A Peach / B Pink / C Lime / D Sky (+ E Yellow für 5 Tage), Kategorie-Farben CC, Fortschrittsfarben.
+Grundlage ist das Design System **Rexy** (Neobrutalism, übernommen am 23.10., Abschnitt 7 Nr. 25): vorerst nur hell (Dark Mode siehe unten), alle Tokens in einem `:root`, Ink `#181016`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Archivo Black (Display, Uppercase) + Space Grotesk (400–700), Fokus-Ring in Ink, Disabled mit halber Deckkraft, Press-Interaktion, 16-px-Inputs.
 
-Angepasst:
-- **Kein Pfirsich.** Marke: Pixel-Art-Wortmarke "GC" oder eine Pixel-Hantel im Cream-Kreis mit Ink-Rahmen (gleiche Bauweise wie das Peach-Icon). Die drei Ziele bekommen je ein abstraktes Pixel-Glyph (V, Sanduhr, Apfel) für Onboarding und Profil.
-- **Zielfarbe als Akzent:** V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Apfel Pink `#F18FB6` (Feld `accent` in `data/goals.json`, leicht änderbar).
-- **Hintergrund:** neutrale Cream-Basis `#FBF3E7` statt Lavendel für alle (Lavendel bleibt Sanduhr-Akzent). Entschieden, Abschnitt 7.
+- **Palette:** Pink `#F6409F` (Haut der Rexe), Cyan `#22E3F0`, Neongelb `#FAF22E`, dazu Lime und Violett. Tagesfarben A Pink / B Cyan / C Gelb / D Lime / E Violett. Kategorie- und Fortschrittsfarben aus Rexy.
+- **Kein Pfirsich.** Marke: Wortmarke als gelbes Schild mit pinkem Versatz. Die drei Ziele haben je einen Rex: in der Zielwahl das Motiv im Ink-Rahmen, in Plan und Einstellungen freigestellt ohne Hintergrund.
+- **Zielfarbe als Akzent:** V-Form Cyan, Sanduhr Gelb, Apfel Pink (Feld `accent` in `data/goals.json`, leicht änderbar).
+- **Hintergrund:** Cream `#FDF9E9` für alle.
 - **Dark Mode:** nicht im MVP (wie Peach), aber fest für später eingeplant (Entscheidung 23.10.). Weil alle Farben Tokens sind, kommt er als eigener Token-Satz – Store-Nutzer fragen danach.
 
 ### 3.9 Weitere Funktionen – priorisiert
@@ -329,7 +329,7 @@ Fakten, die den Plan beeinflussen:
 
 1. **Stack:** React + Vite + TypeScript als PWA, später Capacitor + Codemagic (22.10.2026)
 2. **Plan-Erzeugung:** Generator aus `data/` (Wochenziele je Muskel + Tagesvorlagen) als einzige Wissensquelle (22.10., Volumen-Modell neu am 23.10.2026)
-3. **Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Pink) (22.10.)
+3. ~~**Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Pink)~~ (22.10.), abgelöst durch 25
 4. **MVP-Umfang:** Onboarding, Plan, Training, Progression, flexible Woche, eigene Übungen, Backup (22.10.)
 5. **Branch:** alles direkt auf `main` (22.10.)
 6. **Archetypen:** V-Form, Sanduhr, Apfel; "Peach" erscheint nirgends in der Oberfläche (22.10.)
@@ -351,6 +351,7 @@ Fakten, die den Plan beeinflussen:
 22. **Jede normale Einheit dauert 60–90 Minuten** (23.10.)
 23. **Keine feste Grenze für Sätze oder Übungen je Einheit** (23.10.): Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt. Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit
 24. **Keine Erfahrungsstufen** (23.10.): ein Plan je Ziel und Tagesanzahl für alle, ohne Hinweis auf eine Zielgruppe
+25. **Design System Rexy** (23.10.): Cream `#FDF9E9`, Zielfarben V-Form Cyan / Sanduhr Gelb / Apfel Pink, Wortmarke im Kopf, Rexe in Zielwahl, Plan und Einstellungen (dort freigestellt), Stand-Pillen einheitlich in der Tagesfarbe, aktuelle Woche im Fortschritt Cyan (bei V-Form Pink)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 
@@ -358,4 +359,4 @@ Fakten, die den Plan beeinflussen:
 - Kein Account, keine Cloud, keine Datenerhebung (DSGVO-minimal), Backup lokal
 - 12-Wochen-Zyklen, kein Deload, Woche 1 ohne Vergleich – wie Peach; der nächste Zyklus startet 5–10 % leichter
 - Peach bleibt unverändert deine private App; Gymcreator ist ein eigenes Produkt mit eigenem Speicher
-- Design-Kür (Glyphen, Icon) kann Florian später veredeln; im MVP mache ich Pixel-Art-Platzhalter in der Peach-Bauweise
+- Das App-Icon (noch Pixel-Hantel) kann Florian mit der Store-Vorbereitung neu gestalten, passend zu Rexy

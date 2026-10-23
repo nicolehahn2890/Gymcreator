@@ -1,29 +1,27 @@
-/* Gymcreator Design-Tokens. Neobrutalism, nur hell. Einzige Stelle mit Farbwerten:
-   Komponenten nutzen ausschliesslich var(--...). Kategorie-Farben muessen mit data/goals.json
+/* Gymcreator Design-Tokens nach dem Design System Rexy (Neobrutalism), nur hell. Einzige Stelle mit
+   Farbwerten: Komponenten nutzen ausschliesslich var(--...). Kategorie-Farben muessen mit data/goals.json
    (categories.*.color) uebereinstimmen, geprueft in src/ui/theme/tokens.test.ts. */
 :root {
   color-scheme: light;
 
-  /* Ink: Rahmen, harte Schatten, Text auf hellen Flaechen */
+  /* Ink: Rahmen, harte Schatten, Text auf allen Flaechen */
   --ink: #181016;
   --on-accent: #181016;
 
-  /* Helle Akzentpalette */
-  --orange: #F4A45E;
-  --pink: #F18FB6;
-  --lilac: #B49DF2;
-  --lime: #B6DD57;
-  --sky: #8CCBE8;
-  --yellow: #F5CB44;
-  --cream: #FBF3E7;
-  --paper: #FFFDF7;
+  /* Rexy-Palette: Pink (Haut der Rexe), Cyan (Motiv-Hintergrund), Neongelb (Schilder); Lime und Violett ergaenzen */
+  --pink: #F6409F;
+  --cyan: #22E3F0;
+  --yellow: #FAF22E;
+  --lime: #B5F23D;
+  --violet: #B98BFF;
+  --cream: #FDF9E9;
   --white: #FFFFFF;
 
   /* Status */
-  --gold: #F5B53C;
-  --green: #6FC36A;
-  --blue: #5EA8E0;
-  --red: #EC6A6A;
+  --gold: #FFC23D;
+  --green: #4FD06A;
+  --blue: #4D9DF5;
+  --red: #FF5C5C;
   --scrim: rgba(24, 16, 22, 0.35);
 
   /* Seite */
@@ -33,6 +31,9 @@
 
   /* Zielfarbe (Standard ohne Ziel: Gelb; je Ziel unten ueberschrieben) */
   --accent: var(--yellow);
+
+  /* Aktuelle Woche im Fortschritt, muss sich vom Akzent abheben (unten fuer V-Form) */
+  --bar-current: var(--cyan);
 
   /* Textstufen */
   --text: #181016;
@@ -46,35 +47,34 @@
   --surface: var(--cream);
   --chip-bg: var(--cream);
   --field-bg: var(--white);
-  --input-bg: var(--white);
   --input-border: var(--ink);
   --border: var(--ink);
   --bar-empty: rgba(24, 16, 22, 0.10);
   --ring: var(--ink);
-  --focus: var(--orange);
+  --focus: var(--ink);
 
   /* Tagesfarben A-E */
-  --day-a: var(--orange);
-  --day-b: var(--pink);
-  --day-c: var(--lime);
-  --day-d: var(--sky);
-  --day-e: var(--yellow);
+  --day-a: var(--pink);
+  --day-b: var(--cyan);
+  --day-c: var(--yellow);
+  --day-d: var(--lime);
+  --day-e: var(--violet);
 
-  /* Kategorie-Farben (Muskelgruppen, IDs wie data/goals.json) */
-  --cat-gmax: #EE8FB4;
-  --cat-gmed: #B49DF2;
-  --cat-gquad: #E8B86A;
-  --cat-ghams: #A7D98C;
-  --cat-hams: #D7A0E8;
-  --cat-quads: #F9B98A;
-  --cat-add: #7FD1C1;
-  --cat-back: #84C3E0;
-  --cat-shoulders: #C2DB7E;
-  --cat-chest: #F0A0A0;
-  --cat-biceps: #E6C57E;
-  --cat-triceps: #93B6E0;
-  --cat-calves: #C9C2B8;
-  --cat-abs: #D6D080;
+  /* Kategorie-Farben (Muskelgruppen, IDs wie data/goals.json), alle mindestens 8:1 mit Ink */
+  --cat-gmax: #FA86B6;
+  --cat-gmed: #B99FFA;
+  --cat-gquad: #F4A437;
+  --cat-ghams: #84DE70;
+  --cat-hams: #E29CF2;
+  --cat-quads: #FDA57C;
+  --cat-add: #43D9BE;
+  --cat-back: #5DCDFA;
+  --cat-shoulders: #BEE349;
+  --cat-chest: #FB9797;
+  --cat-biceps: #F7D979;
+  --cat-triceps: #94B8F8;
+  --cat-calves: #C9BBA9;
+  --cat-abs: #DED754;
 
   /* Fortschritt: gesteigert / mehr Wdh. / gleich / weniger */
   --prog-up: var(--green);
@@ -82,11 +82,19 @@
   --prog-same: var(--yellow);
   --prog-down: var(--red);
 
-  /* Schriften */
+  /* Schriften: Archivo Black (ein Schnitt, immer Grossbuchstaben) und Space Grotesk 400-700 */
   --font-display: 'Archivo Black', 'Space Grotesk', system-ui, sans-serif;
   --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --fs-body: 16px;
-  --fs-small: 13px;
+  --fs-display: 34px;
+  --fs-section: 22px;
+  --fs-logo: 20px;
+  --fs-card-title: 16px;
+  --fs-prose: 16px;
+  --fs-body: 14px;
+  --fs-label: 13px;
+  --fs-meta: 12px;
+  --fs-badge: 11px;
+  --fs-micro: 10px;
   --fs-input: 16px; /* nie kleiner: iOS zoomt sonst beim Fokus */
 
   /* Radien */
@@ -95,17 +103,20 @@
   --r-lg: 16px;
   --r-xl: 20px;
   --r-pill: 999px;
+  --r-round: 50%;
 
-  /* Rahmenbreite */
-  --bw: 2.5px;
+  /* Rahmenbreite (fett nur fuer die Wortmarke) */
+  --border-w: 2.5px;
+  --border-w-bold: 3px;
 
-  /* Harte Schatten (Ink, ohne Blur) */
+  /* Harte Schatten (Ink, ohne Blur); shadow-pop ist der pinke Druckversatz der Wortmarke */
   --sh-xs: 2px 2px 0 var(--ink);
   --sh-sm: 3px 3px 0 var(--ink);
   --sh-card: 4px 4px 0 var(--ink);
   --sh-header: 0 3px 0 var(--ink);
   --sh-drop: 5px 5px 0 var(--ink);
   --sh-press: 1px 1px 0 var(--ink);
+  --shadow-pop: 5px 5px 0 var(--pink);
 
   /* Bewegung */
   --ease: cubic-bezier(.2, .8, .2, 1);
@@ -116,11 +127,14 @@
   --dur-bar: 0.45s;
 
   /* Abstaende */
-  --gutter: 16px;
+  --content-pad: 16px;
   --content-max: 680px;
 }
 
 /* Zielakzent: data-goal am <html>, Werte aus data/goals.json (accent) */
-html[data-goal="vform"] { --accent: var(--sky); }
-html[data-goal="sanduhr"] { --accent: var(--lilac); }
+html[data-goal="vform"] { --accent: var(--cyan); }
+html[data-goal="sanduhr"] { --accent: var(--yellow); }
 html[data-goal="apfel"] { --accent: var(--pink); }
+
+/* V-Form hat Cyan als Akzent, die aktuelle Woche wird dort Pink */
+html[data-goal="vform"] { --bar-current: var(--pink); }

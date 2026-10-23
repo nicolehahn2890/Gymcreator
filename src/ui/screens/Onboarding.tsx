@@ -4,8 +4,7 @@ import { DAY_COUNTS, GOAL_IDS, type DaysPerWeek, type GoalId, type Profile } fro
 import { buildPlan } from '../../core/generator/buildPlan';
 import { estimateMinutes, totalSets } from '../../core/generator/validate';
 import { fmt, range, shortDayName, text } from '../../i18n';
-import { GOAL_GLYPHS } from '../brand/pixels';
-import { PixelGlyph } from '../brand/PixelGlyph';
+import { REX } from '../brand/rex';
 import { Check } from '../components/Check';
 import { slotLabel } from '../state/model';
 import './Onboarding.css';
@@ -46,23 +45,26 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
       {step === 0 && (
         <section className="stack">
           <h1 className="screen-title">{t.goalTitle}</h1>
-          <p className="muted">{t.goalHint}</p>
+          <p className="hint">{t.goalHint}</p>
           {GOAL_IDS.map((id) => (
             <button
               key={id}
               type="button"
-              className="choice"
+              className="choice goal-card"
               aria-pressed={goal === id}
               style={{ '--accent': `var(--${goals[id].accent})` } as CSSProperties}
               onClick={() => setGoal(id)}
             >
-              <span className="goal-glyph">
-                <PixelGlyph pattern={GOAL_GLYPHS[id]} size={36} />
-              </span>
-              <span>
+              <img className="goal-rex" src={REX[id].full} alt="" width={84} height={121} />
+              <span className="goal-card-text">
                 <span className="choice-title">{goals[id].label.de}</span>
                 <span className="choice-text">{goals[id].tagline.de}</span>
               </span>
+              {goal === id && (
+                <span className="done-dot" aria-hidden="true">
+                  <Check />
+                </span>
+              )}
             </button>
           ))}
         </section>
@@ -71,7 +73,7 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
       {step === 1 && goal && (
         <section className="stack">
           <h1 className="screen-title">{t.daysTitle}</h1>
-          <p className="muted">{t.daysHint}</p>
+          <p className="hint">{t.daysHint}</p>
           {DAY_COUNTS.map((n) => (
             <button key={n} type="button" className="choice" aria-pressed={days === n} onClick={() => setDays(n)}>
               <span>
@@ -86,7 +88,7 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
       {step === 2 && (
         <section className="stack">
           <h1 className="screen-title">{t.gymTitle}</h1>
-          <p className="muted">{t.gymHint}</p>
+          <p className="hint">{t.gymHint}</p>
           <div className="stack" role="group" aria-label={t.gymTitle}>
             {exerciseData.equipment
               .filter((id) => id !== ALWAYS)
@@ -139,24 +141,24 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
 
       <div className="onboarding-actions">
         {step > 0 ? (
-          <button type="button" className="btn" onClick={() => setStep(step - 1)}>
+          <button type="button" className="btn btn-large" onClick={() => setStep(step - 1)}>
             {text.common.back}
           </button>
         ) : (
           onCancel && (
-            <button type="button" className="btn" onClick={onCancel}>
+            <button type="button" className="btn btn-large" onClick={onCancel}>
               {text.common.cancel}
             </button>
           )
         )}
         {step < STEPS - 1 ? (
-          <button type="button" className="btn btn-primary" disabled={!ready} onClick={() => setStep(step + 1)}>
+          <button type="button" className="btn btn-primary btn-large" disabled={!ready} onClick={() => setStep(step + 1)}>
             {text.common.next}
           </button>
         ) : (
           <button
             type="button"
-            className="btn btn-primary"
+            className="btn btn-primary btn-large"
             disabled={!profile}
             onClick={() => profile && onDone(initial ? profile : { ...profile, createdAt: new Date().toISOString().slice(0, 10) })}
           >

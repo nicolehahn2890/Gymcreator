@@ -7,7 +7,7 @@ import pkg from './package.json' with { type: 'json' };
 // GitHub Pages: https://nicolehahn2890.github.io/Gymcreator/
 const BASE = '/Gymcreator/';
 // Cream wie --bg in src/ui/theme/tokens.css (Manifest kann keine CSS-Variablen lesen)
-const CREAM = '#FBF3E7';
+const CREAM = '#FDF9E9';
 
 export default defineConfig({
   base: BASE,
@@ -39,7 +39,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
       },
     }),
   ],

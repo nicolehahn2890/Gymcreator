@@ -84,10 +84,12 @@ export function ExercisePicker({ model, category, focus, goal, current, onPick, 
   );
 }
 
+/** Stern fuer die besten Uebungen zum Ziel: Ink-Stern auf goldener Scheibe mit Ink-Rahmen (Gold allein ist auf Cream zu blass). */
 export function StarIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-      <path d="M8 1.5l1.9 4.1 4.5.5-3.4 3 1 4.4L8 11.3l-4 2.2 1-4.4-3.4-3 4.5-.5z" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" strokeLinejoin="round" />
+    <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <circle cx="10" cy="10" r="9" fill="var(--gold)" stroke="var(--ink)" strokeWidth="2" />
+      <path d="M10 5.3l1.23 3.3 3.53.15-2.76 2.2.94 3.4L10 12.4l-2.94 1.95.94-3.4-2.76-2.2 3.53-.15z" fill="var(--ink)" />
     </svg>
   );
 }

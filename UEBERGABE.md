@@ -10,14 +10,14 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 |---|---|
 | Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`). Final. **"Peach" erscheint nirgends in der Oberfläche** (gekauftes Fremdprogramm) |
 | Stack | React 19 + Vite 8 + TypeScript 6 als PWA auf GitHub Pages; später Capacitor 8 + Codemagic |
-| Design | Neobrutalism, Cream-Basis, Zielfarbe als Akzent, kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2, Nicole 23.10.) |
+| Design | **Design System „Rexy“** (Neobrutalism, Nicole 23.10.): Rexy-Palette Pink / Cyan / Neongelb, dazu Lime und Violett; Cream-Basis `#FDF9E9`; Zielfarbe als Akzent (V-Form Cyan, Sanduhr Gelb, Apfel Pink); Tage A Pink, B Cyan, C Gelb, D Lime, E Violett; Stand-Pillen in der Tagesfarbe auf Ink, **auch bei Pink und Violett** (Nicole); aktuelle Woche im Fortschritt Cyan, bei V-Form Pink (nicht Schwarz, Nicole). Rexe in Zielwahl (Motiv), Plan und Einstellungen (freigestellt, ohne Hintergrund). Kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2) |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe mindestens 10** anteilige Sätze pro Woche (`limits.minWeeklySetsPrio3`) |
 | Grenzen je Einheit | **Keine feste Grenze für Sätze oder Übungen**: Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt und sind entfernt (Nicole, 23.10.). Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit (in den Plänen 15–18 Sätze, 5–7 Übungen). **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | 3, 4 oder 5 für alle. **Keine Erfahrungsstufen** (Nicole, 23.10.: entfernt, **ohne** Hinweis auf eine Zielgruppe) |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert; "Übung entfernen" löscht die Werte der Woche. **Von Nicole bestätigt** |
-| Logo | Logo oben auf jeder Seite führt auf „Heute“ |
+| Logo | Wortmarke (gelbes Schild mit pinkem Versatz) im Kopf, der oben stehen bleibt; führt auf „Heute“ |
 | Zyklus | 12 Wochen, **kein Deload**. Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht (`progression.nextCycleLighterPct`); erklärt im Plan und auf „Heute“ (Woche 12 und Woche 1 ab Zyklus 2) |
 | Muskelmodell | Kniebeuge zählt für den Po 0,5 und bleibt so |
 | Wdh.-Bereiche | 6–8 / 6–10 / 8–12 / 12–15, Hauptmuskel wellenförmig über die Woche |
@@ -77,6 +77,14 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 
 **Kurz-Modus, vierte Fassung (23.10.)**: Die dritte (45 Min. mit kürzeren Pausen und Wochenblick) zeigte Einheiten, bei denen eine gestrichene Übung scheinbar 15 Minuten sparte; die Ersparnis kam aus versteckt kürzeren Pausen. Nicoles Vorgabe: 4 Übungen, die anhand des Ziels Sinn ergeben, volle Sätze, Name "30–45 Min.", normale Einheit 60–90 Min. Umgesetzt mit normalen Pausen; 34 von 36 Einheiten haben 4 Übungen, 2 V-Form-Tage 3; alle 35–45 Minuten (Test).
 
+**Design Rexy übernommen (23.10.)**, nach Freigabe der Entwürfe durch Nicole:
+- Quelle: Design System „Rexy – Neobrutalism“ (claude.ai, https://claude.ai/code/artifact/b1f6a245-8459-4a08-b0c6-a193dbe59410), Entwürfe der Screens: https://claude.ai/artifact/DZu1nQ6RuNUkCM15YnZ821. Rexy liefert nur `tokens.json`, die Werte stehen jetzt in `src/ui/theme/tokens.css` (inkl. Schriftgrößen `--fs-*`); Kategorie-Farben und Zielakzente auch in `data/goals.json`.
+- Bausteine wie in Rexy: Wortmarke im klebenden Kopf, Tab-Leiste als Pillen, Wochenwahl mit runden Cyan-Pfeilen, Muskelgruppe als farbiges Badge, Stand-Pille (`.count-pill`) auf Heute und im Tageskopf, Satz hinzufügen/entfernen als runde +/−-Knöpfe, Stern auf goldener Scheibe, Zurück/Schließen/Abbrechen als umrandete Knöpfe ohne Schatten, Disabled = halbe Deckkraft, Fokus-Ring Ink.
+- Hauptknopf auf einer Tageskarte in der Zielfarbe nimmt die Flächenfarbe (Regel in `ui.css`).
+- Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in Plan (`components/GoalChip.tsx`) und Einstellungen. `webp` ist im Offline-Cache.
+- Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` hat nur noch die Hantel fürs App-Icon.
+- Plan-Kopf zeigt Rex, Ziel-Pille und „4 Tage pro Woche“ statt „Dein Plan: Apfel · 4 Tage pro Woche“ (E2E angepasst).
+
 **Tests:** 131 Vitest + 17 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
 - Onboarding, freie Übungswahl, Pause nur per Knopf
 - Kurz-Modus ("30–45 Min.", 4 Übungen mit allen Sätzen, normale Pause im Timer, ausgelassene Übungen unten, auch bei 60-Minuten-Einheiten)
@@ -87,7 +95,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf
 - Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen
 
-Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,94 (seit den Rex-Bildern auf der Startseite, vorher 0,98). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
@@ -98,6 +106,9 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
+- **App-Icon und Favicon** zeigen noch die Pixel-Hantel in den Farben vor Rexy (`scripts/make-icons.mjs`); neu gestalten mit der Store-Vorbereitung (Rex).
+- **Design System Rexy** weicht an drei Stellen von der App ab, wie Nicole es am 23.10. wollte: Stand-Pille bei Tag A und E in der Tagesfarbe (Rexy: Cream), freigestellte Rexe ohne Hintergrund im Ziel-Chip (Rexy: Kopf im runden Rahmen), aktuelle Woche im Fortschritt (in Rexy nicht festgelegt). Bei Gelegenheit im Design System nachziehen.
+- **Pausentimer bei 360 px:** „Pause 2:30“ bricht in zwei Zeilen um, funktioniert aber.
 
 ## 4. Nächste Schritte
 
@@ -110,7 +121,7 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Bestätigt so (Nicole, 23.10.)**: Zusatzsätze erben nur von der direkten Vorwoche (Peach), auch wenn der Kurz-Modus die Übung eine Woche ausgelassen hat. Fällt ein Auto-Zusatzsatz nachträglich weg (eine frühere Woche wird korrigiert), bleibt der schon eingetragene Satz gespeichert und zählt im Vergleich der Folgewoche mit.
 - **Entry-Key** `cycle:week:slotId`; Eintrag trägt `day`, `category`, `repRange`, `baseSets`, `exerciseId`, `sets[{w,r}]`, `extraSets`, optional `once`/`baseExerciseId`.
 - **Flexible Woche:** gleiche Slot-ID in 3/4/5 Tagen = dieselbe Zeile; die Wochenart wird beim ersten Eintrag einer Woche gespeichert (`Week`), spätere Wochen erben sie. Ab der aktuellen Woche umgestellt (Plan oder Einstellungen), wird sie auch der Standard im Profil (`Profile.days`) für folgende Wochen und Zyklen; frühere Wochen behalten ihre Wochenart (`saveWeekDays`, `saveProfile` in `state/actions.ts`).
-- **Texte:** alles in `src/i18n/de.json`, kurz, sachlich. Keine Sonderzeichen wie Grad oder Häkchen im Code (`–` für den Halbgeviertstrich, Häkchen als SVG `components/Check.tsx`).
+- **Texte:** alles in `src/i18n/de.json`, kurz, sachlich. Keine Sonderzeichen wie Grad oder Häkchen im Code (`–` für den Halbgeviertstrich; Häkchen, Pfeile, Plus/Minus und Stern als SVG in `components/`).
 - **Farben nur über Tokens**; Kategorie-Farbe in `goals.json` **und** `--cat-<id>` in `tokens.css` (Test prüft).
 - **Vor jedem Push:** `npm run check` muss mit Exit-Code 0 enden (nicht über `grep` prüfen). E2E in der Sandbox: `PW_CHROMIUM_PATH=/opt/pw-browsers/chromium npm run test:e2e` nach `npm run build`.
 - **Commits ohne Modellnamen** (CLAUDE.md Regel 10). Ältere Commits bis 23.10. enthalten noch eine Co-Author-Zeile mit Modellnamen; die Historie auf `main` wird nicht umgeschrieben.

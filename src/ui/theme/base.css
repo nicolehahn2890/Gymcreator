@@ -16,7 +16,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: var(--fs-body);
+  font-size: var(--fs-prose);
   line-height: 1.5;
   min-height: 100vh;
   min-height: 100dvh;
@@ -37,7 +37,7 @@ select {
   font-size: var(--fs-input);
 }
 
-/* Neobrutalism-Press: Richtung Schatten schieben, Schatten zusammenfallen lassen */
+/* Neobrutalism-Press: der Block sinkt in seinen Schatten */
 button {
   cursor: pointer;
   transition:
@@ -56,23 +56,20 @@ button.nb-shadow:active {
   box-shadow: var(--sh-press) !important;
 }
 
-/* Disabled: flach und cremefarben, ohne Schatten und ohne Press */
+/* Disabled: halbe Deckkraft, kein Druck */
 button:disabled {
-  background: var(--cream) !important;
-  color: var(--text-dim) !important;
-  border-color: var(--text-dim) !important;
-  box-shadow: none !important;
-  cursor: not-allowed;
+  opacity: 0.5;
+  cursor: default;
 }
 
 button:disabled:active {
   transform: none;
 }
 
-/* Tastatur-Fokus: harter Ring auf allem Fokussierbaren (a11y) */
+/* Tastatur-Fokus: Ink-Ring mit Abstand, auf jeder Farbflaeche sichtbar (a11y) */
 :focus-visible {
   outline: 3px solid var(--focus) !important;
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 ::-webkit-scrollbar {
@@ -89,6 +86,7 @@ button:disabled:active {
   border-radius: var(--r-pill);
 }
 
+/* Eingang nur per transform, damit Inhalt nie unsichtbar bleibt */
 @keyframes fadeSlide {
   from { transform: translateY(8px); }
   to { transform: translateY(0); }

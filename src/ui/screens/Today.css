@@ -9,39 +9,43 @@
 .next-day {
   display: grid;
   gap: 6px;
-  padding: 18px;
 }
 
 .next-label {
-  font-size: var(--fs-small);
+  font-size: var(--fs-meta);
+  line-height: 16px;
   font-weight: 700;
+  letter-spacing: 0.4px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
 }
 
 .next-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 24px;
-  line-height: 1.1;
+  font-size: var(--fs-section);
+  line-height: 26px;
   letter-spacing: -0.5px;
   text-transform: uppercase;
 }
 
 .next-focus {
-  font-size: 15px;
+  font-size: var(--fs-body);
+  line-height: 22px;
   font-weight: 600;
 }
 
 .next-meta {
-  margin-bottom: 8px;
-  font-size: 15px;
+  margin-bottom: 10px;
+  font-size: var(--fs-meta);
+  line-height: 16px;
+  font-weight: 500;
 }
 
 .today-stats {
-  margin-top: 14px;
-  font-size: 15px;
-  font-weight: 600;
+  margin-top: 16px;
+  font-size: var(--fs-body);
+  line-height: 22px;
+  font-weight: 700;
 }
 
 .day-list {
@@ -55,13 +59,13 @@
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 56px;
-  padding: 8px 12px;
+  min-height: 58px;
+  padding: 10px 12px;
   background: var(--surface);
-  color: var(--ink);
-  border: var(--bw) solid var(--ink);
+  color: var(--on-accent);
+  border: var(--border-w) solid var(--ink);
   border-radius: var(--r-lg);
-  box-shadow: var(--sh-xs);
+  box-shadow: var(--sh-sm);
   text-align: left;
 }
 
@@ -73,17 +77,14 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--ink);
-  border-radius: 50%;
+  border-radius: var(--r-round);
   font-family: var(--font-display);
   font-size: 15px;
 }
 
 .day-row-name {
   flex: 1;
+  font-size: var(--fs-body);
+  line-height: 22px;
   font-weight: 600;
-}
-
-.day-row-count {
-  font-weight: 700;
-  font-size: var(--fs-small);
 }

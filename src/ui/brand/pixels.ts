@@ -1,5 +1,4 @@
-// Pixel-Muster fuer Marke und Ziel-Glyphen ("X" = gefuellt). Wird auch von scripts/make-icons.mjs gelesen.
-import type { GoalId } from '../../core/model/types';
+// Pixel-Muster fuer das App-Icon ("X" = gefuellt), gelesen von scripts/make-icons.mjs.
 
 export type PixelPattern = readonly string[];
 
@@ -21,51 +20,6 @@ export const DUMBBELL: PixelPattern = [
   '................',
   '................',
 ];
-
-export const GOAL_GLYPHS: Record<GoalId, PixelPattern> = {
-  vform: [
-    '............',
-    'XXXXXXXXXXXX',
-    'XXXXXXXXXXXX',
-    '.XXXXXXXXXX.',
-    '.XXXXXXXXXX.',
-    '..XXXXXXXX..',
-    '..XXXXXXXX..',
-    '...XXXXXX...',
-    '...XXXXXX...',
-    '....XXXX....',
-    '....XXXX....',
-    '............',
-  ],
-  sanduhr: [
-    '............',
-    '.XXXXXXXXXX.',
-    '..XXXXXXXX..',
-    '...XXXXXX...',
-    '....XXXX....',
-    '.....XX.....',
-    '.....XX.....',
-    '....XXXX....',
-    '...XXXXXX...',
-    '..XXXXXXXX..',
-    '.XXXXXXXXXX.',
-    '............',
-  ],
-  apfel: [
-    '......XX....',
-    '.....XX.....',
-    '..XXX..XXX..',
-    '.XXXXXXXXXX.',
-    'XXXXXXXXXXXX',
-    'XXXXXXXXXXXX',
-    'XXXXXXXXXXXX',
-    'XXXXXXXXXXXX',
-    '.XXXXXXXXXX.',
-    '.XXXXXXXXXX.',
-    '..XXX..XXX..',
-    '............',
-  ],
-};
 
 /** Zerlegt ein Muster in waagerechte Streifen (weniger SVG-Elemente als ein Rechteck je Pixel). */
 export function pixelRuns(pattern: PixelPattern): { x: number; y: number; w: number }[] {

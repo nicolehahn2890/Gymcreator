@@ -1,7 +1,9 @@
 import { planData } from '../../core/model/data';
 import type { PlanRow } from '../../core/model/types';
+import { dayProgress } from '../../core/progression/position';
 import { shortSets } from '../../core/progression/short';
 import { AppHeader } from '../components/AppHeader';
+import { Arrow } from '../components/Arrow';
 import { RestTimer } from '../components/RestTimer';
 import { dayMinutes, dayRows, isShortDay, planFor, rowContext, shortContext, type AppModel } from '../state/model';
 import { setShort, type Position } from '../state/actions';
@@ -39,6 +41,8 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
   const main = dayPlan.rows.filter((r) => !skipped.has(r.slotId));
   const rest = dayPlan.rows.filter((r) => skipped.has(r.slotId));
   const order = [...main, ...rest];
+  const progress = dayProgress(ctx, dayPlan, pos);
+  const color = `var(--day-${dayPlan.letter.toLowerCase()})`;
 
   const item = (row: PlanRow) => {
     const next = order[order.indexOf(row) + 1];
@@ -63,11 +67,15 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
     <main className="screen">
       <AppHeader />
       <button type="button" className="btn-quiet back-link" onClick={onBack}>
+        <Arrow dir="left" />
         {text.common.back}
       </button>
-      <header className="card day-head" style={{ background: `var(--day-${dayPlan.letter.toLowerCase()})` }}>
+      <header className="card day-head" style={{ background: color }}>
         <h1 className="next-title">{dayPlan.name}</h1>
         <p className="next-focus">{dayPlan.focus}</p>
+        <span className="count-pill" style={{ color }}>
+          {fmt(t.count, { done: progress.done, total: progress.total })}
+        </span>
       </header>
       {offered && (
         <section className="day-time" aria-labelledby="day-time-label">
@@ -86,7 +94,7 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
             </button>
           </div>
           {active && (
-            <p className="muted day-time-note">
+            <p className="muted">
               {t.shortNote}
               {rows.some((r) => r.target > 0 && r.target < r.sets) && ` ${t.shortSetsNote}`}
             </p>

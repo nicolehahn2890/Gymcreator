@@ -130,7 +130,7 @@ test('Einstellungen: fielen eingetragene Uebungen weg, gelten neue Tage ab naech
   await page.getByRole('group', { name: 'Trainingstage pro Woche' }).getByRole('button', { name: '3 Tage' }).click();
   await expect(page.getByText('Gilt ab nächster Woche')).toBeVisible();
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.getByText('Dein Plan: Apfel · 3 Tage pro Woche')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Dein Plan' })).toContainText(/Apfel\s*3 Tage pro Woche/);
   await expect(page.locator('.plan-day')).toHaveCount(4);
   await page.getByRole('button', { name: 'Nächste Woche' }).click();
   await expect(page.locator('.plan-day')).toHaveCount(3);
@@ -374,13 +374,13 @@ test('Plan neu einrichten: aus Plan und Einstellungen, Abbrechen aendert nichts,
 
   // Plan: Ziel wechseln und uebernehmen
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.getByText('Dein Plan: Apfel · 4 Tage pro Woche')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Dein Plan' })).toContainText(/Apfel\s*4 Tage pro Woche/);
   await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
   await page.getByRole('button', { name: /Sanduhr/ }).click();
   for (let i = 0; i < 3; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
   await expect(page.getByText('Dein Verlauf bleibt erhalten.')).toBeVisible();
   await page.getByRole('button', { name: 'Übernehmen' }).click();
-  await expect(page.getByText('Dein Plan: Sanduhr · 4 Tage pro Woche')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Dein Plan' })).toContainText(/Sanduhr\s*4 Tage pro Woche/);
   await expect(page.getByText('Zyklus 1 · Woche 1 von 12')).toBeVisible();
 
   // zurueck auf Apfel: die eingetragenen Werte sind noch da

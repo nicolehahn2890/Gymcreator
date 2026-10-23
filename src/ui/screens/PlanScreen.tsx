@@ -5,6 +5,7 @@ import { rowState } from '../../core/progression/state';
 import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, text } from '../../i18n';
 import { AppHeader } from '../components/AppHeader';
+import { GoalChip } from '../components/GoalChip';
 import { Sheet } from '../components/Sheet';
 import { WeekNav } from '../components/WeekNav';
 import { saveWeekDays, type Position } from '../state/actions';
@@ -41,7 +42,8 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
 
       <section className="card plan-profile" aria-label={t.yourPlan}>
         <p className="plan-profile-text">
-          {fmt(t.summary, { goal: planData.goals.goals[model.profile.goal].label.de, days: model.profile.days })}
+          <GoalChip goal={model.profile.goal} />
+          <span>{fmt(t.daysPerWeek, { days: model.profile.days })}</span>
         </p>
         <button type="button" className="btn btn-small" onClick={onSetup}>
           {t.setup}

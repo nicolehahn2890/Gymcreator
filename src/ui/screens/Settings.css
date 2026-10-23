@@ -6,6 +6,14 @@
   margin-top: 8px;
 }
 
+/* Ziel-Knopf mit freigestelltem Rex */
+.goal-option img {
+  display: block;
+  flex-shrink: 0;
+  width: auto;
+  height: 32px;
+}
+
 .chip-list {
   display: flex;
   flex-wrap: wrap;
@@ -16,13 +24,13 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 40px;
+  min-height: 38px;
   padding: 6px 12px;
-  background: var(--field-bg);
-  color: var(--ink);
+  background: var(--surface);
+  color: var(--on-accent);
   border: 2px solid var(--ink);
   border-radius: var(--r-pill);
-  font-size: 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 
@@ -46,10 +54,7 @@
   list-style: none;
   display: grid;
   gap: 8px;
-}
-
-.backup-card {
-  background: var(--paper);
+  font-size: var(--fs-body);
 }
 
 .backup-actions {
@@ -58,7 +63,7 @@
 
 .backup-status {
   min-height: 20px;
-  font-size: var(--fs-small);
+  font-size: var(--fs-label);
   font-weight: 700;
 }
 
@@ -70,7 +75,7 @@
 .version-line {
   margin-top: 24px;
   text-align: center;
-  font-size: 12px;
+  font-size: var(--fs-meta);
   color: var(--text-dim);
 }
 

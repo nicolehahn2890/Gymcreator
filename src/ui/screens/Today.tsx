@@ -44,14 +44,19 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
       {week === rules.cycleWeeks && <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>}
 
       {nextDay ? (
-        <section className="card next-day" style={{ background: `var(--day-${nextDay.letter.toLowerCase()})` }} aria-labelledby="next-day-title">
+        <section
+          className="card next-day"
+          data-day={nextDay.letter.toLowerCase()}
+          style={{ background: `var(--day-${nextDay.letter.toLowerCase()})` }}
+          aria-labelledby="next-day-title"
+        >
           <p className="next-label">{t.nextUp}</p>
           <h1 id="next-day-title" className="next-title">
             {nextDay.name}
           </h1>
           <p className="next-focus">{nextDay.focus}</p>
           <p className="next-meta">{fmt(t.meta, { n: dayRows(ctx, nextDay, { cycle, week }).filter((r) => r.target > 0).length, min: dayMinutes(ctx, nextDay, { cycle, week }) })}</p>
-          <button type="button" className="btn btn-block" onClick={() => onOpenDay(nextDay.index)}>
+          <button type="button" className="btn btn-primary btn-large btn-block" onClick={() => onOpenDay(nextDay.index)}>
             {t.start}
           </button>
         </section>
@@ -61,7 +66,7 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
             {fmt(t.weekDone, { week })}
           </h1>
           <p className="next-focus">{t.weekDoneText}</p>
-          <button type="button" className="btn btn-primary btn-block" onClick={() => onGoToWeek(following.cycle, following.week)}>
+          <button type="button" className="btn btn-primary btn-large btn-block" onClick={() => onGoToWeek(following.cycle, following.week)}>
             {t.nextWeek}
           </button>
         </section>
@@ -81,14 +86,15 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
       <ul className="day-list">
         {plan.dayPlans.map((day, i) => {
           const p = progress[i];
+          const color = `var(--day-${day.letter.toLowerCase()})`;
           return (
             <li key={day.index}>
               <button type="button" className="day-row" onClick={() => onOpenDay(day.index)}>
-                <span className="day-letter" style={{ background: `var(--day-${day.letter.toLowerCase()})` }}>
+                <span className="day-letter" style={{ background: color }}>
                   {day.letter}
                 </span>
                 <span className="day-row-name">{shortDayName(day.name)}</span>
-                <span className="day-row-count">
+                <span className="count-pill" style={{ color }}>
                   {p?.done ?? 0}/{p?.total ?? 0}
                 </span>
                 {p && p.total > 0 && p.done === p.total && (

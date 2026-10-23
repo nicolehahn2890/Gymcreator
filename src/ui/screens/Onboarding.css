@@ -2,20 +2,34 @@
   padding-bottom: calc(110px + env(safe-area-inset-bottom));
 }
 
-.onboarding .goal-glyph {
+/* Zielkarte: Rex im Ink-Rahmen, Hintergrund in der Zielfarbe (--accent an der Karte) */
+.goal-card {
+  padding: 12px;
+}
+
+.goal-rex {
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--cream);
-  border: var(--bw) solid var(--ink);
-  border-radius: var(--r-lg);
+  width: 84px;
+  height: 121px;
+  display: block;
+  object-fit: cover;
+  background: var(--accent);
+  border: var(--border-w) solid var(--ink);
+  border-radius: var(--r-md);
+}
+
+.goal-card-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.goal-card .done-dot {
+  align-self: flex-start;
 }
 
 .choice-compact {
   padding: 10px 14px;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 
@@ -27,9 +41,9 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  padding: 12px var(--gutter) max(12px, env(safe-area-inset-bottom));
-  background: var(--cream);
-  border-top: var(--bw) solid var(--ink);
+  padding: 12px var(--content-pad) max(12px, env(safe-area-inset-bottom));
+  background: var(--bg);
+  border-top: var(--border-w) solid var(--ink);
 }
 
 .onboarding-actions .btn {
@@ -38,23 +52,32 @@
 }
 
 .day-preview {
-  padding: 14px;
+  padding: 14px 16px;
 }
 
 .day-preview-title {
+  margin-bottom: 6px;
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: 15px;
+  font-size: var(--fs-card-title);
+  line-height: 20px;
   letter-spacing: -0.5px;
   text-transform: uppercase;
+}
+
+.day-preview-meta {
   margin-bottom: 8px;
+  font-size: var(--fs-meta);
+  line-height: 16px;
+  font-weight: 600;
 }
 
 .day-preview-list {
   list-style: none;
   display: grid;
   gap: 4px;
-  font-size: 14px;
+  font-size: var(--fs-body);
+  line-height: 20px;
 }
 
 .day-preview-list li {
@@ -66,10 +89,4 @@
 .day-preview-sets {
   flex-shrink: 0;
   font-weight: 700;
-}
-
-.day-preview-meta {
-  margin: -4px 0 8px;
-  font-size: var(--fs-small);
-  font-weight: 600;
 }
