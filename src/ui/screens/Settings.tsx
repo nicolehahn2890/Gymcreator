@@ -1,7 +1,6 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
-import { effectiveDays } from '../../core/generator/buildPlan';
-import { GOAL_IDS, LEVELS, type Profile } from '../../core/model/types';
+import { DAY_COUNTS, GOAL_IDS, type Profile } from '../../core/model/types';
 import { fmt, num, text } from '../../i18n';
 import { createBackup, parseBackup, serializeBackup } from '../../storage/backup';
 import type { StoredData } from '../../storage/interface';
@@ -9,7 +8,7 @@ import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { Sheet } from '../components/Sheet';
 import { saveProfile, type Position } from '../state/actions';
-import { dayOptions, type AppModel } from '../state/model';
+import type { AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Settings.css';
 
@@ -26,13 +25,15 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
   const [pendingImport, setPendingImport] = useState<{ data: StoredData; date: string } | null>(null);
   const [safety, setSafety] = useState<{ date: string; data: StoredData } | null>(null);
   const [confirmRestore, setConfirmRestore] = useState(false);
+  // Neue Tageszahl gilt erst ab der naechsten Woche (diese Woche hat schon Werte in Uebungen, die wegfielen)
+  const [daysLater, setDaysLater] = useState(false);
 
   const refreshSafety = () => void store.lastSafetyCopy().then(setSafety);
   useEffect(() => {
     void store.lastSafetyCopy().then(setSafety);
   }, []);
 
-  const save = (patch: Partial<Profile>) => saveProfile(model, pos, { ...profile, ...patch });
+  const save = (patch: Partial<Profile>) => setDaysLater(saveProfile(model, pos, { ...profile, ...patch }, patch.days !== undefined) !== null);
   const backupText = () => serializeBackup(createBackup(model.data, today()));
 
   const copy = async () => {
@@ -84,7 +85,7 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
       </button>
 
       <h3 className="field-label settings-label">{t.goal}</h3>
-      <div className="segmented">
+      <div className="segmented" role="group" aria-label={t.goal}>
         {GOAL_IDS.map((id) => (
           <button
             key={id}
@@ -99,23 +100,15 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
         ))}
       </div>
 
-      <h3 className="field-label settings-label">{t.level}</h3>
-      <div className="segmented">
-        {LEVELS.map((id) => (
-          <button key={id} type="button" className="btn btn-small" aria-pressed={profile.level === id} onClick={() => save({ level: id, days: effectiveDays(planData, id, profile.days) })}>
-            {text.onboarding[id]}
-          </button>
-        ))}
-      </div>
-
       <h3 className="field-label settings-label">{t.days}</h3>
-      <div className="segmented">
-        {dayOptions(model).map((d) => (
+      <div className="segmented" role="group" aria-label={t.days}>
+        {DAY_COUNTS.map((d) => (
           <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => save({ days: d })}>
             {fmt(text.common.days, { n: d })}
           </button>
         ))}
       </div>
+      {daysLater && <p className="muted settings-hint">{t.daysNextWeek}</p>}
 
       <h3 className="field-label settings-label">{t.gym}</h3>
       <div className="chip-list" role="group" aria-label={t.gym}>

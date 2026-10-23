@@ -1,14 +1,14 @@
 // Aenderungen aus der Oberflaeche: Eintraege anlegen/aendern, Wochenart festhalten, Profil uebernehmen, Kurz-Modus.
 import { buildPlan } from '../../core/generator/buildPlan';
 import { planData } from '../../core/model/data';
-import type { Entry, Plan, PlanDay, PlanRow, Profile, SetValue, ShortSlot, Week } from '../../core/model/types';
+import type { DaysPerWeek, Entry, Plan, PlanDay, PlanRow, Profile, SetValue, ShortSlot, Week } from '../../core/model/types';
 import { getEntry, hasValues } from '../../core/progression/entries';
 import { createEntry } from '../../core/progression/inherit';
-import { followingWeek } from '../../core/progression/position';
+import { followingWeek, latestWeek } from '../../core/progression/position';
 import type { RowState } from '../../core/progression/state';
-import { shortSets } from '../../core/progression/short';
+import { carryShort, shortSets } from '../../core/progression/short';
 import { pausedSlotsWithValues } from '../../core/progression/week';
-import { dayRows, daysFor, rowContext, shortContext, type AppModel } from './model';
+import { dayRows, daysFor, planFor, rowContext, shortContext, type AppModel } from './model';
 import { store } from './store';
 
 export interface Position {
@@ -31,18 +31,51 @@ export function withExtraSets(entry: Entry, extraSets: number, totalSets: number
   return { ...entry, extraSets, sets: entry.sets.slice(0, totalSets) };
 }
 
+const isBefore = (a: Position, b: Position) => a.cycle < b.cycle || (a.cycle === b.cycle && a.week < b.week);
+
+/** Aktuelle Woche: die angezeigte, aber nie eine vor der juengsten Woche mit Werten (der Verlauf bleibt, wie er war). */
+function currentWeek(model: AppModel, pos: Position): Position {
+  const latest = latestWeek(model.index);
+  return isBefore(pos, latest) ? latest : pos;
+}
+
+/** Wochenart einer Woche speichern; ein Kurz-Modus bleibt fuer Tage, die es im neuen Plan genauso gibt. */
+function putDays(model: AppModel, at: Position, days: DaysPerWeek, keepShort: boolean): void {
+  const existing = model.data.weeks.find((w) => w.cycle === at.cycle && w.week === at.week);
+  const short = keepShort ? carryShort(existing?.short, planFor(model, at.cycle, at.week).dayPlans, model.plans[days].dayPlans) : undefined;
+  void store.putWeek({ cycle: at.cycle, week: at.week, days, ...(short && { short }) });
+}
+
 /**
- * Speichert ein geaendertes Profil (Einstellungen oder "Plan neu einrichten"); der Verlauf bleibt.
- * Neue Standard-Tage gelten ab der angezeigten Woche, fielen dort Zeilen mit Werten weg, ab der folgenden;
- * spaetere Wochen erben das.
+ * Speichert ein geaendertes Profil (Einstellungen oder "Plan neu einrichten"); der Verlauf bleibt. Ein neues Ziel
+ * hebt den Kurz-Modus auf, er wurde fuer den alten Plan berechnet. Gewaehlte Tage (`daysChosen`) gelten ab der
+ * aktuellen Woche, auch wenn sie dem bisherigen Standard entsprechen; fielen dort Zeilen mit Werten weg, ab der
+ * folgenden. Spaetere Wochen erben das. Rueckgabe: die folgende Woche, wenn die Tage erst dort gelten, sonst null.
  */
-export function saveProfile(model: AppModel, pos: Position, next: Profile): void {
+export function saveProfile(model: AppModel, pos: Position, next: Profile, daysChosen: boolean): Position | null {
   void store.saveProfile(next);
-  if (next.days === model.profile.days) return;
-  const plan = buildPlan(planData, { goal: next.goal, level: next.level, days: next.days });
-  const conflict = pausedSlotsWithValues(model.data.entries, pos.cycle, pos.week, plan).length > 0;
-  const from = conflict ? followingWeek(planData.goals.progression, pos.cycle, pos.week) : pos;
-  void store.putWeek({ ...from, days: next.days });
+  const newGoal = next.goal !== model.profile.goal;
+  if (newGoal) for (const w of model.data.weeks) if (w.short) void store.putWeek({ cycle: w.cycle, week: w.week, days: w.days });
+  if (!daysChosen) return null;
+  const cur = currentWeek(model, pos);
+  if (next.days === daysFor(model, cur.cycle, cur.week)) return null;
+  const plan = buildPlan(planData, { goal: next.goal, days: next.days });
+  if (!pausedSlotsWithValues(model.data.entries, cur.cycle, cur.week, plan).length) {
+    putDays(model, cur, next.days, !newGoal);
+    return null;
+  }
+  const from = followingWeek(planData.goals.progression, cur.cycle, cur.week);
+  putDays(model, from, next.days, !newGoal);
+  return from;
+}
+
+/**
+ * Wochenart der angezeigten Woche (Plan). Ab der aktuellen Woche wird sie auch der Standard im Profil: Folgende
+ * Wochen und Zyklen behalten sie, bis sie wieder geaendert wird (wie Peach).
+ */
+export function saveWeekDays(model: AppModel, pos: Position, days: DaysPerWeek): void {
+  putDays(model, pos, days, true);
+  if (!isBefore(pos, latestWeek(model.index)) && days !== model.profile.days) void store.saveProfile({ ...model.profile, days });
 }
 
 /** Speichert den Eintrag; beim ersten Eintrag einer Woche wird die Wochenart festgehalten. */
@@ -85,4 +118,12 @@ export function setShort(model: AppModel, pos: Position, day: PlanDay, minutes: 
   const week: Week = { cycle: pos.cycle, week: pos.week, days: existing?.days ?? daysFor(model, pos.cycle, pos.week) };
   if (Object.keys(short).length) week.short = short;
   void store.putWeek(week);
+}
+
+/** Satz von Hand hinzugefuegt: Im Kurz-Modus zaehlt er mit, statt nur freiwillig zu sein. */
+export function addShortSet(model: AppModel, pos: Position, slotId: string): void {
+  const week = model.data.weeks.find((w) => w.cycle === pos.cycle && w.week === pos.week);
+  const s = week?.short?.[slotId];
+  if (!week?.short || !s?.sets) return;
+  void store.putWeek({ ...week, short: { ...week.short, [slotId]: { ...s, sets: s.sets + 1 } } });
 }

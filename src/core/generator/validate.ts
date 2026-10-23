@@ -1,26 +1,19 @@
-// Prueft einen erzeugten Plan gegen data/goals.json: Grenzen (limits), Stufen-Regeln (levels),
-// Wochenziele je Muskel (targets), Prioritaeten, das Mindestvolumen der Prio-3-Muskeln (levels.minWeeklySetsPrio3)
-// und die Dauer jeder Einheit (limits.sessionMinutes, Schaetzung aus timing).
+// Prueft einen erzeugten Plan gegen data/goals.json: Grenzen (limits: Dauer jeder Einheit, Saetze je Muskel und
+// Einheit, Zeilen je Kategorie und Tag, Haeufigkeit und Mindestvolumen der Prio-3-Muskeln), Wochenziele je Muskel
+// (targets) und Prioritaeten. Eine feste Obergrenze fuer Saetze oder Uebungen je Einheit gibt es nicht (docs/wissenschaft.md).
 import type { Plan, PlanData, PlanIssue, PlanRow, Timing } from '../model/types';
 
 export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
   const { limits, categories, ranges } = data.goals;
-  const rules = data.goals.levels[plan.level];
   const goalDef = data.goals.goals[plan.goal];
-  const targets = goalDef.targets[plan.level];
-  const tag = `${plan.goal}/${plan.level}/${plan.days}`;
+  const targets = goalDef.targets;
+  const tag = `${plan.goal}/${plan.days}`;
   const issues: PlanIssue[] = [];
   const error = (code: string, message: string) => issues.push({ level: 'error', code, message: `${tag} ${message}` });
 
   const frequency = new Map<string, Set<number>>();
 
   for (const day of plan.dayPlans) {
-    const count = day.rows.length;
-    if (count < rules.minExercisesPerSession || count > rules.maxExercisesPerSession) {
-      error('session-exercises', `${day.name}: ${count} Uebungen (${rules.minExercisesPerSession}-${rules.maxExercisesPerSession})`);
-    }
-    const sessionSets = day.rows.reduce((sum, r) => sum + r.sets, 0);
-    if (sessionSets > rules.maxSetsPerSession) error('session-sets', `${day.name}: ${sessionSets} Saetze > ${rules.maxSetsPerSession}`);
     const minutes = estimateMinutes(day.rows, data.goals.timing);
     const [minMinutes, maxMinutes] = limits.sessionMinutes;
     if (minutes < minMinutes || minutes > maxMinutes) error('session-minutes', `${day.name}: ca. ${minutes} Min. (${minMinutes}-${maxMinutes})`);
@@ -64,10 +57,10 @@ export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
     if (priority === 3 && times < limits.minFrequencyPrio3) error('frequency', `Prio-3-Kategorie ${cat} nur ${times}x pro Woche`);
     if (priority === 0 && times > 0) error('prio0', `Prio-0-Kategorie ${cat} im Plan`);
     // Muskeln, die die Kategorie direkt trainiert (Anteil 1), z. B. chest -> Brust, nicht Trizeps
-    if (priority === 3 && rules.minWeeklySetsPrio3 !== undefined) {
+    if (priority === 3) {
       for (const [muscle, share] of Object.entries(categories[cat]?.muscles ?? {})) {
         const value = weekly[muscle] ?? 0;
-        if (share === 1 && value < rules.minWeeklySetsPrio3) error('prio3-volume', `Prio-3-Kategorie ${cat}: ${muscle} ${value} < ${rules.minWeeklySetsPrio3} anteilige Saetze pro Woche`);
+        if (share === 1 && value < limits.minWeeklySetsPrio3) error('prio3-volume', `Prio-3-Kategorie ${cat}: ${muscle} ${value} < ${limits.minWeeklySetsPrio3} anteilige Saetze pro Woche`);
       }
     }
   }

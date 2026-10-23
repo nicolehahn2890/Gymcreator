@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
-import { DAY_COUNTS, GOAL_IDS, LEVELS, type DaysPerWeek, type GoalId, type Level, type Profile } from '../../core/model/types';
+import { DAY_COUNTS, GOAL_IDS, type DaysPerWeek, type GoalId, type Profile } from '../../core/model/types';
 import { buildPlan } from '../../core/generator/buildPlan';
 import { estimateMinutes, totalSets } from '../../core/generator/validate';
 import { fmt, range, shortDayName, text } from '../../i18n';
@@ -10,7 +10,7 @@ import { Check } from '../components/Check';
 import { slotLabel } from '../state/model';
 import './Onboarding.css';
 
-const STEPS = 5;
+const STEPS = 4;
 /** Ausstattung, die man nicht abwaehlen kann. */
 const ALWAYS = 'bodyweight';
 
@@ -24,19 +24,17 @@ interface Props {
 export function Onboarding({ initial, onDone, onCancel }: Props) {
   const t = text.onboarding;
   const goals = planData.goals.goals;
-  const levelText: Record<Level, string> = { beginner: t.beginnerText, advanced: t.advancedText };
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState<GoalId | null>(initial?.goal ?? null);
-  const [level, setLevel] = useState<Level | null>(initial?.level ?? null);
   const [days, setDays] = useState<DaysPerWeek | null>(initial?.days ?? null);
   const [equipment, setEquipment] = useState<string[]>(initial?.equipment ?? exerciseData.equipment);
 
   const accent = goal ? ({ '--accent': `var(--${goals[goal].accent})` } as CSSProperties) : undefined;
-  const ready = [goal, level, days, equipment.length > 0, true][step];
+  const ready = [goal, days, equipment.length > 0, true][step];
 
   const base = initial ?? { increments: {}, lang: 'de' as const, createdAt: '' };
-  const profile: Profile | null = goal && level && days ? { ...base, goal, level, days, equipment } : null;
-  const preview = useMemo(() => (goal && level && days ? buildPlan(planData, { goal, level, days }) : null), [goal, level, days]);
+  const profile: Profile | null = goal && days ? { ...base, goal, days, equipment } : null;
+  const preview = useMemo(() => (goal && days ? buildPlan(planData, { goal, days }) : null), [goal, days]);
 
   const toggleEquipment = (id: string) =>
     setEquipment((list) => (list.includes(id) ? list.filter((e) => e !== id) : [...list, id]));
@@ -70,34 +68,11 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
         </section>
       )}
 
-      {step === 1 && (
-        <section className="stack">
-          <h1 className="screen-title">{t.levelTitle}</h1>
-          {LEVELS.map((id) => (
-            <button
-              key={id}
-              type="button"
-              className="choice"
-              aria-pressed={level === id}
-              onClick={() => {
-                setLevel(id);
-                if (days && !planData.goals.levels[id].days.includes(days)) setDays(null);
-              }}
-            >
-              <span>
-                <span className="choice-title">{t[id]}</span>
-                <span className="choice-text">{levelText[id]}</span>
-              </span>
-            </button>
-          ))}
-        </section>
-      )}
-
-      {step === 2 && goal && (
+      {step === 1 && goal && (
         <section className="stack">
           <h1 className="screen-title">{t.daysTitle}</h1>
           <p className="muted">{t.daysHint}</p>
-          {(level ? planData.goals.levels[level].days : DAY_COUNTS).map((n) => (
+          {DAY_COUNTS.map((n) => (
             <button key={n} type="button" className="choice" aria-pressed={days === n} onClick={() => setDays(n)}>
               <span>
                 <span className="choice-title">{fmt(text.common.days, { n })}</span>
@@ -108,7 +83,7 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
         </section>
       )}
 
-      {step === 3 && (
+      {step === 2 && (
         <section className="stack">
           <h1 className="screen-title">{t.gymTitle}</h1>
           <p className="muted">{t.gymHint}</p>
@@ -130,7 +105,7 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
         </section>
       )}
 
-      {step === 4 && preview && profile && (
+      {step === 3 && preview && profile && (
         <section className="stack">
           <h1 className="screen-title">{t.planTitle}</h1>
           <p className="muted">

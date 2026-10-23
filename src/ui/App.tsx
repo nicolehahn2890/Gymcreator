@@ -84,7 +84,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
         initial={model.profile}
         onCancel={() => setSetup(false)}
         onDone={(profile) => {
-          saveProfile(model, pos, profile);
+          saveProfile(model, pos, profile, true);
           setSetup(false);
           setUi({ tab: 'plan', day: null, slot: null, restEndsAt: null });
         }}

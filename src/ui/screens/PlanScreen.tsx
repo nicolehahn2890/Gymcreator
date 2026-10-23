@@ -1,15 +1,14 @@
 import { useState } from 'react';
 import { planData } from '../../core/model/data';
-import type { DaysPerWeek } from '../../core/model/types';
+import { DAY_COUNTS, type DaysPerWeek } from '../../core/model/types';
 import { rowState } from '../../core/progression/state';
 import { pausedSlotsWithValues } from '../../core/progression/week';
-import { fmt, range, text } from '../../i18n';
+import { fmt, text } from '../../i18n';
 import { AppHeader } from '../components/AppHeader';
 import { Sheet } from '../components/Sheet';
 import { WeekNav } from '../components/WeekNav';
-import type { Position } from '../state/actions';
-import { dayMinutes, dayOptions, dayRows, daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
-import { store } from '../state/store';
+import { saveWeekDays, type Position } from '../state/actions';
+import { dayMinutes, dayRows, daysFor, exerciseName, rowContext, setsText, slotLabel, type AppModel } from '../state/model';
 import './Plan.css';
 
 interface Props {
@@ -32,7 +31,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
   const chooseDays = (d: DaysPerWeek) => {
     if (d === days) return;
     if (pausedSlotsWithValues(model.data.entries, pos.cycle, pos.week, model.plans[d]).length) setConfirmDays(d);
-    else void store.putWeek({ ...pos, days: d });
+    else saveWeekDays(model, pos, d);
   };
 
   return (
@@ -42,11 +41,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
 
       <section className="card plan-profile" aria-label={t.yourPlan}>
         <p className="plan-profile-text">
-          {fmt(t.summary, {
-            goal: planData.goals.goals[model.profile.goal].label.de,
-            level: text.onboarding[model.profile.level],
-            days: model.profile.days,
-          })}
+          {fmt(t.summary, { goal: planData.goals.goals[model.profile.goal].label.de, days: model.profile.days })}
         </p>
         <button type="button" className="btn btn-small" onClick={onSetup}>
           {t.setup}
@@ -61,7 +56,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
 
       <h2 className="section-title">{t.daysThisWeek}</h2>
       <div className="segmented" role="group" aria-label={t.daysThisWeek}>
-        {dayOptions(model).map((d) => (
+        {DAY_COUNTS.map((d) => (
           <button key={d} type="button" className="btn btn-small" aria-pressed={d === days} onClick={() => chooseDays(d)}>
             {fmt(text.common.days, { n: d })}
           </button>
@@ -85,7 +80,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
                 return (
                   <span key={row.slotId} className="plan-day-row">
                     <span>{st.exerciseId ? exerciseName(model, st.exerciseId) : slotLabel(row)}</span>
-                    <span className="plan-day-sets">{st.skipped ? t.skippedRow : fmt(text.workout.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
+                    <span className="plan-day-sets">{st.skipped ? t.skippedRow : setsText(model, st)}</span>
                   </span>
                 );
               })}
@@ -102,7 +97,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
               type="button"
               className="btn btn-primary btn-block"
               onClick={() => {
-                void store.putWeek({ ...pos, days: confirmDays });
+                saveWeekDays(model, pos, confirmDays);
                 setConfirmDays(null);
               }}
             >

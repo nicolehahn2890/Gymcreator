@@ -252,6 +252,12 @@ describe('Uebungswechsel (uebungswechsel)', () => {
     expect(exerciseChange(undefined, 5, HT, '')).toBe('set');
   });
 
+  it('Leeren loescht die Werte der Woche, ein Wechsel behaelt sie', () => {
+    const logged = { ...createEntry(row, { cycle: 3, week: 2, day: row.day }, HT, 0), sets: [{ w: '110', r: 8 }] };
+    expect(applyExercise(logged, '', false, HT)).toMatchObject({ exerciseId: '', sets: [] });
+    expect(applyExercise(logged, HM, false, HT).sets).toEqual([{ w: '110', r: 8 }]);
+  });
+
   it('naechster Zyklus uebernimmt die feste Uebung, nicht den einmaligen Wechsel aus W12', () => {
     const w12 = { ...applyExercise(createEntry(row, { cycle: 3, week: 12, day: row.day }, HM, 0), 'kickback_machine', true, HM), sets: [{ w: '40', r: 8 }] };
     const carried = carryOver([...w1, w12], 4, plans[4], categoryOf);
@@ -331,7 +337,7 @@ describe('Uebernahme in den neuen Zyklus', () => {
 
   it('Zeilen mit eigener Auswahl im neuen Zyklus bleiben, ihre Uebungen gelten am selben Tag als vergeben', () => {
     // V-Form 4 Tage, Tag A: zwei Ruecken-Zeilen (back_6-10_a, back_6-8_a)
-    const vform = buildPlan(planData, { goal: 'vform', level: 'advanced', days: 4 });
+    const vform = buildPlan(planData, { goal: 'vform', days: 4 });
     const own = (cycle: number, week: number, slotId: string, repRange: string): Entry => ({
       cycle, week, slotId, day: 0, exerciseId: 'barbell_row', sets: [], extraSets: 0, category: 'back', repRange, baseSets: 3,
     });

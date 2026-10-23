@@ -5,7 +5,7 @@
 // Es bleiben mindestens short.minExercises Uebungen mit je mindestens short.minSets Saetzen. Geht die Zeit damit
 // nicht, gibt es fuer sie kein Kurz-Training (null). Begruendung: docs/wissenschaft.md, Kurz-Modus.
 import { estimateMinutes } from '../generator/validate';
-import type { PlanRow, RepRange, ShortRules, Timing } from '../model/types';
+import type { PlanDay, PlanRow, RepRange, ShortRules, ShortSlot, Timing } from '../model/types';
 
 export type ShortRow = Pick<PlanRow, 'slotId' | 'repRange' | 'sets' | 'priority'>;
 
@@ -42,4 +42,23 @@ export function shortSets(rows: readonly ShortRow[], ctx: ShortContext, minutes:
   }
   if (kept() < rules.minExercises) return null;
   return Object.fromEntries(work.map((r) => [r.slotId, r.sets]));
+}
+
+/**
+ * Kurz-Modus nach dem Umstellen der Wochenart: Er bleibt fuer Tage, die es im neuen Plan genauso gibt (gleiche
+ * Slots), und entfaellt fuer alle anderen, denn fuer sie wurde er nicht berechnet.
+ */
+export function carryShort(short: Record<string, ShortSlot> | undefined, from: readonly PlanDay[], to: readonly PlanDay[]): Record<string, ShortSlot> | undefined {
+  if (!short) return undefined;
+  const slots = (day: PlanDay) => day.rows.map((r) => r.slotId).sort().join(' ');
+  const same = new Set(to.map(slots));
+  const kept: Record<string, ShortSlot> = {};
+  for (const day of from) {
+    if (!same.has(slots(day))) continue;
+    for (const r of day.rows) {
+      const s = short[r.slotId];
+      if (s) kept[r.slotId] = s;
+    }
+  }
+  return Object.keys(kept).length ? kept : undefined;
 }

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "_doc": "Wochenvorlagen je Ziel und Tagesanzahl. Jeder Tag listet Slot-IDs aus goals.json in Trainingsreihenfolge (ein Slot = eine Uebungszeile, die Uebung waehlt die Person selbst). Ein Eintrag darf ein Objekt sein: sets = andere Basis-Saetze in dieser Wochenart, beginner: false = faellt fuer Einsteiger weg (Einsteiger haben nur 3 und 4 Tage). Slots, die in einer Wochenart fehlen, pausieren dort. Tagesfarben kommen vom Index (A-E).",
+  "_doc": "Wochenvorlagen je Ziel und Tagesanzahl (3/4/5). Jeder Tag listet Slot-IDs aus goals.json in Trainingsreihenfolge (ein Slot = eine Uebungszeile, die Uebung waehlt die Person selbst). Ein Eintrag darf ein Objekt sein: sets = andere Basis-Saetze in dieser Wochenart. Slots, die in einer Wochenart fehlen, pausieren dort. Tagesfarben kommen vom Index (A-E).",
   "goals": {
     "apfel": {
       "3": {
@@ -15,10 +15,7 @@
               "add_8-12_a",
               "back_6-10_a",
               "shoulders_12-15_b",
-              {
-                "id": "abs_8-12_a",
-                "beginner": false
-              }
+              "abs_8-12_a"
             ]
           },
           {
@@ -49,10 +46,7 @@
               "add_8-12_b",
               "back_8-12_a",
               "shoulders_12-15_a",
-              {
-                "id": "abs_8-12_c",
-                "beginner": false
-              }
+              "abs_8-12_c"
             ]
           }
         ]
@@ -89,10 +83,7 @@
                 "id": "gmed_8-12_b",
                 "sets": 3
               },
-              {
-                "id": "hams_8-12_b",
-                "beginner": false
-              },
+              "hams_8-12_b",
               "abs_8-12_b"
             ]
           },
@@ -126,10 +117,7 @@
               },
               "back_8-12_b",
               "shoulders_12-15_a",
-              {
-                "id": "quads_8-12_a",
-                "beginner": false
-              },
+              "quads_8-12_a",
               "abs_8-12_c"
             ]
           }
@@ -248,10 +236,7 @@
               "shoulders_12-15_a",
               "gmax_12-15_a",
               "gmed_8-12_b",
-              {
-                "id": "biceps_8-12_a",
-                "beginner": false
-              },
+              "biceps_8-12_a",
               "abs_8-12_b"
             ]
           },
@@ -292,10 +277,7 @@
               "shoulders_12-15_a",
               "biceps_8-12_a",
               "triceps_8-12_a",
-              {
-                "id": "gmed_12-15_a",
-                "beginner": false
-              },
+              "gmed_12-15_a",
               "abs_8-12_b"
             ]
           },
@@ -312,10 +294,7 @@
                 "id": "shoulders_12-15_b",
                 "sets": 2
               },
-              {
-                "id": "abs_8-12_c",
-                "beginner": false
-              }
+              "abs_8-12_c"
             ]
           },
           {
@@ -331,10 +310,7 @@
                 "sets": 3
               },
               "gmax_12-15_a",
-              {
-                "id": "abs_8-12_d",
-                "beginner": false
-              }
+              "abs_8-12_d"
             ]
           }
         ]

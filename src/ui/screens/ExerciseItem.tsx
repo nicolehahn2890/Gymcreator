@@ -11,8 +11,8 @@ import { Check } from '../components/Check';
 import { ExercisePicker, StarIcon } from '../components/ExercisePicker';
 import { Sheet } from '../components/Sheet';
 import { StatusPill } from '../components/StatusPill';
-import { entryForEdit, saveEntry, withExtraSets, withSetValue, type Position } from '../state/actions';
-import { exerciseName, incrementFor, slotLabel, type AppModel } from '../state/model';
+import { addShortSet, entryForEdit, saveEntry, withExtraSets, withSetValue, type Position } from '../state/actions';
+import { exerciseName, incrementFor, setsText, slotLabel, type AppModel } from '../state/model';
 import { store } from '../state/store';
 
 interface Props {
@@ -77,6 +77,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
     const extra = Math.max(0, st.extraSets + delta);
     const total = Math.min(planData.goals.limits.maxSetsPerSlot, st.baseSets + extra + st.autoExtra);
     edit((e) => withExtraSets(e, extra, total));
+    if (delta > 0) addShortSet(model, pos, row.slotId);
   };
 
   const pick = (next: string) => {
@@ -122,7 +123,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
               </span>
             )}
           </span>
-          <span className="muted">{timed ? fmt(t.setsLineTimed, { sets: st.targetSets }) : fmt(t.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
+          <span className="muted">{setsText(model, st)}</span>
         </span>
         <span className="exercise-row-side">
           {st.once && <span className="pill pill-dashed">{t.once}</span>}
@@ -215,7 +216,9 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                   </button>
                 )}
               </div>
-              {st.autoExtra > 0 && <p className="muted">{t.autoSet}</p>}
+              {st.autoExtra > 0 && (
+                <p className="muted">{fmt(st.autoExtra === 1 ? t.autoSet : t.autoSets, { weeks: planData.goals.progression.stagnationComparisons, sets: st.autoExtra })}</p>
+              )}
 
               <button type="button" className="btn btn-block" onClick={() => setPicker(true)}>
                 {t.swap}

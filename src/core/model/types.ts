@@ -3,8 +3,6 @@
 export const GOAL_IDS = ['vform', 'sanduhr', 'apfel'] as const;
 export type GoalId = (typeof GOAL_IDS)[number];
 
-export const LEVELS = ['beginner', 'advanced'] as const;
-export type Level = (typeof LEVELS)[number];
 
 export const DAY_COUNTS = [3, 4, 5] as const;
 export type DaysPerWeek = (typeof DAY_COUNTS)[number];
@@ -47,8 +45,8 @@ export interface GoalDef {
   priorities: Record<CategoryId, Priority>;
   /** Hauptmuskelgruppe: darf zweimal am Tag vorkommen, alle anderen einmal. */
   mainCategory: CategoryId;
-  /** Wochenziele je Muskel und Stufe; jeder Plan muss darin liegen. */
-  targets: Record<Level, MuscleTargets>;
+  /** Wochenziele je Muskel; jeder Plan muss darin liegen. */
+  targets: MuscleTargets;
   slots: SlotDef[];
 }
 
@@ -61,20 +59,8 @@ export interface Limits {
   maxSlotsMainCategoryPerDay: number;
   /** Dauer jeder normalen Einheit in Minuten [min, max] laut Schaetzung (timing). */
   sessionMinutes: [number, number];
-}
-
-export interface LevelRules {
-  /** Waehlbare Trainingstage pro Woche (Einsteiger ohne 5 Tage). */
-  days: DaysPerWeek[];
-  minExercisesPerSession: number;
-  maxExercisesPerSession: number;
-  maxSetsPerSession: number;
-  /** Feste Satzzahl je Slot (ersetzt die Basis-Saetze aus Pool und Vorlage). */
-  setsPerSlot?: number;
-  /** Bereiche, die ersetzt werden (z. B. "6-8" -> "8-12"). Die Slot-ID bleibt. */
-  rangeMap?: Record<RepRange, RepRange>;
-  /** Mindestens so viele anteilige Saetze pro Woche fuer jeden Hauptmuskel einer Prio-3-Kategorie (ACSM 2026: ca. 10). */
-  minWeeklySetsPrio3?: number;
+  /** Mindestens so viele anteilige Saetze pro Woche fuer jeden Muskel, den eine Prio-3-Kategorie direkt trainiert (ACSM 2026: ca. 10). */
+  minWeeklySetsPrio3: number;
 }
 
 /** Wochenvolumen je Muskel (anteilig gezaehlt) als [min, max]. */
@@ -115,7 +101,6 @@ export interface GoalsData {
   schema: 1;
   ranges: RepRange[];
   limits: Limits;
-  levels: Record<Level, LevelRules>;
   progression: ProgressionRules;
   timing: Timing;
   short: ShortRules;
@@ -123,8 +108,8 @@ export interface GoalsData {
   goals: Record<GoalId, GoalDef>;
 }
 
-/** Slot-ID oder Objekt mit abweichenden Saetzen; beginner: false = faellt fuer Einsteiger weg. */
-export type TemplateSlotRef = string | { id: string; sets?: number; beginner?: boolean };
+/** Slot-ID oder Objekt mit abweichenden Saetzen in dieser Wochenart. */
+export type TemplateSlotRef = string | { id: string; sets?: number };
 
 export interface TemplateDayDef {
   name: string;
@@ -172,7 +157,6 @@ export interface PlanIssue {
 export interface Plan {
   version: 1;
   goal: GoalId;
-  level: Level;
   days: DaysPerWeek;
   dayPlans: PlanDay[];
   /** Slots des Pools, die in dieser Wochenart pausieren. */
@@ -258,7 +242,6 @@ export interface ShortSlot {
 
 export interface Profile {
   goal: GoalId;
-  level: Level;
   /** Standard-Wochenart; je Woche umstellbar (Week). */
   days: DaysPerWeek;
   /** Vorhandene Ausstattung ("Mein Gym"). */

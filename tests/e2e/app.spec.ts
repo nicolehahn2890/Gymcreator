@@ -3,11 +3,9 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-async function onboard(page: Page, goal: string, level: string, days: number) {
+async function onboard(page: Page, goal: string, days: number) {
   await page.goto('./');
   await page.getByRole('button', { name: new RegExp(goal) }).click();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-  await page.getByRole('button', { name: new RegExp(level) }).click();
   await page.getByRole('button', { name: 'Weiter' }).click();
   await page.getByRole('button', { name: new RegExp(`^${days} Tage`) }).click();
   await page.getByRole('button', { name: 'Weiter' }).click();
@@ -21,7 +19,7 @@ async function noOverflow(page: Page) {
 }
 
 test('Onboarding fuehrt zum Plan, keine waagerechte Scrollleiste, kein Fremdname', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await onboard(page, 'Apfel', 4);
   await expect(page.getByRole('heading', { name: /Tag A/ })).toBeVisible();
   await expect(page.getByText('Zyklus 1 · Woche 1 von 12')).toBeVisible();
   await noOverflow(page);
@@ -33,7 +31,7 @@ test('Onboarding fuehrt zum Plan, keine waagerechte Scrollleiste, kein Fremdname
 });
 
 test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt Vorwoche, Hinweis und Bewertung', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   // erste Uebung ist aufgeklappt, aber ohne Vorgabe
   const first = page.locator('.exercise-item').first();
@@ -79,7 +77,7 @@ test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt 
 });
 
 test('Uebung tauschen ab Woche 2 fragt "nur diese Woche" oder "ab jetzt"', async ({ page }) => {
-  await onboard(page, 'Sanduhr', 'Fortgeschritten', 3);
+  await onboard(page, 'Sanduhr', 3);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
   await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
@@ -97,7 +95,7 @@ test('Uebung tauschen ab Woche 2 fragt "nur diese Woche" oder "ab jetzt"', async
 });
 
 test('Satz entfernen loescht den Wert, Trainingstage in den Einstellungen gelten ab der aktuellen Woche', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
   await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
@@ -110,15 +108,55 @@ test('Satz entfernen loescht den Wert, Trainingstage in den Einstellungen gelten
   await expect(first.locator('.set-row input').nth(6)).toHaveValue('');
 
   await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
-  await page.locator('.segmented').nth(2).getByRole('button', { name: '3 Tage' }).click();
+  await page.getByRole('group', { name: 'Trainingstage pro Woche' }).getByRole('button', { name: '3 Tage' }).click();
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await expect(page.locator('.plan-day')).toHaveCount(3);
   await page.getByRole('button', { name: 'Nächste Woche' }).click();
   await expect(page.locator('.plan-day')).toHaveCount(3);
 });
 
+test('Einstellungen: fielen eingetragene Uebungen weg, gelten neue Tage ab naechster Woche; Uebung entfernen loescht die Werte; Halteuebung im Plan', async ({ page }) => {
+  await onboard(page, 'Apfel', 4);
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.locator('.plan-day').nth(1).click();
+  // Tag B, 2. Zeile (Brust) gibt es im 3-Tage-Plan nicht
+  const chest = page.locator('.exercise-item').nth(1);
+  await expect(chest.locator('.exercise-row-cat')).toContainText('Brust');
+  await chest.locator('.exercise-row').click();
+  await pickExercise(page, chest, 'Brustpresse (Maschine)');
+  await fillSets(chest, '20', '10');
+
+  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
+  await page.getByRole('group', { name: 'Trainingstage pro Woche' }).getByRole('button', { name: '3 Tage' }).click();
+  await expect(page.getByText('Gilt ab nächster Woche')).toBeVisible();
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.getByText('Dein Plan: Apfel · 3 Tage pro Woche')).toBeVisible();
+  await expect(page.locator('.plan-day')).toHaveCount(4);
+  await page.getByRole('button', { name: 'Nächste Woche' }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(3);
+
+  await page.getByRole('button', { name: 'Vorherige Woche' }).click();
+  await page.locator('.plan-day').nth(1).click();
+  await chest.locator('.exercise-row').click();
+  await chest.getByRole('button', { name: 'Übung tauschen' }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Übung entfernen' }).click();
+  await expect(chest.locator('.exercise-row-name')).toHaveText('Übung wählen');
+  await page.getByRole('button', { name: 'Fortschritt', exact: true }).click();
+  await expect(page.getByText('Dein Verlauf erscheint hier, sobald du Werte eingetragen hast.')).toBeVisible();
+
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.locator('.plan-day').first().click();
+  const abs = page.locator('.exercise-item').nth(5);
+  await expect(abs.locator('.exercise-row-cat')).toHaveText('Bauch');
+  await abs.locator('.exercise-row').click();
+  await pickExercise(page, abs, 'Unterarmstütz');
+  await expect(abs.locator('.exercise-row')).toContainText('2 Sätze halten');
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await expect(page.locator('.plan-day').first().locator('.plan-day-row').last()).toContainText('2 Sätze halten');
+});
+
 test('Backup: einspielen ersetzt die Daten nach Rueckfrage', async ({ page }) => {
-  await onboard(page, 'V-Form', 'Einsteiger', 3);
+  await onboard(page, 'V-Form', 3);
   await page.getByRole('button', { name: 'Einstellungen' }).click();
   await page.getByLabel('Backup-Text einfügen').fill('kein backup');
   await page.getByRole('button', { name: 'Backup einspielen' }).click();
@@ -128,7 +166,7 @@ test('Backup: einspielen ersetzt die Daten nach Rueckfrage', async ({ page }) =>
     app: 'gymcreator',
     schema: 1,
     date: '2026-10-23',
-    profile: { goal: 'apfel', level: 'advanced', days: 4, equipment: ['machine', 'bodyweight'], increments: {}, lang: 'de', createdAt: '2026-10-01' },
+    profile: { goal: 'apfel', days: 4, equipment: ['machine', 'bodyweight'], increments: {}, lang: 'de', createdAt: '2026-10-01' },
     entries: [],
     weeks: [],
     notes: [],
@@ -197,7 +235,7 @@ async function nextWeekViaPlan(page: Page) {
 }
 
 test('Logo fuehrt von jeder Seite zurueck auf Heute', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await onboard(page, 'Apfel', 3);
   for (const tab of ['Plan', 'Fortschritt', 'Einstellungen']) {
     await page.getByRole('button', { name: tab, exact: true }).click();
     await page.getByRole('button', { name: 'Zur Startseite' }).click();
@@ -209,32 +247,8 @@ test('Logo fuehrt von jeder Seite zurueck auf Heute', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Training starten' })).toBeVisible();
 });
 
-test('Einsteiger koennen nur 3 oder 4 Tage waehlen', async ({ page }) => {
-  await page.goto('./');
-  await page.getByRole('button', { name: /Sanduhr/ }).click();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-  await page.getByRole('button', { name: /Einsteiger/ }).click();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-  await expect(page.getByRole('button', { name: /^5 Tage/ })).toHaveCount(0);
-  await page.getByRole('button', { name: /^4 Tage/ }).click();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-  await page.getByRole('button', { name: 'Weiter' }).click();
-  await page.getByRole('button', { name: 'Plan starten' }).click();
-  await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.getByRole('button', { name: '5 Tage' })).toHaveCount(0);
-  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
-  await expect(page.getByRole('button', { name: '5 Tage' })).toHaveCount(0);
-  // Wechsel auf Fortgeschritten bietet 5 Tage an, zurueck auf Einsteiger macht aus 5 wieder 4
-  await page.getByRole('button', { name: 'Fortgeschritten' }).click();
-  await page.getByRole('button', { name: '5 Tage' }).click();
-  await page.getByRole('button', { name: 'Einsteiger' }).click();
-  await expect(page.getByRole('button', { name: '4 Tage' })).toHaveAttribute('aria-pressed', 'true');
-  await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.locator('.plan-day')).toHaveCount(4);
-});
-
 test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstellen bringt sie wieder', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await page.locator('.plan-day').nth(3).click();
   // Tag D, 2. Zeile (Glute Max) gibt es im 3-Tage-Plan nicht
@@ -265,7 +279,7 @@ test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstelle
 
 test('Eigene Uebung ueber zwei Wochen, langer Name ohne Ueberlauf, Fortschritt rechnet richtig', async ({ page }) => {
   const name = 'Hüftstrecken am Kabel mit Fußschlaufe, kniend auf der Bank, langsame Ausführung';
-  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await onboard(page, 'Apfel', 3);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
   const second = page.locator('.exercise-item').nth(1);
@@ -307,7 +321,7 @@ test('Eigene Uebung ueber zwei Wochen, langer Name ohne Ueberlauf, Fortschritt r
 });
 
 test('Bedienbarkeit: Knoepfe und Felder haben Namen, aufgeklappt ist ausgezeichnet', async ({ page }) => {
-  await onboard(page, 'V-Form', 'Fortgeschritten', 4);
+  await onboard(page, 'V-Form', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
   await pickExercise(page, first, 'Klimmzug assistiert breit');
@@ -329,7 +343,7 @@ test('Bedienbarkeit: Knoepfe und Felder haben Namen, aufgeklappt ist ausgezeichn
 });
 
 test('Kein Deload: Plan erklaert den leichteren Start, Woche 12 und Zyklus 2 erinnern daran', async ({ page }) => {
-  await onboard(page, 'Sanduhr', 'Fortgeschritten', 3);
+  await onboard(page, 'Sanduhr', 3);
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await expect(page.getByText('Ein Zyklus hat 12 Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit 5–10 % weniger Gewicht und steigerst dich wieder.')).toBeVisible();
   await page.locator('.week-label').click();
@@ -344,7 +358,7 @@ test('Kein Deload: Plan erklaert den leichteren Start, Woche 12 und Zyklus 2 eri
 });
 
 test('Plan neu einrichten: aus Plan und Einstellungen, Abbrechen aendert nichts, Verlauf bleibt', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
   await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
@@ -360,26 +374,26 @@ test('Plan neu einrichten: aus Plan und Einstellungen, Abbrechen aendert nichts,
 
   // Plan: Ziel wechseln und uebernehmen
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.getByText('Dein Plan: Apfel · Fortgeschritten · 4 Tage pro Woche')).toBeVisible();
+  await expect(page.getByText('Dein Plan: Apfel · 4 Tage pro Woche')).toBeVisible();
   await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
   await page.getByRole('button', { name: /Sanduhr/ }).click();
-  for (let i = 0; i < 4; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
+  for (let i = 0; i < 3; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
   await expect(page.getByText('Dein Verlauf bleibt erhalten.')).toBeVisible();
   await page.getByRole('button', { name: 'Übernehmen' }).click();
-  await expect(page.getByText('Dein Plan: Sanduhr · Fortgeschritten · 4 Tage pro Woche')).toBeVisible();
+  await expect(page.getByText('Dein Plan: Sanduhr · 4 Tage pro Woche')).toBeVisible();
   await expect(page.getByText('Zyklus 1 · Woche 1 von 12')).toBeVisible();
 
   // zurueck auf Apfel: die eingetragenen Werte sind noch da
   await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
   await page.getByRole('button', { name: /Apfel/ }).click();
-  for (let i = 0; i < 4; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
+  for (let i = 0; i < 3; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
   await page.getByRole('button', { name: 'Übernehmen' }).click();
   await expect(page.locator('.plan-day').first()).toContainText('Hip Thrust (Langhantel)');
   await noOverflow(page);
 });
 
 test('Kurz-Modus: 45 Min. laesst die unwichtigsten Uebungen weg, sie bleiben unten machbar; Normal stellt zurueck', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await onboard(page, 'Apfel', 3);
   await expect(page.getByText('7 Übungen · ca. 70 Min.')).toBeVisible();
   await page.getByRole('button', { name: 'Training starten' }).click();
   const time = page.getByRole('group', { name: 'Zeit heute' });
@@ -423,7 +437,7 @@ test('Kurz-Modus: 45 Min. laesst die unwichtigsten Uebungen weg, sie bleiben unt
 });
 
 test('Kurz-Modus: Einheiten mit 60 Min. bieten nur 45 Min. an', async ({ page }) => {
-  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await onboard(page, 'Apfel', 3);
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await page.locator('.plan-day').nth(1).click();
   await expect(page.getByText('ca. 60 Min.')).toBeVisible();

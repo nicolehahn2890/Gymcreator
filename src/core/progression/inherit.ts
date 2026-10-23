@@ -50,9 +50,13 @@ export function exerciseChange(current: Entry | undefined, week: number, inherit
   return 'ask';
 }
 
-/** Setzt die Uebung; once = "nur diese Woche" (die vererbte Uebung bleibt Standard). */
+/**
+ * Setzt die Uebung; once = "nur diese Woche" (die vererbte Uebung bleibt Standard). Leeren loescht auch die Werte
+ * der Woche (anders als Peach): Sie zaehlten sonst als trainiert und landeten bei der naechsten gewaehlten Uebung.
+ */
 export function applyExercise(entry: Entry, next: string, once: boolean, inherited: string | undefined): Entry {
   const result: Entry = { ...entry, exerciseId: next };
+  if (!next) result.sets = [];
   delete result.once;
   delete result.baseExerciseId;
   return once ? { ...result, once: true, baseExerciseId: inherited ?? '' } : result;

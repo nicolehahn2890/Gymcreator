@@ -1,15 +1,15 @@
 // Abgeleitete Daten fuer die Oberflaeche: Plaene je Wochenart, Uebungs-Lookup, Kontext fuer den
 // Progressions-Kern. Wird bei jeder Datenaenderung neu gebaut (unveraenderlich).
-import { buildPlan, effectiveDays } from '../../core/generator/buildPlan';
+import { buildPlan } from '../../core/generator/buildPlan';
 import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanDay, type PlanRow, type Profile } from '../../core/model/types';
 import { carryOver } from '../../core/progression/cycle';
 import { indexEntries, type EntryIndex } from '../../core/progression/entries';
 import type { ShortContext } from '../../core/progression/short';
-import { rowState, type RowContext } from '../../core/progression/state';
+import { rowState, type RowContext, type RowState } from '../../core/progression/state';
 import { estimateMinutes } from '../../core/generator/validate';
 import { weekDays } from '../../core/progression/week';
-import { text } from '../../i18n';
+import { fmt, range, text } from '../../i18n';
 import type { StoredData } from '../../storage/interface';
 
 export interface ExerciseInfo {
@@ -35,8 +35,8 @@ export interface AppModel {
 }
 
 export function buildModel(data: StoredData, profile: Profile): AppModel {
-  const { goal, level } = profile;
-  const plans = Object.fromEntries(DAY_COUNTS.map((days) => [days, buildPlan(planData, { goal, level, days })])) as Record<DaysPerWeek, Plan>;
+  const { goal } = profile;
+  const plans = Object.fromEntries(DAY_COUNTS.map((days) => [days, buildPlan(planData, { goal, days })])) as Record<DaysPerWeek, Plan>;
   const exercises = new Map<string, ExerciseInfo>();
   for (const e of exerciseData.exercises) {
     exercises.set(e.id, {
@@ -59,12 +59,7 @@ export function buildModel(data: StoredData, profile: Profile): AppModel {
 }
 
 export function daysFor(model: AppModel, cycle: number, week: number): DaysPerWeek {
-  return effectiveDays(planData, model.profile.level, weekDays(model.data.weeks, cycle, week, model.profile.days));
-}
-
-/** Waehlbare Tage pro Woche fuer die Stufe des Profils. */
-export function dayOptions(model: AppModel): DaysPerWeek[] {
-  return planData.goals.levels[model.profile.level].days;
+  return weekDays(model.data.weeks, cycle, week, model.profile.days);
 }
 
 export function planFor(model: AppModel, cycle: number, week: number): Plan {
@@ -111,6 +106,12 @@ export const shortContext: ShortContext = { timing: planData.goals.timing, rules
 export function slotLabel(row: Pick<PlanRow, 'category' | 'focus'>): string {
   const cat = planData.goals.categories[row.category]?.label.de ?? row.category;
   return row.focus ? `${cat} · ${text.focus[row.focus]}` : cat;
+}
+
+/** Saetze der Zeile: "3 × 8–12 Wdh.", bei Halte-Uebungen "3 Sätze halten". */
+export function setsText(model: AppModel, st: Pick<RowState, 'exerciseId' | 'targetSets' | 'repRange'>): string {
+  const t = text.workout;
+  return model.exercises.get(st.exerciseId)?.timed ? fmt(t.setsLineTimed, { sets: st.targetSets }) : fmt(t.setsLine, { sets: st.targetSets, range: range(st.repRange) });
 }
 
 export function exerciseName(model: AppModel, id: string): string {

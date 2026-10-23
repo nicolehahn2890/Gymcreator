@@ -2,18 +2,16 @@ import { describe, expect, it } from 'vitest';
 import { buildPlan } from '../generator/buildPlan';
 import { estimateMinutes } from '../generator/validate';
 import { planData } from '../model/data';
-import { GOAL_IDS, LEVELS, type PlanRow } from '../model/types';
+import { DAY_COUNTS, GOAL_IDS, type PlanRow } from '../model/types';
 import { dayProgress } from './position';
-import { shortSets, type ShortContext } from './short';
+import { carryShort, shortSets, type ShortContext } from './short';
 import { rowState } from './state';
 import { context, entry, plans, rowOf } from './testing';
 
 const ctx: ShortContext = { timing: planData.goals.timing, rules: planData.goals.short, ranges: planData.goals.ranges };
 const { minExercises, minSets } = planData.goals.short;
 const withSets = (rows: readonly PlanRow[], sets: Record<string, number>) => rows.map((r) => ({ ...r, sets: sets[r.slotId] ?? r.sets }));
-const allDays = GOAL_IDS.flatMap((goal) =>
-  LEVELS.flatMap((level) => planData.goals.levels[level].days.flatMap((days) => buildPlan(planData, { goal, level, days }).dayPlans.map((day) => ({ tag: `${goal}/${level}/${days}/${day.letter}`, day })))),
-);
+const allDays = GOAL_IDS.flatMap((goal) => DAY_COUNTS.flatMap((days) => buildPlan(planData, { goal, days }).dayPlans.map((day) => ({ tag: `${goal}/${days}/${day.letter}`, day }))));
 
 describe('Kurz-Modus', () => {
   it('jede Einheit: kurze Fassung passt in die Zeit, behaelt Prio 3 und die Mindestdosis, laesst zuerst das Unwichtigste weg', () => {
@@ -37,7 +35,7 @@ describe('Kurz-Modus', () => {
         if (dropped.length && keptNot3.length) expect(Math.max(...dropped.map((r) => r.priority)), t).toBeLessThanOrEqual(Math.min(...keptNot3));
       }
     }
-    expect(offered).toBeGreaterThan(50);
+    expect(offered).toBeGreaterThan(40);
   });
 
   it('Beispiel Apfel, Tag A (70 Min.): 60 Min. ohne Schultern und Bauch, 45 Min. nur die drei Po- und Beinuebungen mit allen Saetzen', () => {
@@ -59,6 +57,18 @@ describe('Kurz-Modus', () => {
     // erst Bauch weg (Prio 2), dann je ein Satz bei den Uebungen mit den meisten Saetzen, Isolation zuerst
     expect(shortSets(rows, ctx, 45)).toEqual({ a: 4, b: 3, c: 3, d: 0 });
     expect(shortSets(rows, ctx, 20)).toBeNull();
+  });
+
+  it('Umstellen der Wochenart: Kurz-Modus bleibt nur fuer Tage mit denselben Slots', () => {
+    const [three, four, five] = DAY_COUNTS.map((days) => buildPlan(planData, { goal: 'apfel', days }).dayPlans);
+    const dayA = four?.[0];
+    const sets = dayA && shortSets(dayA.rows, ctx, 45);
+    if (!three || !four || !five || !sets) throw new Error('Plan fehlt');
+    const short = Object.fromEntries(Object.entries(sets).map(([slotId, n]) => [slotId, { minutes: 45, sets: n }]));
+    // Apfel Tag A ist mit 4 und 5 Tagen gleich, mit 3 Tagen ein anderer Tag
+    expect(carryShort(short, four, five)).toEqual(short);
+    expect(carryShort(short, four, three)).toBeUndefined();
+    expect(carryShort(undefined, four, five)).toBeUndefined();
   });
 
   it('null, wenn der Tag schon kurz genug ist', () => {

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). ranges: Wdh.-Bereiche, schwerster zuerst. limits: Grenzen fuer jeden Plan (anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag; die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen; sessionMinutes: Dauer jeder normalen Einheit laut Schaetzung). levels: Regeln je Stufe (waehlbare Tage pro Woche, Uebungen und Saetze je Einheit; Einsteiger: 3 Saetze je Zeile, 6-8 und 6-10 werden 8-12, die Slot-ID bleibt; Fortgeschrittene: Mindestvolumen der Prio-3-Muskeln). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen, kein Deload: der naechste Zyklus beginnt mit nextCycleLighterPct Prozent weniger Gewicht (Hinweis in Heute und Plan). timing: Satzdauer, Pause je Bereich (auch fuer den Pausentimer), Aufwaermsaetze und Wechsel je Uebung nach Bereich; daraus die Dauer-Schaetzung. short: Kurz-Modus (angebotene Zeiten; erst fallen Uebungen nach Prioritaet weg, dann Saetze; es bleiben mindestens minExercises Uebungen mit je minSets Saetzen, sonst wird die Zeit nicht angeboten). categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel und Stufe, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
+  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). Ein Plan je Ziel und Tagesanzahl (3/4/5) fuer alle, es gibt keine Erfahrungsstufen. ranges: Wdh.-Bereiche, schwerster zuerst. limits: Grenzen fuer jeden Plan (hoechstens maxFractionalSetsPerMusclePerSession anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag, die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen; sessionMinutes: Dauer jeder Einheit laut Schaetzung; minWeeklySetsPrio3: Mindestvolumen je Prio-3-Muskel und Woche). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen, kein Deload: der naechste Zyklus beginnt mit nextCycleLighterPct Prozent weniger Gewicht (Hinweis in Heute und Plan). timing: Satzdauer, Pause je Bereich (auch fuer den Pausentimer), Aufwaermsaetze und Wechsel je Uebung nach Bereich; daraus die Dauer-Schaetzung. short: Kurz-Modus (angebotene Zeiten; erst fallen Uebungen nach Prioritaet weg, dann Saetze; es bleiben mindestens minExercises Uebungen mit je minSets Saetzen, sonst wird die Zeit nicht angeboten). categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
   "ranges": [
     "6-8",
     "6-10",
@@ -16,34 +16,8 @@
     "sessionMinutes": [
       60,
       90
-    ]
-  },
-  "levels": {
-    "beginner": {
-      "days": [
-        3,
-        4
-      ],
-      "minExercisesPerSession": 5,
-      "maxExercisesPerSession": 6,
-      "maxSetsPerSession": 18,
-      "setsPerSlot": 3,
-      "rangeMap": {
-        "6-8": "8-12",
-        "6-10": "8-12"
-      }
-    },
-    "advanced": {
-      "days": [
-        3,
-        4,
-        5
-      ],
-      "minExercisesPerSession": 5,
-      "maxExercisesPerSession": 7,
-      "maxSetsPerSession": 18,
-      "minWeeklySetsPrio3": 10
-    }
+    ],
+    "minWeeklySetsPrio3": 10
   },
   "progression": {
     "cycleWeeks": 12,
@@ -254,106 +228,54 @@
       },
       "mainCategory": "gmax",
       "targets": {
-        "advanced": {
-          "gluteMax": [
-            12,
-            24
-          ],
-          "gluteMed": [
-            10,
-            16
-          ],
-          "hams": [
-            5,
-            12
-          ],
-          "adductors": [
-            2,
-            8
-          ],
-          "quads": [
-            4,
-            12
-          ],
-          "back": [
-            6,
-            12
-          ],
-          "shoulders": [
-            6,
-            12
-          ],
-          "abs": [
-            2,
-            8
-          ],
-          "chest": [
-            0,
-            6
-          ],
-          "biceps": [
-            0,
-            8
-          ],
-          "triceps": [
-            0,
-            4
-          ],
-          "calves": [
-            0,
-            0
-          ]
-        },
-        "beginner": {
-          "gluteMax": [
-            8,
-            20
-          ],
-          "gluteMed": [
-            6,
-            12
-          ],
-          "hams": [
-            3,
-            9
-          ],
-          "adductors": [
-            2,
-            8
-          ],
-          "quads": [
-            3,
-            9
-          ],
-          "back": [
-            3,
-            9
-          ],
-          "shoulders": [
-            3,
-            10
-          ],
-          "abs": [
-            0,
-            9
-          ],
-          "chest": [
-            0,
-            6
-          ],
-          "biceps": [
-            0,
-            6
-          ],
-          "triceps": [
-            0,
-            4
-          ],
-          "calves": [
-            0,
-            0
-          ]
-        }
+        "gluteMax": [
+          12,
+          24
+        ],
+        "gluteMed": [
+          10,
+          16
+        ],
+        "hams": [
+          5,
+          12
+        ],
+        "adductors": [
+          2,
+          8
+        ],
+        "quads": [
+          4,
+          12
+        ],
+        "back": [
+          6,
+          12
+        ],
+        "shoulders": [
+          6,
+          12
+        ],
+        "abs": [
+          2,
+          8
+        ],
+        "chest": [
+          0,
+          6
+        ],
+        "biceps": [
+          0,
+          8
+        ],
+        "triceps": [
+          0,
+          4
+        ],
+        "calves": [
+          0,
+          0
+        ]
       },
       "slots": [
         {
@@ -593,106 +515,54 @@
       },
       "mainCategory": "gmax",
       "targets": {
-        "advanced": {
-          "gluteMax": [
-            12,
-            24
-          ],
-          "gluteMed": [
-            4,
-            10
-          ],
-          "shoulders": [
-            10,
-            20
-          ],
-          "quads": [
-            5,
-            12
-          ],
-          "hams": [
-            5,
-            12
-          ],
-          "back": [
-            6,
-            12
-          ],
-          "abs": [
-            2,
-            8
-          ],
-          "adductors": [
-            0,
-            6
-          ],
-          "chest": [
-            2,
-            8
-          ],
-          "biceps": [
-            2,
-            10
-          ],
-          "triceps": [
-            1,
-            8
-          ],
-          "calves": [
-            0,
-            0
-          ]
-        },
-        "beginner": {
-          "gluteMax": [
-            8,
-            20
-          ],
-          "gluteMed": [
-            2,
-            8
-          ],
-          "shoulders": [
-            6,
-            14
-          ],
-          "quads": [
-            3,
-            9
-          ],
-          "hams": [
-            3,
-            9
-          ],
-          "back": [
-            3,
-            9
-          ],
-          "abs": [
-            0,
-            9
-          ],
-          "adductors": [
-            0,
-            4
-          ],
-          "chest": [
-            0,
-            6
-          ],
-          "biceps": [
-            0,
-            8
-          ],
-          "triceps": [
-            0,
-            6
-          ],
-          "calves": [
-            0,
-            0
-          ]
-        }
+        "gluteMax": [
+          12,
+          24
+        ],
+        "gluteMed": [
+          4,
+          10
+        ],
+        "shoulders": [
+          10,
+          20
+        ],
+        "quads": [
+          5,
+          12
+        ],
+        "hams": [
+          5,
+          12
+        ],
+        "back": [
+          6,
+          12
+        ],
+        "abs": [
+          2,
+          8
+        ],
+        "adductors": [
+          0,
+          6
+        ],
+        "chest": [
+          2,
+          8
+        ],
+        "biceps": [
+          2,
+          10
+        ],
+        "triceps": [
+          1,
+          8
+        ],
+        "calves": [
+          0,
+          0
+        ]
       },
       "slots": [
         {
@@ -939,106 +809,54 @@
       },
       "mainCategory": "back",
       "targets": {
-        "advanced": {
-          "back": [
-            12,
-            24
-          ],
-          "shoulders": [
-            10,
-            20
-          ],
-          "chest": [
-            10,
-            18
-          ],
-          "biceps": [
-            4,
-            14
-          ],
-          "triceps": [
-            4,
-            14
-          ],
-          "quads": [
-            4,
-            10
-          ],
-          "abs": [
-            2,
-            8
-          ],
-          "hams": [
-            2,
-            8
-          ],
-          "gluteMax": [
-            2,
-            8
-          ],
-          "calves": [
-            0,
-            8
-          ],
-          "gluteMed": [
-            0,
-            0
-          ],
-          "adductors": [
-            0,
-            0
-          ]
-        },
-        "beginner": {
-          "back": [
-            8,
-            18
-          ],
-          "shoulders": [
-            6,
-            14
-          ],
-          "chest": [
-            6,
-            14
-          ],
-          "biceps": [
-            3,
-            14
-          ],
-          "triceps": [
-            3,
-            12
-          ],
-          "quads": [
-            3,
-            9
-          ],
-          "abs": [
-            0,
-            9
-          ],
-          "hams": [
-            0,
-            6
-          ],
-          "gluteMax": [
-            0,
-            6
-          ],
-          "calves": [
-            0,
-            6
-          ],
-          "gluteMed": [
-            0,
-            0
-          ],
-          "adductors": [
-            0,
-            0
-          ]
-        }
+        "back": [
+          12,
+          24
+        ],
+        "shoulders": [
+          10,
+          20
+        ],
+        "chest": [
+          10,
+          18
+        ],
+        "biceps": [
+          4,
+          14
+        ],
+        "triceps": [
+          4,
+          14
+        ],
+        "quads": [
+          4,
+          10
+        ],
+        "abs": [
+          2,
+          8
+        ],
+        "hams": [
+          2,
+          8
+        ],
+        "gluteMax": [
+          2,
+          8
+        ],
+        "calves": [
+          0,
+          8
+        ],
+        "gluteMed": [
+          0,
+          0
+        ],
+        "adductors": [
+          0,
+          0
+        ]
       },
       "slots": [
         {

@@ -1,5 +1,5 @@
 // Backup als Text (Kopieren/Teilen/Datei). Import prueft Form und Version, bevor etwas ueberschrieben wird.
-import { DAY_COUNTS, GOAL_IDS, LEVELS, type Entry, type Profile, type Week } from '../core/model/types';
+import { DAY_COUNTS, GOAL_IDS, type Entry, type Profile, type Week } from '../core/model/types';
 import { SCHEMA_VERSION, type StoredData } from './interface';
 import { migrate } from './migrations';
 
@@ -31,7 +31,6 @@ function isProfile(v: unknown): v is Profile {
   return (
     isObj(v) &&
     GOAL_IDS.includes(v.goal as never) &&
-    LEVELS.includes(v.level as never) &&
     DAY_COUNTS.includes(v.days as never) &&
     Array.isArray(v.equipment) &&
     v.equipment.every(isStr) &&

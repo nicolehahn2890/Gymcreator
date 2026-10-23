@@ -2,6 +2,10 @@
   margin: 16px 0 8px;
 }
 
+.settings-hint {
+  margin-top: 8px;
+}
+
 .chip-list {
   display: flex;
   flex-wrap: wrap;

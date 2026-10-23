@@ -6,9 +6,9 @@ import { indexEntries } from './entries';
 import type { RowContext } from './state';
 
 export const plans: Record<3 | 4 | 5, Plan> = {
-  3: buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 }),
-  4: buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 4 }),
-  5: buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 5 }),
+  3: buildPlan(planData, { goal: 'apfel', days: 3 }),
+  4: buildPlan(planData, { goal: 'apfel', days: 4 }),
+  5: buildPlan(planData, { goal: 'apfel', days: 5 }),
 };
 
 export function rowOf(slotId: string, days: DaysPerWeek = 4): PlanRow & { day: number } {
