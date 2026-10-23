@@ -69,7 +69,7 @@ Kurzfassung:
 - **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–34.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
 - **Einsteiger:** nur 3 oder 4 Tage pro Woche, 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
-- Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, kein Deload als Standard, 12-Wochen-Zyklus.
+- Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, 12-Wochen-Zyklus. Kein Deload: Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht, erklärt im Plan und auf "Heute".
 
 Die Apfel-Pläne sind nicht mehr Nicoles Peach-Plan P3/P4 (der Regressionstest dazu ist entfernt).
 
@@ -114,7 +114,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 - Steigerungsregel: Obergrenze im 1. Satz → "Gewicht steigern: heute 42,5 kg" (assistiert: "Hilfe senken"); verschwindet live bei mehr Gewicht oder fertiger Übung
 - Auto-Zusatzsatz nach 3 stagnierenden Wochenvergleichen (max. 5 Sätze), +/- manuell; Vererbung von Übung (über Lücken) und Zusatzsätzen (nur direkte Vorwoche)
 - Übungswechsel ab Woche 2: "Nur diese Woche" / "Ab jetzt"
-- Woche 1 = kein Vergleich; Woche 12 normal; kein Deload-Zwang
+- Woche 1 = kein Vergleich; Woche 12 normal; kein Deload, stattdessen startet der nächste Zyklus 5–10 % leichter (Hinweis im Plan und auf "Heute")
 - Bewertung als Text und Farbe: "Mehr Gewicht" / "Mehr Wiederholungen" / "Gleich" / "Weniger"; assistiert "Weniger Hilfe" / "Mehr Hilfe", Halteübungen "Länger gehalten"
 
 Neu für eine breite Zielgruppe:
@@ -134,7 +134,7 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 | **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
 | **Plan** | Wochenansicht (3/4/5-Tage-Wahl für diese Woche), Tage mit Übungen, Zyklus/Woche-Auswahl (Raster wie Peach), Zyklus-Ende-Banner | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
-| **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage), Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Deload, Sprache | Peach: nur Backup unten in der Übersicht |
+| **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage), Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
 - **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
@@ -302,7 +302,7 @@ Fakten, die den Plan beeinflussen:
 4. ✅ UI: Onboarding → Plan-Ansicht
 5. ✅ UI: Heute + Training (23.10.: aufklappbare Übungen in der Tagesansicht statt Fokusansicht, Vorwoche je Satz, Timer, Badge, Vorschlag)
 6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
-7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup (Deload opt-in offen, Regel nicht festgelegt)
+7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup
 8. 🟡 PWA-Feinschliff: Icon ✅, Manifest `display: standalone` ✅ (anders als Peach, weil der Speicher in der App lebt), Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅. Offen: Lighthouse-Check in CI, Nutzertest mit 3–5 Personen (später auch die 12 Play-Tester)
 
 **Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
@@ -336,11 +336,13 @@ Fakten, die den Plan beeinflussen:
 12. **Einsteiger nur 3 oder 4 Tage**; 5 Tage mit 6 Sätzen pro Einheit ergeben keinen Sinn (23.10.)
 13. **Zwei Abweichungen von der Peach-Logik bestätigt:** Vorwert bevorzugt Wochen mit Wiederholungen; bei Gegengewicht zählt 0 kg Hilfe als Bestwert (23.10.)
 14. **Logo oben auf jeder Seite** führt zurück auf "Heute" (23.10.)
+15. **Kein Deload.** Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht; das erklärt der Plan (23.10.)
+16. **Kniebeuge zählt für den Po weiter 0,5** im Muskelmodell (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 
 - Sprache: Deutsch zuerst, Texte von Tag 1 in i18n-Dateien, Englisch in Phase 2
 - Kein Account, keine Cloud, keine Datenerhebung (DSGVO-minimal), Backup lokal
-- 12-Wochen-Zyklen, kein Deload-Standard, Woche 1 ohne Vergleich – wie Peach
+- 12-Wochen-Zyklen, kein Deload, Woche 1 ohne Vergleich – wie Peach; der nächste Zyklus startet 5–10 % leichter
 - Peach bleibt unverändert deine private App; Gymcreator ist ein eigenes Produkt mit eigenem Speicher
 - Design-Kür (Glyphen, Icon) kann Florian später veredeln; im MVP mache ich Pixel-Art-Platzhalter in der Peach-Bauweise

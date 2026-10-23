@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). ranges: Wdh.-Bereiche, schwerster zuerst. categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). limits: Grenzen fuer jeden Plan (anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag; die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen). levels: Regeln je Stufe (waehlbare Tage pro Woche, Uebungen und Saetze je Einheit; Einsteiger: 2 Saetze je Zeile, 6-8 und 6-10 werden 8-12, die Slot-ID bleibt). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen. timing: Pause je Bereich und Dauer eines Satzes. Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel und Stufe, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
+  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). ranges: Wdh.-Bereiche, schwerster zuerst. categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). limits: Grenzen fuer jeden Plan (anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag; die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen). levels: Regeln je Stufe (waehlbare Tage pro Woche, Uebungen und Saetze je Einheit; Einsteiger: 2 Saetze je Zeile, 6-8 und 6-10 werden 8-12, die Slot-ID bleibt). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen, kein Deload: der naechste Zyklus beginnt mit nextCycleLighterPct Prozent weniger Gewicht (Hinweis in Heute und Plan). timing: Pause je Bereich und Dauer eines Satzes. Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel und Stufe, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
   "ranges": [
     "6-8",
     "6-10",
@@ -44,7 +44,11 @@
     "cycleWeeks": 12,
     "compareFromWeek": 2,
     "stagnationComparisons": 3,
-    "autoExtraSets": 1
+    "autoExtraSets": 1,
+    "nextCycleLighterPct": [
+      5,
+      10
+    ]
   },
   "timing": {
     "setSeconds": 45,

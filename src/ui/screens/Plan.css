@@ -91,3 +91,8 @@
   border: 2px solid var(--ink);
   border-radius: 50%;
 }
+
+.plan-cycle-note {
+  margin-top: 12px;
+  font-size: var(--fs-small);
+}

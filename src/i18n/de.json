@@ -65,7 +65,8 @@
     "balance": "{improved} von {total} Übungen gesteigert",
     "allDays": "Diese Woche",
     "firstWeek": "Woche 1: Finde deine Gewichte. Verglichen wird ab Woche 2.",
-    "cycleEnd": "Letzte Woche von Zyklus {cycle}. Zyklus {next} übernimmt deine Übungen.",
+    "firstWeekNext": "Woche 1 von Zyklus {cycle}: Starte mit {from}–{to} % weniger Gewicht als zuletzt und steigere dich wieder. Verglichen wird ab Woche 2.",
+    "cycleEnd": "Letzte Woche von Zyklus {cycle}. Zyklus {next} übernimmt deine Übungen; dort startest du mit etwas weniger Gewicht.",
     "install": "Füge die App zum Home-Bildschirm hinzu, damit deine Daten zuverlässig gespeichert bleiben."
   },
   "workout": {
@@ -141,6 +142,7 @@
   "plan": {
     "title": "Plan",
     "cycleWeek": "Zyklus {cycle} · Woche {week}",
+    "cycleNote": "Ein Zyklus hat {weeks} Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit {from}–{to} % weniger Gewicht und steigerst dich wieder.",
     "prevWeek": "Vorherige Woche",
     "nextWeek": "Nächste Woche",
     "pickWeek": "Woche wählen",

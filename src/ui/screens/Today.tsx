@@ -34,7 +34,11 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
     <main className="screen today">
       <AppHeader sub={fmt(t.weekLine, { cycle, week, weeks: rules.cycleWeeks })} />
 
-      {week < rules.compareFromWeek && <p className="note today-note">{t.firstWeek}</p>}
+      {week < rules.compareFromWeek && (
+        <p className="note today-note">
+          {cycle > 1 ? fmt(t.firstWeekNext, { cycle, from: rules.nextCycleLighterPct[0], to: rules.nextCycleLighterPct[1] }) : t.firstWeek}
+        </p>
+      )}
       {week === rules.cycleWeeks && <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>}
 
       {nextDay ? (

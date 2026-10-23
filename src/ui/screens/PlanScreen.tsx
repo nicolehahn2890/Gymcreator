@@ -55,6 +55,10 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay }: Props) {
         </button>
       </div>
 
+      <p className="muted plan-cycle-note">
+        {fmt(t.cycleNote, { weeks: rules.cycleWeeks, from: rules.nextCycleLighterPct[0], to: rules.nextCycleLighterPct[1] })}
+      </p>
+
       <h2 className="section-title">{t.daysThisWeek}</h2>
       <div className="segmented" role="group" aria-label={t.daysThisWeek}>
         {dayOptions(model).map((d) => (

@@ -85,6 +85,8 @@ export interface ProgressionRules {
   stagnationComparisons: number;
   /** Saetze, die der Auto-Zusatzsatz hinzufuegt. */
   autoExtraSets: number;
+  /** Kein Deload: der naechste Zyklus beginnt mit so viel Prozent weniger Gewicht ([von, bis]). Nur Hinweistext. */
+  nextCycleLighterPct: [number, number];
 }
 
 export interface Timing {

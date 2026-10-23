@@ -308,3 +308,18 @@ test('Bedienbarkeit: Knoepfe und Felder haben Namen, aufgeklappt ist ausgezeichn
     expect(unnamed, screen).toEqual([]);
   }
 });
+
+test('Kein Deload: Plan erklaert den leichteren Start, Woche 12 und Zyklus 2 erinnern daran', async ({ page }) => {
+  await onboard(page, 'Sanduhr', 'Fortgeschritten', 3);
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.getByText('Ein Zyklus hat 12 Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit 5–10 % weniger Gewicht und steigerst dich wieder.')).toBeVisible();
+  await page.locator('.week-label').click();
+  await page.getByRole('dialog').getByRole('button', { name: /^12/ }).click();
+  await page.getByRole('button', { name: 'Zur Startseite' }).click();
+  await expect(page.getByText(/Zyklus 2 übernimmt deine Übungen; dort startest du mit etwas weniger Gewicht/)).toBeVisible();
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.getByRole('button', { name: 'Nächste Woche' }).click();
+  await page.getByRole('button', { name: 'Zur Startseite' }).click();
+  await expect(page.getByText('Zyklus 2 · Woche 1 von 12')).toBeVisible();
+  await expect(page.getByText(/Woche 1 von Zyklus 2: Starte mit 5–10 % weniger Gewicht als zuletzt/)).toBeVisible();
+});

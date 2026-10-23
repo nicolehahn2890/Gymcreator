@@ -18,6 +18,8 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Tage | Fortgeschrittene 3/4/5, **Einsteiger nur 3/4** |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
 | Logo | Logo oben auf jeder Seite führt auf „Heute“ |
+| Zyklus | 12 Wochen, **kein Deload**. Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht (`progression.nextCycleLighterPct`); erklärt im Plan und auf „Heute“ (Woche 12 und Woche 1 ab Zyklus 2) |
+| Muskelmodell | Kniebeuge zählt für den Po 0,5 und bleibt so |
 | Wdh.-Bereiche | 6–8 / 6–10 / 8–12 / 12–15, Hauptmuskel wellenförmig über die Woche |
 | Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
 | Namen | **Muskelgruppen behalten ihre Namen** (Glute Max, Glute & Quad …). Tage heißen nach Körperbereich („Tag A – Po & Beine“), darunter die Belastung („Schwere Grundübungen“) |
@@ -49,22 +51,21 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 
 Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
-**Tests:** 126 Vitest + 12 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Speichern über Neuladen, Auf-/Zuklappen, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Backup-Import, Manifest, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Tests:** 126 Vitest + 13 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Speichern über Neuladen, Auf-/Zuklappen, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Backup-Import, Manifest, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
-- **Deload**: nicht gebaut, Regel nicht festgelegt (welche Woche, wie viel weniger). Erst mit Nicole klären.
 - **Sicherheitskopie und Migrationen**: Die Kopie vor einem Import trägt keine Schema-Version. Sobald es eine Migration (Schema 2) gibt, muss "Wiederherstellen" sie durch `migrate` schicken.
 - **Ziel- oder Stufenwechsel mitten im Zyklus**: Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID). Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
 - **Lighthouse-PWA-Check** in CI fehlt.
-- **Wissenschaft**: Neuer ACSM Position Stand 2026 (Nachfolger von 2009) noch nicht gelesen. Die Kniebeuge zählt im Muskelmodell nur 0,5 für den Po, die Studien sprechen eher für mehr (Vorbehalt in `docs/wissenschaft.md`).
+- **Wissenschaft**: Neuer ACSM Position Stand 2026 (Nachfolger von 2009) noch nicht gelesen.
 - **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode, Hantelscheiben-Rechner.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
 ## 4. Nächste Schritte
 
 1. Lighthouse-PWA-Check in CI.
-2. Phase 2 nach Priorität: Kurz-Modus, Plateau-Tausch, Form-Tracker. Deload, sobald Nicole die Regel festlegt.
+2. Phase 2 nach Priorität: Kurz-Modus, Plateau-Tausch, Form-Tracker.
 3. Nutzertest, wenn Nicole Zeit hat.
 
 ## 5. Verbindliche Details
