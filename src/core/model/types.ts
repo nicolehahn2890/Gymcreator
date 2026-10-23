@@ -71,6 +71,8 @@ export interface LevelRules {
   setsPerSlot?: number;
   /** Bereiche, die ersetzt werden (z. B. "6-8" -> "8-12"). Die Slot-ID bleibt. */
   rangeMap?: Record<RepRange, RepRange>;
+  /** Mindestens so viele anteilige Saetze pro Woche fuer jeden Hauptmuskel einer Prio-3-Kategorie (ACSM 2026: ca. 10). */
+  minWeeklySetsPrio3?: number;
 }
 
 /** Wochenvolumen je Muskel (anteilig gezaehlt) als [min, max]. */

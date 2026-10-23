@@ -64,9 +64,9 @@
 
 Kurzfassung:
 
-- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon. Welche Zahlen belegt sind und welche Festlegung, steht je Regel in `docs/wissenschaft.md` (Quellen am 23.10.2026 online geprüft).
+- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), **jede Prio-3-Muskelgruppe mindestens 10** (ACSM 2026, seit 23.10.), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon. Welche Zahlen belegt sind und welche Festlegung, steht je Regel in `docs/wissenschaft.md` (Quellen am 23.10.2026 online geprüft).
 - **Grenzen je Einheit:** Fortgeschritten 3–7 Übungen und max. 18 Sätze, Einsteiger 3–6 Übungen und max. 12 Sätze; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
-- **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–34.
+- **Mehr Tage = kürzere Einheiten**, nur wenig mehr Volumen: Fortgeschritten 48–53 Sätze bei 3 Tagen, 55–59 bei 4 und 5 Tagen (etwa 10–20 % mehr, weil die Grenze je Einheit die 3-Tage-Pläne begrenzt). Einsteiger 24–34.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
 - **Einsteiger:** nur 3 oder 4 Tage pro Woche, 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
 - Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, 12-Wochen-Zyklus. Kein Deload: Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht, erklärt im Plan und auf "Heute".
@@ -79,9 +79,9 @@ Je Ziel und Tagesanzahl eine Vorlage in `data/templates.json`. Die Vorlage legt 
 
 | Tage | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
-| 3 | Drücken & Beine · Ziehen · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite | Po & Beine · Po & Beinrückseite · Po & Oberkörper |
-| 4 | Ziehen · Beine · Drücken · Oberkörper | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Oberkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte |
-| 5 | Ziehen · Drücken · Beine · Rücken & Schultern · Oberkörper | Po & Beinrückseite · Oberkörper · Po & Beine · Schultern & Rücken · Po & Hüfte | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Hüfte · Po & Rücken |
+| 3 | Drücken & Beine · Oberkörper · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite | Po & Beine · Po & Beinrückseite · Po & Oberkörper |
+| 4 | Rücken & Brust · Beine · Drücken · Oberkörper | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Oberkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte |
+| 5 | Rücken & Brust · Drücken · Beine · Rücken & Schultern · Oberkörper | Po & Beinrückseite · Oberkörper · Po & Beine · Schultern & Rücken · Po & Hüfte | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Hüfte · Po & Rücken |
 
 **Tagesnamen** (23.10.2026): Der Name sagt den Körperbereich, die Zeile darunter die Belastung ("Schwere Grundübungen", "Mittlere Gewichte", "Leichtere Gewichte, mehr Wiederholungen", bei gemischten Tagen z. B. "Rücken schwer, Po leicht"). Die Muskelgruppen in den Zeilen behalten ihre Namen (Glute Max, Glute & Quad usw., Nicoles Entscheidung).
 

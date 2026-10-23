@@ -1,5 +1,5 @@
 // Prueft einen erzeugten Plan gegen data/goals.json: Grenzen (limits), Stufen-Regeln (levels),
-// Wochenziele je Muskel (targets) und Prioritaeten.
+// Wochenziele je Muskel (targets), Prioritaeten und das Mindestvolumen der Prio-3-Muskeln (levels.minWeeklySetsPrio3).
 import type { Plan, PlanData, PlanIssue } from '../model/types';
 
 export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
@@ -59,6 +59,13 @@ export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
     const times = frequency.get(cat)?.size ?? 0;
     if (priority === 3 && times < limits.minFrequencyPrio3) error('frequency', `Prio-3-Kategorie ${cat} nur ${times}x pro Woche`);
     if (priority === 0 && times > 0) error('prio0', `Prio-0-Kategorie ${cat} im Plan`);
+    // Muskeln, die die Kategorie direkt trainiert (Anteil 1), z. B. chest -> Brust, nicht Trizeps
+    if (priority === 3 && rules.minWeeklySetsPrio3 !== undefined) {
+      for (const [muscle, share] of Object.entries(categories[cat]?.muscles ?? {})) {
+        const value = weekly[muscle] ?? 0;
+        if (share === 1 && value < rules.minWeeklySetsPrio3) error('prio3-volume', `Prio-3-Kategorie ${cat}: ${muscle} ${value} < ${rules.minWeeklySetsPrio3} anteilige Saetze pro Woche`);
+      }
+    }
   }
   return issues;
 }

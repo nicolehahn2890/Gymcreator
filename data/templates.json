@@ -29,7 +29,10 @@
             "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
-              "gmed_12-15_a",
+              {
+                "id": "gmed_12-15_a",
+                "sets": 4
+              },
               "ghams_6-10_a",
               "hams_8-12_a",
               "shoulders_8-12_a",
@@ -45,7 +48,10 @@
             "slots": [
               "gquad_8-12_a",
               "gmax_12-15_a",
-              "gmed_8-12_b",
+              {
+                "id": "gmed_8-12_b",
+                "sets": 3
+              },
               {
                 "id": "add_8-12_b",
                 "beginner": false
@@ -69,7 +75,7 @@
               "gmax_6-8_a",
               {
                 "id": "gmed_8-12_a",
-                "sets": 2
+                "sets": 3
               },
               "gquad_6-10_a",
               "add_8-12_a",
@@ -112,7 +118,8 @@
               "gmax_8-12_a",
               {
                 "id": "gmed_8-12_b",
-                "beginner": false
+                "beginner": false,
+                "sets": 3
               },
               "ghams_6-10_a",
               "hams_8-12_a",
@@ -145,7 +152,7 @@
               "gmax_6-8_a",
               {
                 "id": "gmed_8-12_a",
-                "sets": 2
+                "sets": 3
               },
               "gquad_6-10_a",
               "add_8-12_a",
@@ -176,7 +183,10 @@
               "gmax_8-12_a",
               "ghams_6-10_a",
               "hams_8-12_a",
-              "gmed_8-12_b"
+              {
+                "id": "gmed_8-12_b",
+                "sets": 3
+              }
             ]
           },
           {
@@ -261,7 +271,7 @@
               "quads_8-12_a",
               {
                 "id": "shoulders_8-12_a",
-                "sets": 3
+                "sets": 4
               }
             ]
           },
@@ -404,13 +414,17 @@
             ]
           },
           {
-            "name": "Tag B – Ziehen",
+            "name": "Tag B – Oberkörper",
             "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
               "shoulders_8-12_a",
               "biceps_8-12_a",
+              {
+                "id": "chest_12-15_a",
+                "beginner": false
+              },
               {
                 "id": "abs_8-12_a",
                 "beginner": false
@@ -440,7 +454,7 @@
       "4": {
         "days": [
           {
-            "name": "Tag A – Ziehen",
+            "name": "Tag A – Rücken & Brust",
             "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
@@ -450,6 +464,10 @@
                 "beginner": false
               },
               "biceps_8-12_a",
+              {
+                "id": "chest_12-15_a",
+                "beginner": false
+              },
               {
                 "id": "abs_8-12_a",
                 "beginner": false
@@ -509,7 +527,7 @@
       "5": {
         "days": [
           {
-            "name": "Tag A – Ziehen",
+            "name": "Tag A – Rücken & Brust",
             "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
@@ -518,6 +536,10 @@
               {
                 "id": "shoulders_12-15_b",
                 "sets": 2
+              },
+              {
+                "id": "chest_12-15_a",
+                "beginner": false
               }
             ]
           },

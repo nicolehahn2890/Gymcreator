@@ -19,7 +19,7 @@ describe('buildPlan', () => {
 
   it('Wochensaetze wie in docs/wissenschaft.md', () => {
     const expected = {
-      advanced: { apfel: [50, 55, 55], sanduhr: [48, 56, 55], vform: [51, 56, 57] },
+      advanced: { apfel: [52, 57, 57], sanduhr: [48, 57, 55], vform: [53, 58, 59] },
       beginner: { apfel: [30, 34], sanduhr: [30, 32], vform: [24, 26] },
     };
     for (const level of LEVELS) {
@@ -33,7 +33,7 @@ describe('buildPlan', () => {
   it('Apfel 3 Tage: Po wellenfoermig 6-8 / 8-12 / 12-15, Wochenvolumen Po 14', () => {
     const plan = buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 });
     expect(plan.dayPlans.map((d) => d.rows.find((r) => r.category === 'gmax')?.repRange)).toEqual(['6-8', '8-12', '12-15']);
-    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 8, hams: 6, quads: 5 });
+    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 10, hams: 6, quads: 5 });
   });
 
   it('Einsteiger waehlen 3 oder 4 Tage; 5 Tage aus alten Wochen werden 4', () => {
@@ -92,6 +92,15 @@ describe('buildPlan', () => {
     expect(codes).toContain('session-sets');
     expect(codes).toContain('category-day');
     expect(codes).toContain('target');
+  });
+
+  it('meldet Prio-3-Muskeln unter dem Mindestvolumen (nur Fortgeschrittene)', () => {
+    expect(planData.goals.levels.advanced.minWeeklySetsPrio3).toBe(10);
+    expect(planData.goals.levels.beginner.minWeeklySetsPrio3).toBeUndefined();
+    const plan = buildPlan(planData, { goal: 'vform', level: 'advanced', days: 3 });
+    const withoutFly = { ...plan, dayPlans: plan.dayPlans.map((d) => ({ ...d, rows: d.rows.filter((r) => r.slotId !== 'chest_12-15_a') })) };
+    const issues = validatePlan(planData, withoutFly).filter((i) => i.code === 'prio3-volume');
+    expect(issues.map((i) => i.message)).toEqual(['vform/advanced/3 Prio-3-Kategorie chest: chest 8 < 10 anteilige Saetze pro Woche']);
   });
 });
 

@@ -13,7 +13,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Design | Neobrutalism, Cream-Basis, Zielfarbe als Akzent, kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2, Nicole 23.10.) |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
-| Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach |
+| Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe bei Fortgeschrittenen mindestens 10** anteilige Sätze pro Woche (`levels.advanced.minWeeklySetsPrio3`) |
 | Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele), Einsteiger max. 6 / 12. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | Fortgeschrittene 3/4/5, **Einsteiger nur 3/4** |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
@@ -51,16 +51,16 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 - Zeilen mit gewählter Übung, aber ohne Werte, behielten nach dem Umstellen der Wochenart die alten Sätze.
 - Kleineres: Backup-Download auf iOS, Gewichtsschritte nach Import, Prüfung der Backup-Werte, Speicherfehler-Hinweis, Löschen eigener Übungen.
 
-Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. ACSM-Abgleich: Apfel Glute Med 8 → 10, Sanduhr Schultern bei 4 Tagen 9 → 10, V-Form Brust 8 → 10 (dritte Brustübung, Flys 2 × 12–15, am Rücken-Tag; Tagesname dort „Oberkörper“ bzw. „Rücken & Brust“). Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
-**Tests:** 126 Vitest + 15 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Tests:** 127 Vitest + 15 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
 - **Sicherheitskopie und Migrationen**: Die Kopie vor einem Import trägt keine Schema-Version. Sobald es eine Migration (Schema 2) gibt, muss "Wiederherstellen" sie durch `migrate` schicken.
 - **Ziel- oder Stufenwechsel mitten im Zyklus**: Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID). Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
 - **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
-- **Wissenschaft**: Neuer ACSM Position Stand 2026 (Nachfolger von 2009) noch nicht gelesen.
+- **Wissenschaft**: ACSM Position Stand 2026 eingearbeitet, aber nur über Abstract, Pressemitteilung und Sekundärquellen (Volltext aus der Sandbox gesperrt). Die Tabelle mit den genauen Empfehlungen bei Gelegenheit im Volltext prüfen.
 - **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
