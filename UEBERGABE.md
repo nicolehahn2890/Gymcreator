@@ -84,7 +84,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - Hauptknopf auf einer Tageskarte in der Zielfarbe nimmt die Flächenfarbe (Regel in `ui.css`).
 - Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in den Einstellungen (`GoalChip` im Plan-Kopf ist mit dem Reiter Plan entfallen). `webp` ist im Offline-Cache.
 - Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` hat nur noch die Hantel fürs App-Icon.
-- Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche.
+- Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche. Seit Version 13: Wortmarke „Rexy“, drei Reiter, Beispiel „Plan“ mit aufklappbarer Übungsliste; `GoalChip` bleibt als Baustein, die App nutzt ihn derzeit nicht.
 
 **Rexy und drei Reiter (23.10.)**, Nicoles Wunsch: App heißt Rexy; Reiter "Heute" heißt "Plan", der doppelte Reiter "Plan" ist weg (`PlanScreen`, `Plan.css`, `GoalChip` gelöscht). Die Planliste ist auf der Startseite aufklappbar (Abschnitt 1, Aufbau). Ein gemerkter Reiter "plan" aus älteren Ständen öffnet die Startseite. Bereits installierte Home-Bildschirm-Apps behalten auf dem iPhone den alten Namen, bis man sie neu hinzufügt.
 
@@ -110,7 +110,6 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 - **App-Icon und Favicon** zeigen noch die Pixel-Hantel in den Farben vor Rexy (`scripts/make-icons.mjs`); neu gestalten mit der Store-Vorbereitung (Rex).
-- **Design System Rexy (Artifact)** zeigt noch 4 Reiter, „Gymcreator“ als Wortmarke und den `GoalChip` im Plan-Kopf; bei Gelegenheit auf 3 Reiter, „Rexy“ und die aufklappbare Planliste nachziehen.
 - **Pausentimer bei 360 px:** „Pause 2:30“ bricht in zwei Zeilen um, funktioniert aber.
 
 ## 4. Nächste Schritte
