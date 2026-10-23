@@ -1389,7 +1389,7 @@
       "equipment": ["machine"],
       "pattern": "horizontal_pull",
       "focus": ["horizontal"],
-      "stars": ["apfel", "sanduhr"],
+      "stars": ["apfel", "sanduhr", "vform"],
       "heavy": true,
       "stretch": true,
       "unilateral": false,

@@ -17,6 +17,23 @@ interface DraftRow {
 
 const DAY_LETTERS = 'ABCDEFG';
 
+/** Alle Slots des Pools in Pool-Reihenfolge, mit den Regeln der Stufe (Bereich, Saetze). Fuer Auswahl ueber alle Wochenarten. */
+export function poolRows(data: PlanData, goal: GoalId, level: Level): PlanRow[] {
+  const goalDef = data.goals.goals[goal];
+  const rules = data.goals.levels[level];
+  return goalDef.slots.map((slot) => {
+    const row: PlanRow = {
+      slotId: slot.id,
+      category: slot.cat,
+      repRange: rules.rangeMap?.[slot.range] ?? slot.range,
+      sets: rules.setsPerSlot ?? slot.sets,
+      priority: goalDef.priorities[slot.cat] ?? 0,
+    };
+    if (slot.focus) row.focus = slot.focus;
+    return row;
+  });
+}
+
 export function buildPlan(data: PlanData, { goal, level, days }: PlanRequest): Plan {
   const goalDef = data.goals.goals[goal];
   const template = data.templates.goals[goal]?.[`${days}`];
