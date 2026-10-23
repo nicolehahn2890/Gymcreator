@@ -44,7 +44,7 @@ beforeEach(() => reset());
 
 describe('Ziel und Trainingstage', () => {
   it('neues Ziel hebt den Kurz-Modus auf: kein Tag des neuen Plans ist gekuerzt', () => {
-    setShort(model(), at(1), dayA(), 45);
+    setShort(model(), at(1), dayA(), true);
     expect(model().data.weeks[0]?.short).toBeDefined();
     saveProfile(model(), at(1), { ...profile, goal: 'sanduhr' }, false);
     expect(model().data.weeks).toEqual([{ cycle: 1, week: 1, days: 4 }]);
@@ -53,7 +53,7 @@ describe('Ziel und Trainingstage', () => {
   });
 
   it('Wochenart im Plan: Kurz-Modus bleibt fuer gleiche Tage, die Wahl wird ab der aktuellen Woche Standard', () => {
-    setShort(model(), at(1), dayA(), 45);
+    setShort(model(), at(1), dayA(), true);
     const short = model().data.weeks[0]?.short;
     // Apfel Tag A ist mit 4 und 5 Tagen gleich, mit 3 Tagen nicht
     saveWeekDays(model(), at(1), 5);
@@ -91,7 +91,7 @@ describe('Ziel und Trainingstage', () => {
 
 describe('Kurz-Modus', () => {
   it('ein von Hand hinzugefuegter Satz zaehlt mit', () => {
-    setShort(model(), at(1), dayA(), 45);
+    setShort(model(), at(1), dayA(), true);
     const { plan, day, row, st } = rowAt(at(1), 'gmax_6-8_a');
     expect(st).toMatchObject({ totalSets: 3, targetSets: 3 });
     // wie ExerciseItem.changeSets(+1)

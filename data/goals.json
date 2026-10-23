@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). Ein Plan je Ziel und Tagesanzahl (3/4/5) fuer alle, es gibt keine Erfahrungsstufen. ranges: Wdh.-Bereiche, schwerster zuerst. limits: Grenzen fuer jeden Plan (hoechstens maxFractionalSetsPerMusclePerSession anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag, die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen; sessionMinutes: Dauer jeder Einheit laut Schaetzung; minWeeklySetsPrio3: Mindestvolumen je Prio-3-Muskel und Woche). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen, kein Deload: der naechste Zyklus beginnt mit nextCycleLighterPct Prozent weniger Gewicht (Hinweis in Heute und Plan). timing: Satzdauer, Pause je Bereich (auch fuer den Pausentimer), Aufwaermsaetze und Wechsel je Uebung nach Bereich; daraus die Dauer-Schaetzung. short: Kurz-Modus, eine deutlich kuerzere Fassung je Tag (minutes) ohne Supersaetze: kuerzere Pausen (restSeconds, nie unter 90 s); zuerst faellt weg, was die Woche am wenigsten braucht (Luecke zum Wochenziel je Muskel), Prio 3 bleibt immer; erst danach weniger Saetze, nie unter minSets; uebrige Zeit holt weggefallene Uebungen mit minSets Saetzen zurueck; es bleiben mindestens minExercises Uebungen, sonst wird die Zeit nicht angeboten. categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
+  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). Ein Plan je Ziel und Tagesanzahl (3/4/5) fuer alle, es gibt keine Erfahrungsstufen. ranges: Wdh.-Bereiche, schwerster zuerst. limits: Grenzen fuer jeden Plan (hoechstens maxFractionalSetsPerMusclePerSession anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag, die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen; sessionMinutes: Dauer jeder Einheit laut Schaetzung; minWeeklySetsPrio3: Mindestvolumen je Prio-3-Muskel und Woche). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen, kein Deload: der naechste Zyklus beginnt mit nextCycleLighterPct Prozent weniger Gewicht (Hinweis in Heute und Plan). timing: Satzdauer, Pause je Bereich (auch fuer den Pausentimer), Aufwaermsaetze und Wechsel je Uebung nach Bereich; daraus die Dauer-Schaetzung. short: Kurz-Modus (Nicoles Vorgabe 23.10.2026): die exercises wichtigsten Uebungen des Tages fuers Ziel mit allen Saetzen und normalen Pausen, angezeigt als \"30-45 Min.\" (minutes); passen so viele nicht in minutes[1], werden es weniger; ohne Supersaetze. categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
   "ranges": [
     "6-8",
     "6-10",
@@ -46,16 +46,10 @@
   },
   "short": {
     "minutes": [
+      30,
       45
     ],
-    "restSeconds": {
-      "6-8": 150,
-      "6-10": 120,
-      "8-12": 90,
-      "12-15": 90
-    },
-    "minExercises": 3,
-    "minSets": 2
+    "exercises": 4
   },
   "categories": {
     "gmax": {

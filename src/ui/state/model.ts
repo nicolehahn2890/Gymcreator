@@ -5,9 +5,9 @@ import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanDay, type PlanRow, type Profile } from '../../core/model/types';
 import { carryOver } from '../../core/progression/cycle';
 import { indexEntries, type EntryIndex } from '../../core/progression/entries';
-import { shortTiming, type ShortContext } from '../../core/progression/short';
+import type { ShortContext } from '../../core/progression/short';
 import { rowState, type RowContext, type RowState } from '../../core/progression/state';
-import { estimateMinutes, muscleSets } from '../../core/generator/validate';
+import { estimateMinutes } from '../../core/generator/validate';
 import { weekDays } from '../../core/progression/week';
 import { fmt, range, text } from '../../i18n';
 import type { StoredData } from '../../storage/interface';
@@ -91,10 +91,9 @@ export function isShortDay(ctx: RowContext, day: PlanDay): boolean {
   return day.rows.some((r) => ctx.short?.[r.slotId] !== undefined);
 }
 
-/** Geschaetzte Minuten eines Tages mit den Saetzen dieser Woche (Zusatzsaetze, Kurz-Modus mit seinen kuerzeren Pausen). */
+/** Geschaetzte Minuten eines Tages mit den Saetzen dieser Woche (Zusatzsaetze, Kurz-Modus). */
 export function dayMinutes(ctx: RowContext, day: PlanDay, pos: { cycle: number; week: number }): number {
-  const timing = isShortDay(ctx, day) ? shortTiming({ timing: planData.goals.timing, rules: planData.goals.short }) : planData.goals.timing;
-  return estimateMinutes(dayRows(ctx, day, pos).map((r) => ({ repRange: r.repRange, sets: r.target })), timing);
+  return estimateMinutes(dayRows(ctx, day, pos).map((r) => ({ repRange: r.repRange, sets: r.target })), planData.goals.timing);
 }
 
 /** Zeilen eines Tages mit den Saetzen dieser Woche (Zusatzsaetze) und dem Ziel im Kurz-Modus (0 = ausgelassen). */
@@ -105,20 +104,10 @@ export function dayRows(ctx: RowContext, day: PlanDay, pos: { cycle: number; wee
   });
 }
 
-/** Regeln fuer den Kurz-Modus aus data/goals.json, mit den Wochenzielen des gewaehlten Ziels. */
+/** Regeln fuer den Kurz-Modus aus data/goals.json, mit den Prioritaeten des gewaehlten Ziels. */
 export function shortContext(model: AppModel): ShortContext {
   const g = planData.goals;
-  return { timing: g.timing, rules: g.short, ranges: g.ranges, categories: g.categories, targets: g.goals[model.profile.goal].targets };
-}
-
-/**
- * Anteilige Saetze je Muskel in dieser Woche, wie sie gerade aussieht: andere Tage mit ihrem Kurz-Modus, der Tag
- * `day` komplett. Grundlage fuer den Kurz-Modus (was die Woche am wenigsten braucht, faellt zuerst weg).
- */
-export function weekVolume(model: AppModel, pos: { cycle: number; week: number }, day: PlanDay): Record<string, number> {
-  const ctx = rowContext(model, pos.cycle, pos.week);
-  const rows = planFor(model, pos.cycle, pos.week).dayPlans.flatMap((d) => dayRows(ctx, d, pos).map((r) => ({ category: r.category, sets: d.index === day.index ? r.sets : r.target })));
-  return muscleSets(planData.goals.categories, rows);
+  return { timing: g.timing, rules: g.short, ranges: g.ranges, categories: g.categories, priorities: g.goals[model.profile.goal].priorities };
 }
 
 /** Muskelgruppe der Zeile, mit Hinweis aus dem Slot: "Rücken · Ziehen von oben". */

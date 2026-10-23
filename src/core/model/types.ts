@@ -88,15 +88,12 @@ export interface Timing {
   exerciseSeconds: Record<RepRange, number>;
 }
 
-/** Kurz-Modus: angebotene Zeiten, Pausen und die Mindestdosis, unter der ein Kurz-Training nicht angeboten wird. */
+/** Kurz-Modus (Nicoles Vorgabe): die wichtigsten Uebungen des Tages mit allen Saetzen, angezeigt als Zeitspanne. */
 export interface ShortRules {
-  minutes: number[];
-  /** Pausen im Kurz-Modus je Wdh.-Bereich in Sekunden (kuerzer als timing.restSeconds). */
-  restSeconds: Record<RepRange, number>;
-  /** So viele Uebungen bleiben mindestens. */
-  minExercises: number;
-  /** So viele Saetze behaelt jede verbleibende Uebung mindestens. */
-  minSets: number;
+  /** Angezeigte Spanne [von, bis] in Minuten; "bis" ist die Obergrenze laut Schaetzung. */
+  minutes: [number, number];
+  /** So viele Uebungen hat die Kurz-Fassung (weniger, wenn sie nicht in die Zeit passen). */
+  exercises: number;
 }
 
 export interface GoalsData {

@@ -72,7 +72,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
               {fmt(text.today.meta, { n: dayRows(ctx, day, pos).filter((r) => r.target > 0).length, min: dayMinutes(ctx, day, pos) })}
             </span>
             {day.rows.some((r) => short?.[r.slotId]) && (
-              <span className="pill plan-day-short">{fmt(t.shortActive, { min: day.rows.map((r) => short?.[r.slotId]?.minutes).find((m) => m !== undefined) ?? 0 })}</span>
+              <span className="pill plan-day-short">{fmt(t.shortActive, { from: planData.goals.short.minutes[0], to: planData.goals.short.minutes[1] })}</span>
             )}
             <span className="plan-day-rows">
               {day.rows.map((row) => {
