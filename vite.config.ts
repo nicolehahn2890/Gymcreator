@@ -7,7 +7,7 @@ import pkg from './package.json' with { type: 'json' };
 // GitHub Pages: https://nicolehahn2890.github.io/Gymcreator/
 const BASE = '/Gymcreator/';
 // Cream wie --bg in src/ui/theme/tokens.css (Manifest kann keine CSS-Variablen lesen)
-const CREAM = '#FDF9E9';
+const CREAM = '#FFF9E5';
 
 export default defineConfig({
   base: BASE,

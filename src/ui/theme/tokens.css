@@ -5,16 +5,18 @@
   color-scheme: light;
 
   /* Ink: Rahmen, harte Schatten, Text auf allen Flaechen */
-  --ink: #181016;
-  --on-accent: #181016;
+  --ink: #101010;
+  --on-accent: #101010;
 
-  /* Rexy-Palette: Pink (Haut der Rexe), Cyan (Motiv-Hintergrund), Neongelb (Schilder); Lime und Violett ergaenzen */
-  --pink: #F6409F;
-  --cyan: #22E3F0;
-  --yellow: #FAF22E;
-  --lime: #B5F23D;
-  --violet: #B98BFF;
-  --cream: #FDF9E9;
+  /* Rexy-Palette aus dem Marketing-Kit: Pink (Haut der Rexe) und Cyan (Bauch) fuehren, Neongelb ist der
+     wichtigste Akzent; Lime, Violett und Koralle ergaenzen */
+  --pink: #FF199B;
+  --cyan: #00DDE8;
+  --yellow: #F5FF00;
+  --lime: #C8FF00;
+  --violet: #9B5CFF;
+  --coral: #FF714F;
+  --cream: #FFF9E5;
   --white: #FFFFFF;
 
   /* Status */
@@ -22,7 +24,7 @@
   --green: #4FD06A;
   --blue: #4D9DF5;
   --red: #FF5C5C;
-  --scrim: rgba(24, 16, 22, 0.35);
+  --scrim: rgba(16, 16, 16, 0.35);
 
   /* Seite */
   --bg: var(--cream);
@@ -36,7 +38,7 @@
   --bar-current: var(--cyan);
 
   /* Textstufen */
-  --text: #181016;
+  --text: #101010;
   --text-soft: #45343D;
   --text-mid: #5E4C55;
   --text-dim: #7E6C76;
@@ -49,7 +51,7 @@
   --field-bg: var(--white);
   --input-border: var(--ink);
   --border: var(--ink);
-  --bar-empty: rgba(24, 16, 22, 0.10);
+  --bar-empty: rgba(16, 16, 16, 0.10);
   --ring: var(--ink);
   --focus: var(--ink);
 
@@ -82,9 +84,10 @@
   --prog-same: var(--yellow);
   --prog-down: var(--red);
 
-  /* Schriften: Archivo Black (ein Schnitt, immer Grossbuchstaben) und Space Grotesk 400-700 */
-  --font-display: 'Archivo Black', 'Space Grotesk', system-ui, sans-serif;
-  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  /* Schriften: Bowlby One SC (ein Schnitt, immer Grossbuchstaben, ohne verringerten Buchstabenabstand)
+     und Inter 400-700 */
+  --font-display: 'Bowlby One SC', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --fs-display: 34px;
   --fs-section: 22px;
   --fs-logo: 20px;

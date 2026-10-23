@@ -26,7 +26,7 @@ describe('tokens.css', () => {
   });
 
   it('Basis ist Cream', () => {
-    expect(token('cream')).toBe('#FDF9E9');
+    expect(token('cream')).toBe('#FFF9E5');
     expect(token('bg')).toBe('var(--cream)');
   });
 

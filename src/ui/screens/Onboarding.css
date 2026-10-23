@@ -61,7 +61,6 @@
   font-weight: 400;
   font-size: var(--fs-card-title);
   line-height: 20px;
-  letter-spacing: -0.5px;
   text-transform: uppercase;
 }
 
