@@ -6,7 +6,6 @@ import { HomeContext } from './state/home';
 import { TabBar } from './components/TabBar';
 import { DayView } from './screens/DayView';
 import { Onboarding } from './screens/Onboarding';
-import { PlanScreen } from './screens/PlanScreen';
 import { Progress } from './screens/Progress';
 import { Settings } from './screens/Settings';
 import { Today } from './screens/Today';
@@ -77,7 +76,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
     setUi({ day: d, slot: first?.slotId ?? null });
   };
 
-  // Plan neu einrichten (aus Plan und Einstellungen): Assistent mit dem aktuellen Profil, Verlauf bleibt
+  // Plan neu einrichten (aus den Einstellungen): Assistent mit dem aktuellen Profil, Verlauf bleibt
   if (setup) {
     return (
       <Onboarding
@@ -86,7 +85,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
         onDone={(profile) => {
           saveProfile(model, pos, profile, true);
           setSetup(false);
-          setUi({ tab: 'plan', day: null, slot: null, restEndsAt: null });
+          setUi({ tab: 'today', day: null, slot: null, restEndsAt: null });
         }}
       />
     );
@@ -106,14 +105,21 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
         onBack={() => setUi({ day: null, slot: null, restEndsAt: null })}
       />
     );
-  } else if (ui.tab === 'plan') {
-    content = <PlanScreen model={model} pos={pos} onGoToWeek={goToWeek} onOpenDay={openDay} onSetup={() => setSetup(true)} />;
   } else if (ui.tab === 'progress') {
     content = <Progress model={model} pos={pos} />;
   } else if (ui.tab === 'settings') {
     content = <Settings model={model} pos={pos} onSetup={() => setSetup(true)} />;
   } else {
-    content = <Today model={model} cycle={pos.cycle} week={pos.week} onOpenDay={openDay} onGoToWeek={goToWeek} />;
+    content = (
+      <Today
+        model={model}
+        pos={pos}
+        onOpenDay={openDay}
+        onGoToWeek={goToWeek}
+        listOpen={ui.planList}
+        onToggleList={() => setUi({ planList: !ui.planList })}
+      />
+    );
   }
 
   const goHome = () => setUi({ tab: 'today', day: null, slot: null, restEndsAt: null });

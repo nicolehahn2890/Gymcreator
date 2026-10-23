@@ -6,7 +6,7 @@ import sanduhrIcon from './rex/rex-sanduhr-icon.webp';
 import vform from './rex/rex-vform.webp';
 import vformIcon from './rex/rex-vform-icon.webp';
 
-/** Rex je Ziel: volles Motiv mit Hintergrund fuer die Zielwahl, freigestellt als Icon fuer Plan und Einstellungen. */
+/** Rex je Ziel: volles Motiv mit Hintergrund fuer die Zielwahl, freigestellt als Icon fuer die Einstellungen. */
 export const REX: Record<GoalId, { full: string; icon: string }> = {
   vform: { full: vform, icon: vformIcon },
   sanduhr: { full: sanduhr, icon: sanduhrIcon },

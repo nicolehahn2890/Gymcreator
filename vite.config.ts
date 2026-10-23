@@ -22,8 +22,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Gymcreator',
-        short_name: 'Gymcreator',
+        name: 'Rexy',
+        short_name: 'Rexy',
         description: 'Trainingsplan nach Körperziel mit Progression',
         lang: 'de',
         start_url: BASE,

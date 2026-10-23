@@ -4,6 +4,7 @@ import { SCHEMA_VERSION, type StoredData } from './interface';
 import { migrate } from './migrations';
 
 export interface Backup extends StoredData {
+  /** Interne Kennung aus der Zeit vor dem Namen Rexy; bleibt, damit vorhandene Backups gueltig sind. */
   app: 'gymcreator';
   schema: number;
   /** ISO-Datum des Exports. */

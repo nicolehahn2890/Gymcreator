@@ -52,6 +52,7 @@
   list-style: none;
   display: grid;
   gap: 10px;
+  margin-bottom: 14px;
 }
 
 .day-row {
@@ -87,4 +88,62 @@
   font-size: var(--fs-body);
   line-height: 22px;
   font-weight: 600;
+}
+
+.today-week-head {
+  margin: 28px 0 12px;
+}
+
+.today-week-head .section-title {
+  margin: 0;
+}
+
+.today-days {
+  margin-bottom: 14px;
+}
+
+/* Aufgeklappte Uebungen eines Tages, unter der Kopfzeile ueber die volle Breite */
+.day-row {
+  flex-wrap: wrap;
+}
+
+.day-row-plan {
+  flex-basis: 100%;
+  display: grid;
+  gap: 4px;
+}
+
+.day-row-focus {
+  font-size: var(--fs-label);
+  line-height: 18px;
+  font-weight: 600;
+}
+
+.day-row-short {
+  justify-self: start;
+  margin-top: 4px;
+}
+
+.day-row-exercises {
+  display: grid;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: var(--fs-body);
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.day-row-exercise {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.day-row-sets {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+.today-cycle-note {
+  margin-bottom: 14px;
 }

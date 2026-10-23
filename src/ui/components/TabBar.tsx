@@ -1,7 +1,5 @@
 import { text } from '../../i18n';
-import type { Tab } from '../state/ui';
-
-const TABS: Tab[] = ['today', 'plan', 'progress', 'settings'];
+import { TABS, type Tab } from '../state/ui';
 
 export function TabBar({ tab, onChange }: { tab: Tab; onChange: (tab: Tab) => void }) {
   return (

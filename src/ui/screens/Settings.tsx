@@ -51,7 +51,7 @@ export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Positi
     const url = URL.createObjectURL(new Blob([backupText()], { type: 'application/json' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = `gymcreator-backup-${today()}.json`;
+    a.download = `rexy-backup-${today()}.json`;
     a.click();
     // Safari bricht den Download ab, wenn die Adresse sofort freigegeben wird
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);

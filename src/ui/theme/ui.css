@@ -331,32 +331,6 @@ html[data-goal="sanduhr"] [data-day="c"] .btn-primary {
   white-space: nowrap;
 }
 
-/* Ziel als Pille in der Zielfarbe, davor der freigestellte Rex */
-.goal-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.goal-chip-rex {
-  display: block;
-  width: auto;
-  height: 40px;
-}
-
-.goal-chip-label {
-  padding: 4px 12px;
-  background: var(--accent);
-  color: var(--on-accent);
-  border: 2px solid var(--ink);
-  border-radius: var(--r-pill);
-  box-shadow: var(--sh-xs);
-  font-size: var(--fs-label);
-  line-height: 18px;
-  font-weight: 700;
-  white-space: nowrap;
-}
-
 /* Bottom-Sheet */
 .sheet-bg {
   position: fixed;
@@ -444,7 +418,7 @@ html[data-goal="sanduhr"] [data-day="c"] .btn-primary {
   font-weight: 700;
 }
 
-/* Kopf mit Wortmarke: klebt oben, ueber die ganze Spalte, fuehrt auf "Heute" */
+/* Kopf mit Wortmarke: klebt oben, ueber die ganze Spalte, fuehrt auf die Startseite */
 .app-head {
   position: sticky;
   top: 0;
@@ -480,7 +454,7 @@ html[data-goal="sanduhr"] [data-day="c"] .btn-primary {
   text-transform: uppercase;
 }
 
-/* Wochenwahl (Heute, Plan): runde Pfeile in Cyan, Mitte oeffnet das Raster */
+/* Wochenwahl (Startseite): runde Pfeile in Cyan, Mitte oeffnet das Raster */
 .week-nav {
   display: flex;
   align-items: center;

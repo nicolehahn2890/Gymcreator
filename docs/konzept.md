@@ -6,7 +6,7 @@
 
 **Ausgangslage.** Peach ist deine persönliche Trainingsapp: ein Gym (Panatta/Precor-Namen), ein Ziel, deine Intensität. Die Progressionslogik darin ist stark (Vorwert pro Übung + Wdh.-Bereich, Gewicht schlägt Reps, Auto-Zusatzsatz, flexible 3/4-Tage-Woche, Übungswechsel "nur diese Woche"). Die Oberfläche ist aber dicht: viele Kacheln, Pills, Badges, drei Schriftgrößen pro Karte. Für dich perfekt, für andere zu viel.
 
-**Gymcreator** ist die verallgemeinerte Version für andere Menschen:
+**Gymcreator** (in der App **Rexy**, Name seit 23.10.2026; Repo, Web-Adresse und interne Kennungen bleiben `gymcreator`) ist die verallgemeinerte Version für andere Menschen:
 - Einstieg über ein **Körperziel** (V-Form / Sanduhr / Apfel), daraus wissenschaftlich begründete Sätze pro Muskelgruppe und Woche
 - **3, 4 oder 5 Trainingstage**, mit flexibler Umrechnung pro Woche (wie in Peach)
 - **breite Übungsbibliothek** ohne Gerätehersteller, Stern-Markierung der besten Übungen je Ziel, eigene Übungen
@@ -71,7 +71,7 @@ Kurzfassung:
 - **Jede Einheit 60–90 Minuten** (Nicoles Vorgabe, 23.10.2026; geprüft mit realistischer Zeitrechnung: Pausen 1:30–3 Min. je Bereich, Aufwärmsätze je Übung). Mehr Tage bringen damit mehr Wochenvolumen: 52–53 Sätze bei 3 Tagen, 68–70 bei 4, 84–86 bei 5.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
 - **Keine Erfahrungsstufen** (23.10.2026): ein Plan je Ziel und Tagesanzahl für alle. Die frühere Einsteiger-Stufe hatte keinen belegten Vorteil (Begründung in `docs/wissenschaft.md`).
-- Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, 12-Wochen-Zyklus. Kein Deload: Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht, erklärt im Plan und auf "Heute".
+- Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, 12-Wochen-Zyklus. Kein Deload: Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht, erklärt auf der Startseite (Woche 12 und Woche 1 ab Zyklus 2, sonst in der aufgeklappten Planliste).
 
 Die Apfel-Pläne sind nicht mehr Nicoles Peach-Plan P3/P4 (der Regressionstest dazu ist entfernt).
 
@@ -92,7 +92,7 @@ Je Ziel und Tagesanzahl eine Vorlage in `data/templates.json`. Die Vorlage legt 
 In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handgepflegte Partnerzeilen `t:[Tag,Zeile]` (Regel 14: fehleranfällig). In Gymcreator:
 - Jeder Archetyp hat **einen Slot-Pool** (z. B. `gmax_6-8_a`, `gmax_8-12_b`, `back_6-10_a`, …). Ein Slot = Kategorie + Wdh.-Bereich + Basis-Sätze, optional ein Hinweis (`focus`, z. B. "Ziehen von oben").
 - Die 3-/4-/5-Tage-Vorlagen sind nur **Verteilungen desselben Pools** auf Tage. Slots, die in beiden Vorlagen liegen, teilen automatisch Übung, Zusatzsätze und Verlauf. Slots, die es in der kleineren Vorlage nicht gibt, pausieren in der Woche.
-- Wochenart pro Woche (`Week.days`), Vorauswahl = Vorwoche, Umstellen einer Woche, in der dadurch Zeilen mit Werten wegfallen → Rückfrage (wie Peach). Ab der aktuellen Woche umgestellt (im Plan oder in den Einstellungen), wird die Wahl auch der Standard für folgende Wochen und Zyklen; frühere Wochen behalten ihre Wochenart. Die Einstellungen fragen nicht nach: Fielen in der aktuellen Woche Übungen mit Werten weg, gilt die neue Tageszahl ab der nächsten Woche (mit Hinweis).
+- Wochenart pro Woche (`Week.days`), Vorauswahl = Vorwoche, Umstellen einer Woche, in der dadurch Zeilen mit Werten wegfallen → Rückfrage (wie Peach). Ab der aktuellen Woche umgestellt (in der aufgeklappten Planliste oder in den Einstellungen), wird die Wahl auch der Standard für folgende Wochen und Zyklen; frühere Wochen behalten ihre Wochenart. Die Einstellungen fragen nicht nach: Fielen in der aktuellen Woche Übungen mit Werten weg, gilt die neue Tageszahl ab der nächsten Woche (mit Hinweis).
 - Vorwert-Suche läuft über **Übung + Wdh.-Bereich** (Peach `exKey`), eigener Slot zuerst, laufende Woche zählt nie (Peach-Regel 07.10.).
 
 **Zusätzlich (neu, Phase 2):**
@@ -116,7 +116,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 - Steigerungsregel: Obergrenze im 1. Satz → "Gewicht steigern: heute 42,5 kg" (assistiert: "Hilfe senken"); verschwindet live bei mehr Gewicht oder fertiger Übung
 - Auto-Zusatzsatz nach 3 stagnierenden Wochenvergleichen (max. 5 Sätze), +/- manuell; Vererbung von Übung (über Lücken) und Zusatzsätzen (nur direkte Vorwoche)
 - Übungswechsel ab Woche 2: "Nur diese Woche" / "Ab jetzt"; "Übung entfernen" löscht die Werte der Woche (Abweichung von Peach, siehe 4.5)
-- Woche 1 = kein Vergleich; Woche 12 normal; kein Deload, stattdessen startet der nächste Zyklus 5–10 % leichter (Hinweis im Plan und auf "Heute")
+- Woche 1 = kein Vergleich; Woche 12 normal; kein Deload, stattdessen startet der nächste Zyklus 5–10 % leichter (Hinweis auf der Startseite)
 - Bewertung als Text und Farbe: "Mehr Gewicht" / "Mehr Wiederholungen" / "Gleich" / "Weniger"; assistiert "Weniger Hilfe" / "Mehr Hilfe", Halteübungen "Länger gehalten"
 
 Neu für eine breite Zielgruppe:
@@ -132,14 +132,13 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 | Screen | Inhalt | Peach-Unterschied |
 |---|---|---|
 | **Onboarding** (4 Schritte, je ein Screen) | Ziel per Zielkarte mit Rex → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen, Übungszahl und Dauer je Tag | gibt es in Peach nicht |
-| **Heute** (Startscreen) | Wochenwahl mit Pfeilen wie im Plan ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
+| **Plan** (Startscreen, bis 23.10. "Heute") | Wochenwahl mit Pfeilen ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert"), "Diese Woche" mit allen Tagen. **"Übungen anzeigen"** klappt bei Bedarf unter jedem Tag Belastung, Dauer, Kurz-Modus und die Übungen mit Sätzen auf (Halteübungen als "Sätze halten"), dazu die 3/4/5-Tage-Wahl für diese Woche und den Zyklus-Hinweis; bleibt aufgeklappt, bis man es ausblendet | ersetzt Header-Pills + Accordion-Kacheln |
 | **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Oben "Zeit heute" mit geschätzter Dauer und Kurz-Modus (Normal / 30–45 Min.). Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
-| **Plan** | Oben das Ziel (Rex und Ziel-Pille) und "Tage pro Woche" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen (Halteübungen als "Sätze halten") | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
 | **Einstellungen** | Profil (Ziel, Trainingstage) mit "Plan neu einrichten", Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
-- **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
+- **Bottom-Tab-Bar** mit 3 Tabs (Plan · Fortschritt · Einstellungen) statt Header-Pills. Der frühere eigene Reiter "Plan" zeigte dasselbe wie "Heute" und ist seit 23.10. in der Startseite aufgegangen.
 - **Eine Akzentfarbe pro Screen** (Tagesfarbe im Training, Zielfarbe sonst). Muskelgruppe als farbiges Badge über dem Übungsnamen.
 - **Max. zwei Schriftgrößen pro Karte**, Schriftgrößen aus der Rexy-Skala (Titel 34, Abschnitt 22, Text 16 / 14, Meta 12 px), Display nur für Titel.
 - **Status als Text + Farbe**, nie nur Farbe (a11y).
@@ -151,7 +150,7 @@ Regeln für Übersichtlichkeit:
 Grundlage ist das Design System **Rexy** (Neobrutalism, übernommen am 23.10., Abschnitt 7 Nr. 25): vorerst nur hell (Dark Mode siehe unten), alle Tokens in einem `:root`, Ink `#181016`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Archivo Black (Display, Uppercase) + Space Grotesk (400–700), Fokus-Ring in Ink, Disabled mit halber Deckkraft, Press-Interaktion, 16-px-Inputs.
 
 - **Palette:** Pink `#F6409F` (Haut der Rexe), Cyan `#22E3F0`, Neongelb `#FAF22E`, dazu Lime und Violett. Tagesfarben A Pink / B Cyan / C Gelb / D Lime / E Violett. Kategorie- und Fortschrittsfarben aus Rexy.
-- **Kein Pfirsich.** Marke: Wortmarke als gelbes Schild mit pinkem Versatz. Die drei Ziele haben je einen Rex: in der Zielwahl das Motiv im Ink-Rahmen, in Plan und Einstellungen freigestellt ohne Hintergrund.
+- **Kein Pfirsich.** Marke: Wortmarke als gelbes Schild mit pinkem Versatz. Die drei Ziele haben je einen Rex: in der Zielwahl das Motiv im Ink-Rahmen, in den Einstellungen freigestellt ohne Hintergrund.
 - **Zielfarbe als Akzent:** V-Form Cyan, Sanduhr Gelb, Apfel Pink (Feld `accent` in `data/goals.json`, leicht änderbar).
 - **Hintergrund:** Cream `#FDF9E9` für alle.
 - **Dark Mode:** nicht im MVP (wie Peach), aber fest für später eingeplant (Entscheidung 23.10.). Weil alle Farben Tokens sind, kommt er als eigener Token-Satz – Store-Nutzer fragen danach.
@@ -304,7 +303,7 @@ Fakten, die den Plan beeinflussen:
 1. ✅ Core: Datenmodell, Storage (Dexie) + Backup, Migrations-Gerüst
 2. ✅ Core: Generator + Tests (23.10.: Wochenziele je Muskel statt P4/P3-Regression; Standard-Übung je Slot wieder entfernt, freie Wahl)
 3. ✅ Core: Progressions-Engine portiert + Peach-Testfälle grün
-4. ✅ UI: Onboarding → Plan-Ansicht
+4. ✅ UI: Onboarding → Plan-Ansicht (seit 23.10. aufklappbar auf der Startseite)
 5. ✅ UI: Heute + Training (23.10.: aufklappbare Übungen in der Tagesansicht statt Fokusansicht, Vorwoche je Satz, Timer, Badge, Vorschlag)
 6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
 7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup
@@ -340,18 +339,19 @@ Fakten, die den Plan beeinflussen:
 11. **Muskelgruppen-Namen bleiben** (Glute Max, Glute & Quad usw.), keine Benennung nach Übungen (23.10.)
 12. ~~Einsteiger nur 3 oder 4 Tage~~ (23.10.), abgelöst durch 24
 13. **Drei Abweichungen von der Peach-Logik bestätigt:** Vorwert bevorzugt Wochen mit Wiederholungen; bei Gegengewicht zählt 0 kg Hilfe als Bestwert; "Übung entfernen" löscht die Werte der Woche (23.10.). Zusatzsätze erben weiter nur von der direkten Vorwoche, auch nach einer im Kurz-Modus ausgelassenen Woche (wie Peach, bestätigt)
-14. **Logo oben auf jeder Seite** führt zurück auf "Heute" (23.10.)
+14. **Logo oben auf jeder Seite** führt zurück auf die Startseite (23.10.)
 15. **Kein Deload.** Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht; das erklärt der Plan (23.10.)
 16. **Kniebeuge zählt für den Po weiter 0,5** im Muskelmodell (23.10.)
 17. **Pausentimer nur per Knopf** in der aufgeklappten Übung, kein automatischer Start (23.10.)
-18. **Wochenwahl auch auf "Heute"**, gleiche Pfeile und gleiches Raster wie im Plan (23.10.)
-19. **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.)
+18. **Wochenwahl auf der Startseite** mit Pfeilen und Wochenraster (23.10.)
+19. **"Plan neu einrichten"** in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.; seit 26 nicht mehr zusätzlich im Plan)
 20. **Dark Mode kommt später** (Phase 2) als eigener Token-Satz; bis dahin nur hell (23.10.)
 21. **Kurz-Modus** (23.10., Nicoles Vorgabe nach drei verworfenen Fassungen): **4 Übungen, die anhand des Ziels Sinn ergeben, mit vollen Sätzen, angezeigt als "30–45 Min."**; keine Supersätze; die normale Einheit dauert 60–90 Minuten; ausgelassene Übungen unten, trotzdem machbar
 22. **Jede normale Einheit dauert 60–90 Minuten** (23.10.)
 23. **Keine feste Grenze für Sätze oder Übungen je Einheit** (23.10.): Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt. Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit
 24. **Keine Erfahrungsstufen** (23.10.): ein Plan je Ziel und Tagesanzahl für alle, ohne Hinweis auf eine Zielgruppe
-25. **Design System Rexy** (23.10.): Cream `#FDF9E9`, Zielfarben V-Form Cyan / Sanduhr Gelb / Apfel Pink, Wortmarke im Kopf, Rexe in Zielwahl, Plan und Einstellungen (dort freigestellt), Stand-Pillen einheitlich in der Tagesfarbe, aktuelle Woche im Fortschritt Cyan (bei V-Form Pink)
+25. **Design System Rexy** (23.10.): Cream `#FDF9E9`, Zielfarben V-Form Cyan / Sanduhr Gelb / Apfel Pink, Wortmarke im Kopf, Rexe in Zielwahl und Einstellungen (dort freigestellt), Stand-Pillen einheitlich in der Tagesfarbe, aktuelle Woche im Fortschritt Cyan (bei V-Form Pink)
+26. **App heißt Rexy** und hat 3 Reiter (23.10.): "Heute" heißt jetzt "Plan", der frühere Reiter "Plan" (zeigte dasselbe) ist weg. Die Übungsliste der Woche klappt auf der Startseite bei Bedarf auf ("Übungen anzeigen"), mit Tage-Wahl für diese Woche und Zyklus-Hinweis; Ziel und "Plan neu einrichten" nur noch in den Einstellungen
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

@@ -2,7 +2,7 @@
 
 > **ZUERST LESEN: Das Repo `nicolehahn2890/Trainingsapp` (Peach) ist NUR ZUM LESEN.** An diesem Repo wird absolut nichts geändert: keine Datei bearbeiten, nichts anlegen oder löschen, kein Commit, kein Push, kein Branch, kein PR, kein Issue-Kommentar. Kein `cd` mit Schreibbefehlen dorthin, nur mit absoluten Pfaden lesen. Gearbeitet wird ausschließlich im Repo `nicolehahn2890/Gymcreator`. (Nicoles ausdrückliche Anweisung, 22.10.2026)
 
-Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Apfel – der Apfel ist Nicoles Peach-Ziel), 3/4/5 Tage, Pläne aus wissenschaftlich begründeten Wochenzielen je Muskel, Übungen frei wählbar je Muskelgruppe, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
+Gymcreator (in der App **Rexy**, seit 23.10.2026; Repo, URL und interne Kennungen bleiben `gymcreator`) ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Apfel – der Apfel ist Nicoles Peach-Ziel), 3/4/5 Tage, Pläne aus wissenschaftlich begründeten Wochenzielen je Muskel, Übungen frei wählbar je Muskelgruppe, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
 
 ## Feste Regeln
 

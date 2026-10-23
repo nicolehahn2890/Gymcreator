@@ -1,6 +1,6 @@
 {
   "app": {
-    "name": "Gymcreator",
+    "name": "Rexy",
     "home": "{name}, zur Startseite",
     "version": "Version",
     "loading": "Wird geladen",
@@ -45,8 +45,7 @@
     "ball": "Gymnastikball"
   },
   "tabs": {
-    "today": "Heute",
-    "plan": "Plan",
+    "today": "Plan",
     "progress": "Fortschritt",
     "settings": "Einstellungen"
   },
@@ -61,6 +60,8 @@
     "daysDone": "{done} von {total} Tagen trainiert",
     "balance": "{improved} von {total} Übungen gesteigert",
     "allDays": "Diese Woche",
+    "showList": "Übungen anzeigen",
+    "hideList": "Übungen ausblenden",
     "firstWeek": "Woche 1: Finde deine Gewichte. Verglichen wird ab Woche 2.",
     "firstWeekNext": "Woche 1 von Zyklus {cycle}: Starte mit {from}–{to} % weniger Gewicht als zuletzt und steigere dich wieder. Verglichen wird ab Woche 2.",
     "cycleEnd": "Letzte Woche von Zyklus {cycle}. Zyklus {next} übernimmt deine Übungen; dort startest du mit etwas weniger Gewicht.",
@@ -148,11 +149,8 @@
     "always": "Ab jetzt"
   },
   "plan": {
-    "title": "Plan",
-    "yourPlan": "Dein Plan",
     "shortActive": "Kurz-Modus: {from}–{to} Min.",
     "skippedRow": "ausgelassen",
-    "daysPerWeek": "{days} Tage pro Woche",
     "setup": "Plan neu einrichten",
     "cycleNote": "Ein Zyklus hat {weeks} Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit {from}–{to} % weniger Gewicht und steigerst dich wieder.",
     "prevWeek": "Vorherige Woche",
@@ -202,7 +200,7 @@
     "restoreText": "Die aktuellen Daten werden durch den Stand vom {date} ersetzt.",
     "errors": {
       "json": "Das ist kein vollständiger Backup-Text.",
-      "app": "Das Backup stammt nicht aus Gymcreator.",
+      "app": "Das Backup stammt nicht aus Rexy.",
       "newer": "Das Backup stammt aus einer neueren Version. Bitte die App aktualisieren.",
       "shape": "Das Backup ist beschädigt."
     },

@@ -54,6 +54,7 @@ const withoutId = <T extends object>(row: T & { id: string }): T => {
 export class DexieStorage implements Storage {
   private db: GymDb;
 
+  // Datenbankname bleibt beim alten App-Namen, sonst waeren die gespeicherten Daten weg
   constructor(name = 'gymcreator') {
     this.db = new GymDb(name);
   }

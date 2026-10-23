@@ -8,17 +8,18 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 
 | Thema | Entscheidung |
 |---|---|
+| Name | **Rexy** (Nicole, 23.10.): Wortmarke, Seitentitel, Manifest, Backup-Dateiname. Repo, Web-Adresse `/Gymcreator/` und interne Kennungen (Datenbank `gymcreator`, `gymcreator_ui`, Backup-Feld `app`) bleiben, sonst wären gespeicherte Daten und alte Backups weg |
 | Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`). Final. **"Peach" erscheint nirgends in der Oberfläche** (gekauftes Fremdprogramm) |
 | Stack | React 19 + Vite 8 + TypeScript 6 als PWA auf GitHub Pages; später Capacitor 8 + Codemagic |
-| Design | **Design System „Rexy“** (Neobrutalism, Nicole 23.10.): Rexy-Palette Pink / Cyan / Neongelb, dazu Lime und Violett; Cream-Basis `#FDF9E9`; Zielfarbe als Akzent (V-Form Cyan, Sanduhr Gelb, Apfel Pink); Tage A Pink, B Cyan, C Gelb, D Lime, E Violett; Stand-Pillen in der Tagesfarbe auf Ink, **auch bei Pink und Violett** (Nicole); aktuelle Woche im Fortschritt Cyan, bei V-Form Pink (nicht Schwarz, Nicole). Rexe in Zielwahl (Motiv), Plan und Einstellungen (freigestellt, ohne Hintergrund). Kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2) |
+| Design | **Design System „Rexy“** (Neobrutalism, Nicole 23.10.): Rexy-Palette Pink / Cyan / Neongelb, dazu Lime und Violett; Cream-Basis `#FDF9E9`; Zielfarbe als Akzent (V-Form Cyan, Sanduhr Gelb, Apfel Pink); Tage A Pink, B Cyan, C Gelb, D Lime, E Violett; Stand-Pillen in der Tagesfarbe auf Ink, **auch bei Pink und Violett** (Nicole); aktuelle Woche im Fortschritt Cyan, bei V-Form Pink (nicht Schwarz, Nicole). Rexe in Zielwahl (Motiv) und Einstellungen (freigestellt, ohne Hintergrund). Kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2) |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe mindestens 10** anteilige Sätze pro Woche (`limits.minWeeklySetsPrio3`) |
 | Grenzen je Einheit | **Keine feste Grenze für Sätze oder Übungen**: Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt und sind entfernt (Nicole, 23.10.). Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit (in den Plänen 15–18 Sätze, 5–7 Übungen). **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | 3, 4 oder 5 für alle. **Keine Erfahrungsstufen** (Nicole, 23.10.: entfernt, **ohne** Hinweis auf eine Zielgruppe) |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert; "Übung entfernen" löscht die Werte der Woche. **Von Nicole bestätigt** |
-| Logo | Wortmarke (gelbes Schild mit pinkem Versatz) im Kopf, der oben stehen bleibt; führt auf „Heute“ |
-| Zyklus | 12 Wochen, **kein Deload**. Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht (`progression.nextCycleLighterPct`); erklärt im Plan und auf „Heute“ (Woche 12 und Woche 1 ab Zyklus 2) |
+| Logo | Wortmarke (gelbes Schild mit pinkem Versatz) im Kopf, der oben stehen bleibt; führt auf die Startseite |
+| Zyklus | 12 Wochen, **kein Deload**. Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht (`progression.nextCycleLighterPct`); erklärt auf der Startseite (Woche 12 und Woche 1 ab Zyklus 2 oben, sonst in der aufgeklappten Planliste) |
 | Muskelmodell | Kniebeuge zählt für den Po 0,5 und bleibt so |
 | Wdh.-Bereiche | 6–8 / 6–10 / 8–12 / 12–15, Hauptmuskel wellenförmig über die Woche |
 | Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
@@ -27,7 +28,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Dauer | **Jede normale Einheit 60–90 Minuten** (Nicole, 23.10.), geprüft mit realistischer Zeitrechnung (Pausen 1:30–3 Min., Aufwärmsätze je Übung) |
 | Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / **30–45 Min.** (Nicoles Vorgabe): **die 4 wichtigsten Übungen fürs Ziel, mit vollen Sätzen und normalen Pausen**, keine Supersätze. Prio 3 bleibt immer; passen 4 nicht in 45 Min., werden es weniger (nur 2 V-Form-Tage: 3). Ausgelassene Übungen unten, trotzdem machbar. Gilt nur für den Tag dieser Woche |
 | Pausentimer | **Nur per Knopf** "Pause starten" in der aufgeklappten Übung, startet nie von selbst |
-| Aufbau | Wochenwahl mit Pfeilen auf **Heute und Plan** (gleiches Raster). **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung vorausgefüllt erneut, Verlauf bleibt |
+| Aufbau | **3 Reiter: Plan · Fortschritt · Einstellungen** (Nicole, 23.10.). "Heute" heißt jetzt "Plan"; der frühere Reiter "Plan" zeigte dasselbe und ist weg. Auf der Startseite klappt **"Übungen anzeigen"** unter jedem Tag Belastung, Dauer, Kurz-Modus und Übungen mit Sätzen auf, dazu die 3/4/5-Tage-Wahl für diese Woche (mit Rückfrage) und den Zyklus-Hinweis; bleibt aufgeklappt, bis man ausblendet. Wochenwahl mit Pfeilen auf der Startseite. **"Plan neu einrichten"** und Ziel nur noch in den Einstellungen: Einrichtung vorausgefüllt erneut, Verlauf bleibt |
 
 ## 2. Stand
 
@@ -39,7 +40,7 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 | Generator | `src/core/generator/` | `buildPlan` (Vorlage → Tage), `validatePlan` (alle Grenzen, Wochenziele und die Dauer je Einheit), `weeklyMuscles`, `estimateMinutes` (Dauer-Schätzung) |
 | Progression | `src/core/progression/` | `weight`, `compare`, `entries`, `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Bewertung, Steigerungshinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, "Nur diese Woche", Übung entfernen), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (Tagesstand, nächster Tag), `short` (Kurz-Modus, Übernahme beim Umstellen der Tage). Peach-Szenarien in `scenarios.test.ts` |
 | Speicher | `src/storage/` | Dexie (IndexedDB) hinter einer Schnittstelle, Backup (Export/Import mit Prüfung), Sicherheitskopie vor Import, Migrations-Gerüst (Schema 1) |
-| Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Wochenwahl (`components/WeekNav`, Heute und Plan), Kurz-Modus (Tagesansicht, Kern `core/progression/short.ts`), Onboarding (4 Schritte, auch als "Plan neu einrichten"), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Profilzeile, Woche, Tage je Woche), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` (Abläufe getestet in `state/flows.test.ts`) |
+| Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Wochenwahl (`components/WeekNav`), Kurz-Modus (Tagesansicht, Kern `core/progression/short.ts`), Onboarding (4 Schritte, auch als "Plan neu einrichten"), Startseite `Today` (Reiter "Plan", mit aufklappbarer Übungsliste und Tage-Wahl), Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position und aufgeklappte Planliste in localStorage), `state/actions.ts` (Abläufe getestet in `state/flows.test.ts`) |
 | Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 9 Pläne, prüft Grenzen, Wochenziele, Dauer jeder Einheit und die Bibliothek, druckt alle Einheiten mit Minuten und das Wochenvolumen je Muskel |
 
 **Selbsttest am 23.10.** (Browser-Durchläufe aller Pläne und Abläufe, unabhängiger Code-Review). Behoben:
@@ -53,7 +54,7 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 - Zeilen mit gewählter Übung, aber ohne Werte, behielten nach dem Umstellen der Wochenart die alten Sätze.
 - Kleineres: Backup-Download auf iOS, Gewichtsschritte nach Import, Prüfung der Backup-Werte, Speicherfehler-Hinweis, Löschen eigener Übungen.
 
-Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Logo führt auf „Heute“. ACSM-Abgleich: jede Prio-3-Muskelgruppe mindestens 10 Sätze pro Woche.
+Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Logo führt auf die Startseite. ACSM-Abgleich: jede Prio-3-Muskelgruppe mindestens 10 Sätze pro Woche.
 
 **Neuverteilung am 23.10.** (Nicoles Rückmeldung: Kurz-Modus mit 1 Satz je Übung ist Murks, normale Einheit soll 60–90 Minuten dauern): Mit realistischer Zeitrechnung (Pausen 1:30–3 Min. nach Singer 2024 und Schoenfeld 2016, Aufwärmsätze je Übung) lagen 47 von 57 Einheiten unter 60 Minuten. Alle Vorlagen sind neu verteilt, jede Einheit liegt jetzt bei 60–70 Minuten, das prüft `validatePlan`. Folgen: Bei 4 und 5 Tagen gibt es mehr Wochenvolumen (68–70 bzw. 84–86 Sätze). Der Kurz-Modus wurde danach noch einmal neu gefasst (siehe Abschnitt 1). Neue Slots in allen drei Pools; vorhandene Slot-IDs sind unverändert. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
@@ -79,21 +80,22 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 
 **Design Rexy übernommen (23.10.)**, nach Freigabe der Entwürfe durch Nicole:
 - Quelle: Design System „Rexy – Neobrutalism“ (claude.ai, https://claude.ai/code/artifact/b1f6a245-8459-4a08-b0c6-a193dbe59410), Entwürfe der Screens: https://claude.ai/artifact/DZu1nQ6RuNUkCM15YnZ821. Rexy liefert nur `tokens.json`, die Werte stehen jetzt in `src/ui/theme/tokens.css` (inkl. Schriftgrößen `--fs-*`); Kategorie-Farben und Zielakzente auch in `data/goals.json`.
-- Bausteine wie in Rexy: Wortmarke im klebenden Kopf, Tab-Leiste als Pillen, Wochenwahl mit runden Cyan-Pfeilen, Muskelgruppe als farbiges Badge, Stand-Pille (`.count-pill`) auf Heute und im Tageskopf, Satz hinzufügen/entfernen als runde +/−-Knöpfe, Stern auf goldener Scheibe, Zurück/Schließen/Abbrechen als umrandete Knöpfe ohne Schatten, Disabled = halbe Deckkraft, Fokus-Ring Ink.
+- Bausteine wie in Rexy: Wortmarke im klebenden Kopf, Tab-Leiste als Pillen, Wochenwahl mit runden Cyan-Pfeilen, Muskelgruppe als farbiges Badge, Stand-Pille (`.count-pill`) auf der Startseite und im Tageskopf, Satz hinzufügen/entfernen als runde +/−-Knöpfe, Stern auf goldener Scheibe, Zurück/Schließen/Abbrechen als umrandete Knöpfe ohne Schatten, Disabled = halbe Deckkraft, Fokus-Ring Ink.
 - Hauptknopf auf einer Tageskarte in der Zielfarbe nimmt die Flächenfarbe (Regel in `ui.css`).
-- Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in Plan (`components/GoalChip.tsx`) und Einstellungen. `webp` ist im Offline-Cache.
+- Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in den Einstellungen (`GoalChip` im Plan-Kopf ist mit dem Reiter Plan entfallen). `webp` ist im Offline-Cache.
 - Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` hat nur noch die Hantel fürs App-Icon.
-- Plan-Kopf zeigt Rex, Ziel-Pille und „4 Tage pro Woche“ statt „Dein Plan: Apfel · 4 Tage pro Woche“ (E2E angepasst).
 - Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche.
 
-**Tests:** 131 Vitest + 17 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
+**Rexy und drei Reiter (23.10.)**, Nicoles Wunsch: App heißt Rexy; Reiter "Heute" heißt "Plan", der doppelte Reiter "Plan" ist weg (`PlanScreen`, `Plan.css`, `GoalChip` gelöscht). Die Planliste ist auf der Startseite aufklappbar (Abschnitt 1, Aufbau). Ein gemerkter Reiter "plan" aus älteren Ständen öffnet die Startseite. Bereits installierte Home-Bildschirm-Apps behalten auf dem iPhone den alten Namen, bis man sie neu hinzufügt.
+
+**Tests:** 131 Vitest + 18 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
 - Onboarding, freie Übungswahl, Pause nur per Knopf
 - Kurz-Modus ("30–45 Min.", 4 Übungen mit allen Sätzen, normale Pause im Timer, ausgelassene Übungen unten, auch bei 60-Minuten-Einheiten)
-- Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute
+- Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf der Startseite, Planliste bei Bedarf aufklappen
 - Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen
 - Trainingstage aus den Einstellungen (auch erst ab nächster Woche), Übung entfernen, Halteübung im Plan
-- Logo, Umstellen im Plan mit Rückfrage, eigene Übung über zwei Wochen, Fortschritt, langer Name, Namen für Screenreader
-- Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf
+- Logo, Umstellen in der Planliste mit Rückfrage, eigene Übung über zwei Wochen, Fortschritt, langer Name, Namen für Screenreader
+- Zyklus-Hinweise ohne Deload, Plan neu einrichten aus den Einstellungen mit Abbrechen und erhaltenem Verlauf
 - Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen
 
 Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,94 (seit den Rex-Bildern auf der Startseite, vorher 0,98). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
@@ -102,12 +104,13 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 
 - **Sicherheitskopie und Migrationen**: Die Kopie vor einem Import trägt keine Schema-Version. Sobald es eine Migration (Schema 2) gibt, muss "Wiederherstellen" sie durch `migrate` schicken.
 - **Zielwechsel mitten im Zyklus**: Der Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID), ein Kurz-Modus wird aufgehoben. Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
-- **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
+- **Lighthouse** prüft nur die Startseite (Einrichtung). Plan-Startseite und Training deckt nur der E2E-Test "Namen für Screenreader" ab.
 - **Wissenschaft**: ACSM Position Stand 2026 eingearbeitet, aber nur über Abstract, Pressemitteilung und Sekundärquellen (Volltext aus der Sandbox gesperrt). Die Tabelle mit den genauen Empfehlungen bei Gelegenheit im Volltext prüfen.
 - **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 - **App-Icon und Favicon** zeigen noch die Pixel-Hantel in den Farben vor Rexy (`scripts/make-icons.mjs`); neu gestalten mit der Store-Vorbereitung (Rex).
+- **Design System Rexy (Artifact)** zeigt noch 4 Reiter, „Gymcreator“ als Wortmarke und den `GoalChip` im Plan-Kopf; bei Gelegenheit auf 3 Reiter, „Rexy“ und die aufklappbare Planliste nachziehen.
 - **Pausentimer bei 360 px:** „Pause 2:30“ bricht in zwei Zeilen um, funktioniert aber.
 
 ## 4. Nächste Schritte
