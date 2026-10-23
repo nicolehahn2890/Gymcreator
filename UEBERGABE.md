@@ -16,7 +16,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe mindestens 10** anteilige Sätze pro Woche (`limits.minWeeklySetsPrio3`) |
 | Grenzen je Einheit | **Keine feste Grenze für Sätze oder Übungen**: Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt und sind entfernt (Nicole, 23.10.). Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit (in den Plänen 15–18 Sätze, 5–7 Übungen). **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | 3, 4 oder 5 für alle. **Keine Erfahrungsstufen** (Nicole, 23.10.: entfernt, **ohne** Hinweis auf eine Zielgruppe) |
-| Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
+| Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert; "Übung entfernen" löscht die Werte der Woche. **Von Nicole bestätigt** |
 | Logo | Logo oben auf jeder Seite führt auf „Heute“ |
 | Zyklus | 12 Wochen, **kein Deload**. Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht (`progression.nextCycleLighterPct`); erklärt im Plan und auf „Heute“ (Woche 12 und Woche 1 ab Zyklus 2) |
 | Muskelmodell | Kniebeuge zählt für den Po 0,5 und bleibt so |
@@ -96,9 +96,6 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
 - **Wissenschaft**: ACSM Position Stand 2026 eingearbeitet, aber nur über Abstract, Pressemitteilung und Sekundärquellen (Volltext aus der Sandbox gesperrt). Die Tabelle mit den genauen Empfehlungen bei Gelegenheit im Volltext prüfen.
 - **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
-- **Mit Nicole bestätigen**: "Übung entfernen" löscht die Werte der Woche (Abweichung von Peach, siehe oben).
-- **Bewusst wie Peach**: Zusatzsätze erben nur von der direkten Vorwoche, auch wenn der Kurz-Modus die Übung eine Woche ausgelassen hat.
-- **Seltener Randfall**: Fällt ein Auto-Zusatzsatz nachträglich weg (eine frühere Woche wird korrigiert), bleibt der schon eingetragene Satz gespeichert und zählt im Vergleich der Folgewoche mit.
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
@@ -110,6 +107,7 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 
 ## 5. Verbindliche Details
 
+- **Bestätigt so (Nicole, 23.10.)**: Zusatzsätze erben nur von der direkten Vorwoche (Peach), auch wenn der Kurz-Modus die Übung eine Woche ausgelassen hat. Fällt ein Auto-Zusatzsatz nachträglich weg (eine frühere Woche wird korrigiert), bleibt der schon eingetragene Satz gespeichert und zählt im Vergleich der Folgewoche mit.
 - **Entry-Key** `cycle:week:slotId`; Eintrag trägt `day`, `category`, `repRange`, `baseSets`, `exerciseId`, `sets[{w,r}]`, `extraSets`, optional `once`/`baseExerciseId`.
 - **Flexible Woche:** gleiche Slot-ID in 3/4/5 Tagen = dieselbe Zeile; die Wochenart wird beim ersten Eintrag einer Woche gespeichert (`Week`), spätere Wochen erben sie. Ab der aktuellen Woche umgestellt (Plan oder Einstellungen), wird sie auch der Standard im Profil (`Profile.days`) für folgende Wochen und Zyklen; frühere Wochen behalten ihre Wochenart (`saveWeekDays`, `saveProfile` in `state/actions.ts`).
 - **Texte:** alles in `src/i18n/de.json`, kurz, sachlich. Keine Sonderzeichen wie Grad oder Häkchen im Code (`–` für den Halbgeviertstrich, Häkchen als SVG `components/Check.tsx`).

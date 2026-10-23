@@ -260,7 +260,7 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 | `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` ✅ (`rowState`, `weekStats`) | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
 | `incCand`/`incDue` (1557/1565) | `state.ts` ✅ (`increaseDue`), `rules.ts` ✅ (`suggestWeight`) | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
 | `autoExtraSets` (1314) | `rules.ts` ✅ | 1:1 (3 stagnierende Wochenvergleiche, gleiche Übung, max. 5 Sätze) |
-| `inhEx` (1188), `exBase` (1091), `selEx`-Abfrage (1846) | `inherit.ts` ✅ | Vererbung über Lücken, "nur diese Woche" über `baseExerciseId`. Abweichung (23.10.2026): Leeren der Übung löscht die Werte der Woche; in Peach blieben sie, zählten als trainiert und landeten bei der nächsten gewählten Übung |
+| `inhEx` (1188), `exBase` (1091), `selEx`-Abfrage (1846) | `inherit.ts` ✅ | Vererbung über Lücken, "nur diese Woche" über `baseExerciseId`. Abweichung (23.10.2026, von Nicole bestätigt): Leeren der Übung löscht die Werte der Woche; in Peach blieben sie, zählten als trainiert und landeten bei der nächsten gewählten Übung |
 | `carryMap` (1107) | `cycle.ts` ✅ | Übernahme in den neuen Zyklus nach Kategorie, gleicher Bereich zuerst, keine Dopplung pro Tag; ohne `RETIRED`/`ALIAS`-Sonderfälle |
 | `weekPt`/`syncPt`/`setPlan` (1059–1071) | `week.ts` ✅ | Wochen-Art als Feld `Week.days`, Vorauswahl = Vorwoche |
 | `repairSlots`, `mig*`, `markLegacy`, `V2_REORDER` | **entfällt** | gab es nur wegen positionsbasierter Keys |
@@ -339,7 +339,7 @@ Fakten, die den Plan beeinflussen:
 10. **Training:** Übungen in der Tagesliste aufklappen statt eigener Seite; ab Woche 2 Vorwoche je Satz, Steigerungshinweis und Bewertung sichtbar (23.10.)
 11. **Muskelgruppen-Namen bleiben** (Glute Max, Glute & Quad usw.), keine Benennung nach Übungen (23.10.)
 12. ~~Einsteiger nur 3 oder 4 Tage~~ (23.10.), abgelöst durch 24
-13. **Zwei Abweichungen von der Peach-Logik bestätigt:** Vorwert bevorzugt Wochen mit Wiederholungen; bei Gegengewicht zählt 0 kg Hilfe als Bestwert (23.10.)
+13. **Drei Abweichungen von der Peach-Logik bestätigt:** Vorwert bevorzugt Wochen mit Wiederholungen; bei Gegengewicht zählt 0 kg Hilfe als Bestwert; "Übung entfernen" löscht die Werte der Woche (23.10.). Zusatzsätze erben weiter nur von der direkten Vorwoche, auch nach einer im Kurz-Modus ausgelassenen Woche (wie Peach, bestätigt)
 14. **Logo oben auf jeder Seite** führt zurück auf "Heute" (23.10.)
 15. **Kein Deload.** Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht; das erklärt der Plan (23.10.)
 16. **Kniebeuge zählt für den Po weiter 0,5** im Muskelmodell (23.10.)
