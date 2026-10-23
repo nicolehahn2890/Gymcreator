@@ -43,8 +43,8 @@ export function latestWeek(index: EntryIndex): { cycle: number; week: number } {
   return best;
 }
 
-/** Geschaetzte Dauer in Minuten (auf 5 gerundet): Saetze x (Satzdauer + Pause des Bereichs). */
+/** Geschaetzte Dauer in Minuten (auf 5 gerundet): Saetze x (Satzdauer + Pause des Bereichs) + Wechsel je Uebung. */
 export function estimateMinutes(day: PlanDay, timing: Timing): number {
-  const seconds = day.rows.reduce((sum, r) => sum + r.sets * (timing.setSeconds + (timing.restSeconds[r.repRange] ?? 0)), 0);
+  const seconds = day.rows.reduce((sum, r) => sum + r.sets * (timing.setSeconds + (timing.restSeconds[r.repRange] ?? 0)) + timing.exerciseSeconds, 0);
   return Math.max(5, Math.round(seconds / 300) * 5);
 }

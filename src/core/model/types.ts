@@ -96,6 +96,8 @@ export interface Timing {
   setSeconds: number;
   /** Pausenvorgabe je Wdh.-Bereich in Sekunden. */
   restSeconds: Record<RepRange, number>;
+  /** Wechsel, Einstellen und Aufwaermen je Uebung in Sekunden. */
+  exerciseSeconds: number;
 }
 
 export interface GoalsData {
