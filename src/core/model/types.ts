@@ -65,11 +65,23 @@ export interface LevelRules {
   dropLastSlotFromCategoriesWith?: number;
 }
 
+export interface ProgressionRules {
+  /** Wochen je Zyklus. */
+  cycleWeeks: number;
+  /** Ab dieser Woche wird mit dem Vorwert verglichen (davor leichter Einstieg ohne Badge). */
+  compareFromWeek: number;
+  /** So viele stagnierende Wochenvergleiche derselben Uebung loesen den Auto-Zusatzsatz aus. */
+  stagnationComparisons: number;
+  /** Saetze, die der Auto-Zusatzsatz hinzufuegt. */
+  autoExtraSets: number;
+}
+
 export interface GoalsData {
   schema: 1;
   ranges: RepRange[];
   limits: Limits;
   levels: Record<Level, LevelRules>;
+  progression: ProgressionRules;
   categories: Record<CategoryId, CategoryDef>;
   goals: Record<GoalId, GoalDef>;
 }
@@ -161,6 +173,8 @@ export interface Exercise {
 export interface ExercisesData {
   schema: 1;
   equipment: string[];
+  /** Standard-Schrittweite in kg je Ausstattung; null = eine Stufe bzw. kein Vorschlag. */
+  increments: Record<string, number | null>;
   patterns: string[];
   exercises: Exercise[];
 }
@@ -178,6 +192,8 @@ export interface Entry {
   cycle: number;
   week: number;
   slotId: string;
+  /** Tag (0-basiert), an dem der Slot in dieser Woche lag. Nur Kontext fuer Herkunft und Reihenfolge, kein Schluessel. */
+  day: number;
   exerciseId: string;
   sets: SetValue[];
   extraSets: number;

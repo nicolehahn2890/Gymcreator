@@ -1,7 +1,8 @@
 {
   "schema": 1,
-  "_doc": "Uebungsbibliothek v1. Reihenfolge je Kategorie = Vorzugsreihenfolge (beste zuerst). IDs sind stabil und werden in Eintraegen gespeichert: nie umbenennen, nur neue anlegen. stars = Ziele, fuer die die Uebung eine Top-Wahl ist; heavy = geeignet fuer 4-8; stretch = Last in der gedehnten Position; assisted = Gegengewicht (weniger = schwerer); timed = Sekunden statt Wiederholungen. Tipps geraeteneutral im Format \"Einstellung: ...\\nAusfuehrung: ...\". Pruefung: node scripts/verify-plan-data.mjs",
+  "_doc": "Uebungsbibliothek v1. Reihenfolge je Kategorie = Vorzugsreihenfolge (beste zuerst). IDs sind stabil und werden in Eintraegen gespeichert: nie umbenennen, nur neue anlegen. stars = Ziele, fuer die die Uebung eine Top-Wahl ist; heavy = geeignet fuer 4-8; stretch = Last in der gedehnten Position; assisted = Gegengewicht (weniger = schwerer); timed = Sekunden statt Wiederholungen. increments = Standard-Schrittweite in kg je Ausstattung fuer den Gewichtsvorschlag (null = eine Stufe bzw. kein Vorschlag), im Profil aenderbar. Tipps geraeteneutral im Format \"Einstellung: ...\\nAusfuehrung: ...\". Pruefung: node scripts/verify-plan-data.mjs",
   "equipment": ["barbell", "dumbbell", "cable", "machine", "smith", "bodyweight", "band", "pullup_bar", "dip_station", "ball"],
+  "increments": {"barbell": 2.5, "dumbbell": 2, "cable": 2.5, "machine": null, "smith": 2.5, "bodyweight": null, "band": null, "pullup_bar": null, "dip_station": null, "ball": null},
   "patterns": ["hip_thrust", "hip_extension", "hip_hinge", "hip_abduction", "hip_adduction", "squat", "lunge", "knee_flexion", "knee_extension", "vertical_pull", "horizontal_pull", "shoulder_extension", "vertical_push", "horizontal_push", "chest_fly", "lateral_raise", "rear_delt", "elbow_flexion", "elbow_extension", "plantar_flexion", "trunk_flexion", "hip_flexion", "anti_extension", "anti_rotation", "lateral_flexion"],
   "exercises": [
     {

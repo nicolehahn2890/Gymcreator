@@ -237,7 +237,7 @@ Slot      { id:'gmax_4-8_a', category, repRange:'4-8', baseSets:3, priority:1..3
 Template  { days:3|4|5, dayPlan: { name, focus, color, slotIds:string[] }[] }
 Plan      { version:1, goal, slots:Slot[], templates:Template[] }        // vom Generator erzeugt
 Week      { cycle:number, week:1..12, days:3|4|5 }                       // Wochen-Art (Peach wt__)
-Entry     { cycle, week, slotId, exerciseId, sets:{w:string,r:number|null}[],
+Entry     { cycle, week, slotId, day, exerciseId, sets:{w:string,r:number|null}[],   // day = Tag in dieser Woche (nur Kontext)
             extraSets:number, category, repRange, baseSets,               // Kontext IM Eintrag (Peach r0/s0 immer)
             once?:boolean, baseExerciseId?:string }                       // "nur diese Woche" (Peach base)
 ExerciseNote    { exerciseId, note, setting }                             // Peach tip__ex__ / set__ex__
@@ -272,16 +272,18 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 |---|---|---|
 | `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`) |
 | `prog` (1234), `rcol` (1196) | `compare.ts` ✅ (`progressStatus`, `repZone`) | 1:1: Gewicht zuerst, Reps als Durchschnitt; `isAssist` kommt aus dem Übungsdatensatz (`assisted: true`) statt aus dem Set `ASSIST` |
-| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `history.ts` | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie |
-| `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
-| `incCand`/`incDue` (1557/1565) | `rules.ts` | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
-| `autoExtraSets` (1314) | `rules.ts` | 1:1 (3 stagnierende Wochenvergleiche, gleiche Übung, max. 5 Sätze) |
-| `inhEx` (1188), `exBase` (1091), `selEx`-Abfrage (1846) | `inherit.ts` | Vererbung über Lücken, "nur diese Woche" über `baseExerciseId` |
-| `carryMap` (1107) | `cycle.ts` | Übernahme in den neuen Zyklus nach Kategorie, gleicher Bereich zuerst, keine Dopplung pro Tag; ohne `RETIRED`/`ALIAS`-Sonderfälle |
-| `weekPt`/`syncPt`/`setPlan` (1059–1071) | `week.ts` | Wochen-Art als Feld `Week.days`, Vorauswahl = Vorwoche |
+| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `entries.ts` + `history.ts` ✅ | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie |
+| `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` ✅ (`rowState`, `weekStats`) | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
+| `incCand`/`incDue` (1557/1565) | `state.ts` ✅ (`increaseDue`), `rules.ts` ✅ (`suggestWeight`) | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
+| `autoExtraSets` (1314) | `rules.ts` ✅ | 1:1 (3 stagnierende Wochenvergleiche, gleiche Übung, max. 5 Sätze) |
+| `inhEx` (1188), `exBase` (1091), `selEx`-Abfrage (1846) | `inherit.ts` ✅ | Vererbung über Lücken, "nur diese Woche" über `baseExerciseId` |
+| `carryMap` (1107) | `cycle.ts` ✅ | Übernahme in den neuen Zyklus nach Kategorie, gleicher Bereich zuerst, keine Dopplung pro Tag; ohne `RETIRED`/`ALIAS`-Sonderfälle |
+| `weekPt`/`syncPt`/`setPlan` (1059–1071) | `week.ts` ✅ | Wochen-Art als Feld `Week.days`, Vorauswahl = Vorwoche |
 | `repairSlots`, `mig*`, `markLegacy`, `V2_REORDER` | **entfällt** | gab es nur wegen positionsbasierter Keys |
 
-Tests: Peachs Browser-Tests `vorwert-vorwoche`, `vorwert-zyklusstart`, `verlauf-woche1-2`, `verlauf-planwechsel`, `steigerung`, `uebungswechsel`, `flex-woche` und `randfaelle` werden als **Vitest-Unit-Tests auf dem Kern** nachgebaut (gleiche Szenarien, gleiche erwarteten Vorwerte/Badges), plus die Funktionsfälle für `cmpWeight`/`prog`/`parseWeight` aus der Skill-Doku (Spannen, Komma, assistiert, leeres Feld).
+**Gewicht pro Satz** (entschieden 23.10.2026): Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen "40-45"), dadurch gelten `cmpWeight`/`prog` unverändert. Zahlen der Progression (Zykluslänge, Vergleich ab Woche, stagnierende Vergleiche, Auto-Zusatzsatz) stehen in `data/goals.json` → `progression`, Schrittweiten je Ausstattung in `data/exercises.json` → `increments`.
+
+Tests (✅ `src/core/progression/scenarios.test.ts`): Peachs Browser-Tests `vorwert-vorwoche`, `vorwert-zyklusstart`, `verlauf-woche1-2`, `verlauf-planwechsel`, `steigerung`, `uebungswechsel`, `flex-woche` und `randfaelle` werden als **Vitest-Unit-Tests auf dem Kern** nachgebaut (gleiche Szenarien, gleiche erwarteten Vorwerte/Badges), plus die Funktionsfälle für `cmpWeight`/`prog`/`parseWeight` aus der Skill-Doku (Spannen, Komma, assistiert, leeres Feld).
 
 **Datenport (nur Inhalte, keine Dateien kopieren):** `EXERCISES` (Z. 292), `TIPS` (Z. 307–448), `REC` (Z. 691), `ASSIST` (Z. 697), `CC` (Z. 449), `P4`/`P3` (Z. 468–553) → `data/exercises.json` (Hersteller-Varianten zu je einer generischen Übung zusammengeführt, Tipps geräteneutral umformuliert, Sterne je Ziel neu vergeben) und `data/goals.json` (Peach-Spalte = dein P4/P3 als Regressionsziel).
 

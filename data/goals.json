@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "_doc": "Einzige Stelle mit Trainingswissen. Kategorien = Peach-Kategorien + Bizeps/Trizeps/Waden. muscles = anteilige Zaehlung (Hauptmuskel 1, Mitarbeit 0,5) fuer die Grenze pro Einheit. Je Ziel: priorities (0-3), categoryOrder (Reihenfolge innerhalb eines Tages), slots (Slot-Pool: stabile IDs, Kategorie, Wdh.-Bereich, Basis-Saetze, optionaler focus als Hinweis fuer Sterne/Dropdown). Die Tagesverteilung steht in templates.json. levels: Regeln je Erfahrungsstufe (Einsteiger: alle Slots 2 Saetze, 4-8 wird 6-10, Kategorien mit mind. 3 Slots in der Woche verlieren den letzten Slot in Pool-Reihenfolge; Slot-IDs bleiben).",
+  "_doc": "Einzige Stelle mit Trainingswissen. Kategorien = Peach-Kategorien + Bizeps/Trizeps/Waden. muscles = anteilige Zaehlung (Hauptmuskel 1, Mitarbeit 0,5) fuer die Grenze pro Einheit. Je Ziel: priorities (0-3), categoryOrder (Reihenfolge innerhalb eines Tages), slots (Slot-Pool: stabile IDs, Kategorie, Wdh.-Bereich, Basis-Saetze, optionaler focus als Hinweis fuer Sterne/Dropdown). Die Tagesverteilung steht in templates.json. levels: Regeln je Erfahrungsstufe (Einsteiger: alle Slots 2 Saetze, 4-8 wird 6-10, Kategorien mit mind. 3 Slots in der Woche verlieren den letzten Slot in Pool-Reihenfolge; Slot-IDs bleiben). progression: Zykluslaenge, ab welcher Woche verglichen wird (Woche 1 = leichter Einstieg ohne Vergleich), nach wie vielen stagnierenden Wochenvergleichen derselben Uebung ein Auto-Zusatzsatz kommt und wie viele (Obergrenze limits.maxSetsPerSlot).",
   "ranges": [
     "4-8",
     "6-10",
@@ -23,6 +23,12 @@
       "dropLastSlotFromCategoriesWith": 3
     },
     "advanced": {}
+  },
+  "progression": {
+    "cycleWeeks": 12,
+    "compareFromWeek": 2,
+    "stagnationComparisons": 3,
+    "autoExtraSets": 1
   },
   "categories": {
     "gmax": {

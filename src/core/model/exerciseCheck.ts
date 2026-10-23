@@ -27,6 +27,8 @@ export function checkExercises(plan: PlanData, data: ExercisesData): ExerciseChe
   const slotFoci = new Set(Object.values(goals.goals).flatMap((g) => g.slots.flatMap((s) => (s.focus ? [s.focus] : []))));
 
   if (data.schema !== 1) errors.push(`exercises.json: schema ${String(data.schema)} statt 1`);
+  for (const e of data.equipment) if (!(e in data.increments)) errors.push(`exercises.json: Schrittweite fuer ${e} fehlt`);
+  for (const e of Object.keys(data.increments)) if (!data.equipment.includes(e)) errors.push(`exercises.json: Schrittweite fuer unbekannte Ausstattung ${e}`);
 
   const seen = { id: new Set<string>(), de: new Set<string>(), en: new Set<string>() };
   for (const ex of data.exercises) {
