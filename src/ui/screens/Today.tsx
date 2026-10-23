@@ -5,8 +5,10 @@ import { dayProgress, followingWeek, nextDayIndex } from '../../core/progression
 import { rowState, weekStats } from '../../core/progression/state';
 import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, shortDayName, text } from '../../i18n';
+import { REX_MOMENT } from '../brand/rex';
 import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
+import { RexMoment } from '../components/RexMoment';
 import { Sheet } from '../components/Sheet';
 import { WeekNav } from '../components/WeekNav';
 import { saveWeekDays, type Position } from '../state/actions';
@@ -61,7 +63,15 @@ export function Today({ model, pos, onOpenDay, onGoToWeek, listOpen, onToggleLis
           {cycle > 1 ? fmt(t.firstWeekNext, { cycle, from: rules.nextCycleLighterPct[0], to: rules.nextCycleLighterPct[1] }) : t.firstWeek}
         </p>
       )}
-      {week === rules.cycleWeeks && <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>}
+      {/* Letzte Woche mit Rex; ist sie schon fertig, hat der Rex der fertigen Woche Vorrang (einer pro Ansicht) */}
+      {week === rules.cycleWeeks &&
+        (nextDay ? (
+          <RexMoment image={REX_MOMENT.wow} className="today-note">
+            {fmt(t.cycleEnd, { cycle, next: cycle + 1 })}
+          </RexMoment>
+        ) : (
+          <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>
+        ))}
 
       {nextDay ? (
         <section
@@ -81,15 +91,19 @@ export function Today({ model, pos, onOpenDay, onGoToWeek, listOpen, onToggleLis
           </button>
         </section>
       ) : (
-        <section className="card next-day" aria-labelledby="week-done-title">
-          <h1 id="week-done-title" className="next-title">
-            {fmt(t.weekDone, { week })}
-          </h1>
-          <p className="next-focus">{t.weekDoneText}</p>
-          <button type="button" className="btn btn-primary btn-large btn-block" onClick={() => onGoToWeek(following.cycle, following.week)}>
-            {t.nextWeek}
-          </button>
-        </section>
+        <RexMoment
+          image={REX_MOMENT.kleinerSieg}
+          pose
+          title={fmt(t.weekDone, { week })}
+          titleId="week-done-title"
+          action={
+            <button type="button" className="btn btn-primary btn-large btn-block" onClick={() => onGoToWeek(following.cycle, following.week)}>
+              {t.nextWeek}
+            </button>
+          }
+        >
+          {t.weekDoneText}
+        </RexMoment>
       )}
 
       <p className="today-stats">

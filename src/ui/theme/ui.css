@@ -74,6 +74,58 @@
   font-weight: 500;
 }
 
+/* Rex-Moment: Rex-Kopf neben einem Hinweis oder ganzer Rex ueber einer Karte (components/RexMoment) */
+.rex-moment {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rex-moment-img {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.rex-moment-body {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.rex-moment-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--fs-section);
+  line-height: 26px;
+  text-transform: uppercase;
+}
+
+.rex-moment-pose {
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+}
+
+.rex-moment-pose .rex-moment-img {
+  width: auto;
+  height: 150px;
+}
+
+.rex-moment-pose .rex-moment-body {
+  align-self: stretch;
+}
+
+.rex-moment-pose .rex-moment-text {
+  font-weight: 600;
+}
+
+.rex-moment-body > .btn {
+  margin-top: 4px;
+}
+
 /* Knoepfe: Pille mit Ink-Rahmen und hartem Schatten; Standard ist die Flaechenfarbe, Hauptknopf die Zielfarbe */
 .btn {
   display: inline-flex;

@@ -4,7 +4,9 @@ import { combinedWeight, getEntry, hasValues } from '../../core/progression/entr
 import { weekStats } from '../../core/progression/state';
 import { parseWeight } from '../../core/progression/weight';
 import { fmt, num, range, shortDayName, text } from '../../i18n';
+import { REX_MOMENT } from '../brand/rex';
 import { AppHeader } from '../components/AppHeader';
+import { RexMoment } from '../components/RexMoment';
 import type { Position } from '../state/actions';
 import { exerciseName, planFor, rowContext, type AppModel } from '../state/model';
 import './Progress.css';
@@ -31,7 +33,11 @@ export function Progress({ model, pos }: Props) {
       <h1 className="screen-title">{t.title}</h1>
       <p className="muted">{fmt(t.cycle, { cycle: pos.cycle })}</p>
       {stats.total > 0 && <p className="note progress-balance">{fmt(t.week, { week: pos.week, improved: stats.improved, total: stats.total })}</p>}
-      {!anyData && <p className="note progress-balance">{t.empty}</p>}
+      {!anyData && (
+        <RexMoment image={REX_MOMENT.letsGo} className="progress-balance">
+          {t.empty}
+        </RexMoment>
+      )}
 
       {plan.dayPlans.map((day) => {
         const rows = day.rows
