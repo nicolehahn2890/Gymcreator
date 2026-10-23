@@ -1,5 +1,5 @@
 // Peach-Szenarien (tests/*.test.js der Trainingsapp) als Unit-Tests auf dem Kern, gleiche Faelle und
-// erwartete Vorwerte/Badges. Peachs Partnerzeilen entfallen: gleiche Slot-ID = gleiche Zeile.
+// erwartete Vorwerte/Badges, auf den Slots des Apfel-Plans. Peachs Partnerzeilen entfallen: gleiche Slot-ID = gleiche Zeile.
 import { describe, expect, it } from 'vitest';
 import type { Entry } from '../model/types';
 import { carryOver } from './cycle';
@@ -10,6 +10,7 @@ import { autoExtraSets, suggestWeight } from './rules';
 import { rowState, weekStats } from './state';
 import { context, entry, plans, rowOf } from './testing';
 import { pausedSlotsWithValues, setWeekDays, weekDays } from './week';
+import { buildPlan } from '../generator/buildPlan';
 import { exerciseData, planData } from '../model/data';
 
 const at = (cycle: number, week: number) => ({ cycle, week });
@@ -20,108 +21,108 @@ const prevOf = (entries: Entry[], cycle: number, week: number, slotId: string) =
 };
 
 describe('Vorwert: Vorwoche statt anderer Tag derselben Woche (vorwert-vorwoche)', () => {
-  const EX = 'cable_abduction_standing';
-  // 4 Tage: Tag B Glute Med = gmed_8-12_c (Tag-Index 1), Tag C Glute Med = gmed_8-12_d (Tag-Index 2)
-  const B = 'gmed_8-12_c';
-  const C = 'gmed_8-12_d';
+  const EX = 'cable_crunch';
+  // 4 Tage: Bauch 8-12 an Tag A (abs_8-12_a, Index 0), Tag B (abs_8-12_b, Index 1) und Tag D (abs_8-12_c, Index 3)
+  const A = 'abs_8-12_a';
+  const B = 'abs_8-12_b';
   const base = [
-    entry(1, 12, B, EX, '19', [12, 12]),
-    entry(1, 12, C, EX, '16', [12, 12]),
-    entry(2, 1, B, EX, '20', [12, 12]),
-    entry(2, 1, C, EX, '17', [10, 10]),
-    entry(2, 2, B, EX, '21', [12, 12]),
+    entry(1, 12, A, EX, '19', [12, 12]),
+    entry(1, 12, B, EX, '16', [12, 12]),
+    entry(2, 1, A, EX, '20', [12, 12]),
+    entry(2, 1, B, EX, '17', [10, 10]),
+    entry(2, 2, A, EX, '21', [12, 12]),
   ];
 
-  it('W2 Tag C: 17 aus Z2 W1 Tag C, nicht 21 aus Tag B derselben Woche', () => {
-    expect(prevOf(base, 2, 2, C)).toMatchObject({ w: '17', cycle: 2, week: 1, day: 2 });
+  it('W2 Tag B: 17 aus Z2 W1 Tag B, nicht 21 aus Tag A derselben Woche', () => {
+    expect(prevOf(base, 2, 2, B)).toMatchObject({ w: '17', cycle: 2, week: 1, day: 1 });
   });
 
-  it('W2 Tag C mit 17 x 10/10 wie W1 -> gleich (nicht "weniger" gegen Tag B)', () => {
-    const data = [...base, entry(2, 2, C, EX, '17', [10, 10])];
-    expect(rowState(context(data), rowOf(C), at(2, 2)).status).toBe('s');
+  it('W2 Tag B mit 17 x 10/10 wie W1 -> gleich (nicht "weniger" gegen Tag A)', () => {
+    const data = [...base, entry(2, 2, B, EX, '17', [10, 10])];
+    expect(rowState(context(data), rowOf(B), at(2, 2)).status).toBe('s');
   });
 
-  it('W2 Tag B: 20 aus Z2 W1 Tag B, nicht 17 aus Tag C', () => {
-    expect(prevOf(base, 2, 2, B)).toMatchObject({ w: '20', week: 1, day: 1 });
+  it('W2 Tag A: 20 aus Z2 W1 Tag A, nicht 17 aus dem spaeteren Tag B', () => {
+    expect(prevOf(base, 2, 2, A)).toMatchObject({ w: '20', week: 1, day: 0 });
   });
 
-  it('W3 nach ausgefallener W2 an Tag C: letzter eigener Wert 17, nicht 21 von Tag B', () => {
-    expect(prevOf(base, 2, 3, C)).toMatchObject({ w: '17', week: 1, day: 2 });
+  it('W3 nach ausgefallener W2 an Tag B: letzter eigener Wert 17, nicht 21 von Tag A', () => {
+    expect(prevOf(base, 2, 3, B)).toMatchObject({ w: '17', week: 1, day: 1 });
   });
 
-  it('Z2 W1: eigene Zeile aus dem Zyklus davor (Tag C 16, Tag B 19)', () => {
-    expect(prevOf(base, 2, 1, C)).toMatchObject({ w: '16', cycle: 1, week: 12, day: 2 });
-    expect(prevOf(base, 2, 1, B)).toMatchObject({ w: '19', cycle: 1, week: 12, day: 1 });
+  it('Z2 W1: eigene Zeile aus dem Zyklus davor (Tag B 16, Tag A 19)', () => {
+    expect(prevOf(base, 2, 1, B)).toMatchObject({ w: '16', cycle: 1, week: 12, day: 1 });
+    expect(prevOf(base, 2, 1, A)).toMatchObject({ w: '19', cycle: 1, week: 12, day: 0 });
   });
 
   it('neue Zeile mit der Uebung: juengster Wert aus frueherer Woche, nicht aus dieser', () => {
-    // Uebung in der neuen Zeile gewaehlt (noch ohne Werte), Tag B dieser Woche schon trainiert
-    const data = [...base, entry(2, 4, 'gmed_8-12_e', EX, '', []), entry(2, 4, B, EX, '25', [12, 12])];
-    expect(prevOf(data, 2, 4, 'gmed_8-12_e')).toMatchObject({ w: '21', week: 2, day: 1 });
+    // Uebung an Tag D gewaehlt (noch ohne Werte), Tag A dieser Woche schon trainiert
+    const data = [...base, entry(2, 4, 'abs_8-12_c', EX, '', []), entry(2, 4, A, EX, '25', [12, 12])];
+    expect(prevOf(data, 2, 4, 'abs_8-12_c')).toMatchObject({ w: '21', week: 2, day: 0 });
   });
 
   it('3-Tage-Woche dazwischen: gleiche Slot-ID ist dieselbe Zeile', () => {
     const data = [
       ...base,
-      entry(2, 5, C, EX, '18', [12, 12, 12], { days: 3 }),
-      entry(2, 5, B, EX, '26', [12, 12], { days: 3 }),
+      entry(2, 5, B, EX, '18', [12, 12, 12], { days: 3 }),
+      entry(2, 5, A, EX, '26', [12, 12], { days: 3 }),
     ];
-    expect(prevOf(data, 2, 6, C)).toMatchObject({ w: '18', week: 5 });
-    expect(prevOf(data, 2, 6, B)).toMatchObject({ w: '26', week: 5 });
+    expect(prevOf(data, 2, 6, B)).toMatchObject({ w: '18', week: 5 });
+    expect(prevOf(data, 2, 6, A)).toMatchObject({ w: '26', week: 5 });
   });
 });
 
 describe('Vorwert am Zyklusstart (vorwert-zyklusstart)', () => {
   const HT = 'hip_thrust_barbell';
-  // Zyklus 1: Hip Thrust in allen drei Bereichen, Gewicht je Woche steigend
+  // Zyklus 1: Hip Thrust in drei Bereichen (Tag A 6-8, Tag B 12-15, Tag C 8-12), Gewicht je Woche steigend
   const z1: Entry[] = [];
   for (let w = 1; w <= 12; w++) {
-    z1.push(entry(1, w, 'gmax_4-8_a', HT, String(150 + w), [5, 5, 5]));
-    z1.push(entry(1, w, 'gmax_6-10_a', HT, String(140 + w), [7, 7, 7]));
-    z1.push(entry(1, w, 'gmax_8-12_c', HT, String(125 + w), [9, 9]));
+    z1.push(entry(1, w, 'gmax_6-8_a', HT, String(150 + w), [5, 5, 5]));
+    z1.push(entry(1, w, 'gmax_12-15_a', HT, String(140 + w), [7, 7]));
+    z1.push(entry(1, w, 'gmax_8-12_a', HT, String(125 + w), [9, 9, 9]));
   }
-  // Zyklus 2, Woche 1: Uebungen an Tag C gewaehlt; danach Tag A trainiert und an Tag C 142 kg eingetippt
-  const chosen = [...z1, entry(2, 1, 'gmax_6-10_a', HT, '', []), entry(2, 1, 'gmax_8-12_c', HT, '', [])];
+  // Zyklus 2, Woche 1: Uebungen an Tag B und C gewaehlt; danach Tag A trainiert und an Tag B 142 kg eingetippt
+  const chosen = [...z1, entry(2, 1, 'gmax_12-15_a', HT, '', []), entry(2, 1, 'gmax_8-12_a', HT, '', [])];
   const z2w1 = [
     ...z1,
-    entry(2, 1, 'gmax_4-8_a', HT, '145', [8, 10, 10]),
-    entry(2, 1, 'gmax_6-10_a', HT, '142', []),
-    entry(2, 1, 'gmax_8-12_c', HT, '', []),
+    entry(2, 1, 'gmax_6-8_a', HT, '145', [8, 10, 10]),
+    entry(2, 1, 'gmax_12-15_a', HT, '142', []),
+    entry(2, 1, 'gmax_8-12_a', HT, '', []),
   ];
 
-  it('Tag C 6-10: 152 aus Z1 W12 (gleicher Bereich), nicht 145 von Tag A 4-8 derselben Woche', () => {
-    expect(prevOf(z2w1, 2, 1, 'gmax_6-10_a')).toMatchObject({ w: '152', cycle: 1, week: 12, orientation: false });
+  it('Tag B 12-15: 152 aus Z1 W12 (gleicher Bereich), nicht 145 von Tag A 6-8 derselben Woche', () => {
+    expect(prevOf(z2w1, 2, 1, 'gmax_12-15_a')).toMatchObject({ w: '152', cycle: 1, week: 12, orientation: false });
   });
 
-  it('Tag C 8-12: 137 aus Z1 W12, nicht das eben getippte Gewicht der Zeile darueber', () => {
-    expect(prevOf(z2w1, 2, 1, 'gmax_8-12_c')).toMatchObject({ w: '137', cycle: 1, week: 12, orientation: false });
+  it('Tag C 8-12: 137 aus Z1 W12, nicht das eben getippte Gewicht von Tag B', () => {
+    expect(prevOf(z2w1, 2, 1, 'gmax_8-12_a')).toMatchObject({ w: '137', cycle: 1, week: 12, orientation: false });
   });
 
   it('Training an anderen Tagen derselben Woche aendert keinen Vorwert', () => {
-    for (const slot of ['gmax_6-10_a', 'gmax_8-12_c']) expect(prevOf(z2w1, 2, 1, slot)).toEqual(prevOf(chosen, 2, 1, slot));
+    for (const slot of ['gmax_12-15_a', 'gmax_8-12_a']) expect(prevOf(z2w1, 2, 1, slot)).toEqual(prevOf(chosen, 2, 1, slot));
   });
 
   it('Woche 2 vergleicht mit Woche 1 desselben Zyklus', () => {
-    const data = [...z1, entry(2, 1, 'gmax_6-10_a', HT, '142', [8, 8, 7]), entry(2, 1, 'gmax_8-12_c', HT, '130', [10, 10])];
-    expect(prevOf(data, 2, 2, 'gmax_6-10_a')).toMatchObject({ w: '142', cycle: 2, week: 1 });
-    expect(prevOf(data, 2, 2, 'gmax_8-12_c')).toMatchObject({ w: '130', cycle: 2, week: 1 });
+    const data = [...z1, entry(2, 1, 'gmax_12-15_a', HT, '142', [8, 8]), entry(2, 1, 'gmax_8-12_a', HT, '130', [10, 10, 10])];
+    expect(prevOf(data, 2, 2, 'gmax_12-15_a')).toMatchObject({ w: '142', cycle: 2, week: 1 });
+    expect(prevOf(data, 2, 2, 'gmax_8-12_a')).toMatchObject({ w: '130', cycle: 2, week: 1 });
   });
 
-  it('zwei Zeilen mit derselben Uebung am selben Tag: jede vergleicht mit ihrer Vorwoche', () => {
-    const EX = 'cable_abduction_standing';
+  it('zwei Zeilen mit derselben Uebung und demselben Bereich: jede vergleicht mit ihrer Vorwoche', () => {
+    const EX = 'cable_crunch';
     const data = [
-      entry(2, 1, 'gmed_8-12_a', EX, '20', [12, 12]),
-      entry(2, 1, 'gmed_8-12_b', EX, '15', [12, 12]),
-      entry(2, 2, 'gmed_8-12_a', EX, '22', [10, 10]),
+      entry(2, 1, 'abs_8-12_a', EX, '15', [12, 12]),
+      entry(2, 1, 'abs_8-12_b', EX, '20', [12, 12]),
+      entry(2, 2, 'abs_8-12_b', EX, '22', [10, 10]),
     ];
-    expect(prevOf(data, 2, 2, 'gmed_8-12_b')).toMatchObject({ w: '15', week: 1 });
+    expect(prevOf(data, 2, 2, 'abs_8-12_a')).toMatchObject({ w: '15', week: 1 });
   });
 
   it('gleicher Bereich nur aus aelterem Zyklus als dem zuletzt trainierten -> Orientierung mit dem juengsten Wert', () => {
     const GB = 'glute_bridge_barbell';
-    const data = [entry(1, 12, 'gmax_6-10_a', GB, '100', [8, 8, 8]), entry(2, 2, 'gmax_4-8_a', GB, '110', [6, 6, 6]), entry(3, 1, 'gmax_6-10_a', GB, '', [])];
-    expect(prevOf(data, 3, 1, 'gmax_6-10_a')).toMatchObject({ w: '110', cycle: 2, week: 2, orientation: true });
-    const st = rowState(context(data), rowOf('gmax_6-10_a'), at(3, 2));
+    const data = [entry(1, 12, 'gmax_12-15_a', GB, '100', [8, 8]), entry(2, 2, 'gmax_6-8_a', GB, '110', [6, 6, 6]), entry(3, 1, 'gmax_12-15_a', GB, '', [])];
+    expect(prevOf(data, 3, 1, 'gmax_12-15_a')).toMatchObject({ w: '110', cycle: 2, week: 2, orientation: true });
+    const st = rowState(context(data), rowOf('gmax_12-15_a'), at(3, 2));
     expect(st.noCompare).toBe(true);
     expect(st.status).toBeNull();
   });
@@ -149,41 +150,41 @@ describe('Woche 1 und 2 zeigen denselben Vorwert (verlauf-woche1-2)', () => {
         expect(w2, row.slotId).toEqual(w1);
       }
     }
-    const ht = rowState(ctx, rowOf('gmax_4-8_a'), at(2, 1)).previous;
-    expect(ht).toMatchObject({ orientation: false, entry: { cycle: 1, week: 12, slotId: 'gmax_4-8_a' } });
+    const ht = rowState(ctx, rowOf('gmax_6-8_a'), at(2, 1)).previous;
+    expect(ht).toMatchObject({ orientation: false, entry: { cycle: 1, week: 12, slotId: 'gmax_6-8_a' } });
   });
 });
 
 describe('Steigerungs-Hinweis (steigerung)', () => {
   const HT = 'hip_thrust_barbell';
   const w1 = [
-    entry(3, 1, 'gmax_4-8_a', HT, '140', [8, 7, 6]),
+    entry(3, 1, 'gmax_6-8_a', HT, '140', [8, 7, 6]),
     entry(3, 1, 'gmax_8-12_a', 'cable_kickback_standing', '20', [11, 12]),
     entry(3, 1, 'back_6-10_a', 'assisted_pull_up_wide', '25', [10, 9, 8]),
   ];
   const due = (data: Entry[], week: number, slot: string) => rowState(context(data), rowOf(slot), at(3, week)).increaseDue;
 
   it('Woche 1: kein Hinweis', () => {
-    expect(due(w1, 1, 'gmax_4-8_a')).toBe(false);
+    expect(due(w1, 1, 'gmax_6-8_a')).toBe(false);
   });
 
   it('Woche 2: Obergrenze im 1. Satz erreicht -> Hinweis; 11 von 8-12 -> keiner', () => {
-    expect(due(w1, 2, 'gmax_4-8_a')).toBe(true);
+    expect(due(w1, 2, 'gmax_6-8_a')).toBe(true);
     expect(due(w1, 2, 'gmax_8-12_a')).toBe(false);
   });
 
   it('gleiches Gewicht -> bleibt, mehr Gewicht -> weg', () => {
-    expect(due([...w1, entry(3, 2, 'gmax_4-8_a', HT, '140', [])], 2, 'gmax_4-8_a')).toBe(true);
-    expect(due([...w1, entry(3, 2, 'gmax_4-8_a', HT, '145', [])], 2, 'gmax_4-8_a')).toBe(false);
+    expect(due([...w1, entry(3, 2, 'gmax_6-8_a', HT, '140', [])], 2, 'gmax_6-8_a')).toBe(true);
+    expect(due([...w1, entry(3, 2, 'gmax_6-8_a', HT, '145', [])], 2, 'gmax_6-8_a')).toBe(false);
   });
 
   it('alle Saetze eingetragen -> weg und Haken; letzten Satz leeren -> wieder da', () => {
-    const doneData = [...w1, entry(3, 2, 'gmax_4-8_a', HT, '140', [8, 8, 8])];
-    const st = rowState(context(doneData), rowOf('gmax_4-8_a'), at(3, 2));
+    const doneData = [...w1, entry(3, 2, 'gmax_6-8_a', HT, '140', [8, 8, 8])];
+    const st = rowState(context(doneData), rowOf('gmax_6-8_a'), at(3, 2));
     expect(st.done).toBe(true);
     expect(st.increaseDue).toBe(false);
-    expect(due([...w1, entry(3, 2, 'gmax_4-8_a', HT, '140', [8, 8, null])], 2, 'gmax_4-8_a')).toBe(true);
-    expect(due([...w1, entry(3, 2, 'gmax_4-8_a', HT, '130', [8, 8, 8])], 2, 'gmax_4-8_a')).toBe(false);
+    expect(due([...w1, entry(3, 2, 'gmax_6-8_a', HT, '140', [8, 8, null])], 2, 'gmax_6-8_a')).toBe(true);
+    expect(due([...w1, entry(3, 2, 'gmax_6-8_a', HT, '130', [8, 8, 8])], 2, 'gmax_6-8_a')).toBe(false);
   });
 
   it('assistiert: Hinweis bei Obergrenze, weg bei weniger Hilfe', () => {
@@ -192,18 +193,18 @@ describe('Steigerungs-Hinweis (steigerung)', () => {
   });
 
   it('Vorblaettern: W3 ohne W2 -> kein Hinweis, Vorwert aus W1 bleibt sichtbar', () => {
-    expect(due(w1, 3, 'gmax_4-8_a')).toBe(false);
-    expect(prevOf(w1, 3, 3, 'gmax_4-8_a')).toMatchObject({ week: 1 });
-    const w2 = [...w1, entry(3, 2, 'gmax_4-8_a', HT, '145', [8, 8, 7])];
-    expect(due(w2, 3, 'gmax_4-8_a')).toBe(true);
-    expect(due(w2, 4, 'gmax_4-8_a')).toBe(false);
+    expect(due(w1, 3, 'gmax_6-8_a')).toBe(false);
+    expect(prevOf(w1, 3, 3, 'gmax_6-8_a')).toMatchObject({ week: 1 });
+    const w2 = [...w1, entry(3, 2, 'gmax_6-8_a', HT, '145', [8, 8, 7])];
+    expect(due(w2, 3, 'gmax_6-8_a')).toBe(true);
+    expect(due(w2, 4, 'gmax_6-8_a')).toBe(false);
   });
 });
 
 describe('Uebungswechsel (uebungswechsel)', () => {
   const HT = 'hip_thrust_barbell';
   const HM = 'hip_thrust_machine';
-  const S = 'gmax_4-8_a';
+  const S = 'gmax_6-8_a';
   const w1 = [entry(3, 1, S, HT, '100', [8, 8, 7]), entry(3, 1, 'gmax_8-12_a', 'cable_kickback_standing', '20', [12, 12])];
   const state = (data: Entry[], week: number, slot = S) => rowState(context(data), rowOf(slot), at(3, week));
   const row = rowOf(S);
@@ -305,9 +306,9 @@ describe('Flexible Woche', () => {
   });
 
   it('Rueckfrage nur, wenn Slots mit Werten in der neuen Wochenart pausieren', () => {
-    const data = [entry(1, 3, 'gmed_8-12_b', 'abduction_machine', '40', [12, 12]), entry(1, 3, 'gmax_4-8_a', 'hip_thrust_barbell', '100', [8])];
-    expect(plans[3].paused).toContain('gmed_8-12_b');
-    expect(pausedSlotsWithValues(data, 1, 3, plans[3])).toEqual(['gmed_8-12_b']);
+    const data = [entry(1, 3, 'gmed_12-15_b', 'abduction_machine', '40', [12, 12]), entry(1, 3, 'gmax_6-8_a', 'hip_thrust_barbell', '100', [8])];
+    expect(plans[3].paused).toContain('gmed_12-15_b');
+    expect(pausedSlotsWithValues(data, 1, 3, plans[3])).toEqual(['gmed_12-15_b']);
     expect(pausedSlotsWithValues(data, 1, 3, plans[4])).toEqual([]);
   });
 });
@@ -315,40 +316,41 @@ describe('Flexible Woche', () => {
 describe('Uebernahme in den neuen Zyklus', () => {
   it('gleiche Slot-ID zuerst, sonst gleiche Kategorie und Bereich, pro Tag keine Dopplung', () => {
     const data = [
-      entry(1, 12, 'gmax_4-8_a', 'hip_thrust_barbell', '150', [6]),
+      entry(1, 12, 'gmax_6-8_a', 'hip_thrust_barbell', '150', [6]),
       entry(1, 12, 'gmax_8-12_a', 'kickback_machine', '40', [12]),
       entry(1, 11, 'gmed_8-12_a', 'abduction_machine', '50', [12]),
       entry(1, 12, 'gmed_8-12_a', 'cable_abduction_lying', '10', [12]),
     ];
     const carried = carryOver(data, 2, plans[4], categoryOf);
-    expect(carried['gmax_4-8_a']).toBe('hip_thrust_barbell');
+    expect(carried['gmax_6-8_a']).toBe('hip_thrust_barbell');
     expect(carried['gmax_8-12_a']).toBe('kickback_machine');
     expect(carried['gmed_8-12_a']).toBe('cable_abduction_lying');
     const dayA = plans[4].dayPlans[0]?.rows.map((r) => carried[r.slotId]).filter(Boolean) ?? [];
     expect(new Set(dayA).size).toBe(dayA.length);
   });
 
-  it('Zeilen mit eigener Auswahl im neuen Zyklus bleiben, ihre Uebungen gelten als vergeben', () => {
-    const data = [
-      entry(1, 12, 'gmax_4-8_a', 'hip_thrust_barbell', '150', [6]),
-      entry(2, 1, 'gmax_8-12_a', 'hip_thrust_barbell', '', []),
-    ];
-    const carried = carryOver(data, 2, plans[4], categoryOf);
-    expect(carried['gmax_8-12_a']).toBeUndefined();
-    expect(carried['gmax_4-8_a']).toBeUndefined();
+  it('Zeilen mit eigener Auswahl im neuen Zyklus bleiben, ihre Uebungen gelten am selben Tag als vergeben', () => {
+    // V-Form 4 Tage, Tag A: zwei Ruecken-Zeilen (back_6-10_a, back_6-8_a)
+    const vform = buildPlan(planData, { goal: 'vform', level: 'advanced', days: 4 });
+    const own = (cycle: number, week: number, slotId: string, repRange: string): Entry => ({
+      cycle, week, slotId, day: 0, exerciseId: 'barbell_row', sets: [], extraSets: 0, category: 'back', repRange, baseSets: 3,
+    });
+    const carried = carryOver([own(1, 12, 'back_6-8_a', '6-8'), own(2, 1, 'back_6-10_a', '6-10')], 2, vform, categoryOf);
+    expect(carried['back_6-10_a']).toBeUndefined();
+    expect(carried['back_6-8_a']).toBeUndefined();
   });
 
   it('ohne frueheren Zyklus keine Uebernahme', () => {
-    expect(carryOver([entry(1, 3, 'gmax_4-8_a', 'hip_thrust_barbell', '150', [6])], 1, plans[4], categoryOf)).toEqual({});
+    expect(carryOver([entry(1, 3, 'gmax_6-8_a', 'hip_thrust_barbell', '150', [6])], 1, plans[4], categoryOf)).toEqual({});
   });
 });
 
 describe('Wochenbilanz und Hilfen', () => {
   it('zaehlt nur Uebungen mit Vergleich und Wiederholungen', () => {
     const data = [
-      entry(1, 1, 'gmax_4-8_a', 'hip_thrust_barbell', '100', [8, 8, 8]),
+      entry(1, 1, 'gmax_6-8_a', 'hip_thrust_barbell', '100', [8, 8, 8]),
       entry(1, 1, 'gmax_8-12_a', 'kickback_machine', '40', [12, 12]),
-      entry(1, 2, 'gmax_4-8_a', 'hip_thrust_barbell', '105', [8, 8, 8]),
+      entry(1, 2, 'gmax_6-8_a', 'hip_thrust_barbell', '105', [8, 8, 8]),
       entry(1, 2, 'gmax_8-12_a', 'kickback_machine', '40', [12, 11]),
     ];
     expect(weekStats(context(data), plans[4].dayPlans, at(1, 2))).toEqual({ total: 2, improved: 1, pct: 50 });
@@ -360,9 +362,9 @@ describe('Wochenbilanz und Hilfen', () => {
     expect(combinedWeight([{ w: '27,5', r: 10 }, { w: '27.5', r: 10 }])).toBe('27.5');
     expect(combinedWeight([])).toBe('');
     // heruntergesetzter Rahmen ist weniger Leistung
-    const data = [entry(1, 1, 'gmax_4-8_a', 'hip_thrust_barbell', '45', [8, 8, 8])];
-    const lowered = { ...entry(1, 2, 'gmax_4-8_a', 'hip_thrust_barbell', '45', [8, 8, 8]), sets: [{ w: '45', r: 8 }, { w: '40', r: 8 }, { w: '40', r: 8 }] };
-    expect(rowState(context([...data, lowered]), rowOf('gmax_4-8_a'), at(1, 2)).status).toBe('d');
+    const data = [entry(1, 1, 'gmax_6-8_a', 'hip_thrust_barbell', '45', [8, 8, 8])];
+    const lowered = { ...entry(1, 2, 'gmax_6-8_a', 'hip_thrust_barbell', '45', [8, 8, 8]), sets: [{ w: '45', r: 8 }, { w: '40', r: 8 }, { w: '40', r: 8 }] };
+    expect(rowState(context([...data, lowered]), rowOf('gmax_6-8_a'), at(1, 2)).status).toBe('d');
   });
 
   it('Gewichtsvorschlag mit Schrittweite je Ausstattung', () => {

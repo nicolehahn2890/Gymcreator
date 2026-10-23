@@ -1,13 +1,13 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, GOAL_IDS, LEVELS, type DaysPerWeek, type GoalId, type Level, type Profile } from '../../core/model/types';
+import { buildPlan } from '../../core/generator/buildPlan';
 import { totalSets } from '../../core/generator/validate';
 import { fmt, range, shortDayName, text } from '../../i18n';
-import { emptyData } from '../../storage/interface';
 import { GOAL_GLYPHS } from '../brand/pixels';
 import { PixelGlyph } from '../brand/PixelGlyph';
 import { Check } from '../components/Check';
-import { buildModel, exerciseName } from '../state/model';
+import { slotLabel } from '../state/model';
 import './Onboarding.css';
 
 const STEPS = 5;
@@ -28,10 +28,7 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
   const ready = [goal, level, days, equipment.length > 0, true][step];
 
   const profile: Profile | null = goal && level && days ? { goal, level, days, equipment, increments: {}, lang: 'de', createdAt: '' } : null;
-  const preview = useMemo(
-    () => (goal && level && days && step === 4 ? buildModel(emptyData(), { goal, level, days, equipment, increments: {}, lang: 'de', createdAt: '' }) : null),
-    [goal, level, days, equipment, step],
-  );
+  const preview = useMemo(() => (goal && level && days ? buildPlan(planData, { goal, level, days }) : null), [goal, level, days]);
 
   const toggleEquipment = (id: string) =>
     setEquipment((list) => (list.includes(id) ? list.filter((e) => e !== id) : [...list, id]));
@@ -120,15 +117,16 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
         <section className="stack">
           <h1 className="screen-title">{t.planTitle}</h1>
           <p className="muted">
-            {fmt(t.planSummary, { days: profile.days, sets: totalSets(preview.plans[profile.days]) })}
+            {fmt(t.planSummary, { days: profile.days, sets: totalSets(preview) })}
           </p>
-          {preview.plans[profile.days].dayPlans.map((day) => (
+          <p>{t.planHint}</p>
+          {preview.dayPlans.map((day) => (
             <article key={day.index} className="card day-preview" style={{ background: `var(--day-${day.letter.toLowerCase()})` }}>
               <h2 className="day-preview-title">{day.name}</h2>
               <ul className="day-preview-list">
                 {day.rows.map((row) => (
                   <li key={row.slotId}>
-                    <span>{exerciseName(preview, preview.defaults[row.slotId] ?? '')}</span>
+                    <span>{slotLabel(row)}</span>
                     <span className="day-preview-sets">{fmt(text.workout.setsLine, { sets: row.sets, range: range(row.repRange) })}</span>
                   </li>
                 ))}

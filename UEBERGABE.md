@@ -1,4 +1,4 @@
-# Übergabe – Stand 23.10.2026
+# Übergabe – Stand 23.10.2026 (abends)
 
 Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln, 2 Minuten) → diese Datei → `docs/konzept.md` (freigegebener Plan) → `data/README.md`.
 
@@ -15,6 +15,11 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Branch | **Alles direkt auf `main`** |
 | GitHub Pages | Quelle "GitHub Actions" (umgestellt 23.10.2026); der alte Branch-Build läuft nicht mehr |
 | Gewicht | **pro Satz** (23.10.2026). Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
+| Volumen | **Neu (23.10.2026):** Wochenziele je Muskel (anteilig) je Ziel und Stufe, wissenschaftlich begründet in `docs/wissenschaft.md`. Peachs P3/P4 sind nicht mehr Vorlage |
+| Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele, auch Apfel), Einsteiger max. 6 / 12. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
+| Wdh.-Bereiche | 6–8 / 6–10 / 8–12 / 12–15, Hauptmuskel wellenförmig über die Woche. 4–8 entfällt |
+| Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
+| Training | Übungen **in der Tagesliste aufklappen** (keine eigene Übungsseite). Ab Woche 2 Vorwoche je Satz, Steigerungshinweis, Bewertung (assistiert: Weniger/Mehr Hilfe) |
 
 ## 2. Stand
 
@@ -25,14 +30,24 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Teil | Dateien | Inhalt |
 |---|---|---|
 | Progression | `src/core/progression/` | `weight`, `compare` (prog/rcol), `entries` (Schlüssel `cycle:week:slotId`, Index, Satzgewichte als Spanne), `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Badge, Steigerungs-Hinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, Übungswechsel "nur diese Woche"), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (nächster Tag, Dauer). Peach-Szenarien als Vitest in `scenarios.test.ts` |
-| Standard-Übung | `src/core/generator/assign.ts` | je Slot über den ganzen Pool: Fokus, schwer bei 4–8, keine Wiederholung in der Kategorie, Stern, Einsteiger geführt (Maschine/Kabel), Ausstattung |
 | Speicher | `src/storage/` | Schnittstelle, Dexie (IndexedDB), Backup (Export/Import mit Prüfung), Sicherheitskopie vor Import, Migrations-Gerüst (Schema 1) |
-| Oberfläche | `src/ui/` | Onboarding (5 Schritte), Heute, Tag, Fokusansicht (Sätze, Vorwert, Vorschlag, Badge, Pausentimer, Tausch, Notiz/Einstellung), Plan (Woche, 3/4/5 Tage), Fortschritt (Balken), Einstellungen (Profil, Mein Gym, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts` (useSyncExternalStore), `state/model.ts` (abgeleitet), `state/ui.ts` (Position in localStorage) |
+| Oberfläche | `src/ui/` | Onboarding (5 Schritte), Heute, Tag (seit 23.10. abends mit aufklappbaren Übungen), Plan (Woche, 3/4/5 Tage), Fortschritt (Balken), Einstellungen (Profil, Mein Gym, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts` (useSyncExternalStore), `state/model.ts` (abgeleitet), `state/ui.ts` (Position in localStorage) |
 | Daten | `data/goals.json` | neu: `levels`, `progression` (12 Wochen, Vergleich ab Woche 2, 3 stagnierende Vergleiche, +1 Satz), `timing` (Pausen je Bereich, Satzdauer). `data/exercises.json`: `increments` (Schrittweiten) |
 
-**Tests:** 136 Vitest + 12 Playwright (390/430 px: Onboarding, Speichern über Neuladen, Badge und Vorschlag in Woche 2, Übungswechsel, Backup-Import, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (5 Warnungen)`.
+**Umbau am 23.10. (abends) nach Nicoles Rückmeldung** („Volumen viel zu hoch, zu viele gleichartige Übungen, Übungen vorgegeben, Übung einzeln aufrufen zu umständlich“):
 
-**Geänderte Regeln (dokumentiert):** Einsteiger verlieren den letzten Slot nur von einem Tag, an dem die Kategorie doppelt vorkommt. Einsteiger bekommen geführte Übungen (Maschine, Kabel) zuerst. Rudermaschine hat den V-Form-Stern.
+| Teil | Dateien | Inhalt |
+|---|---|---|
+| Volumen | `data/goals.json`, `data/templates.json`, `docs/wissenschaft.md` | Wochenziele je Muskel (`targets`), `mainCategory`, Grenzen je Stufe (`levels.*.min/maxExercisesPerSession`, `maxSetsPerSession`), Zeilen je Kategorie und Tag (`limits`). 9 Vorlagen neu, Reihenfolge = Trainingsreihenfolge, `beginner: false` je Zeile. Fortgeschritten 48–57 Sätze/Woche, Einsteiger 24–32 |
+| Generator | `src/core/generator/buildPlan.ts`, `validate.ts` | ohne Sortierung und ohne Einsteiger-Streichregel; Prüfung auf Wochenziele, Übungen/Sätze je Einheit, Kategorie je Tag. `assign.ts` (Standard-Übung) entfernt |
+| Prüfskript | `scripts/verify-plan-data.mjs` | Peach-P3/P4-Abgleich und `tests/fixtures/` entfernt; druckt alle 18 Pläne mit Wochenvolumen je Muskel |
+| Übungen | `data/exercises.json` | +20 (Beinbeuger, Beinstrecker, Waden, Adduktoren, Hüfte, Kniebeuge-Varianten, Po), jede Kategorie ≥ 7 |
+| Oberfläche | `src/ui/screens/DayView.tsx`, `ExerciseItem.tsx` | Tagesliste mit aufklappbaren Übungen (ersetzt `ExerciseView`): Muskelgruppe + Hinweis, Übung (Stern), Sätze × Bereich, Bewertung, Haken; aufgeklappt Steigerungshinweis, Sätze mit Spalte **Vorwoche/Zuletzt**, Satz dazu/weniger, Tauschen, Ausführung, Einstellung/Notiz, „Nächste Übung“. Tag öffnen klappt die erste offene Übung auf. Leere Info-Karte behoben |
+| Texte | `src/i18n/de.json` | `focus`-Hinweise („Ziehen von oben“ …), neue Vorschlagstexte, Onboarding-Hinweis zur freien Wahl |
+
+Testeinträge aus den alten Plänen (Slot-IDs wie `gmax_4-8_a`) bleiben gespeichert, tauchen im neuen Plan aber nicht mehr auf. Zum Testen am besten die Website-Daten löschen und neu einrichten.
+
+**Tests:** 125 Vitest + 12 Playwright (390/430 px: Onboarding, freie Übungswahl, Speichern über Neuladen, Auf-/Zuklappen, Vorwoche je Satz, Steigerungshinweis und Bewertung in Woche 2, Übungswechsel, Backup-Import, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
@@ -44,7 +59,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 
 ## 4. Nächste Schritte
 
-1. Nicole testet auf dem iPhone (https://nicolehahn2890.github.io/Gymcreator/, zum Home-Bildschirm hinzufügen) und meldet, was hakt.
+1. Nicole testet die neuen Pläne und die aufklappbare Tagesansicht auf dem iPhone (https://nicolehahn2890.github.io/Gymcreator/, vorher Website-Daten löschen) und meldet, was hakt.
 2. Lighthouse-PWA-Check in CI.
 3. Danach Phase 2 nach Priorität (Konzept 3.9): Form-Tracker, Kurz-Modus, Plateau-Tausch.
 

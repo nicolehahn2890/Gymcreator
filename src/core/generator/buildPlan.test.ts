@@ -1,51 +1,49 @@
 import { describe, expect, it } from 'vitest';
-import peachP3 from '../../../tests/fixtures/peach-p3.json';
-import peachP4 from '../../../tests/fixtures/peach-p4.json';
 import { planData } from '../model/data';
-import { DAY_COUNTS, GOAL_IDS, LEVELS, type Plan } from '../model/types';
+import { DAY_COUNTS, GOAL_IDS, LEVELS } from '../model/types';
 import { buildPlan } from './buildPlan';
-import { totalSets, validatePlan, weeklySets } from './validate';
+import { totalSets, validatePlan, weeklyMuscles } from './validate';
 
 const combos = GOAL_IDS.flatMap((goal) => LEVELS.flatMap((level) => DAY_COUNTS.map((days) => ({ goal, level, days }))));
 
-function asTable(plan: Plan) {
-  return plan.dayPlans.map((d) => ({
-    name: d.name,
-    focus: d.focus,
-    rows: d.rows.map((r) => ({ category: r.category, sets: r.sets, range: r.repRange })),
-  }));
-}
-
 describe('buildPlan', () => {
-  it.each(combos)('$goal / $level / $days Tage: keine Fehler', (req) => {
+  it.each(combos)('$goal / $level / $days Tage: alle Grenzen und Wochenziele eingehalten', (req) => {
     const plan = buildPlan(planData, req);
     expect(plan.dayPlans).toHaveLength(req.days);
-    expect(validatePlan(planData, plan).filter((i) => i.level === 'error')).toEqual([]);
+    expect(validatePlan(planData, plan)).toEqual([]);
   });
 
   it('ist deterministisch', () => {
     for (const req of combos) expect(buildPlan(planData, req)).toEqual(buildPlan(planData, req));
   });
 
-  it('Apfel, Fortgeschritten, 4 Tage = Nicoles 4-Tage-Plan (P4)', () => {
-    expect(asTable(buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 4 }))).toEqual(peachP4.days);
-  });
-
-  it('Apfel, Fortgeschritten, 3 Tage = Nicoles 3-Tage-Plan (P3)', () => {
-    expect(asTable(buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 }))).toEqual(peachP3.days);
-  });
-
-  it('Wochensaetze Fortgeschritten wie in docs/konzept.md 3.2', () => {
-    const expected = { apfel: [62, 70, 72], sanduhr: [62, 71, 73], vform: [61, 72, 77] };
-    for (const goal of GOAL_IDS) {
-      const got = DAY_COUNTS.map((days) => totalSets(buildPlan(planData, { goal, level: 'advanced', days })));
-      expect(got, goal).toEqual(expected[goal]);
+  it('Wochensaetze wie in docs/wissenschaft.md', () => {
+    const expected = {
+      advanced: { apfel: [50, 55, 55], sanduhr: [48, 56, 55], vform: [51, 56, 57] },
+      beginner: { apfel: [30, 32, 32], sanduhr: [28, 30, 32], vform: [24, 26, 30] },
+    };
+    for (const level of LEVELS) {
+      for (const goal of GOAL_IDS) {
+        const got = DAY_COUNTS.map((days) => totalSets(buildPlan(planData, { goal, level, days })));
+        expect(got, `${goal}/${level}`).toEqual(expected[level][goal]);
+      }
     }
   });
 
-  it('Kategorie-Tabelle 4 Tage wie in docs/konzept.md 3.2', () => {
-    const plan = buildPlan(planData, { goal: 'vform', level: 'advanced', days: 4 });
-    expect(weeklySets(plan)).toMatchObject({ back: 14, shoulders: 13, chest: 10, biceps: 5, triceps: 5, calves: 4, abs: 6 });
+  it('Apfel 3 Tage: Po wellenfoermig 6-8 / 8-12 / 12-15, Wochenvolumen Po 14', () => {
+    const plan = buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 });
+    expect(plan.dayPlans.map((d) => d.rows.find((r) => r.category === 'gmax')?.repRange)).toEqual(['6-8', '8-12', '12-15']);
+    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 8, hams: 8 });
+  });
+
+  it('Hauptmuskelgruppe bekommt bei Fortgeschrittenen mindestens drei Bereiche pro Woche', () => {
+    for (const goal of GOAL_IDS) {
+      const main = planData.goals.goals[goal].mainCategory;
+      for (const days of DAY_COUNTS) {
+        const rows = buildPlan(planData, { goal, level: 'advanced', days }).dayPlans.flatMap((d) => d.rows);
+        expect(new Set(rows.filter((r) => r.category === main).map((r) => r.repRange)).size, `${goal}/${days}`).toBeGreaterThanOrEqual(3);
+      }
+    }
   });
 
   it('gleiche Slot-ID = gleiche Kategorie und Bereich in 3/4/5 Tagen', () => {
@@ -65,55 +63,49 @@ describe('buildPlan', () => {
 
   it('pausierte Slots = Pool minus Woche', () => {
     const plan = buildPlan(planData, { goal: 'vform', level: 'advanced', days: 3 });
-    expect(plan.paused).toEqual(['back_8-12_c', 'chest_8-12_b', 'gquad_8-12_a', 'gmax_8-12_a', 'calves_8-12_a', 'calves_12-15_a', 'abs_8-12_c']);
     const used = plan.dayPlans.flatMap((d) => d.rows.map((r) => r.slotId));
+    expect(plan.paused.length).toBeGreaterThan(0);
+    expect(plan.paused.filter((id) => used.includes(id))).toEqual([]);
     expect(new Set([...used, ...plan.paused]).size).toBe(planData.goals.goals.vform.slots.length);
   });
 
   it('Tage tragen Buchstaben A-E', () => {
     expect(buildPlan(planData, { goal: 'sanduhr', level: 'advanced', days: 5 }).dayPlans.map((d) => d.letter)).toEqual(['A', 'B', 'C', 'D', 'E']);
   });
+
+  it('meldet zu viele Uebungen, doppelte Kategorie und verfehlte Wochenziele', () => {
+    const plan = buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 });
+    const dayA = plan.dayPlans[0];
+    if (!dayA) throw new Error('kein Tag');
+    const extra = { slotId: 'x', category: 'back', repRange: '8-12', sets: 5, priority: 2 as const };
+    const broken = { ...plan, dayPlans: [{ ...dayA, rows: [...dayA.rows, extra] }, ...plan.dayPlans.slice(1)] };
+    const codes = validatePlan(planData, broken).map((i) => i.code);
+    expect(codes).toContain('session-exercises');
+    expect(codes).toContain('session-sets');
+    expect(codes).toContain('category-day');
+    expect(codes).toContain('target');
+  });
 });
 
-describe('Einsteiger-Regeln (data/goals.json levels.beginner)', () => {
+describe('Einsteiger (data/goals.json levels.beginner)', () => {
   const rules = planData.goals.levels.beginner;
 
   it.each(GOAL_IDS.flatMap((goal) => DAY_COUNTS.map((days) => ({ goal, days }))))('$goal / $days Tage', ({ goal, days }) => {
     const adv = buildPlan(planData, { goal, level: 'advanced', days });
     const beg = buildPlan(planData, { goal, level: 'beginner', days });
-    const begRows = beg.dayPlans.flatMap((d) => d.rows);
+    const template = planData.templates.goals[goal][`${days}`].days;
 
-    // feste Satzzahl und ersetzte Bereiche
-    for (const row of begRows) {
-      expect(row.sets).toBe(rules.setsPerSlot);
-      expect(Object.keys(rules.rangeMap ?? {})).not.toContain(row.repRange);
-    }
-
-    // Kategorien mit vielen Slots verlieren genau einen: den letzten im Pool unter den Slots,
-    // deren Kategorie am selben Tag noch einmal vorkommt (Haeufigkeit pro Woche bleibt gleich)
-    const pool = planData.goals.goals[goal].slots.map((s) => s.id);
-    const advIds = adv.dayPlans.flatMap((d) => d.rows.map((r) => r.slotId));
-    const begIds = new Set(begRows.map((r) => r.slotId));
-    const byCat = new Map<string, { id: string; day: number }[]>();
-    for (const day of adv.dayPlans) {
-      for (const r of day.rows) byCat.set(r.category, [...(byCat.get(r.category) ?? []), { id: r.slotId, day: day.index }]);
-    }
-    for (const [cat, slots] of byCat) {
-      const missing = slots.filter((s) => !begIds.has(s.id)).map((s) => s.id);
-      const doubled = slots.filter((s) => slots.some((o) => o !== s && o.day === s.day)).map((s) => s.id);
-      if (slots.length >= (rules.dropLastSlotFromCategoriesWith ?? Infinity) && doubled.length) {
-        const last = doubled.sort((a, b) => pool.indexOf(a) - pool.indexOf(b)).at(-1);
-        expect(missing, cat).toEqual([last]);
-      } else {
-        expect(missing, cat).toEqual([]);
+    beg.dayPlans.forEach((day, i) => {
+      // feste Satzzahl, ersetzte Bereiche
+      for (const row of day.rows) {
+        expect(row.sets).toBe(rules.setsPerSlot);
+        expect(Object.keys(rules.rangeMap ?? {})).not.toContain(row.repRange);
       }
-      const daysBefore = new Set(slots.map((s) => s.day)).size;
-      const daysAfter = new Set(slots.filter((s) => begIds.has(s.id)).map((s) => s.day)).size;
-      expect(daysAfter, cat).toBe(daysBefore);
-    }
-
-    // Slot-IDs bleiben stabil, nur der Bereich ist ein Feld
-    for (const id of begIds) expect(advIds).toContain(id);
+      // genau die Slots ohne beginner: false, gleiche Reihenfolge und IDs wie bei Fortgeschrittenen
+      const dropped = (template[i]?.slots ?? []).flatMap((ref) => (typeof ref !== 'string' && ref.beginner === false ? [ref.id] : []));
+      const advIds = adv.dayPlans[i]?.rows.map((r) => r.slotId) ?? [];
+      expect(day.rows.map((r) => r.slotId)).toEqual(advIds.filter((id) => !dropped.includes(id)));
+    });
     expect(totalSets(beg)).toBeLessThan(totalSets(adv));
   });
 });

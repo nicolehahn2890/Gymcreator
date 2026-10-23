@@ -29,51 +29,66 @@ test('Onboarding fuehrt zum Plan, keine waagerechte Scrollleiste, kein Fremdname
   await expect(page.getByText(/peach/i)).toHaveCount(0);
 });
 
-test('Training: Werte bleiben nach Neuladen, Woche 2 zeigt Badge und Vorwert', async ({ page }) => {
+test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt Vorwoche, Hinweis und Bewertung', async ({ page }) => {
   await onboard(page, 'Apfel', 'Fortgeschritten', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
-  await page.locator('.exercise-row').first().click();
-  await expect(page.getByRole('heading', { name: 'Hip Thrust (Langhantel)' })).toBeVisible();
-  const inputs = page.locator('.set-row input');
+  // erste Uebung ist aufgeklappt, aber ohne Vorgabe
+  const first = page.locator('.exercise-item').first();
+  await expect(first.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'true');
+  await expect(first.locator('.exercise-row')).toContainText('Übung wählen');
+  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
+  await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Langhantel)');
+
+  const inputs = first.locator('.set-row input');
   await inputs.nth(0).fill('100');
   await inputs.nth(1).fill('8');
   await expect(page.getByRole('timer')).toBeVisible();
 
   await page.reload();
-  await expect(page.locator('.set-row input').nth(0)).toHaveValue('100');
-  await expect(page.locator('.set-row input').nth(2)).toHaveValue('100');
-  await expect(page.locator('.set-row input').nth(1)).toHaveValue('8');
+  await expect(first.locator('.set-row input').nth(0)).toHaveValue('100');
+  await expect(first.locator('.set-row input').nth(2)).toHaveValue('100');
+  await expect(first.locator('.set-row input').nth(1)).toHaveValue('8');
 
-  // Woche 2: Vorwert aus Woche 1, Steigerungshinweis (8 von 4-8 im 1. Satz), Badge bei mehr Gewicht
+  // zuklappen und wieder aufklappen
+  await first.locator('.exercise-row').click();
+  await expect(first.locator('.set-row')).toHaveCount(0);
+  await first.locator('.exercise-row').click();
+  await expect(first.locator('.set-row input').nth(0)).toHaveValue('100');
+
+  // Woche 2: Vorwoche je Satz, Steigerungshinweis (8 von 6-8 im 1. Satz), Bewertung im Kopf
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await page.getByRole('button', { name: 'Nächste Woche' }).click();
   await page.getByRole('button', { name: 'Heute', exact: true }).click();
   await expect(page.getByText('Zyklus 1 · Woche 2 von 12')).toBeVisible();
   await page.getByRole('button', { name: 'Training starten' }).click();
-  await page.locator('.exercise-row').first().click();
-  await expect(page.getByText(/Zuletzt: 100 kg/)).toBeVisible();
-  await expect(page.getByText('Heute: 102,5 kg')).toBeVisible();
-  await page.locator('.set-row input').nth(0).fill('102,5');
-  await page.locator('.set-row input').nth(1).fill('8');
-  await expect(page.locator('.exercise-info').getByText('Mehr Gewicht')).toBeVisible();
-  await expect(page.getByText('Heute: 102,5 kg')).toHaveCount(0);
+  await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Langhantel)');
+  await expect(first.locator('.set-head')).toContainText('Vorwoche');
+  await expect(first.locator('.set-prev').first()).toHaveText('100 \u00d7 8');
+  await expect(first.getByText('Gewicht steigern: heute 102,5 kg')).toBeVisible();
+  await first.locator('.set-row input').nth(0).fill('102,5');
+  await first.locator('.set-row input').nth(1).fill('8');
+  await expect(first.locator('.exercise-row').getByText('Mehr Gewicht')).toBeVisible();
+  await expect(first.getByText('Gewicht steigern: heute 102,5 kg')).toHaveCount(0);
+  await noOverflow(page);
 });
 
 test('Uebung tauschen ab Woche 2 fragt "nur diese Woche" oder "ab jetzt"', async ({ page }) => {
   await onboard(page, 'Sanduhr', 'Fortgeschritten', 3);
   await page.getByRole('button', { name: 'Training starten' }).click();
-  await page.locator('.exercise-row').first().click();
-  await page.locator('.set-row input').nth(0).fill('80');
+  const first = page.locator('.exercise-item').first();
+  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
+  await first.locator('.set-row input').nth(0).fill('80');
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await page.getByRole('button', { name: 'Nächste Woche' }).click();
   await page.locator('.plan-day').first().click();
-  await page.locator('.exercise-row').first().click();
-  await page.getByRole('button', { name: 'Übung tauschen' }).click();
-  await page.getByRole('button', { name: 'Hip Thrust (Maschine)' }).click();
+  await first.getByRole('button', { name: 'Übung tauschen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Maschine)' }).click();
   await expect(page.getByRole('dialog', { name: 'Übung wechseln' })).toBeVisible();
   await page.getByRole('button', { name: 'Nur diese Woche' }).click();
-  await expect(page.getByRole('heading', { name: 'Hip Thrust (Maschine)' })).toBeVisible();
-  await expect(page.locator('.exercise-head').getByText('nur diese Woche')).toBeVisible();
+  await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Maschine)');
+  await expect(first.locator('.exercise-row').getByText('nur diese Woche')).toBeVisible();
 });
 
 test('Backup: einspielen ersetzt die Daten nach Rueckfrage', async ({ page }) => {

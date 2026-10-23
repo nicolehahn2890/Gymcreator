@@ -24,7 +24,6 @@ export function checkExercises(plan: PlanData, data: ExercisesData): ExerciseChe
   const warnings: string[] = [];
   const summary: string[] = [];
   const goalIds = Object.keys(goals.goals);
-  const slotFoci = new Set(Object.values(goals.goals).flatMap((g) => g.slots.flatMap((s) => (s.focus ? [s.focus] : []))));
 
   if (data.schema !== 1) errors.push(`exercises.json: schema ${String(data.schema)} statt 1`);
   for (const e of data.equipment) if (!(e in data.increments)) errors.push(`exercises.json: Schrittweite fuer ${e} fehlt`);
@@ -49,7 +48,6 @@ export function checkExercises(plan: PlanData, data: ExercisesData): ExerciseChe
     if (ex.equipment.length === 0) errors.push(`${at}: keine Ausstattung`);
     for (const e of ex.equipment) if (!data.equipment.includes(e)) errors.push(`${at}: Ausstattung ${e} unbekannt`);
     if (!data.patterns.includes(ex.pattern)) errors.push(`${at}: Bewegungsmuster ${ex.pattern} unbekannt`);
-    for (const f of ex.focus) if (!slotFoci.has(f)) errors.push(`${at}: Fokus ${f} passt zu keinem Slot`);
     for (const g of ex.stars) if (!goalIds.includes(g)) errors.push(`${at}: Stern fuer unbekanntes Ziel ${g}`);
     for (const flag of FLAGS) if (typeof ex[flag] !== 'boolean') errors.push(`${at}: ${flag} fehlt`);
     const tip = ex.tip?.de ?? '';
@@ -63,16 +61,16 @@ export function checkExercises(plan: PlanData, data: ExercisesData): ExerciseChe
   for (const [goalId, goal] of Object.entries(goals.goals)) {
     const starredFor = (list: Exercise[]) => list.filter((e) => e.stars.includes(goalId as GoalId));
 
-    // Jeder Slot braucht Auswahl (>= 3) und mindestens einen Stern; 4-8 braucht eine schwere Stern-Uebung
+    // Jeder Slot braucht Auswahl (>= 3) und mindestens einen Stern; der schwerste Bereich eine schwere Stern-Uebung
     const checked = new Set<string>();
     for (const slot of goal.slots) {
-      const heavy = slot.range === '4-8';
+      const heavy = slot.range === goals.ranges[0];
       const key = `${slot.cat}|${slot.focus ?? ''}|${heavy}`;
       if (checked.has(key)) continue;
       checked.add(key);
       const pool = exercisesForSlot(data.exercises, slot);
       const starred = starredFor(pool).filter((e) => !heavy || e.heavy);
-      const label = `${goalId} ${slot.cat}${slot.focus ? ' ' + slot.focus : ''}${heavy ? ' (4-8)' : ''}`;
+      const label = `${goalId} ${slot.cat}${slot.focus ? ' ' + slot.focus : ''}${heavy ? ` (${slot.range})` : ''}`;
       if (pool.length < 3) errors.push(`${label}: nur ${pool.length} Uebungen`);
       if (starred.length === 0) errors.push(`${label}: keine passende Stern-Uebung`);
     }
@@ -93,7 +91,7 @@ export function checkExercises(plan: PlanData, data: ExercisesData): ExerciseChe
       }
     }
 
-    const cats = goal.categoryOrder.filter((c) => goal.slots.some((s) => s.cat === c));
+    const cats = [...new Set(goal.slots.map((s) => s.cat))];
     summary.push(`Sterne ${goalId}: ${cats.map((c) => `${c} ${starredFor(data.exercises.filter((e) => e.category === c)).length}`).join(' · ')}`);
   }
 

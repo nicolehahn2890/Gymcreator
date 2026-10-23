@@ -8,7 +8,7 @@ import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, range, text } from '../../i18n';
 import { Sheet } from '../components/Sheet';
 import type { Position } from '../state/actions';
-import { daysFor, exerciseName, rowContext, type AppModel } from '../state/model';
+import { daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Plan.css';
 
@@ -73,7 +73,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay }: Props) {
                 const st = rowState(ctx, row, pos);
                 return (
                   <span key={row.slotId} className="plan-day-row">
-                    <span>{st.exerciseId ? exerciseName(model, st.exerciseId) : text.workout.chooseExercise}</span>
+                    <span>{st.exerciseId ? exerciseName(model, st.exerciseId) : slotLabel(row)}</span>
                     <span className="plan-day-sets">{fmt(text.workout.setsLine, { sets: st.totalSets, range: range(st.repRange) })}</span>
                   </span>
                 );

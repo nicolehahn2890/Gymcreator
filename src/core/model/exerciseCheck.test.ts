@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { exerciseData, planData } from './data';
 import { checkExercises, exercisesForSlot } from './exerciseCheck';
-import type { Exercise, ExercisesData } from './types';
+import { FOCI, type Exercise, type ExercisesData } from './types';
 
 function withExercises(exercises: Exercise[]): ExercisesData {
   return { ...exerciseData, exercises };
@@ -14,9 +14,16 @@ describe('Uebungsbibliothek', () => {
     expect(result.warnings).toEqual([]);
   });
 
-  it('hat 150 bis 180 Uebungen', () => {
-    expect(exerciseData.exercises.length).toBeGreaterThanOrEqual(150);
-    expect(exerciseData.exercises.length).toBeLessThanOrEqual(180);
+  it('hat 200 bis 250 Uebungen, jede Kategorie mindestens 7', () => {
+    expect(exerciseData.exercises.length).toBeGreaterThanOrEqual(200);
+    expect(exerciseData.exercises.length).toBeLessThanOrEqual(250);
+    for (const cat of Object.keys(planData.goals.categories)) {
+      expect(exerciseData.exercises.filter((e) => e.category === cat).length, cat).toBeGreaterThanOrEqual(7);
+    }
+  });
+
+  it('Fokus-Hinweise sind bekannte Werte', () => {
+    for (const e of exerciseData.exercises) for (const f of e.focus) expect(FOCI, e.id).toContain(f);
   });
 
   it('assistierte Uebungen sind die Klimmzuege mit Gegengewicht', () => {

@@ -16,7 +16,7 @@ const profile: Profile = {
   createdAt: '2026-10-23',
 };
 
-const entry = (week: number, slotId = 'gmax_4-8_a', w = '100'): Entry => ({
+const entry = (week: number, slotId = 'gmax_6-8_a', w = '100'): Entry => ({
   cycle: 1,
   week,
   slotId,
@@ -25,13 +25,13 @@ const entry = (week: number, slotId = 'gmax_4-8_a', w = '100'): Entry => ({
   sets: [{ w, r: 8 }, { w, r: null }],
   extraSets: 0,
   category: 'gmax',
-  repRange: '4-8',
+  repRange: '6-8',
   baseSets: 3,
 });
 
 const sample = (): StoredData => ({
   profile,
-  entries: [entry(1), entry(2, 'gmax_4-8_a', '102,5'), { ...entry(2, 'gmax_8-12_a'), once: true, baseExerciseId: 'kickback_machine' }],
+  entries: [entry(1), entry(2, 'gmax_6-8_a', '102,5'), { ...entry(2, 'gmax_8-12_a'), once: true, baseExerciseId: 'kickback_machine' }],
   weeks: [{ cycle: 1, week: 2, days: 3 }],
   notes: [{ exerciseId: 'hip_thrust_barbell', note: 'Polster dick', setting: 'Stufe 4' }],
   custom: [{ id: 'custom_1', name: 'Kettlebell Swing', category: 'ghams', equipment: ['bodyweight'], note: '' }],
@@ -72,11 +72,11 @@ describe('DexieStorage', () => {
   it('loescht Eintrag, Notiz und eigene Uebung', async () => {
     const s = open();
     await s.replaceAll(sample());
-    await s.deleteEntry(1, 1, 'gmax_4-8_a');
+    await s.deleteEntry(1, 1, 'gmax_6-8_a');
     await s.deleteNote('hip_thrust_barbell');
     await s.deleteCustom('custom_1');
     const loaded = await s.loadAll();
-    expect(loaded.entries.map((e) => `${e.week}:${e.slotId}`).sort()).toEqual(['2:gmax_4-8_a', '2:gmax_8-12_a']);
+    expect(loaded.entries.map((e) => `${e.week}:${e.slotId}`).sort()).toEqual(['2:gmax_6-8_a', '2:gmax_8-12_a']);
     expect(loaded.notes).toEqual([]);
     expect(loaded.custom).toEqual([]);
   });

@@ -60,61 +60,33 @@
 
 ### 3.2 Wissenschaftliche Grundlage (Regeln des Generators)
 
-Kurzfassung; vollständige Tabelle mit Vorbehalten und 26 Quellen in `docs/wissenschaft.md`:
+> **Neu am 23.10.2026** (Nicoles Rückmeldung: Volumen zu hoch, zu viele gleichartige Übungen, Übungen vorgegeben). Das Volumen-Modell ist neu aufgebaut, die Übungen wählt jede Person selbst. Die vollständige Begründung mit Tabellen und Quellen steht in `docs/wissenschaft.md`; die Zahlen nur in `data/goals.json` und `data/templates.json`.
 
-| Parameter | Regel im Generator | Evidenz (Kurzform) |
-|---|---|---|
-| Wochenvolumen je Muskel | Anteilig gezählt (direkt 1, mitarbeitend 0,5). Prio 3: 12–16 Sätze, Prio 2: 8–10, Prio 1: 4–6, Prio 0: 0–3 (nur indirekt). Mindestdosis ~4 | Dosis-Wirkung mit abnehmendem Grenznutzen: Schoenfeld 2017 (10+ > <5), Baz-Valle 2022 (12–20), Pelland et al., Sports Med 2026 (log-linear, Kraft plateaut schon bei 3–4) |
-| Obergrenze pro Einheit | max. ~10 anteilige Sätze je Muskel und Einheit, max. ~20 Sätze je Einheit; mehr Volumen → auf mehr Tage verteilen | Remmert et al. 2025 (Preprint, ~11 anteilige Sätze/Einheit) |
-| Volumen-Steigerung | Konservativ: Auto-Zusatzsatz max. +1, Obergrenze 5 Sätze (Peach). Kein aggressives Hochfahren | Enes 2024 (MSSE): +Sätze bringt Kraft, Hypertrophie-Bonus klein und unsicher |
-| Frequenz | Prio-Muskeln ≥ 2× pro Woche – vor allem, um die Einheiten-Grenze einzuhalten | Schoenfeld 2016/2019: bei gleichem Volumen kaum Effekt |
-| Wdh.-Bereiche | Grundübungen 4–8 (nur Fortgeschrittene) / 6–10 / 8–12, Isolation 8–12 / 12–20, Bauch 8–15 | Hypertrophie über 5–30 Wdh. gleich, wenn nah am Versagen (Lopez 2021, Schoenfeld 2021); Kraft braucht schwere Last |
-| Intensität | 0–3 Wdh. in Reserve (schwere Grundübung 2–4). Hinweis im Onboarding, kein Pflichtfeld | Robinson 2024 (näher am Versagen = etwas mehr Wachstum), Refalo 2023 (Versagen nicht nötig) |
-| Übungsauswahl | **Stretch-Bias:** Übungen mit Last in der gedehnten Position bekommen den Stern (sitzender Beinbeuger, RDL, Überzug, Schrägbank-Flys, Kabel-Seitheben, Überkopf-Trizeps, Preacher Curls). Keine "Partials only" | Maeo 2021 (sitzend > liegend), Pedrosa 2022, Maeo 2023 (Trizeps), Wolf 2023 Meta + 2025 RCT (bei Trainierten = volle ROM), Strey 2026 |
-| Po | Hip Thrust **und** tiefe kniedominante Übung (gleich gut für Glute Max; tiefe Kniebeuge auch für Adduktoren). Glute Med wächst durch Grundübungen **nicht** → direkte Abduktion Pflicht. Adduktor magnus = Hüftstrecker → eigene Kategorie | Plotkin 2023, Kubo 2019. Glute-Med-Hypertrophie-Studien: keine (Anatomie/EMG-basiert, ehrlich als Annahme markiert) |
-| V-Form / Taille | Seitheben für Schulterbreite (belegt), vertikaler Zug für Lat (EMG-basiert). "Keine schweren Seitbeugen" ist Praxis-Vorsicht, **keine Studienlage** – Taille ist vor allem Körperfett | Larsen 2025 (Seitheben +3–5 %); Oblique → dickere Taille: kein Trial |
-| Progression | Doppelte Progression: Obergrenze im 1. Satz → nächstes Mal mehr Gewicht (Peach-Regel) | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst, aber die sinnvolle Umsetzung beider |
-| Deload | Standard: keine (wie Peach). Opt-in in den Einstellungen | Coleman 2024: kein Hypertrophie-Unterschied, Kraft eher **ohne** Deload-Woche; Pancar 2026 ebenso |
-| Zyklus | 12 Wochen, Woche 1 = leichter Einstieg ohne Vergleich (Peach-Regel), unbegrenzt viele Zyklen | Praxis, keine Studienfrage |
-| Einsteiger | Alle Slots 2 Sätze, 4–8 → 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten Slot – nur von einem Tag, an dem die Kategorie doppelt vorkommt, damit die Frequenz bleibt (≈ 0,66–0,77× Volumen, Regeln in `data/goals.json` `levels`), Maschinen bevorzugt (Stern). Gleiche Tagesvorlagen wie Fortgeschrittene (Vereinfachung im MVP) | Currier 2023 (BJSM): mehrere Sätze schlagen einen, jede Last wächst; Lopez 2021 |
-| Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls – als Sterne hinterlegt, nicht als eigene Kategorien | Chaves 2020, Maeo 2023, Pedrosa 2023, Kassiano 2025 |
+Kurzfassung:
 
-**Verifizierte Volumen je Archetyp** (Sätze/Woche, 4 Tage, Fortgeschritten; Quelle `data/goals.json` + `data/templates.json`, geprüft mit `scripts/verify-plan-data.mjs`):
+- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 6–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon.
+- **Grenzen je Einheit:** Fortgeschritten 3–7 Übungen und max. 18 Sätze, Einsteiger 3–6 Übungen und max. 12 Sätze; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
+- **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–32.
+- **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
+- **Einsteiger:** 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
+- Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, kein Deload als Standard, 12-Wochen-Zyklus.
 
-| Kategorie | V-Form | Sanduhr | Apfel |
-|---|---|---|---|
-| Glute Max (direkt) | 3 | 12 | 15 |
-| Glute Med | 0 | 8 | 10 |
-| Glute & Quad | 3 | 6 | 5 |
-| Glute & Hams (Hüftbeuge) | 3 | 6 | 7 |
-| Beinbeuger | 3 | 3 | 3 |
-| Beinstrecker | 3 | 3 | 2 |
-| Adduktoren | 0 | 4 | 4 |
-| Rücken (vertikal + horizontal als `focus`) | 14 | 9 | 7 |
-| Schultern (seitlich / Drücken / hinten als `focus`) | 13 | 7 | 7 |
-| Brust | 10 | 3 | 2 |
-| Bizeps | 5 | 2 | 0 (indirekt) |
-| Trizeps | 5 | 2 | 0 (indirekt) |
-| Bauch | 6 | 6 | 8 |
-| Waden | 4 | 0 | 0 |
-| **Summe** | **72** | **71** | **70** |
-
-3 Tage: 61 / 62 / 62. 5 Tage: 77 / 73 / 72. Die Apfel-Spalte ist exakt dein Peach-4-Tage-Plan P4, 3 Tage exakt P3 (per Skript gegen die Trainingsapp geprüft). Die Daten sind die **einzige Stelle**, an der Trainingswissen steht – alles andere rechnet der Generator. Änderungen (z. B. "Glute Med +2") sind ein Slot in `goals.json`, kein Plan-Umbau an 9 Stellen.
+Die Apfel-Pläne sind nicht mehr Nicoles Peach-Plan P3/P4 (der Regressionstest dazu ist entfernt).
 
 ### 3.3 Splits je Tagesanzahl
 
-Je Archetyp ein Satz Vorlagen in `data/templates.json`. Die Vorlage legt nur fest, welche Slots an welchem Tag liegen; die Reihenfolge innerhalb eines Tages sortiert der Generator (`categoryOrder` des Ziels, dann schwerer Bereich zuerst, dann Template-Reihenfolge – Prio-Muskel zuerst, Grundübung vor Isolation, Bauch zuletzt, deine Peach-Regel). Die Satzzahlen kommen aus dem Slot-Pool in `data/goals.json`.
+Je Ziel und Tagesanzahl eine Vorlage in `data/templates.json`. Die Vorlage legt fest, welche Zeilen (Slots) an welchem Tag liegen, **in Trainingsreihenfolge** (schwere Grundübung zuerst, Isolation danach, Bauch zuletzt) und mit welchen Sätzen; der Generator sortiert nicht mehr um.
 
 | Tage | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
-| 3 | A Push + Beine · B Pull + Schultern · C Oberkörper komplett + Beine leicht | A Po & Beine schwer + Schultern · B Rücken & Schultern + Glute Med · C Po-Volumen + Beine + Bauch | dein P3 (Po Kraft · Po & Beinrückseite · Hüfte & Sanduhr) |
-| 4 | A Oberkörper Pull · B Unterkörper + Bauch · C Oberkörper Push · D Schultern, Arme, Rücken-Volumen | A Po & Beine schwer · B Rücken & Schultern · C Po & Beinrückseite + Glute Med · D Schultern + Po-Pump + Bauch | dein P4 (Po Kraft · Oberkörper & Po · Po & Beinrückseite · Po-Volumen & Beine) |
-| 5 | Pull · Push · Beine + Bauch · Schultern + Arme · Oberkörper-Volumen (Lat + Brust) | Po schwer · Rücken & Schultern · Beine + Po · Schultern + Arme leicht + Bauch · Po-Volumen + Glute Med | Po Kraft · Oberkörper · Po & Hams · Beine & Po · Po-Pump + Schultern + Bauch (leichter Tag, 8–12/12–15) |
+| 3 | A Drücken & Beine · B Ziehen & Schultern · C Oberkörper & Beinrückseite | A Po & Beine schwer · B Oberkörper & Po · C Po & Beinrückseite | A Po Kraft · B Po & Beinrückseite · C Po-Volumen & Oberkörper |
+| 4 | A Ziehen · B Beine & Schultern · C Drücken & Rücken · D Oberkörper-Volumen | A Po & Beine schwer · B Rücken & Schultern · C Po & Beinrückseite · D Po-Pump & Oberkörper | A Po Kraft · B Oberkörper & Po · C Po & Beinrückseite · D Po-Volumen & Beine |
+| 5 | Ziehen · Drücken · Beine & Bauch · Rücken & Schultern · Oberkörper-Volumen | Po schwer · Oberkörper · Beine & Po · Schultern & Rücken · Po-Pump & Schultern | Po Kraft · Oberkörper · Po & Beinrückseite · Beine & Po · Po-Pump & Rücken |
 
 ### 3.4 Flexible Woche (Verallgemeinerung der Peach-Partnerzeilen)
 
 In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handgepflegte Partnerzeilen `t:[Tag,Zeile]` (Regel 14: fehleranfällig). In Gymcreator:
-- Jeder Archetyp hat **einen Slot-Pool** (z. B. `gmax_4-8_a`, `gmax_8-12_b`, `lat_6-10_a`, …). Ein Slot = Kategorie + Wdh.-Bereich + Basis-Sätze + Priorität.
+- Jeder Archetyp hat **einen Slot-Pool** (z. B. `gmax_6-8_a`, `gmax_8-12_b`, `back_6-10_a`, …). Ein Slot = Kategorie + Wdh.-Bereich + Basis-Sätze, optional ein Hinweis (`focus`, z. B. "Ziehen von oben").
 - Die 3-/4-/5-Tage-Vorlagen sind nur **Verteilungen desselben Pools** auf Tage. Slots, die in beiden Vorlagen liegen, teilen automatisch Übung, Zusatzsätze und Verlauf. Slots, die es in der kleineren Vorlage nicht gibt, pausieren in der Woche.
 - Wochen-Art pro Woche (`weekType: 3|4|5`), Vorauswahl = Vorwoche, Umstellen einer Woche mit Werten → Rückfrage (wie Peach).
 - Vorwert-Suche läuft über **Übung + Wdh.-Bereich** (Peach `exKey`), eigener Slot zuerst, laufende Woche zählt nie (Peach-Regel 07.10.).
@@ -127,7 +99,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 
 - **Umfang v1:** ~150–180 Übungen, deutsch + englisch benannt, keine Herstellernamen. Peachs 142 Übungen sind die Basis, bereinigt (Panatta/Precor-Varianten → eine generische Übung) und ergänzt um Bizeps/Trizeps-Breite, Waden, Körpergewicht/Band-Varianten.
 - **Felder je Übung:** `id`, `name {de,en}`, `category` (Peach-Kategorien + Waden; Rücken intern in vertikal/horizontal getaggt), `secondary[]`, `equipment` (Langhantel, Kurzhantel, Kabel, Maschine, Multipresse, Körpergewicht, Band), `pattern` (Hüftbeuge, Kniebeuge, horizontal/vertikal Ziehen/Drücken, Abduktion, …), `stars: {vform, sanduhr, peach}` (0–1, der Stern), `stretch: true/false` (gedehnte Position), `unilateral`, `assisted` (Gegengewicht → Logik dreht, Peach `ASSIST`), `tip {de,en}` (Format "Einstellung: … / Ausführung: …", aber geräteneutral: "Drehachse auf Kniehöhe" statt "Hebel 4 bei Panatta"), `why {de,en}` (ein Satz: warum diese Übung für dieses Ziel).
-- **Mein Gym (Equipment-Profil):** Checkliste beim Onboarding (Kabelzug? Multipresse? Hip-Thrust-Maschine? nur Kurzhanteln?). Dropdown zeigt nur Passendes, Sterne wandern zur besten verfügbaren Übung. **Gym-Wechsel-Modus** (Phase 2): zweites Profil "Hotel-Gym", die App tauscht die Übungen der Woche automatisch auf verfügbares Equipment.
+- **Mein Gym (Equipment-Profil):** Checkliste beim Onboarding (Kabelzug? Multipresse? Hip-Thrust-Maschine? nur Kurzhanteln?). In der Übungsauswahl stehen Übungen mit vorhandener Ausstattung oben, die übrigen darunter (23.10.2026: frei wählbar, nichts ausgeblendet). **Gym-Wechsel-Modus** (Phase 2): zweites Profil "Hotel-Gym", die App tauscht die Übungen der Woche automatisch auf verfügbares Equipment.
 - **Eigene Übungen:** Name + Kategorie + Equipment + optional Notiz. Laufen in Progression, Vorwert und Übersicht wie jede andere Übung. Werden im Backup mitgesichert. Kein Stern, kein Tipp (außer eigener Notiz).
 - **Pro Übung Notiz + Einstellung** (Peach `tip__ex__`, `set__ex__`) bleiben, übungsbasiert über alle Pläne.
 
@@ -145,7 +117,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 Neu für eine breite Zielgruppe:
 - **Konkreter Vorschlag statt nur Badge:** "Letztes Mal 40 kg × 10/10/9 → heute 42,5 kg". Schrittweite je Equipment (Kurzhantel 2 kg, Langhantel 2,5 kg, Maschine "eine Stufe", Kabel 2,5 kg) – im Profil änderbar.
 - **Plateau-Tausch:** Wenn nach dem Auto-Zusatzsatz weitere 3 Wochen stagnieren → Vorschlag, die Übung gegen die nächstbeste Stern-Übung der Kategorie zu tauschen. Nur Vorschlag, nie automatisch.
-- **Pausentimer** mit Vorgabe je Bereich (4–8: 2–3 min, 8–12: 90–120 s, Isolation 60–90 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
+- **Pausentimer** mit Vorgabe je Bereich (6–8: 150 s, 6–10: 120 s, 8–12: 90 s, 12–15: 75 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
 - **Hantelscheiben-Rechner** (klein, beliebt, 30 Zeilen Code).
 
 ### 3.7 Oberfläche für Einsteiger (das ist der eigentliche Unterschied zu Peach)
@@ -156,17 +128,17 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt **eine Sache pro Screen** und l
 |---|---|---|
 | **Onboarding** (5 Schritte, je ein Screen) | Ziel per Silhouette → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Gym → "Dein Plan ist fertig" mit Wochenübersicht | gibt es in Peach nicht |
 | **Heute** (Startscreen) | Nächster Trainingstag als eine große Karte: Tagesname, Fokus, Dauer-Schätzung, "Training starten". Darunter: Woche x/12, Tage erledigt, ein Satz Wochen-Bilanz ("bei 6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
-| **Training** (geführt) | Übungsliste des Tages, Tipp auf eine Übung öffnet die **Fokusansicht**: Name, Kategorie-Pill, Sterne, Vorschlag ("heute 42,5 kg"), Sätze als Zeilen (Gewicht · Reps · Haken), Pausentimer, "Übung tauschen", Tipp/Notiz/Einstellung eingeklappt. Weiter/Zurück zur nächsten Übung | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
+| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz dazu/weniger, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
 | **Plan** | Wochenansicht (3/4/5-Tage-Wahl für diese Woche), Tage mit Übungen, Zyklus/Woche-Auswahl (Raster wie Peach), Zyklus-Ende-Banner | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
 | **Einstellungen** | Profil, Ziel/Feinjustierung, Mein Gym, Schrittweiten, Deload opt-in, Sprache, Backup, Version | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
 - **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
-- **Eine Akzentfarbe pro Screen** (Tagesfarbe im Training, Zielfarbe sonst). Kategorie-Pills nur in der Fokusansicht, nicht in Listen.
+- **Eine Akzentfarbe pro Screen** (Tagesfarbe im Training, Zielfarbe sonst). Muskelgruppe als kleine Zeile mit Farbpunkt über dem Übungsnamen.
 - **Max. zwei Schriftgrößen pro Karte**, Body 16 px, Display nur für Zahlen und Titel.
 - **Status als Text + Farbe**, nie nur Farbe (a11y).
-- **Progressive Disclosure:** Vorwert-Herkunft, Tipp, Notiz, Einstellung sind eingeklappt; Badge klein, erklärender Text nur in der Fokusansicht.
+- **Progressive Disclosure:** Vorwert-Herkunft, Tipp, Notiz, Einstellung sind eingeklappt; Badge klein, erklärender Text nur in der aufgeklappten Übung.
 - Peach-Dichte bleibt als **Option** denkbar ("Kompakt-Ansicht" im Training, Phase 2) – nicht im MVP.
 
 ### 3.8 Design-System
@@ -262,7 +234,7 @@ validate(plan)                  → Fehlerliste: >10 anteilige Sätze je Muskel/
                                   Prio-Muskel <2×/Woche, gleiche Übung 2× am Tag, Abweichung vom Ziel >1 Satz
 ```
 
-Tests: für alle 3 × 3 × 2 Kombinationen `validate` leer, Summen innerhalb ±2 Sätze der Tabelle, Determinismus (gleiche Eingabe → gleicher Plan), Apfel-Kombination (`apfel`, 4 Tage, advanced) ergibt genau deinen Peach-P4 (Regressionstest gegen deine Tabelle).
+Tests: für alle 3 × 3 × 2 Kombinationen `validate` leer, Summen innerhalb ±2 Sätze der Tabelle, Determinismus (gleiche Eingabe → gleicher Plan), (Der Peach-P4-Regressionstest ist seit 23.10.2026 entfernt; stattdessen Wochenziele je Muskel.)
 
 ### 4.5 Progressions-Engine (Port aus Peach, Quelle `/home/user/Trainingsapp/index.html`)
 
@@ -318,10 +290,10 @@ Fakten, die den Plan beeinflussen:
 
 **Phase 1 – MVP Web (mehrere Sessions, jede für sich testbar)**
 1. ✅ Core: Datenmodell, Storage (Dexie) + Backup, Migrations-Gerüst
-2. ✅ Core: Generator + Tests (inkl. Regressionstest gegen deinen P4/P3), Standard-Übung je Slot
+2. ✅ Core: Generator + Tests (23.10.: Wochenziele je Muskel statt P4/P3-Regression; Standard-Übung je Slot wieder entfernt, freie Wahl)
 3. ✅ Core: Progressions-Engine portiert + Peach-Testfälle grün
 4. ✅ UI: Onboarding → Plan-Ansicht
-5. ✅ UI: Heute + geführtes Training (Fokusansicht, Sätze, Timer, Badge, Vorschlag)
+5. ✅ UI: Heute + Training (23.10.: aufklappbare Übungen in der Tagesansicht statt Fokusansicht, Vorwoche je Satz, Timer, Badge, Vorschlag)
 6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
 7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup (Deload opt-in offen, Regel nicht festgelegt)
 8. 🟡 PWA-Feinschliff (Icon ✅, Manifest ✅, Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅; offen: Lighthouse, Nutzertest) (Icon, Manifest `display: standalone` – anders als Peach, weil der Speicher hier in der App lebt und das Backup Pflicht ist; dazu ein Hinweis beim ersten Start "Installiere die App auf dem Home-Screen", damit die Daten von Anfang an in einem Container liegen), Playwright-Flows, Nutzertest mit 3–5 Personen (die werden später auch die 12 Play-Tester)

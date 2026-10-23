@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { latestWeek } from '../core/progression/position';
+import { rowState } from '../core/progression/state';
 import { text } from '../i18n';
 import { TabBar } from './components/TabBar';
 import { DayView } from './screens/DayView';
-import { ExerciseView } from './screens/ExerciseView';
 import { Onboarding } from './screens/Onboarding';
 import { PlanScreen } from './screens/PlanScreen';
 import { Progress } from './screens/Progress';
 import { Settings } from './screens/Settings';
 import { Today } from './screens/Today';
-import { planFor, type AppModel } from './state/model';
+import { planFor, rowContext, type AppModel } from './state/model';
 import { store, useAppState } from './state/store';
 import { useUiState } from './state/ui';
 
@@ -61,27 +61,30 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [ui.tab, day, slot]);
+  }, [ui.tab, day]);
 
   const goToWeek = (cycle: number, week: number) => setUi({ cycle, week, day: null, slot: null });
-  const openDay = (d: number) => setUi({ day: d, slot: null });
+  // Tag oeffnen: die erste Uebung ohne alle Saetze ist gleich aufgeklappt
+  const openDay = (d: number) => {
+    const ctx = rowContext(model, pos.cycle, pos.week);
+    const first = plan.dayPlans[d]?.rows.find((r) => !rowState(ctx, r, pos).done);
+    setUi({ day: d, slot: first?.slotId ?? null });
+  };
 
   let content;
-  if (day !== null && slot) {
+  if (day !== null) {
     content = (
-      <ExerciseView
+      <DayView
         model={model}
         pos={pos}
         day={day}
-        slotId={slot}
+        openSlot={slot}
+        onOpenSlot={(s) => setUi({ slot: s })}
         restEndsAt={ui.restEndsAt}
         onRest={(restEndsAt) => setUi({ restEndsAt })}
-        onOpenExercise={(s) => setUi({ slot: s })}
-        onBack={() => setUi({ slot: null })}
+        onBack={() => setUi({ day: null, slot: null })}
       />
     );
-  } else if (day !== null) {
-    content = <DayView model={model} pos={pos} day={day} onBack={() => setUi({ day: null })} onOpenExercise={(s) => setUi({ slot: s })} />;
   } else if (ui.tab === 'plan') {
     content = <PlanScreen model={model} pos={pos} onGoToWeek={goToWeek} onOpenDay={openDay} />;
   } else if (ui.tab === 'progress') {

@@ -8,7 +8,7 @@ describe('Position und Dauer', () => {
   const rules = planData.goals.progression;
 
   it('naechster Tag = erster ohne Eintraege; alle trainiert -> null', () => {
-    const data = [entry(1, 2, 'gmax_4-8_a', 'hip_thrust_barbell', '100', [8])];
+    const data = [entry(1, 2, 'gmax_6-8_a', 'hip_thrust_barbell', '100', [8])];
     const ctx = context(data);
     const progress = plans[4].dayPlans.map((d) => dayProgress(ctx, d, { cycle: 1, week: 2 }));
     expect(progress[0]).toMatchObject({ started: true, done: 0 });
@@ -17,7 +17,7 @@ describe('Position und Dauer', () => {
   });
 
   it('eine Uebung mit allen Saetzen zaehlt als erledigt', () => {
-    const data = [entry(1, 1, 'gmax_4-8_a', 'hip_thrust_barbell', '100', [8, 8, 8])];
+    const data = [entry(1, 1, 'gmax_6-8_a', 'hip_thrust_barbell', '100', [8, 8, 8])];
     const day = plans[4].dayPlans[0];
     if (!day) throw new Error('Tag fehlt');
     expect(dayProgress(context(data), day, { cycle: 1, week: 1 }).done).toBe(1);
@@ -29,7 +29,7 @@ describe('Position und Dauer', () => {
   });
 
   it('juengste Woche mit Werten', () => {
-    const data = [entry(1, 5, 'gmax_4-8_a', 'hip_thrust_barbell', '100', [8]), entry(2, 1, 'gmax_4-8_a', 'hip_thrust_barbell', '', [])];
+    const data = [entry(1, 5, 'gmax_6-8_a', 'hip_thrust_barbell', '100', [8]), entry(2, 1, 'gmax_6-8_a', 'hip_thrust_barbell', '', [])];
     expect(latestWeek(indexEntries(data))).toEqual({ cycle: 1, week: 5 });
     expect(latestWeek(indexEntries([]))).toEqual({ cycle: 1, week: 1 });
   });
@@ -39,8 +39,8 @@ describe('Position und Dauer', () => {
     for (const day of plans[4].dayPlans) {
       const min = estimateMinutes(day, planData.goals.timing);
       expect(min % 5).toBe(0);
-      expect(min).toBeGreaterThanOrEqual(30);
-      expect(min).toBeLessThanOrEqual(90);
+      expect(min).toBeGreaterThanOrEqual(20);
+      expect(min).toBeLessThanOrEqual(75);
     }
   });
 });

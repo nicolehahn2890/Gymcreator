@@ -1,55 +1,86 @@
 # Trainingswissenschaftliche Grundlage
 
-Stand der Recherche: 22.10.2026. Diese Datei begründet die Zahlen in `data/goals.json` (Slot-Pools, Grenzen) und die Regeln des Generators. Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
+Stand: 23.10.2026 (Volumen-Modell neu). Diese Datei begründet die Zahlen in `data/goals.json` (Wochenziele je Muskel, Grenzen, Wdh.-Bereiche, Stufen) und `data/templates.json` (Tagesvorlagen). Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
 
-## Regeln des Generators und ihre Evidenz
+## Grundsatz
+
+Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie möglich**. Jeder Plan (3 Ziele × 2 Stufen × 3/4/5 Tage = 18 Pläne) muss im Prüfskript `scripts/verify-plan-data.mjs` die Wochenziele je Muskel, die Grenzen je Einheit und die Stufen-Regeln einhalten. Die Übungen wählt die Person selbst, je Zeile aus der passenden Muskelgruppe; ein Stern markiert die besten Übungen für ihr Ziel.
+
+## Regeln und ihre Evidenz
 
 | Parameter | Regel in Gymcreator | Evidenz (Kurzform) |
 |---|---|---|
-| Wochenvolumen je Muskel | Anteilig gezählt (Hauptmuskel 1, Mitarbeit 0,5). Prio 3: 12–16 Sätze, Prio 2: 8–10, Prio 1: 4–6, Prio 0: nur indirekt. Mindestdosis ~4 | Dosis-Wirkung mit abnehmendem Grenznutzen: Schoenfeld 2017 (10+ > <5 Sätze/Woche, ~0,37 %/Satz), Baz-Valle 2022 (12–20 optimal), Pelland et al., Sports Med 2026 (log-linear; Kraft plateaut bei 3–4 Sätzen/Woche) |
-| Obergrenze pro Einheit | max. 11 anteilige Sätze je Muskel und Einheit (harte Grenze in `limits`), Warnung ab 20 Sätzen je Einheit, Fehler ab 25 | Remmert et al. 2025 (SportRxiv-Preprint, nicht begutachtet): ab ~11 anteiligen Sätzen pro Einheit kein Zusatznutzen |
-| Volumen-Steigerung | Konservativ: Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel). Kein aggressives Hochfahren | Enes 2024 (MSSE 56(3):553–563): +4/+6 Sätze alle 2 Wochen brachte Kraft, Hypertrophie-Unterschied nicht signifikant (p = 0,067); Autoregulation des Volumens ≈ festes Volumen (Remmert, Preprint) |
-| Frequenz | Prio-3-Kategorien ≥ 2× pro Woche (`minFrequencyPrio3`) – vor allem, um die Einheiten-Grenze einzuhalten | Schoenfeld 2016 (2× > 1×, meist nicht volumen-gleich), Schoenfeld 2019 (bei gleichem Volumen kein Effekt), Pelland 2026 (vernachlässigbar für Hypertrophie) |
-| Wdh.-Bereiche | 4–8 nur Fortgeschrittene (schwere Grundübung), 6–10, 8–12, 12–15 (Pump/Isolation) | Hypertrophie über ~5–30 Wdh. gleich, wenn nah am Versagen (Lopez 2021, Schoenfeld 2021); Kraft braucht schwere Last |
+| Wochenvolumen je Muskel | Je Ziel und Stufe eine **Zielspanne pro Muskel** (`targets`), anteilig gezählt (direkte Übung 1, Mitarbeit 0,5, z. B. Kniebeuge = Oberschenkel 1 + Po 0,5). Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel/Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 6–14, Nebenmuskeln 2–7 (Erhalt bis leichter Aufbau), unerwünschte 0 | Dosis-Wirkung mit abnehmendem Grenznutzen: Schoenfeld 2017 (≥ 10 > < 5 Sätze/Woche), Baz-Valle 2022 (12–20 für Trainierte), Pelland 2026 (anteilige Zählung erklärt die Daten am besten, Zuwachs flacht ab). Erhalt mit etwa einem Drittel des Aufbauvolumens (Bickel 2011) |
+| Mehr Tage | Mehr Tage verteilen **ungefähr dasselbe Wochenvolumen** auf kürzere Einheiten (+ 0–10 %), statt es zu verdoppeln: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen | Bei gleichem Volumen bringt mehr Frequenz kaum etwas (Schoenfeld 2019, Pelland 2026). Der Vorteil vieler Tage ist die kürzere, frischere Einheit |
+| Grenzen je Einheit | Höchstens **10 anteilige Sätze je Muskel und Einheit**. Fortgeschritten 3–7 Übungen und **max. 18 Sätze** (ca. 55–60 Min.), Einsteiger 3–6 Übungen und max. 12 Sätze. **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Vorgabe 23.10.2026: Vielfalt statt mehrerer gleichartiger Übungen) | Remmert 2025 (Preprint): ab ~11 anteiligen Sätzen pro Einheit kein Zusatznutzen. 18 Sätze sind ein Praxiswert für Dauer und Qualität der letzten Sätze |
+| Frequenz | Prio-3-Kategorien mindestens 2× pro Woche, Hauptmuskel 3–4× | Vor allem, um die Grenze je Einheit einzuhalten; bei gleichem Volumen kein eigener Effekt (Schoenfeld 2019) |
+| Wdh.-Bereiche | **6–8** schwere Grundübung (je Hauptmuskel 1× pro Woche), **6–10** weitere Grundübungen, **8–12** Maschinen, Kabel, Isolation, **12–15** Isolation für kleine Muskeln und Pump | Hypertrophie über ~6–30 Wdh. gleich, wenn nah am Versagen (Schoenfeld 2017 Last-Meta, Lopez 2021); Kraft profitiert von schwerer Last (Schoenfeld 2021). 4–8 ist entfallen: kaum mehr Muskel, höheres Gelenk- und Technikrisiko |
+| Wellen über die Woche | Der Hauptmuskel bekommt an verschiedenen Tagen verschiedene Bereiche: z. B. Apfel 3 Tage Po **6–8 / 8–12 / 12–15**, V-Form Rücken 6–8 und 6–10 an einem Tag, 8–12 am anderen. Jeder Fortgeschrittenen-Plan hat beim Hauptmuskel mindestens 3 Bereiche (Test) | Wellenförmige (DUP) und lineare Periodisierung bringen gleich viel Muskel (Grgic 2017), DUP etwas mehr Kraft (Rhea 2002). Vorteil hier: schwere Last für Kraft, leichtere Sätze für Volumen ohne zusätzliche Gelenkbelastung |
+| Warum 8–12 statt 10–12 | Gewichtssprünge an Maschinen und Kabeln sind groß (eine Stufe ist oft 5–10 %). Ein Bereich von 4 Wdh. fängt einen Sprung auf, ohne den Bereich zu verlassen | Praxis der doppelten Progression, keine Studienfrage |
 | Intensität | 0–3 Wdh. in Reserve, schwere Grundübung 2–4. Hinweis im Onboarding, kein Pflichtfeld | Robinson 2024 (näher am Versagen = etwas mehr Hypertrophie, Kraft unverändert), Refalo 2023 (Versagen vs. nicht: ES 0,19, trivial) |
-| Übungsauswahl (Stern) | **Stretch-Bias**: Last in der gedehnten Position bevorzugt (sitzender Beinbeuger, RDL, Überzug, Schrägbank-Flys, Kabel-Seitheben, Überkopf-Trizeps, Preacher Curls). Volle Bewegung; keine "Partials only" | Maeo 2021 (sitzender > liegender Beinbeuger, ~14 % vs. ~9 %), Pedrosa 2022, Kassiano 2023, Maeo 2023 (Trizeps Überkopf ~1,4×), Wolf 2023 Meta (voll vs. partial trivial), Wolf 2025 RCT (Trainierte: lange Partials = volle ROM), Strey 2026 Meta (lange > kurze Partials, ES 0,28) |
-| Po | Hip Thrust **und** tiefe kniedominante Übung: gleich gut für Glute Max, tiefe Kniebeuge zusätzlich für Adduktoren. Glute Med wächst durch Grundübungen nicht → direkte Abduktion. Adduktor magnus ist Hüftstrecker → eigene Kategorie | Plotkin 2023 (HT = SQ für Glute Max; SQ > HT für Quads/Adduktoren; Glute Med/Min ~kein Wachstum bei beiden), Kubo 2019 (tiefe vs. halbe Kniebeuge: Glute Max +6,7 % vs. +2,2 %, Adduktoren +6,2 % vs. +2,7 %). **Keine Hypertrophie-Studie zu Glute-Med-Abduktion** – Annahme aus Anatomie/EMG |
+| Übungsauswahl | **Frei je Muskelgruppe** (Nicoles Vorgabe 23.10.2026), 200 Übungen, jede Kategorie mindestens 7. **Stern** = beste Wahl fürs Ziel, mit **Stretch-Bias** (Last in der gedehnten Position: sitzender Beinbeuger, RDL, Überzug, Schrägbank-Flys, Kabel-Seitheben, Überkopf-Trizeps, Preacher Curls). Volle Bewegung, keine "Partials only" | Maeo 2021 (sitzender > liegender Beinbeuger, ~14 % vs. ~9 %), Pedrosa 2022, Kassiano 2023, Maeo 2023 (Trizeps Überkopf ~1,4×), Wolf 2023 Meta, Wolf 2025 RCT, Strey 2026 Meta (lange > kurze Partials, ES 0,28) |
+| Po | Hip Thrust **und** tiefe kniedominante Übung: gleich gut für Glute Max, tiefe Kniebeuge zusätzlich für Adduktoren. Glute Med wächst durch Grundübungen nicht → direkte Abduktion. Adduktor magnus ist Hüftstrecker → eigene Kategorie | Plotkin 2023 (HT = SQ für Glute Max; SQ > HT für Quads/Adduktoren; Glute Med/Min ~kein Wachstum bei beiden), Kubo 2019. **Keine Hypertrophie-Studie zu Glute-Med-Abduktion** – Annahme aus Anatomie/EMG |
 | V-Form / Taille | Seitheben für Schulterbreite (belegt), vertikaler Zug für Lat (EMG-basiert). "Keine schweren Seitbeugen" ist Praxis-Vorsicht, keine Studienlage. Taille ist vor allem Körperfett | Larsen 2025 (Seitheben +3–5 % in 8 Wochen). Oblique-Training → dickere Taille: **kein Trial** |
-| Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne/Fokus-Hinweise hinterlegt | Chaves 2020 (Schrägbank, klein, Untrainierte), Maeo 2023, Pedrosa 2023, Kassiano 2025 |
-| Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst; Autoregulation ≈ fest (Greig 2021, Larsen 2021) |
-| Deload | Standard: keine. Opt-in in den Einstellungen | Coleman 2024 (n = 39 Trainierte, 9 Wochen: Hypertrophie gleich, Kraft eher ohne Deload-Woche), Pancar 2026 (Untrainierte: kein Unterschied) |
-| Einsteiger | Alle Slots 2 Sätze, Bereiche ab 6–10, Kategorien mit ≥ 3 Slots verlieren den letzten – nur von einem Tag, an dem die Kategorie doppelt vorkommt, damit die Frequenz bleibt (≈ 0,66–0,77× Volumen), Maschinen bevorzugt | Currier 2023 (BJSM: mehrere Sätze > ein Satz, jede Last wächst), Lopez 2021 (Untrainierte reagieren auf jede Last) |
+| Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne und Zeilen-Hinweis (`focus`) hinterlegt | Chaves 2020 (Schrägbank, klein, Untrainierte), Maeo 2023, Pedrosa 2023, Kassiano 2025 |
+| Volumen-Steigerung | Konservativ: Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel) | Enes 2024 (MSSE 56(3):553–563): mehr Sätze brachten Kraft, Hypertrophie-Unterschied nicht signifikant; Autoregulation des Volumens ≈ festes Volumen (Remmert, Preprint) |
+| Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht (Hinweis mit Vorschlag in der Übung) | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst; Autoregulation ≈ fest (Greig 2021, Larsen 2021) |
+| Einsteiger | Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen (meist Bauch, zweite Isolation, Arme). Ergebnis: 24–32 Sätze pro Woche, 6–10 je Einheit, etwa 55–65 % des Fortgeschrittenen-Volumens, Hauptmuskel 6–10 anteilige Sätze | Einsteiger wachsen schon mit wenig Volumen und jeder Last (Lopez 2021, Currier 2023: mehrere Sätze > ein Satz). ACSM 2009: Einsteiger 8–12 Wdh., 1–3 Sätze |
+| Deload | Standard: keine. Opt-in in den Einstellungen (noch nicht gebaut) | Coleman 2024 (n = 39 Trainierte, 9 Wochen: Hypertrophie gleich, Kraft eher ohne Deload-Woche), Pancar 2026 (Untrainierte: kein Unterschied) |
 | Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Praxis (Peach), keine Studienfrage |
 
 ## Korrekturen und Vorbehalte aus der Recherche
 
 - Pelland et al. ist seit Dez. 2025 begutachtet (Sports Med 2026;56(2):481–505). Die Zahlen "4 Sätze Minimum / ~31 Sätze Obergrenze" stammen aus dem Preprint 2024 und Sekundärquellen, nicht aus dem Endtext.
-- Remmert (Grenze pro Einheit) und die Volumen-Autoregulation sind Preprints.
+- Remmert (Grenze pro Einheit) und die Volumen-Autoregulation sind Preprints. Gymcreator bleibt mit 10 anteiligen Sätzen bewusst darunter.
+- Die Zielspannen sind eine begründete Festlegung aus den Metaanalysen, keine Werte aus einer einzelnen Studie. Menschen reagieren individuell sehr unterschiedlich; deshalb gibt es den Auto-Zusatzsatz bei Stillstand.
 - Lange Partials sind vor allem bei Untrainierten und Einzelgelenk-Übungen überlegen; bei Trainierten gleich volle ROM. Deshalb "Stretch-Bias", nicht "Partials".
 - Glute-Med-Abduktion und Oblique/Taille beruhen auf Anatomie/EMG, nicht auf Hypertrophie-Studien.
 - Doppelte Progression hat keinen eigenen RCT; sie ist die praktikable Umsetzung der belegten Gleichwertigkeit von Last- und Wdh.-Progression.
+- Die Apfel-Pläne sind **nicht** mehr Nicoles Peach-Plan (P3/P4). Der ist ihr persönlicher Plan mit deutlich mehr Volumen; für Gymcreator gilt das Modell oben (Entscheidung 23.10.2026).
 
-## Verifizierte Volumen je Ziel (4 Tage, Fortgeschritten, Sätze/Woche aus `data/`)
+## Verifizierte Volumen (aus `data/`, geprüft mit `scripts/verify-plan-data.mjs`)
 
-| Kategorie | Apfel | Sanduhr | V-Form |
-|---|---|---|---|
-| Glute Max | 15 | 12 | 3 |
-| Glute Med | 10 | 8 | 0 |
-| Glute & Quad | 5 | 6 | 3 |
-| Glute & Hams | 7 | 6 | 3 |
-| Beinbeuger | 3 | 3 | 3 |
-| Beinstrecker | 2 | 3 | 3 |
-| Adduktoren | 4 | 4 | 0 |
-| Rücken | 7 | 9 | 14 |
-| Schultern | 7 | 7 | 13 |
-| Brust | 2 | 3 | 10 |
-| Bizeps | 0 (indirekt) | 2 | 5 |
-| Trizeps | 0 (indirekt) | 2 | 5 |
-| Waden | 0 | 0 | 4 |
-| Bauch | 8 | 6 | 6 |
-| **Summe** | **70** | **71** | **72** |
+Anteilige Sätze pro Woche für 3 / 4 / 5 Tage, daneben die Zielspanne aus `targets`.
 
-3 Tage: Apfel 62, Sanduhr 62, V-Form 61. 5 Tage: Apfel 72, Sanduhr 73, V-Form 77. Die Apfel-Spalte ist exakt der Peach-4-Tage-Plan P4 (3 Tage = P3) aus der Trainingsapp, per Skript gegengeprüft.
+### Fortgeschritten
+
+| Muskel | Apfel | Ziel | Sanduhr | Ziel | V-Form | Ziel |
+|---|---|---|---|---|---|---|
+| Po (Glute Max) | 14 / 16 / 16 | 12–17 | 12 / 13,5 / 12 | 11–16 | 3 / 3 / 3 | 2–7 |
+| Hüfte außen (Glute Med) | 8 / 8 / 8 | 6–10 | 4 / 4 / 6 | 4–8 | 0 / 0 / 0 | 0 |
+| Beinrückseite | 8 / 8 / 8 | 6–10 | 6 / 6 / 6 | 5–10 | 3 / 3 / 3 | 3–6 |
+| Oberschenkel vorne | 3 / 3 / 3 | 3–7 | 6 / 9 / 5 | 5–10 | 6 / 6 / 6 | 5–9 |
+| Adduktoren | 4 / 4 / 4 | 3–6 | 0 / 0 / 0 | 0–4 | 0 / 0 / 0 | 0 |
+| Rücken | 6 / 6 / 6 | 6–10 | 6 / 6 / 6 | 6–10 | 12 / 12 / 12 | 12–16 |
+| Schultern | 7 / 7 / 7 | 6–9 | 10 / 9 / 10 | 9–14 | 10 / 12 / 11 | 9–14 |
+| Brust | 2 / 3 / 3 | 0–4 | 3 / 3 / 3 | 2–5 | 8 / 8 / 8 | 8–13 |
+| Bizeps | 3 / 3 / 3 | 0–5 | 3 / 5 / 5 | 3–7 | 9 / 9 / 9 | 6–10 |
+| Trizeps | 1 / 1,5 / 1,5 | 0–3 | 1,5 / 3,5 / 3,5 | 1–5 | 7 / 9 / 9 | 5–10 |
+| Waden | 0 / 0 / 0 | 0 | 0 / 0 / 0 | 0 | 2 / 3 / 5 | 2–6 |
+| Bauch | 4 / 6 / 6 | 2–6 | 4 / 6 / 6 | 2–6 | 4 / 4 / 4 | 2–6 |
+| **Sätze gesamt** | 50 / 55 / 55 |  | 48 / 56 / 55 |  | 51 / 56 / 57 |  |
+| Sätze je Einheit | 15–18 / 12–15 / 9–13 |  | 15–17 / 13–15 / 9–13 |  | 15–18 / 12–15 / 10–14 |  |
+
+### Einsteiger
+
+| Muskel | Apfel | Ziel | Sanduhr | Ziel | V-Form | Ziel |
+|---|---|---|---|---|---|---|
+| Po (Glute Max) | 10 / 9 / 9 | 7–11 | 8 / 8 / 8 | 6–10 | 2 / 2 / 2 | 1–5 |
+| Hüfte außen (Glute Med) | 6 / 6 / 4 | 4–6 | 2 / 2 / 4 | 2–6 | 0 / 0 / 0 | 0 |
+| Beinrückseite | 6 / 4 / 4 | 3–7 | 4 / 4 / 4 | 3–6 | 2 / 2 / 2 | 2–4 |
+| Oberschenkel vorne | 2 / 2 / 2 | 2–5 | 4 / 4 / 4 | 3–6 | 2 / 2 / 2 | 2–6 |
+| Adduktoren | 2 / 2 / 2 | 0–4 | 0 / 0 / 0 | 0–3 | 0 / 0 / 0 | 0 |
+| Rücken | 4 / 4 / 4 | 3–6 | 4 / 4 / 4 | 3–6 | 6 / 8 / 8 | 6–10 |
+| Schultern | 4 / 4 / 6 | 2–6 | 6 / 6 / 6 | 4–8 | 4 / 6 / 6 | 4–8 |
+| Brust | 0 / 0 / 0 | 0–3 | 2 / 2 / 2 | 0–4 | 4 / 4 / 4 | 4–8 |
+| Bizeps | 2 / 2 / 2 | 0–3 | 2 / 2 / 2 | 1–4 | 5 / 6 / 6 | 3–6 |
+| Trizeps | 0 / 0 / 0 | 0–2 | 1 / 1 / 1 | 0–3 | 2 / 4 / 6 | 2–6 |
+| Waden | 0 / 0 / 0 | 0 | 0 / 0 / 0 | 0 | 2 / 0 / 0 | 0–4 |
+| Bauch | 0 / 4 / 4 | 0–4 | 0 / 2 / 2 | 0–4 | 2 / 0 / 2 | 0–4 |
+| **Sätze gesamt** | 30 / 32 / 32 |  | 28 / 30 / 32 |  | 24 / 26 / 30 |  |
+| Sätze je Einheit | 10 / 8 / 6–8 |  | 8–10 / 6–10 / 6–8 |  | 8 / 6–8 / 6 |  |
+
+Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich) druckt `node scripts/verify-plan-data.mjs` für alle 18 Pläne aus.
 
 ## Quellen
 
@@ -79,3 +110,9 @@ Stand der Recherche: 22.10.2026. Diese Datei begründet die Zahlen in `data/goal
 24. Chaves SFN et al. Int J Exerc Sci 2020;13(6) (Schrägbank, obere Brust). https://digitalcommons.wku.edu/ijes/vol13/iss6/12
 25. Currier BS et al. Br J Sports Med 2023;57:1211–1220. https://pmc.ncbi.nlm.nih.gov/articles/PMC10579494/
 26. Pancar et al. 2026, Sci Rep (Deload, Untrainierte). Registrierung: https://clinicaltrials.gov/study/NCT06825052
+27. Bickel CS, Cross JM, Bamman MM. Med Sci Sports Exerc 2011;43(7):1177–1187 (Erhalt mit reduziertem Volumen).
+28. Grgic J, Mikulic P, Podnar H, Pedisic Z. PeerJ 2017;5:e3695 (lineare vs. wellenförmige Periodisierung, Hypertrophie).
+29. Rhea MR, Ball SD, Phillips WT, Burkett LN. J Strength Cond Res 2002;16(2):250–255 (wellenförmige Periodisierung, Kraft).
+30. American College of Sports Medicine. Med Sci Sports Exerc 2009;41(3):687–708 (Position Stand Krafttraining).
+31. Schoenfeld BJ, Grgic J, Ogborn D, Krieger JW. J Strength Cond Res 2017;31(12):3508–3523 (Last-Meta: niedrige vs. hohe Last).
+32. Schoenfeld BJ, Grgic J, Van Every DW, Plotkin DL. Sports 2021;9(2):32 (Wiederholungs-Kontinuum: Kraft, Hypertrophie, Ausdauer).

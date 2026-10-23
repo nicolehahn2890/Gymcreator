@@ -1,28 +1,35 @@
 {
   "schema": 1,
-  "_doc": "Einzige Stelle mit Trainingswissen. Kategorien = Peach-Kategorien + Bizeps/Trizeps/Waden. muscles = anteilige Zaehlung (Hauptmuskel 1, Mitarbeit 0,5) fuer die Grenze pro Einheit. Je Ziel: priorities (0-3), categoryOrder (Reihenfolge innerhalb eines Tages), slots (Slot-Pool: stabile IDs, Kategorie, Wdh.-Bereich, Basis-Saetze, optionaler focus als Hinweis fuer Sterne/Dropdown). Die Tagesverteilung steht in templates.json. levels: Regeln je Erfahrungsstufe (Einsteiger: alle Slots 2 Saetze, 4-8 wird 6-10, Kategorien mit mind. 3 Slots in der Woche verlieren den letzten Slot in Pool-Reihenfolge; Slot-IDs bleiben). progression: Zykluslaenge, ab welcher Woche verglichen wird (Woche 1 = leichter Einstieg ohne Vergleich), nach wie vielen stagnierenden Wochenvergleichen derselben Uebung ein Auto-Zusatzsatz kommt und wie viele (Obergrenze limits.maxSetsPerSlot). timing: Pausenvorgabe je Wdh.-Bereich in Sekunden (Pausentimer) und geschaetzte Dauer eines Satzes; daraus die Dauer-Schaetzung je Tag.",
+  "_doc": "Einzige Stelle mit Trainingswissen (Begruendung: docs/wissenschaft.md). ranges: Wdh.-Bereiche, schwerster zuerst. categories: Farbe und anteilige Muskelzaehlung (direkt 1, Mitarbeit 0,5). limits: Grenzen fuer jeden Plan (anteilige Saetze je Muskel und Einheit, Saetze je Zeile, Haeufigkeit Prio 3, Zeilen je Kategorie und Tag; die Hauptmuskelgruppe des Ziels darf zweimal am Tag vorkommen). levels: Regeln je Stufe (Uebungen und Saetze je Einheit; Einsteiger: 2 Saetze je Zeile, 6-8 und 6-10 werden 8-12, die Slot-ID bleibt). progression: Zykluslaenge, Vergleich ab Woche 2, Auto-Zusatzsatz nach 3 stagnierenden Vergleichen. timing: Pause je Bereich und Dauer eines Satzes. Je Ziel: priorities (0-3), mainCategory, targets (Wochenvolumen je Muskel und Stufe, anteilig gezaehlt, [min, max]; jeder erzeugte Plan muss darin liegen) und der Slot-Pool (stabile IDs, Kategorie, Bereich, Basis-Saetze, optionaler focus als Hinweis in der Zeile und Sortierung in der Uebungsauswahl).",
   "ranges": [
-    "4-8",
+    "6-8",
     "6-10",
     "8-12",
     "12-15"
   ],
   "limits": {
-    "warnSetsPerSession": 20,
-    "maxSetsPerSession": 24,
-    "maxFractionalSetsPerMusclePerSession": 11,
+    "maxFractionalSetsPerMusclePerSession": 10,
     "maxSetsPerSlot": 5,
-    "minFrequencyPrio3": 2
+    "minFrequencyPrio3": 2,
+    "maxSlotsPerCategoryPerDay": 1,
+    "maxSlotsMainCategoryPerDay": 2
   },
   "levels": {
     "beginner": {
+      "minExercisesPerSession": 3,
+      "maxExercisesPerSession": 6,
+      "maxSetsPerSession": 12,
       "setsPerSlot": 2,
       "rangeMap": {
-        "4-8": "6-10"
-      },
-      "dropLastSlotFromCategoriesWith": 3
+        "6-8": "8-12",
+        "6-10": "8-12"
+      }
     },
-    "advanced": {}
+    "advanced": {
+      "minExercisesPerSession": 3,
+      "maxExercisesPerSession": 7,
+      "maxSetsPerSession": 18
+    }
   },
   "progression": {
     "cycleWeeks": 12,
@@ -33,7 +40,7 @@
   "timing": {
     "setSeconds": 45,
     "restSeconds": {
-      "4-8": 150,
+      "6-8": 150,
       "6-10": 120,
       "8-12": 90,
       "12-15": 75
@@ -213,55 +220,124 @@
         "calves": 0,
         "abs": 2
       },
-      "categoryOrder": [
-        "gmax",
-        "gmed",
-        "gquad",
-        "ghams",
-        "hams",
-        "quads",
-        "add",
-        "back",
-        "shoulders",
-        "chest",
-        "biceps",
-        "triceps",
-        "calves",
-        "abs"
-      ],
+      "mainCategory": "gmax",
+      "targets": {
+        "advanced": {
+          "gluteMax": [
+            12,
+            17
+          ],
+          "gluteMed": [
+            6,
+            10
+          ],
+          "hams": [
+            6,
+            10
+          ],
+          "adductors": [
+            3,
+            6
+          ],
+          "quads": [
+            3,
+            7
+          ],
+          "back": [
+            6,
+            10
+          ],
+          "shoulders": [
+            6,
+            9
+          ],
+          "abs": [
+            2,
+            6
+          ],
+          "chest": [
+            0,
+            4
+          ],
+          "biceps": [
+            0,
+            5
+          ],
+          "triceps": [
+            0,
+            3
+          ],
+          "calves": [
+            0,
+            0
+          ]
+        },
+        "beginner": {
+          "gluteMax": [
+            7,
+            11
+          ],
+          "gluteMed": [
+            4,
+            6
+          ],
+          "hams": [
+            3,
+            7
+          ],
+          "adductors": [
+            0,
+            4
+          ],
+          "quads": [
+            2,
+            5
+          ],
+          "back": [
+            3,
+            6
+          ],
+          "shoulders": [
+            2,
+            6
+          ],
+          "abs": [
+            0,
+            4
+          ],
+          "chest": [
+            0,
+            3
+          ],
+          "biceps": [
+            0,
+            3
+          ],
+          "triceps": [
+            0,
+            2
+          ],
+          "calves": [
+            0,
+            0
+          ]
+        }
+      },
       "slots": [
         {
-          "id": "gmax_4-8_a",
+          "id": "gmax_6-8_a",
           "cat": "gmax",
-          "range": "4-8",
-          "sets": 3
-        },
-        {
-          "id": "gmax_4-8_b",
-          "cat": "gmax",
-          "range": "4-8",
-          "sets": 3
-        },
-        {
-          "id": "gmax_6-10_a",
-          "cat": "gmax",
-          "range": "6-10",
+          "range": "6-8",
           "sets": 3
         },
         {
           "id": "gmax_8-12_a",
           "cat": "gmax",
           "range": "8-12",
-          "sets": 2
+          "sets": 3
         },
         {
           "id": "gmax_8-12_b",
-          "cat": "gmax",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmax_8-12_c",
           "cat": "gmax",
           "range": "8-12",
           "sets": 2
@@ -274,52 +350,10 @@
           "focus": "pump"
         },
         {
-          "id": "gmed_8-12_a",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_b",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_c",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_d",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_e",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
           "id": "gquad_6-10_a",
           "cat": "gquad",
           "range": "6-10",
           "sets": 3
-        },
-        {
-          "id": "gquad_8-12_a",
-          "cat": "gquad",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "ghams_4-8_a",
-          "cat": "ghams",
-          "range": "4-8",
-          "sets": 2
         },
         {
           "id": "ghams_6-10_a",
@@ -334,16 +368,34 @@
           "sets": 2
         },
         {
-          "id": "hams_8-12_a",
-          "cat": "hams",
+          "id": "gmed_8-12_a",
+          "cat": "gmed",
           "range": "8-12",
           "sets": 3
         },
         {
-          "id": "quads_8-12_a",
-          "cat": "quads",
+          "id": "gmed_8-12_b",
+          "cat": "gmed",
           "range": "8-12",
           "sets": 2
+        },
+        {
+          "id": "gmed_12-15_a",
+          "cat": "gmed",
+          "range": "12-15",
+          "sets": 3
+        },
+        {
+          "id": "gmed_12-15_b",
+          "cat": "gmed",
+          "range": "12-15",
+          "sets": 2
+        },
+        {
+          "id": "hams_8-12_a",
+          "cat": "hams",
+          "range": "8-12",
+          "sets": 3
         },
         {
           "id": "add_8-12_a",
@@ -368,14 +420,8 @@
           "id": "back_8-12_a",
           "cat": "back",
           "range": "8-12",
-          "sets": 2,
+          "sets": 3,
           "focus": "horizontal"
-        },
-        {
-          "id": "back_8-12_b",
-          "cat": "back",
-          "range": "8-12",
-          "sets": 2
         },
         {
           "id": "shoulders_8-12_a",
@@ -385,23 +431,23 @@
           "focus": "lateral"
         },
         {
-          "id": "shoulders_8-12_b",
+          "id": "shoulders_12-15_a",
           "cat": "shoulders",
-          "range": "8-12",
-          "sets": 2,
-          "focus": "rear"
-        },
-        {
-          "id": "shoulders_8-12_c",
-          "cat": "shoulders",
-          "range": "8-12",
+          "range": "12-15",
           "sets": 2,
           "focus": "lateral"
         },
         {
-          "id": "chest_6-10_a",
+          "id": "shoulders_12-15_b",
+          "cat": "shoulders",
+          "range": "12-15",
+          "sets": 2,
+          "focus": "rear"
+        },
+        {
+          "id": "chest_8-12_a",
           "cat": "chest",
-          "range": "6-10",
+          "range": "8-12",
           "sets": 2
         },
         {
@@ -421,12 +467,6 @@
           "cat": "abs",
           "range": "8-12",
           "sets": 2
-        },
-        {
-          "id": "abs_8-12_d",
-          "cat": "abs",
-          "range": "8-12",
-          "sets": 2
         }
       ]
     },
@@ -442,7 +482,7 @@
       "accent": "lilac",
       "priorities": {
         "gmax": 3,
-        "gmed": 3,
+        "gmed": 2,
         "gquad": 2,
         "ghams": 2,
         "hams": 2,
@@ -456,76 +496,127 @@
         "calves": 0,
         "abs": 2
       },
-      "categoryOrder": [
-        "gmax",
-        "gmed",
-        "gquad",
-        "ghams",
-        "hams",
-        "quads",
-        "add",
-        "back",
-        "shoulders",
-        "chest",
-        "biceps",
-        "triceps",
-        "calves",
-        "abs"
-      ],
+      "mainCategory": "gmax",
+      "targets": {
+        "advanced": {
+          "gluteMax": [
+            11,
+            16
+          ],
+          "gluteMed": [
+            4,
+            8
+          ],
+          "shoulders": [
+            9,
+            14
+          ],
+          "quads": [
+            5,
+            10
+          ],
+          "hams": [
+            5,
+            10
+          ],
+          "back": [
+            6,
+            10
+          ],
+          "abs": [
+            2,
+            6
+          ],
+          "adductors": [
+            0,
+            4
+          ],
+          "chest": [
+            2,
+            5
+          ],
+          "biceps": [
+            3,
+            7
+          ],
+          "triceps": [
+            1,
+            5
+          ],
+          "calves": [
+            0,
+            0
+          ]
+        },
+        "beginner": {
+          "gluteMax": [
+            6,
+            10
+          ],
+          "gluteMed": [
+            2,
+            6
+          ],
+          "shoulders": [
+            4,
+            8
+          ],
+          "quads": [
+            3,
+            6
+          ],
+          "hams": [
+            3,
+            6
+          ],
+          "back": [
+            3,
+            6
+          ],
+          "abs": [
+            0,
+            4
+          ],
+          "adductors": [
+            0,
+            3
+          ],
+          "chest": [
+            0,
+            4
+          ],
+          "biceps": [
+            1,
+            4
+          ],
+          "triceps": [
+            0,
+            3
+          ],
+          "calves": [
+            0,
+            0
+          ]
+        }
+      },
       "slots": [
         {
-          "id": "gmax_4-8_a",
+          "id": "gmax_6-8_a",
           "cat": "gmax",
-          "range": "4-8",
-          "sets": 3
-        },
-        {
-          "id": "gmax_6-10_a",
-          "cat": "gmax",
-          "range": "6-10",
+          "range": "6-8",
           "sets": 3
         },
         {
           "id": "gmax_8-12_a",
           "cat": "gmax",
           "range": "8-12",
-          "sets": 2
+          "sets": 3
         },
         {
-          "id": "gmax_8-12_b",
+          "id": "gmax_12-15_a",
           "cat": "gmax",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmax_8-12_c",
-          "cat": "gmax",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_a",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_b",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_8-12_c",
-          "cat": "gmed",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "gmed_12-15_a",
-          "cat": "gmed",
           "range": "12-15",
-          "sets": 2,
+          "sets": 3,
           "focus": "pump"
         },
         {
@@ -547,10 +638,22 @@
           "sets": 3
         },
         {
-          "id": "ghams_8-12_a",
-          "cat": "ghams",
+          "id": "gmed_8-12_a",
+          "cat": "gmed",
           "range": "8-12",
-          "sets": 3
+          "sets": 2
+        },
+        {
+          "id": "gmed_12-15_a",
+          "cat": "gmed",
+          "range": "12-15",
+          "sets": 2
+        },
+        {
+          "id": "gmed_12-15_b",
+          "cat": "gmed",
+          "range": "12-15",
+          "sets": 2
         },
         {
           "id": "hams_8-12_a",
@@ -565,18 +668,6 @@
           "sets": 3
         },
         {
-          "id": "add_8-12_a",
-          "cat": "add",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "add_8-12_b",
-          "cat": "add",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
           "id": "back_6-10_a",
           "cat": "back",
           "range": "6-10",
@@ -587,43 +678,15 @@
           "id": "back_8-12_a",
           "cat": "back",
           "range": "8-12",
-          "sets": 2,
-          "focus": "vertical"
-        },
-        {
-          "id": "back_8-12_b",
-          "cat": "back",
-          "range": "8-12",
-          "sets": 2,
-          "focus": "horizontal"
-        },
-        {
-          "id": "back_8-12_c",
-          "cat": "back",
-          "range": "8-12",
-          "sets": 2,
+          "sets": 3,
           "focus": "horizontal"
         },
         {
           "id": "shoulders_8-12_a",
           "cat": "shoulders",
           "range": "8-12",
-          "sets": 3,
+          "sets": 4,
           "focus": "lateral"
-        },
-        {
-          "id": "shoulders_12-15_a",
-          "cat": "shoulders",
-          "range": "12-15",
-          "sets": 2,
-          "focus": "lateral"
-        },
-        {
-          "id": "shoulders_8-12_b",
-          "cat": "shoulders",
-          "range": "8-12",
-          "sets": 2,
-          "focus": "rear"
         },
         {
           "id": "shoulders_8-12_c",
@@ -631,6 +694,20 @@
           "range": "8-12",
           "sets": 2,
           "focus": "lateral"
+        },
+        {
+          "id": "shoulders_12-15_a",
+          "cat": "shoulders",
+          "range": "12-15",
+          "sets": 3,
+          "focus": "lateral"
+        },
+        {
+          "id": "shoulders_12-15_b",
+          "cat": "shoulders",
+          "range": "12-15",
+          "sets": 3,
+          "focus": "rear"
         },
         {
           "id": "chest_8-12_a",
@@ -696,23 +773,117 @@
         "calves": 1,
         "abs": 2
       },
-      "categoryOrder": [
-        "back",
-        "chest",
-        "shoulders",
-        "biceps",
-        "triceps",
-        "gquad",
-        "ghams",
-        "hams",
-        "quads",
-        "gmax",
-        "gmed",
-        "add",
-        "calves",
-        "abs"
-      ],
+      "mainCategory": "back",
+      "targets": {
+        "advanced": {
+          "back": [
+            12,
+            16
+          ],
+          "shoulders": [
+            9,
+            14
+          ],
+          "chest": [
+            8,
+            13
+          ],
+          "biceps": [
+            6,
+            10
+          ],
+          "triceps": [
+            5,
+            10
+          ],
+          "quads": [
+            5,
+            9
+          ],
+          "abs": [
+            2,
+            6
+          ],
+          "hams": [
+            3,
+            6
+          ],
+          "gluteMax": [
+            2,
+            7
+          ],
+          "calves": [
+            2,
+            6
+          ],
+          "gluteMed": [
+            0,
+            0
+          ],
+          "adductors": [
+            0,
+            0
+          ]
+        },
+        "beginner": {
+          "back": [
+            6,
+            10
+          ],
+          "shoulders": [
+            4,
+            8
+          ],
+          "chest": [
+            4,
+            8
+          ],
+          "biceps": [
+            3,
+            6
+          ],
+          "triceps": [
+            2,
+            6
+          ],
+          "quads": [
+            2,
+            6
+          ],
+          "abs": [
+            0,
+            4
+          ],
+          "hams": [
+            2,
+            4
+          ],
+          "gluteMax": [
+            1,
+            5
+          ],
+          "calves": [
+            0,
+            4
+          ],
+          "gluteMed": [
+            0,
+            0
+          ],
+          "adductors": [
+            0,
+            0
+          ]
+        }
+      },
       "slots": [
+        {
+          "id": "back_6-8_a",
+          "cat": "back",
+          "range": "6-8",
+          "sets": 3,
+          "focus": "horizontal"
+        },
         {
           "id": "back_6-10_a",
           "cat": "back",
@@ -731,29 +902,22 @@
           "id": "back_8-12_b",
           "cat": "back",
           "range": "8-12",
-          "sets": 2,
-          "focus": "vertical"
-        },
-        {
-          "id": "back_4-8_a",
-          "cat": "back",
-          "range": "4-8",
           "sets": 3,
           "focus": "horizontal"
         },
         {
-          "id": "back_6-10_b",
-          "cat": "back",
-          "range": "6-10",
-          "sets": 3,
-          "focus": "horizontal"
+          "id": "chest_6-8_a",
+          "cat": "chest",
+          "range": "6-8",
+          "sets": 4,
+          "focus": "press"
         },
         {
-          "id": "back_8-12_c",
-          "cat": "back",
+          "id": "chest_8-12_a",
+          "cat": "chest",
           "range": "8-12",
-          "sets": 2,
-          "focus": "horizontal"
+          "sets": 4,
+          "focus": "incline"
         },
         {
           "id": "shoulders_6-10_a",
@@ -766,7 +930,7 @@
           "id": "shoulders_8-12_a",
           "cat": "shoulders",
           "range": "8-12",
-          "sets": 3,
+          "sets": 4,
           "focus": "lateral"
         },
         {
@@ -777,57 +941,35 @@
           "focus": "lateral"
         },
         {
-          "id": "shoulders_12-15_c",
-          "cat": "shoulders",
-          "range": "12-15",
-          "sets": 2,
-          "focus": "lateral"
-        },
-        {
           "id": "shoulders_12-15_b",
           "cat": "shoulders",
           "range": "12-15",
-          "sets": 2,
+          "sets": 3,
           "focus": "rear"
         },
         {
-          "id": "chest_4-8_a",
-          "cat": "chest",
-          "range": "4-8",
-          "sets": 3,
-          "focus": "press"
-        },
-        {
-          "id": "chest_6-10_a",
-          "cat": "chest",
+          "id": "gquad_6-10_a",
+          "cat": "gquad",
           "range": "6-10",
-          "sets": 3,
-          "focus": "incline"
+          "sets": 3
         },
         {
-          "id": "chest_8-12_a",
-          "cat": "chest",
-          "range": "8-12",
-          "sets": 2,
-          "focus": "fly"
+          "id": "ghams_6-10_a",
+          "cat": "ghams",
+          "range": "6-10",
+          "sets": 3
         },
         {
-          "id": "chest_8-12_b",
-          "cat": "chest",
+          "id": "quads_8-12_a",
+          "cat": "quads",
           "range": "8-12",
-          "sets": 2
+          "sets": 3
         },
         {
           "id": "biceps_8-12_a",
           "cat": "biceps",
           "range": "8-12",
           "sets": 3
-        },
-        {
-          "id": "biceps_8-12_b",
-          "cat": "biceps",
-          "range": "8-12",
-          "sets": 2
         },
         {
           "id": "triceps_8-12_a",
@@ -841,42 +983,6 @@
           "cat": "triceps",
           "range": "8-12",
           "sets": 2
-        },
-        {
-          "id": "gquad_6-10_a",
-          "cat": "gquad",
-          "range": "6-10",
-          "sets": 3
-        },
-        {
-          "id": "gquad_8-12_a",
-          "cat": "gquad",
-          "range": "8-12",
-          "sets": 3
-        },
-        {
-          "id": "ghams_6-10_a",
-          "cat": "ghams",
-          "range": "6-10",
-          "sets": 3
-        },
-        {
-          "id": "hams_8-12_a",
-          "cat": "hams",
-          "range": "8-12",
-          "sets": 3
-        },
-        {
-          "id": "quads_8-12_a",
-          "cat": "quads",
-          "range": "8-12",
-          "sets": 3
-        },
-        {
-          "id": "gmax_8-12_a",
-          "cat": "gmax",
-          "range": "8-12",
-          "sets": 3
         },
         {
           "id": "calves_8-12_a",
@@ -898,12 +1004,6 @@
         },
         {
           "id": "abs_8-12_b",
-          "cat": "abs",
-          "range": "8-12",
-          "sets": 2
-        },
-        {
-          "id": "abs_8-12_c",
           "cat": "abs",
           "range": "8-12",
           "sets": 2

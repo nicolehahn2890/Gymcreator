@@ -84,7 +84,7 @@ export function ExercisePicker({ model, category, focus, goal, current, onPick, 
   );
 }
 
-function StarIcon() {
+export function StarIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
       <path d="M8 1.5l1.9 4.1 4.5.5-3.4 3 1 4.4L8 11.3l-4 2.2 1-4.4-3.4-3 4.5-.5z" fill="var(--gold)" stroke="var(--ink)" strokeWidth="1.2" strokeLinejoin="round" />

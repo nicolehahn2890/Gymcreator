@@ -16,8 +16,6 @@ export interface RowContext {
   isAssisted: (exerciseId: string) => boolean;
   /** Aus dem Zyklus davor uebernommene Uebung (carryOver), falls vorhanden. */
   carried: (slotId: string) => string | undefined;
-  /** Standard-Uebung der Zeile, wenn es keine Vorgeschichte gibt. */
-  defaultExercise: (slotId: string) => string;
 }
 
 export interface RowState {
@@ -52,7 +50,8 @@ export function rowState(ctx: RowContext, row: PlanRow, q: { cycle: number; week
   const at = { ...q, slotId: row.slotId };
   const raw = getEntry(ctx.index, q.cycle, q.week, row.slotId);
   const inherited = inheritExercise(ctx.index, at) ?? ctx.carried(row.slotId);
-  const exerciseId = raw ? raw.exerciseId : (inherited ?? ctx.defaultExercise(row.slotId));
+  // Keine Vorgabe: ohne eigene Wahl, Vorwoche oder Vorzyklus bleibt die Zeile leer
+  const exerciseId = raw ? raw.exerciseId : (inherited ?? '');
   const extraSets = raw ? raw.extraSets : inheritExtraSets(ctx.index, at);
   // Bereich und Basis-Saetze, mit denen die Woche trainiert wurde, stehen im Eintrag
   const repRange = raw?.repRange ?? row.repRange;

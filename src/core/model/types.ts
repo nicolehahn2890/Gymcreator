@@ -14,7 +14,8 @@ export type CategoryId = string;
 /** Wdh.-Bereich als "min-max" aus data/goals.json `ranges` (z. B. "8-12"). */
 export type RepRange = string;
 export type Priority = 0 | 1 | 2 | 3;
-export type Focus = 'vertical' | 'horizontal' | 'lateral' | 'rear' | 'press' | 'incline' | 'fly' | 'overhead' | 'pump';
+export const FOCI = ['vertical', 'horizontal', 'lateral', 'rear', 'press', 'incline', 'fly', 'overhead', 'pump'] as const;
+export type Focus = (typeof FOCI)[number];
 
 export interface Localized {
   de: string;
@@ -44,26 +45,34 @@ export interface GoalDef {
   /** Name eines Farb-Tokens (z. B. "pink" fuer var(--pink)). */
   accent: string;
   priorities: Record<CategoryId, Priority>;
-  categoryOrder: CategoryId[];
+  /** Hauptmuskelgruppe: darf zweimal am Tag vorkommen, alle anderen einmal. */
+  mainCategory: CategoryId;
+  /** Wochenziele je Muskel und Stufe; jeder Plan muss darin liegen. */
+  targets: Record<Level, MuscleTargets>;
   slots: SlotDef[];
 }
 
 export interface Limits {
-  warnSetsPerSession: number;
-  maxSetsPerSession: number;
   maxFractionalSetsPerMusclePerSession: number;
   maxSetsPerSlot: number;
   minFrequencyPrio3: number;
+  /** Zeilen je Kategorie und Tag (Hauptmuskelgruppe: maxSlotsMainCategoryPerDay). */
+  maxSlotsPerCategoryPerDay: number;
+  maxSlotsMainCategoryPerDay: number;
 }
 
 export interface LevelRules {
+  minExercisesPerSession: number;
+  maxExercisesPerSession: number;
+  maxSetsPerSession: number;
   /** Feste Satzzahl je Slot (ersetzt die Basis-Saetze aus Pool und Vorlage). */
   setsPerSlot?: number;
-  /** Bereiche, die ersetzt werden (z. B. "4-8" -> "6-10"). Die Slot-ID bleibt. */
+  /** Bereiche, die ersetzt werden (z. B. "6-8" -> "8-12"). Die Slot-ID bleibt. */
   rangeMap?: Record<RepRange, RepRange>;
-  /** Kategorien mit mindestens so vielen Slots in der Woche verlieren den letzten (Pool-Reihenfolge). */
-  dropLastSlotFromCategoriesWith?: number;
 }
+
+/** Wochenvolumen je Muskel (anteilig gezaehlt) als [min, max]. */
+export type MuscleTargets = Record<string, [number, number]>;
 
 export interface ProgressionRules {
   /** Wochen je Zyklus. */
@@ -94,7 +103,8 @@ export interface GoalsData {
   goals: Record<GoalId, GoalDef>;
 }
 
-export type TemplateSlotRef = string | { id: string; sets: number };
+/** Slot-ID oder Objekt mit abweichenden Saetzen; beginner: false = faellt fuer Einsteiger weg. */
+export type TemplateSlotRef = string | { id: string; sets?: number; beginner?: boolean };
 
 export interface TemplateDayDef {
   name: string;
@@ -165,7 +175,7 @@ export interface Exercise {
   focus: Focus[];
   /** Ziele, fuer die die Uebung eine Top-Wahl ist (Stern). */
   stars: GoalId[];
-  /** Geeignet fuer schwere Saetze im Bereich 4-8. */
+  /** Geeignet fuer schwere Saetze im schwersten Bereich (ranges[0]). */
   heavy: boolean;
   /** Last in der gedehnten Position (Stretch-Bias). */
   stretch: boolean;

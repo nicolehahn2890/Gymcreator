@@ -1,4 +1,4 @@
-// Hilfen fuer die Szenario-Tests: echte Apfel-Plaene (3/4 Tage), Eintraege kurz anlegen, Kontext bauen.
+// Hilfen fuer die Szenario-Tests: echte Apfel-Plaene (3/4/5 Tage), Eintraege kurz anlegen, Kontext bauen.
 import { buildPlan } from '../generator/buildPlan';
 import { exerciseData, planData } from '../model/data';
 import type { DaysPerWeek, Entry, Plan, PlanRow } from '../model/types';
@@ -56,6 +56,5 @@ export function context(entries: Entry[], carried: Record<string, string> = {}):
     rules: planData.goals.progression,
     isAssisted: (id) => assisted.has(id),
     carried: (slotId) => carried[slotId],
-    defaultExercise: () => '',
   };
 }

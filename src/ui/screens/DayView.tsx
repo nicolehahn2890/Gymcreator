@@ -1,21 +1,24 @@
-import { rowState } from '../../core/progression/state';
-import { fmt, range, text } from '../../i18n';
-import { Check } from '../components/Check';
-import { StatusPill } from '../components/StatusPill';
-import { exerciseName, planFor, rowContext, type AppModel } from '../state/model';
+import { RestTimer } from '../components/RestTimer';
+import { planFor, rowContext, type AppModel } from '../state/model';
 import type { Position } from '../state/actions';
+import { text } from '../../i18n';
+import { ExerciseItem } from './ExerciseItem';
 import './Workout.css';
 
 interface Props {
   model: AppModel;
   pos: Position;
   day: number;
+  /** Aufgeklappte Uebung (Slot-ID) oder null. */
+  openSlot: string | null;
+  onOpenSlot: (slotId: string | null) => void;
+  restEndsAt: number | null;
+  onRest: (endsAt: number | null) => void;
   onBack: () => void;
-  onOpenExercise: (slotId: string) => void;
 }
 
-/** Uebungsliste eines Trainingstags; Tipp auf eine Uebung oeffnet die Fokusansicht. */
-export function DayView({ model, pos, day, onBack, onOpenExercise }: Props) {
+/** Trainingstag: alle Uebungen untereinander, eine davon aufgeklappt zum Eintragen. */
+export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onRest, onBack }: Props) {
   const plan = planFor(model, pos.cycle, pos.week);
   const dayPlan = plan.dayPlans[day];
   if (!dayPlan) return null;
@@ -31,34 +34,26 @@ export function DayView({ model, pos, day, onBack, onOpenExercise }: Props) {
         <p className="next-focus">{dayPlan.focus}</p>
       </header>
       <ol className="exercise-list">
-        {dayPlan.rows.map((row) => {
-          const st = rowState(ctx, row, pos);
-          const ex = model.exercises.get(st.exerciseId);
+        {dayPlan.rows.map((row, i) => {
+          const next = dayPlan.rows[i + 1];
           return (
-            <li key={row.slotId}>
-              <button type="button" className="exercise-row" onClick={() => onOpenExercise(row.slotId)}>
-                <span className="exercise-row-main">
-                  <span className="exercise-row-name">{st.exerciseId ? exerciseName(model, st.exerciseId) : text.workout.chooseExercise}</span>
-                  <span className="muted">
-                    {ex?.timed
-                      ? fmt(text.workout.setsLineTimed, { sets: st.totalSets })
-                      : fmt(text.workout.setsLine, { sets: st.totalSets, range: range(st.repRange) })}
-                  </span>
-                </span>
-                <span className="exercise-row-side">
-                  {st.once && <span className="pill pill-dashed">{text.workout.once}</span>}
-                  {st.status && <StatusPill status={st.status} assisted={st.assisted} />}
-                  {st.done && (
-                    <span className="done-dot" aria-label={text.workout.done}>
-                      <Check />
-                    </span>
-                  )}
-                </span>
-              </button>
-            </li>
+            <ExerciseItem
+              key={row.slotId}
+              model={model}
+              plan={plan}
+              ctx={ctx}
+              pos={pos}
+              day={day}
+              row={row}
+              open={openSlot === row.slotId}
+              onToggle={() => onOpenSlot(openSlot === row.slotId ? null : row.slotId)}
+              onNext={next ? () => onOpenSlot(next.slotId) : null}
+              onRest={onRest}
+            />
           );
         })}
       </ol>
+      {restEndsAt !== null && <RestTimer endsAt={restEndsAt} onChange={onRest} />}
     </main>
   );
 }

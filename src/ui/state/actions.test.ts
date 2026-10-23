@@ -5,13 +5,13 @@ import { withSetValue } from './actions';
 const base: Entry = {
   cycle: 1,
   week: 1,
-  slotId: 'gmax_4-8_a',
+  slotId: 'gmax_6-8_a',
   day: 0,
   exerciseId: 'hip_thrust_barbell',
   sets: [],
   extraSets: 0,
   category: 'gmax',
-  repRange: '4-8',
+  repRange: '6-8',
   baseSets: 3,
 };
 

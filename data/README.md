@@ -1,27 +1,30 @@
 # data/ – die einzige Stelle mit Trainingswissen
 
+Begründung aller Zahlen: `docs/wissenschaft.md`.
+
 | Datei | Inhalt |
 |---|---|
-| `goals.json` | Kategorien (Peach-Kategorien + Bizeps/Trizeps/Waden) mit Farbe und anteiliger Muskelzählung; Grenzen (`limits`); Regeln je Erfahrungsstufe (`levels`); je Ziel: Prioritäten 0–3, `categoryOrder` (Reihenfolge innerhalb eines Tages) und der **Slot-Pool** (stabile IDs, Kategorie, Wdh.-Bereich, Basis-Sätze, optionaler `focus`-Hinweis für Sterne/Dropdown) |
-| `templates.json` | Je Ziel und Tagesanzahl (3/4/5) die Tage mit Name, Fokuszeile und Slot-IDs. Ein Eintrag darf `{ "id", "sets" }` sein, wenn der Slot in dieser Wochenart andere Basis-Sätze hat (Apfel: Glute Med 3 statt 2 bei 3 Tagen). Slots, die in einer Wochenart fehlen, **pausieren** dort |
-| `exercises.json` | Übungsbibliothek v1 (180 Übungen). Je Übung: `id`, `name {de,en}`, `category`, `secondary[]`, `equipment[]` (aus der Liste `equipment`), `pattern` (aus `patterns`), `focus[]` (passt zu Slot-Hinweisen), `stars[]` (Ziele, für die sie Top-Wahl ist), `heavy` (geeignet für 4–8), `stretch`, `unilateral`, `assisted` (Gegengewicht: weniger = schwerer), `timed` (Sekunden statt Wdh.), `tip {de}` im Format `Einstellung: …\nAusführung: …`. Reihenfolge je Kategorie = Vorzugsreihenfolge. Englische Tipps und der "Warum"-Satz folgen in Phase 2 |
+| `goals.json` | Wdh.-Bereiche (`ranges`, schwerster zuerst); Kategorien (Peach-Kategorien + Bizeps/Trizeps/Waden) mit Farbe und anteiliger Muskelzählung; Grenzen (`limits`); Regeln je Erfahrungsstufe (`levels`); Progression und Pausen; je Ziel: Prioritäten 0–3, `mainCategory` (Hauptmuskelgruppe), `targets` (Wochenziel je Muskel und Stufe, anteilig, `[min, max]`) und der **Slot-Pool** (stabile IDs, Kategorie, Wdh.-Bereich, Basis-Sätze, optionaler `focus`-Hinweis) |
+| `templates.json` | Je Ziel und Tagesanzahl (3/4/5) die Tage mit Name, Fokuszeile und Slot-IDs **in Trainingsreihenfolge**. Ein Eintrag darf ein Objekt sein: `sets` = andere Basis-Sätze in dieser Wochenart, `beginner: false` = fällt für Einsteiger weg. Slots, die in einer Wochenart fehlen, **pausieren** dort |
+| `exercises.json` | Übungsbibliothek (200 Übungen, jede Kategorie mindestens 7). Je Übung: `id`, `name {de,en}`, `category`, `secondary[]`, `equipment[]`, `pattern`, `focus[]` (passt zu Slot-Hinweisen, sortiert die Auswahl), `stars[]` (Ziele, für die sie Top-Wahl ist), `heavy` (geeignet für 6–8), `stretch`, `unilateral`, `assisted` (Gegengewicht: weniger = schwerer), `timed` (Sekunden statt Wdh.), `tip {de}` im Format `Einstellung: …\nAusführung: …`. Reihenfolge je Kategorie = Vorzugsreihenfolge |
 
 ## Regeln
 
-- **Slot-IDs sind stabil und nie Positionen.** Einträge werden unter `cycle:week:slotId` gespeichert. Eine neue Zeile im Plan verschiebt nichts (Lehre aus Peach-Regel 11).
-- **Ändert sich der Wdh.-Bereich oder die Kategorie eines Slots, bekommt er eine neue ID.** Nur die Satzzahl darf sich ändern (sie steht im Eintrag als `baseSets`). Ausnahme mit Absicht: die Einsteiger-Stufe ersetzt 4–8 durch 6–10, die Slot-ID bleibt (der Bereich steht im Eintrag, der Vorwert sucht über Übung + Bereich).
-- **Gleiche Slot-ID in 3/4/5 Tagen = dieselbe Zeile.** Übung, Zusatzsätze und Verlauf wandern automatisch mit (ersetzt Peachs Partnerzeilen `t:[…]`).
-- **Reihenfolge innerhalb eines Tages wird vom Generator sortiert:** `categoryOrder` des Ziels, dann schwerer Bereich zuerst (4-8 < 6-10 < 8-12 < 12-15), dann Reihenfolge im Template. Die Listen in `templates.json` sind nur Zugehörigkeit.
-- **Einsteiger (`levels.beginner`):** alle Slots 2 Sätze, 4–8 wird 6–10, Kategorien mit mindestens 3 Slots in der Woche verlieren den letzten Slot in Pool-Reihenfolge – aber nur von einem Tag, an dem die Kategorie mehrfach vorkommt, damit die Häufigkeit pro Woche gleich bleibt.
+- **Die Übung wählt die Person.** Eine Planzeile ist eine Muskelgruppe mit Sätzen und Bereich; die Auswahl zeigt alle Übungen der Kategorie, Sterne und vorhandene Ausstattung zuerst.
+- **Slot-IDs sind stabil und nie Positionen.** Format `kategorie_bereich_buchstabe` (z. B. `gmax_6-8_a`). Einträge werden unter `cycle:week:slotId` gespeichert.
+- **Ändert sich der Wdh.-Bereich oder die Kategorie eines Slots, bekommt er eine neue ID.** Nur die Satzzahl darf sich ändern (sie steht im Eintrag als `baseSets`). Ausnahme mit Absicht: die Einsteiger-Stufe ersetzt 6–8 und 6–10 durch 8–12, die Slot-ID bleibt (der Bereich steht im Eintrag, der Vorwert sucht über Übung + Bereich).
+- **Gleiche Slot-ID in 3/4/5 Tagen = dieselbe Zeile.** Übung, Zusatzsätze und Verlauf wandern automatisch mit.
+- **Reihenfolge innerhalb eines Tages = Reihenfolge in `templates.json`.** Schwere Grundübung zuerst, Isolation danach, Bauch zuletzt.
+- **Einsteiger (`levels.beginner`):** 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
 - **Übungs-IDs sind stabil.** Nie umbenennen oder neu vergeben; eine geänderte Übung bekommt eine neue ID.
-- **Prüfen:** `node scripts/verify-plan-data.mjs` erzeugt mit dem echten Generator (`src/core/generator/`) alle Ziele × Stufen × 3/4/5 Tage und prüft Sätze je Einheit, anteilige Sätze je Muskel und Einheit ≤ 11, Frequenz Prio 3 ≥ 2×, Prio 0 ohne Sätze, Apfel 4/3 Tage = Nicoles Plantabellen (`tests/fixtures/peach-p4.json`, `peach-p3.json`) und die Übungsbibliothek (Kategorien, Ausstattung, Tipp-Format, keine Herstellernamen, jeder Slot hat ≥ 3 passende Übungen und eine Stern-Übung, 4–8-Slots eine schwere Stern-Übung). Liegt die Trainingsapp read-only daneben, wird zusätzlich geprüft, dass die Fixtures noch P4/P3 entsprechen. Am Ende muss `ALLE PRUEFUNGEN GRUEN` stehen.
+- **Prüfen:** `node scripts/verify-plan-data.mjs` erzeugt mit dem echten Generator (`src/core/generator/`) alle Ziele × Stufen × 3/4/5 Tage und prüft: Übungen und Sätze je Einheit (Stufe), Zeilen je Kategorie und Tag (Hauptmuskelgruppe 2, sonst 1), anteilige Sätze je Muskel und Einheit ≤ 10, **Wochenziel je Muskel**, Frequenz Prio 3 ≥ 2×, Prio 0 nicht im Plan, Slot-IDs passend zu Kategorie und Bereich; dazu die Übungsbibliothek (Kategorien, Ausstattung, Tipp-Format, keine Herstellernamen, jeder Slot hat ≥ 3 passende Übungen und eine Stern-Übung, 6–8-Slots eine schwere Stern-Übung). Am Ende muss `ALLE PRUEFUNGEN GRUEN` stehen.
 
-## Verifizierter Stand (22.10.2026)
+## Verifizierter Stand (23.10.2026)
 
-| Ziel | Pool | 3 Tage | 4 Tage | 5 Tage | Einsteiger 3/4/5 |
-|---|---|---|---|---|---|
-| Apfel | 32 Slots / 72 Sätze | 62 (23/20/19) | 70 (18/18/19/15) = P4 | 72 (16/14/15/13/14) | 48 / 54 / 56 |
-| Sanduhr | 31 / 73 | 62 (20/21/21) | 71 (17/17/17/20) | 73 (14/13/16/12/18) | 46 / 52 / 54 |
-| V-Form | 30 / 77 | 61 (21/19/21) | 72 (16/19/17/20) | 77 (14/14/19/14/16) | 40 / 50 / 54 |
+| Ziel | Fortgeschritten 3 / 4 / 5 Tage | Sätze je Einheit | Einsteiger 3 / 4 / 5 Tage |
+|---|---|---|---|
+| Apfel | 50 / 55 / 55 | 9–18 | 30 / 32 / 32 |
+| Sanduhr | 48 / 56 / 55 | 9–17 | 28 / 30 / 32 |
+| V-Form | 51 / 56 / 57 | 10–18 | 24 / 26 / 30 |
 
-Warnungen (bewusst): 3-Tage-Einheiten mit 21–23 Sätzen (Apfel Tag A 23 ist Nicoles eigener Peach-Plan). Apfel 5 Tage hat Glute Max 17 statt 15 (Pump-Slot `gmax_12-15_a` am leichten Tag E). Einsteiger-Volumen liegt bei 0,66–0,77× des Fortgeschrittenen-Plans.
+Wochenvolumen je Muskel: Tabellen in `docs/wissenschaft.md`.
