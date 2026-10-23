@@ -61,11 +61,12 @@ test('Plan: Uebungen der Woche bei Bedarf aufklappen, bleiben aufgeklappt bis zu
 test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt Vorwoche, Hinweis und Bewertung', async ({ page }) => {
   await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
-  // erste Uebung ist aufgeklappt, aber ohne Vorgabe
+  // erste Uebung ohne Vorgabe: Die Kopfzeile oeffnet direkt die Auswahl, kein zweiter Knopf
   const first = page.locator('.exercise-item').first();
-  await expect(first.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'true');
-  await expect(first.locator('.exercise-row')).toContainText('Übung wählen');
-  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await expect(first.locator('.exercise-row-name')).toHaveText('Übung wählen');
+  await expect(first.locator('.exercise-row')).toHaveAttribute('aria-haspopup', 'dialog');
+  await expect(first.getByText('Übung wählen')).toHaveCount(1);
+  await first.locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
   await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Langhantel)');
 
@@ -108,7 +109,7 @@ test('Uebung tauschen ab Woche 2 fragt "nur diese Woche" oder "ab jetzt"', async
   await onboard(page, 'Sanduhr', 3);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
-  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await first.locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
   await first.locator('.set-row input').nth(0).fill('80');
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
@@ -126,7 +127,7 @@ test('Satz entfernen loescht den Wert, Trainingstage in den Einstellungen gelten
   await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
-  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await first.locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
   await first.getByRole('button', { name: 'Satz hinzufügen' }).click();
   await expect(first.locator('.set-row input')).toHaveCount(8);
@@ -150,7 +151,6 @@ test('Einstellungen: fielen eingetragene Uebungen weg, gelten neue Tage ab naech
   // Tag B, 2. Zeile (Brust) gibt es im 3-Tage-Plan nicht
   const chest = page.locator('.exercise-item').nth(1);
   await expect(chest.locator('.exercise-row-cat')).toContainText('Brust');
-  await chest.locator('.exercise-row').click();
   await pickExercise(page, chest, 'Brustpresse (Maschine)');
   await fillSets(chest, '20', '10');
 
@@ -176,7 +176,6 @@ test('Einstellungen: fielen eingetragene Uebungen weg, gelten neue Tage ab naech
   await page.locator('.day-row').first().click();
   const abs = page.locator('.exercise-item').nth(5);
   await expect(abs.locator('.exercise-row-cat')).toHaveText('Bauch');
-  await abs.locator('.exercise-row').click();
   await pickExercise(page, abs, 'Unterarmstütz');
   await expect(abs.locator('.exercise-row')).toContainText('2 Sätze halten');
   await page.getByRole('button', { name: 'Zurück' }).click();
@@ -245,7 +244,7 @@ test('startet offline, sobald der Service Worker aktiv ist', async ({ page, cont
 });
 
 async function pickExercise(page: Page, item: Locator, name: string) {
-  await item.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await item.locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name }).click();
 }
 
@@ -283,7 +282,6 @@ test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstelle
   // Tag D, 2. Zeile (Glute Max) gibt es im 3-Tage-Plan nicht
   const dayD = page.locator('.exercise-item').nth(1);
   await expect(dayD.locator('.exercise-row-cat')).toHaveText('Glute Max');
-  await dayD.locator('.exercise-row').click();
   await pickExercise(page, dayD, 'Glute Bridge (Langhantel)');
   await fillSets(dayD, '70', '10');
   await page.getByRole('button', { name: 'Zurück' }).click();
@@ -299,8 +297,8 @@ test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstelle
   await page.getByRole('button', { name: '4 Tage' }).click();
   await expect(page.locator('.day-row')).toHaveCount(4);
   await page.locator('.day-row').nth(3).click();
-  // die erledigte Uebung ist zu, aufgeklappt ist die erste offene
-  await expect(page.locator('.exercise-item').first().locator('.exercise-row')).toHaveAttribute('aria-expanded', 'true');
+  // die erledigte Uebung ist zu; die erste offene ist leer und hat nichts zum Aufklappen
+  await expect(page.locator('.exercise-item').first().locator('.exercise-row-name')).toHaveText('Übung wählen');
   const done = page.locator('.exercise-item').nth(1);
   await expect(done.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'false');
   await done.locator('.exercise-row').click();
@@ -316,7 +314,6 @@ test('Eigene Uebung ueber zwei Wochen, langer Name ohne Ueberlauf, Fortschritt r
   await pickExercise(page, first, 'Hip Thrust (Langhantel)');
   await fillSets(first, '100', '8');
   await second.locator('.exercise-row').click();
-  await second.getByRole('button', { name: 'Übung wählen', exact: true }).click();
   await page.getByLabel('Eigene Übung anlegen').fill(name);
   await page.getByRole('button', { name: 'Anlegen', exact: true }).click();
   await expect(second.locator('.exercise-row-name')).toHaveText(name);
@@ -393,7 +390,7 @@ test('Plan neu einrichten: aus den Einstellungen, Abbrechen aendert nichts, Verl
   await onboard(page, 'Apfel', 4);
   await page.getByRole('button', { name: 'Training starten' }).click();
   const first = page.locator('.exercise-item').first();
-  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await first.locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
   await fillSets(first, '100', '8');
 
@@ -444,14 +441,15 @@ test('Kurz-Modus "30-45 Min.": 4 Uebungen fuers Ziel mit allen Saetzen und norma
   await expect(skipped.locator('.exercise-row-cat')).toHaveText(['Rücken · Ziehen von oben', 'Schultern · Hintere Schulter', 'Bauch']);
 
   // normale Pause, nichts heimlich gekuerzt
-  await main.first().getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await main.first().locator('.exercise-row').click();
   await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
   await expect(main.first().getByRole('button', { name: 'Pause starten (3:00)' })).toBeVisible();
 
   // eine ausgelassene Uebung laesst sich trotzdem eintragen
   const extra = skipped.locator('.exercise-item').first();
   await extra.locator('.exercise-row').click();
-  await expect(extra.getByRole('button', { name: 'Übung wählen', exact: true })).toBeVisible();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.keyboard.press('Escape');
 
   // Plan zeigt den Kurz-Modus am Tag A und die ausgelassenen Uebungen
   await showPlan(page);

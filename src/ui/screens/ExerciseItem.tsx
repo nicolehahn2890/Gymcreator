@@ -88,6 +88,8 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
     if (decision === 'unchanged') return;
     if (decision === 'ask') setPending(next);
     else edit((e) => applyExercise(e, next, false, st.inheritedExerciseId));
+    // Erste Wahl ueber die Kopfzeile: danach gleich aufklappen zum Eintragen
+    if (!st.exerciseId && next && !open) onToggle();
   };
 
   const confirm = (once: boolean) => {
@@ -111,9 +113,21 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
   const weightLabel = st.assisted ? t.assistedWeight : t.weight;
   const repLabel = timed ? t.seconds : t.reps;
 
+  // Ohne Uebung gibt es nichts aufzuklappen: Die Kopfzeile oeffnet direkt die Auswahl
+  const chosen = !!st.exerciseId;
+  const expanded = open && chosen;
+
   return (
-    <li className={`exercise-item${open ? ' open' : ''}${st.skipped ? ' skipped' : ''}`} style={{ '--cat': `var(--cat-${row.category})` } as CSSProperties}>
-      <button ref={headRef} type="button" className="exercise-row" aria-expanded={open} aria-controls={panelId} onClick={onToggle}>
+    <li className={`exercise-item${expanded ? ' open' : ''}${st.skipped ? ' skipped' : ''}`} style={{ '--cat': `var(--cat-${row.category})` } as CSSProperties}>
+      <button
+        ref={headRef}
+        type="button"
+        className="exercise-row"
+        aria-expanded={chosen ? open : undefined}
+        aria-controls={chosen ? panelId : undefined}
+        aria-haspopup={chosen ? undefined : 'dialog'}
+        onClick={chosen ? onToggle : () => setPicker(true)}
+      >
         <span className="exercise-row-top">
           <span className="exercise-row-cat">{slotLabel(row)}</span>
           <span className="exercise-row-side">
@@ -124,11 +138,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                 <Check />
               </span>
             )}
-            <Chevron open={open} />
+            {chosen && <Chevron open={open} />}
           </span>
         </span>
-        <span className={`exercise-row-name${st.exerciseId ? '' : ' empty'}`}>
-          {st.exerciseId ? exerciseName(model, st.exerciseId) : t.chooseExercise}
+        <span className={`exercise-row-name${chosen ? '' : ' empty'}`}>
+          {chosen ? exerciseName(model, st.exerciseId) : t.chooseExercise}
           {ex?.stars.includes(goal) && (
             <span className="star" aria-label={t.starred}>
               <StarIcon />
@@ -138,133 +152,125 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
         <span className="muted">{setsText(model, st)}</span>
       </button>
 
-      {open && (
+      {expanded && (
         <div className="exercise-panel" id={panelId}>
-          {!st.exerciseId ? (
-            <button type="button" className="btn btn-primary btn-block" onClick={() => setPicker(true)}>
-              {t.chooseExercise}
+          {(suggestion || showSource || st.assisted) && (
+            <div className="exercise-info">
+              {suggestion && <p className="suggestion">{suggestion}</p>}
+              {showSource && prev && (
+                <p className="muted">
+                  {fmt(t.source, { cycle: prev.cycle, week: prev.week, day: LETTERS[prev.day] ?? '' })}
+                  {st.previous?.orientation && ` \u00b7 ${fmt(t.orientation, { range: range(prev.repRange) })}`}
+                </p>
+              )}
+              {st.assisted && <p className="muted">{t.assistedHint}</p>}
+            </div>
+          )}
+
+          <div className={`sets${prev ? ' with-prev' : ''}`} role="group" aria-label={exerciseName(model, st.exerciseId)}>
+            <div className="set-row set-head" aria-hidden="true">
+              <span />
+              <span>{weightLabel}</span>
+              <span>{repLabel}</span>
+              {prev && <span>{lastWeek ? t.prevWeek : t.prevLast}</span>}
+              <span />
+            </div>
+            {Array.from({ length: st.totalSets }, (_, i) => {
+              const set = st.sets[i] ?? { w: '', r: null };
+              const prevSet = prev?.sets[i];
+              const zone = timed ? null : repZone(set.r, st.repRange);
+              const filled = set.r !== null && set.r > 0;
+              // Saetze ueber dem Ziel fuer "fertig" (targetSets) sind freiwillig
+              const optional = i >= st.targetSets;
+              const aria = (field: string) => fmt(optional ? t.optionalSetAria : t.setAria, { n: i + 1, field });
+              return (
+                <div key={i} className={`set-row${optional ? ' set-optional' : ''}`}>
+                  <span className="set-label">{i + 1}</span>
+                  <input
+                    className="input"
+                    inputMode="decimal"
+                    autoComplete="off"
+                    aria-label={aria(weightLabel)}
+                    value={set.w}
+                    onChange={(e) => setValue(i, 'w', e.target.value)}
+                  />
+                  <input
+                    className={`input${zone ? ` rep-${zone}` : ''}`}
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    autoComplete="off"
+                    aria-label={aria(repLabel)}
+                    value={set.r ?? ''}
+                    onChange={(e) => setValue(i, 'r', e.target.value)}
+                  />
+                  {prev && <span className="set-prev">{prevSet ? formatSet(prevSet.w, prevSet.r) : '\u2013'}</span>}
+                  <span className={`set-done${filled ? ' on' : ''}`} aria-hidden="true">
+                    {filled && <Check />}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="row set-actions">
+            <button type="button" className="btn btn-icon btn-add" aria-label={t.addSet} disabled={!canAdd} onClick={() => changeSets(1)}>
+              <PlusMinus sign="plus" />
             </button>
-          ) : (
-            <>
-              {(suggestion || showSource || st.assisted) && (
-                <div className="exercise-info">
-                  {suggestion && <p className="suggestion">{suggestion}</p>}
-                  {showSource && prev && (
-                    <p className="muted">
-                      {fmt(t.source, { cycle: prev.cycle, week: prev.week, day: LETTERS[prev.day] ?? '' })}
-                      {st.previous?.orientation && ` \u00b7 ${fmt(t.orientation, { range: range(prev.repRange) })}`}
-                    </p>
-                  )}
-                  {st.assisted && <p className="muted">{t.assistedHint}</p>}
-                </div>
-              )}
-
-              <div className={`sets${prev ? ' with-prev' : ''}`} role="group" aria-label={exerciseName(model, st.exerciseId)}>
-                <div className="set-row set-head" aria-hidden="true">
-                  <span />
-                  <span>{weightLabel}</span>
-                  <span>{repLabel}</span>
-                  {prev && <span>{lastWeek ? t.prevWeek : t.prevLast}</span>}
-                  <span />
-                </div>
-                {Array.from({ length: st.totalSets }, (_, i) => {
-                  const set = st.sets[i] ?? { w: '', r: null };
-                  const prevSet = prev?.sets[i];
-                  const zone = timed ? null : repZone(set.r, st.repRange);
-                  const filled = set.r !== null && set.r > 0;
-                  // Saetze ueber dem Ziel fuer "fertig" (targetSets) sind freiwillig
-                  const optional = i >= st.targetSets;
-                  const aria = (field: string) => fmt(optional ? t.optionalSetAria : t.setAria, { n: i + 1, field });
-                  return (
-                    <div key={i} className={`set-row${optional ? ' set-optional' : ''}`}>
-                      <span className="set-label">{i + 1}</span>
-                      <input
-                        className="input"
-                        inputMode="decimal"
-                        autoComplete="off"
-                        aria-label={aria(weightLabel)}
-                        value={set.w}
-                        onChange={(e) => setValue(i, 'w', e.target.value)}
-                      />
-                      <input
-                        className={`input${zone ? ` rep-${zone}` : ''}`}
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        autoComplete="off"
-                        aria-label={aria(repLabel)}
-                        value={set.r ?? ''}
-                        onChange={(e) => setValue(i, 'r', e.target.value)}
-                      />
-                      {prev && <span className="set-prev">{prevSet ? formatSet(prevSet.w, prevSet.r) : '\u2013'}</span>}
-                      <span className={`set-done${filled ? ' on' : ''}`} aria-hidden="true">
-                        {filled && <Check />}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="row set-actions">
-                <button type="button" className="btn btn-icon btn-add" aria-label={t.addSet} disabled={!canAdd} onClick={() => changeSets(1)}>
-                  <PlusMinus sign="plus" />
-                </button>
-                <button type="button" className="btn btn-icon" aria-label={t.removeSet} disabled={st.extraSets === 0} onClick={() => changeSets(-1)}>
-                  <PlusMinus sign="minus" />
-                </button>
-                {restSeconds > 0 && (
-                  <button type="button" className="btn btn-small" onClick={() => onRest(restUntil(restSeconds))}>
-                    {fmt(t.restStart, { time: mmss(restSeconds) })}
-                  </button>
-                )}
-              </div>
-              {st.autoExtra > 0 && (
-                <p className="muted">{fmt(st.autoExtra === 1 ? t.autoSet : t.autoSets, { weeks: planData.goals.progression.stagnationComparisons, sets: st.autoExtra })}</p>
-              )}
-
-              <button type="button" className="btn btn-block" onClick={() => setPicker(true)}>
-                {t.swap}
+            <button type="button" className="btn btn-icon" aria-label={t.removeSet} disabled={st.extraSets === 0} onClick={() => changeSets(-1)}>
+              <PlusMinus sign="minus" />
+            </button>
+            {restSeconds > 0 && (
+              <button type="button" className="btn btn-small" onClick={() => onRest(restUntil(restSeconds))}>
+                {fmt(t.restStart, { time: mmss(restSeconds) })}
               </button>
+            )}
+          </div>
+          {st.autoExtra > 0 && (
+            <p className="muted">{fmt(st.autoExtra === 1 ? t.autoSet : t.autoSets, { weeks: planData.goals.progression.stagnationComparisons, sets: st.autoExtra })}</p>
+          )}
 
-              {ex?.tip && (
-                <details className="details">
-                  <summary>{t.tip}</summary>
-                  <p className="tip-text">{ex.tip}</p>
-                </details>
-              )}
-              <details className="details" open={!!(note?.note || note?.setting)}>
-                <summary>
-                  {t.setting} / {t.note}
-                </summary>
-                <label className="field-label" htmlFor={`setting-${row.slotId}`}>
-                  {t.setting}
-                </label>
-                <input
-                  id={`setting-${row.slotId}`}
-                  className="input"
-                  placeholder={t.settingPlaceholder}
-                  defaultValue={note?.setting ?? ''}
-                  key={`s-${st.exerciseId}`}
-                  onBlur={(e) => void store.putNote({ exerciseId: st.exerciseId, setting: e.target.value, note: note?.note ?? '' })}
-                />
-                <label className="field-label note-label" htmlFor={`note-${row.slotId}`}>
-                  {t.note}
-                </label>
-                <textarea
-                  id={`note-${row.slotId}`}
-                  className="textarea"
-                  rows={3}
-                  defaultValue={note?.note ?? ''}
-                  key={`n-${st.exerciseId}`}
-                  onBlur={(e) => void store.putNote({ exerciseId: st.exerciseId, note: e.target.value, setting: note?.setting ?? '' })}
-                />
-              </details>
+          <button type="button" className="btn btn-block" onClick={() => setPicker(true)}>
+            {t.swap}
+          </button>
 
-              {onNext && (
-                <button type="button" className="btn btn-primary btn-block" onClick={onNext}>
-                  {t.next}
-                </button>
-              )}
-            </>
+          {ex?.tip && (
+            <details className="details">
+              <summary>{t.tip}</summary>
+              <p className="tip-text">{ex.tip}</p>
+            </details>
+          )}
+          <details className="details" open={!!(note?.note || note?.setting)}>
+            <summary>
+              {t.setting} / {t.note}
+            </summary>
+            <label className="field-label" htmlFor={`setting-${row.slotId}`}>
+              {t.setting}
+            </label>
+            <input
+              id={`setting-${row.slotId}`}
+              className="input"
+              placeholder={t.settingPlaceholder}
+              defaultValue={note?.setting ?? ''}
+              key={`s-${st.exerciseId}`}
+              onBlur={(e) => void store.putNote({ exerciseId: st.exerciseId, setting: e.target.value, note: note?.note ?? '' })}
+            />
+            <label className="field-label note-label" htmlFor={`note-${row.slotId}`}>
+              {t.note}
+            </label>
+            <textarea
+              id={`note-${row.slotId}`}
+              className="textarea"
+              rows={3}
+              defaultValue={note?.note ?? ''}
+              key={`n-${st.exerciseId}`}
+              onBlur={(e) => void store.putNote({ exerciseId: st.exerciseId, note: e.target.value, setting: note?.setting ?? '' })}
+            />
+          </details>
+
+          {onNext && (
+            <button type="button" className="btn btn-primary btn-block" onClick={onNext}>
+              {t.next}
+            </button>
           )}
         </div>
       )}
