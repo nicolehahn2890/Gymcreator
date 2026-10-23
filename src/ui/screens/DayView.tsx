@@ -3,7 +3,7 @@ import type { PlanRow } from '../../core/model/types';
 import { shortSets } from '../../core/progression/short';
 import { AppHeader } from '../components/AppHeader';
 import { RestTimer } from '../components/RestTimer';
-import { dayMinutes, dayRows, planFor, rowContext, shortContext, type AppModel } from '../state/model';
+import { dayMinutes, dayRows, planFor, rowContext, shortContext, weekVolume, type AppModel } from '../state/model';
 import { setShort, type Position } from '../state/actions';
 import { fmt, text } from '../../i18n';
 import { ExerciseItem } from './ExerciseItem';
@@ -32,8 +32,9 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
   const short = model.data.weeks.find((w) => w.cycle === pos.cycle && w.week === pos.week)?.short;
   const active = dayPlan.rows.map((r) => short?.[r.slotId]?.minutes).find((m) => m !== undefined) ?? null;
   const rows = dayRows(ctx, dayPlan, pos);
-  // die aktive Zeit bleibt sichtbar, auch wenn sie nicht mehr angeboten wird (z. B. 30 Min. aus der ersten Fassung)
-  const offered = planData.goals.short.minutes.filter((m) => shortSets(rows, shortContext, m) !== null);
+  // die aktive Zeit bleibt sichtbar, auch wenn sie nicht mehr angeboten wird (z. B. 60 Min. aus einer frueheren Fassung)
+  const weekly = weekVolume(model, pos, dayPlan);
+  const offered = planData.goals.short.minutes.filter((m) => shortSets(rows, shortContext(model), m, weekly) !== null);
   const options = [...new Set([...offered, ...(active !== null ? [active] : [])])].sort((a, b) => b - a);
   const choose = (minutes: number | null) => setShort(model, pos, dayPlan, minutes);
 

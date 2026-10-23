@@ -1,7 +1,7 @@
 // Prueft einen erzeugten Plan gegen data/goals.json: Grenzen (limits: Dauer jeder Einheit, Saetze je Muskel und
 // Einheit, Zeilen je Kategorie und Tag, Haeufigkeit und Mindestvolumen der Prio-3-Muskeln), Wochenziele je Muskel
 // (targets) und Prioritaeten. Eine feste Obergrenze fuer Saetze oder Uebungen je Einheit gibt es nicht (docs/wissenschaft.md).
-import type { Plan, PlanData, PlanIssue, PlanRow, Timing } from '../model/types';
+import type { CategoryDef, Plan, PlanData, PlanIssue, PlanRow, Timing } from '../model/types';
 
 export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
   const { limits, categories, ranges } = data.goals;
@@ -69,12 +69,15 @@ export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
 
 /** Anteilige Saetze je Muskel und Woche (direkt 1, Mitarbeit laut categories[].muscles). */
 export function weeklyMuscles(data: PlanData, plan: Plan): Record<string, number> {
+  return muscleSets(data.goals.categories, plan.dayPlans.flatMap((d) => d.rows));
+}
+
+/** Anteilige Saetze je Muskel fuer beliebige Zeilen, z. B. eine Woche mit Kurz-Modus an einzelnen Tagen. */
+export function muscleSets(categories: Record<string, Pick<CategoryDef, 'muscles'>>, rows: readonly Pick<PlanRow, 'category' | 'sets'>[]): Record<string, number> {
   const out: Record<string, number> = {};
-  for (const day of plan.dayPlans) {
-    for (const row of day.rows) {
-      for (const [muscle, share] of Object.entries(data.goals.categories[row.category]?.muscles ?? {})) {
-        out[muscle] = (out[muscle] ?? 0) + row.sets * share;
-      }
+  for (const row of rows) {
+    for (const [muscle, share] of Object.entries(categories[row.category]?.muscles ?? {})) {
+      out[muscle] = (out[muscle] ?? 0) + row.sets * share;
     }
   }
   return out;

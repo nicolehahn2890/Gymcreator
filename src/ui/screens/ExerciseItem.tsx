@@ -70,8 +70,9 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
     edit((e) => withSetValue(e, st.totalSets, i, { r }));
   };
 
-  // Pause nur auf Wunsch: Dauer je Wdh.-Bereich aus data/goals.json
-  const restSeconds = planData.goals.timing.restSeconds[st.repRange] ?? 0;
+  // Pause nur auf Wunsch: Dauer je Wdh.-Bereich aus data/goals.json, im Kurz-Modus die kuerzere
+  const rests = ctx.short?.[row.slotId] !== undefined ? planData.goals.short.restSeconds : planData.goals.timing.restSeconds;
+  const restSeconds = rests[st.repRange] ?? 0;
 
   const changeSets = (delta: number) => {
     const extra = Math.max(0, st.extraSets + delta);

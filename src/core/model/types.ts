@@ -88,9 +88,11 @@ export interface Timing {
   exerciseSeconds: Record<RepRange, number>;
 }
 
-/** Kurz-Modus: angebotene Zeiten und die Mindestdosis, unter der ein Kurz-Training nicht angeboten wird. */
+/** Kurz-Modus: angebotene Zeiten, Pausen und die Mindestdosis, unter der ein Kurz-Training nicht angeboten wird. */
 export interface ShortRules {
   minutes: number[];
+  /** Pausen im Kurz-Modus je Wdh.-Bereich in Sekunden (kuerzer als timing.restSeconds). */
+  restSeconds: Record<RepRange, number>;
   /** So viele Uebungen bleiben mindestens. */
   minExercises: number;
   /** So viele Saetze behaelt jede verbleibende Uebung mindestens. */

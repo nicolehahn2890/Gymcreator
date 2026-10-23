@@ -25,7 +25,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Namen | **Muskelgruppen behalten ihre Namen** (Glute Max, Glute & Quad …). Tage heißen nach Körperbereich („Tag A – Po & Beine“), darunter die Belastung („Schwere Grundübungen“) |
 | Training | Übungen **in der Tagesliste aufklappen**. Ab Woche 2 Vorwoche je Satz, Steigerungshinweis, Bewertung (assistiert: Weniger/Mehr Hilfe) |
 | Dauer | **Jede normale Einheit 60–90 Minuten** (Nicole, 23.10.), geprüft mit realistischer Zeitrechnung (Pausen 1:30–3 Min., Aufwärmsätze je Übung) |
-| Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / 60 / 45 Min. **Erst fallen Übungen nach Priorität weg, dann Sätze (min. 2), min. 3 Übungen**; Prio 3 bleibt immer. Zeiten nur, wenn sinnvoll (keine 30 Min.). Ausgelassene Übungen unten, trotzdem machbar. Gilt nur für den Tag dieser Woche |
+| Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / 45 Min. **Eine deutlich kürzere Fassung, keine Supersätze** (Nicole). Kürzere Pausen; **zuerst fällt weg, was die Woche am wenigsten braucht** (Lücke zum Wochenziel je Muskel); Prio 3 bleibt mit allen Sätzen; Sätze erst danach (min. 2); übrige Zeit holt eine Übung mit 2 Sätzen zurück; min. 3 Übungen. Ausgelassene Übungen unten, trotzdem machbar. Gilt nur für den Tag dieser Woche |
 | Pausentimer | **Nur per Knopf** "Pause starten" in der aufgeklappten Übung, startet nie von selbst |
 | Aufbau | Wochenwahl mit Pfeilen auf **Heute und Plan** (gleiches Raster). **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung vorausgefüllt erneut, Verlauf bleibt |
 
@@ -55,7 +55,7 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 
 Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Logo führt auf „Heute“. ACSM-Abgleich: jede Prio-3-Muskelgruppe mindestens 10 Sätze pro Woche.
 
-**Neuverteilung am 23.10.** (Nicoles Rückmeldung: Kurz-Modus mit 1 Satz je Übung ist Murks, normale Einheit soll 60–90 Minuten dauern): Mit realistischer Zeitrechnung (Pausen 1:30–3 Min. nach Singer 2024 und Schoenfeld 2016, Aufwärmsätze je Übung) lagen 47 von 57 Einheiten unter 60 Minuten. Alle Vorlagen sind neu verteilt, jede Einheit liegt jetzt bei 60–70 Minuten, das prüft `validatePlan`. Folgen: Bei 4 und 5 Tagen gibt es mehr Wochenvolumen (68–70 bzw. 84–86 Sätze). Der Kurz-Modus lässt zuerst unwichtige Übungen weg und bietet nur 60/45 Min. an. Neue Slots in allen drei Pools; vorhandene Slot-IDs sind unverändert. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+**Neuverteilung am 23.10.** (Nicoles Rückmeldung: Kurz-Modus mit 1 Satz je Übung ist Murks, normale Einheit soll 60–90 Minuten dauern): Mit realistischer Zeitrechnung (Pausen 1:30–3 Min. nach Singer 2024 und Schoenfeld 2016, Aufwärmsätze je Übung) lagen 47 von 57 Einheiten unter 60 Minuten. Alle Vorlagen sind neu verteilt, jede Einheit liegt jetzt bei 60–70 Minuten, das prüft `validatePlan`. Folgen: Bei 4 und 5 Tagen gibt es mehr Wochenvolumen (68–70 bzw. 84–86 Sätze). Der Kurz-Modus wurde danach noch einmal neu gefasst (siehe Abschnitt 1). Neue Slots in allen drei Pools; vorhandene Slot-IDs sind unverändert. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
 **Zweite Prüfung am 23.10.** (Nicoles Auftrag: kompletter Bug-Test, nichts Veraltetes, 18-Sätze-Grenze und Erfahrungsstufen ehrlich prüfen):
 - Die Grenze von 18 Sätzen / 7 Übungen je Einheit war geschätzt; für eine Satzgrenze je Einheit über alle Muskeln gibt es keine Studie. Ersetzt durch 60–90 Minuten plus höchstens 10 anteilige Sätze je Muskel und Einheit (Begründung und Quellen in `docs/wissenschaft.md`). Die Pläne erfüllen das unverändert.
@@ -75,9 +75,11 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
   - Der Logo-Knopf hieß für Screenreader anders als sein sichtbarer Text.
   - "Drei Wochen ohne Steigerung" stand fest im Text statt aus `data/goals.json`.
 
-**Tests:** 130 Vitest + 17 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
+**Kurz-Modus, dritte Fassung (23.10.)**: Nicoles Rückmeldung: "60 Min." bei einer 65-Minuten-Einheit (nur der Bauch fiel weg) ist kein Kurz-Modus, und Übungen sollen nicht stumpf gestrichen werden; keine Supersätze. Jetzt: eine Fassung mit 45 Min. für jede Einheit, kürzere Pausen, Wochenblick statt reiner Priorität, übrige Zeit holt Übungen zurück. Alle 36 Einheiten haben eine 45-Minuten-Fassung (35–45 Min.), Prio-3-Übungen behalten überall alle Sätze (Test).
+
+**Tests:** 134 Vitest + 17 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
 - Onboarding, freie Übungswahl, Pause nur per Knopf
-- Kurz-Modus mit ausgelassenen Übungen, Kurz-Zeiten je Einheit
+- Kurz-Modus (eine Fassung mit 45 Min., kürzere Pause im Timer, ausgelassene Übungen unten, gilt auch für 60-Minuten-Einheiten)
 - Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute
 - Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen
 - Trainingstage aus den Einstellungen (auch erst ab nächster Woche), Übung entfernen, Halteübung im Plan
