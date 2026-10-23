@@ -3,11 +3,11 @@
 // so nicht auseinanderlaufen.
 import type { Limits, PlanDay, PlanRow, ProgressionRules, RepRange, SetValue } from '../model/types';
 import { progressStatus, type ProgressStatus } from './compare';
-import { combinedWeight, getEntry, performanceOf, type EntryIndex } from './entries';
+import { combinedWeight, getEntry, hasValues, performanceOf, type EntryIndex } from './entries';
 import { findPrevious, type PreviousResult } from './history';
 import { inheritExercise, inheritExtraSets } from './inherit';
 import { autoExtraSets } from './rules';
-import { cmpWeight } from './weight';
+import { cmpWeight, parseWeight } from './weight';
 
 export interface RowContext {
   index: EntryIndex;
@@ -53,9 +53,11 @@ export function rowState(ctx: RowContext, row: PlanRow, q: { cycle: number; week
   // Keine Vorgabe: ohne eigene Wahl, Vorwoche oder Vorzyklus bleibt die Zeile leer
   const exerciseId = raw ? raw.exerciseId : (inherited ?? '');
   const extraSets = raw ? raw.extraSets : inheritExtraSets(ctx.index, at);
-  // Bereich und Basis-Saetze, mit denen die Woche trainiert wurde, stehen im Eintrag
-  const repRange = raw?.repRange ?? row.repRange;
-  const baseSets = raw?.baseSets ?? row.sets;
+  // Bereich und Basis-Saetze, mit denen die Woche trainiert wurde, stehen im Eintrag; ohne Werte gilt der Plan
+  // (z. B. Uebung gewaehlt, dann Woche von 4 auf 3 Tage umgestellt)
+  const trained = raw && hasValues(raw) ? raw : undefined;
+  const repRange = trained?.repRange ?? row.repRange;
+  const baseSets = trained?.baseSets ?? row.sets;
   const assisted = exerciseId ? ctx.isAssisted(exerciseId) : false;
   const previous = findPrevious(ctx.index, { ...at, exerciseId, repRange });
   const autoExtra = autoExtraSets(ctx.index, ctx.rules, ctx.isAssisted, at);
@@ -76,7 +78,9 @@ export function rowState(ctx: RowContext, row: PlanRow, q: { cycle: number; week
     const firstReps = prev.sets[0]?.r ?? null;
     const top = Number(repRange.split('-')[1]);
     const recent = prev.cycle === q.cycle && prev.week >= q.week - 1;
-    increaseDue = !!prevWeight && recent && firstReps !== null && firstReps >= top && !done && !(cmpWeight(weight, prevWeight, assisted) > 0);
+    // assistiert ohne Hilfe (0 kg) gibt es nichts mehr zu senken
+    const floor = assisted && parseWeight(prevWeight, true) <= 0;
+    increaseDue = !!prevWeight && !floor && recent && firstReps !== null && firstReps >= top && !done && !(cmpWeight(weight, prevWeight, assisted) > 0);
   }
 
   return {

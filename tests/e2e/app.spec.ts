@@ -9,7 +9,7 @@ async function onboard(page: Page, goal: string, level: string, days: number) {
   await page.getByRole('button', { name: new RegExp(`^${days} Tage`) }).click();
   await page.getByRole('button', { name: 'Weiter' }).click();
   await page.getByRole('button', { name: 'Weiter' }).click();
-  await expect(page.getByRole('heading', { name: 'Dein Plan steht' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Dein Wochenplan' })).toBeVisible();
   await page.getByRole('button', { name: 'Plan starten' }).click();
 }
 
@@ -91,6 +91,27 @@ test('Uebung tauschen ab Woche 2 fragt "nur diese Woche" oder "ab jetzt"', async
   await expect(first.locator('.exercise-row').getByText('nur diese Woche')).toBeVisible();
 });
 
+test('Satz entfernen loescht den Wert, Trainingstage in den Einstellungen gelten ab der aktuellen Woche', async ({ page }) => {
+  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const first = page.locator('.exercise-item').first();
+  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
+  await first.getByRole('button', { name: 'Satz hinzufügen' }).click();
+  await expect(first.locator('.set-row input')).toHaveCount(8);
+  await first.locator('.set-row input').nth(6).fill('120');
+  await first.getByRole('button', { name: 'Satz entfernen' }).click();
+  await first.getByRole('button', { name: 'Satz hinzufügen' }).click();
+  await expect(first.locator('.set-row input').nth(6)).toHaveValue('');
+
+  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
+  await page.locator('.segmented').nth(2).getByRole('button', { name: '3 Tage' }).click();
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(3);
+  await page.getByRole('button', { name: 'Nächste Woche' }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(3);
+});
+
 test('Backup: einspielen ersetzt die Daten nach Rueckfrage', async ({ page }) => {
   await onboard(page, 'V-Form', 'Einsteiger', 3);
   await page.getByRole('button', { name: 'Einstellungen' }).click();
@@ -137,6 +158,6 @@ test('startet offline, sobald der Service Worker aktiv ist', async ({ page, cont
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   await context.setOffline(true);
   await page.reload();
-  await expect(page.getByRole('heading', { name: 'Welche Form willst du trainieren?' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Welche Körperform ist dein Ziel?' })).toBeVisible();
   await context.setOffline(false);
 });

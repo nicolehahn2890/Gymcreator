@@ -1,6 +1,6 @@
 # Gymcreator – Konzept & Umsetzungsplan
 
-*Freigegeben am 22.10.2026. Lebendes Dokument: Entscheidungen in Abschnitt 7, Arbeitsstand in `UEBERGABE.md`.*
+*Freigegeben am 22.10.2026, zuletzt angepasst am 23.10.2026. Lebendes Dokument: Entscheidungen in Abschnitt 7, Arbeitsstand in `UEBERGABE.md`, Trainingswissen in `docs/wissenschaft.md`.*
 
 ## 1. Kontext
 
@@ -16,7 +16,7 @@
 
 **Repo:** `nicolehahn2890/Gymcreator`. Gearbeitet wird **direkt auf `main`** (Entscheidung 22.10.2026, wie bei Peach): keine Feature-Branches, keine Pull Requests. GitHub Pages deployt von `main`.
 
-**Peach-Quellcode:** Das Trainingsapp-Repo liegt read-only unter `/home/user/Trainingsapp` (geklont 22.10.2026, Stand `4ad13af`). Gelesen: SKILL.md komplett, `index.html` (1957 Zeilen: 199 CSS, 1664 JS, 96 Funktionen), Tests-README.
+**Peach-Quellcode:** Das Trainingsapp-Repo liegt, wenn angehängt, read-only unter `/home/user/Trainingsapp` (Stand beim Port: `4ad13af`).
 
 **Feste Regel: Trainingsapp wird NIE angefasst.** Kein Commit, kein Push, keine Datei-Änderung, kein Kopieren von Peach-Dateien ins Gymcreator-Repo. Nur lesen, zur Orientierung. Gearbeitet wird ausschließlich in `/home/user/Gymcreator`. Der Klon lebt nur in der jeweiligen Session; für Sessions, die am Port oder an der Übungsbibliothek arbeiten, das Repo wieder anhängen.
 
@@ -54,8 +54,8 @@
 | **Sanduhr** | trainierte Schultern, schmale Taille, runder Po, feste Beine | Glute Max + Med, seitliche Schulter | Lat, Hams, Quads, Bauch | Brust, Arme (indirekt) | keine schweren Obliques |
 | **Apfel** (dein Peach-Ziel) | schlanker trainierter Oberkörper, schmale Taille, großer Po, schlanke definierte Beine | Glute Max (sehr hoch), Glute Med, Hüftbeuge (Hams), Adduktoren | Rücken, Schultern, Bauch | Brust, Arme (indirekt), Quads po-betont | Bauch als Abschluss, leicht |
 
-**Innovation dahinter:** Ein Archetyp ist intern nur ein **Prioritäts-Profil** (jeder Muskel 0–3). Daraus rechnet der Generator die Sätze. Das macht zwei Dinge möglich, die drei starre Pläne nicht können:
-- **Feinjustierung** nach der Wahl über 3–4 Schieber ("mehr Schultern", "weniger Beine", "Arme dazu") → Plan wird neu gerechnet (Phase 2, Datenmodell ab Tag 1 so angelegt).
+**Umsetzung:** Ein Archetyp besteht aus Wochenzielen je Muskel (`targets`), einer Hauptmuskelgruppe und Prioritäten (0–3) in `data/goals.json` sowie den Tagesvorlagen in `data/templates.json`. Das Prüfskript stellt sicher, dass jeder Plan die Ziele trifft. Damit bleiben zwei Erweiterungen möglich:
+- **Feinjustierung** über 3–4 Schieber ("mehr Schultern", "weniger Beine", "Arme dazu"), Phase 2.
 - **Mischziele** ohne vierten Archetyp (z. B. Sanduhr mit mehr Lat).
 
 ### 3.2 Wissenschaftliche Grundlage (Regeln des Generators)
@@ -79,16 +79,18 @@ Je Ziel und Tagesanzahl eine Vorlage in `data/templates.json`. Die Vorlage legt 
 
 | Tage | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
-| 3 | A Drücken & Beine · B Ziehen & Schultern · C Oberkörper & Beinrückseite | A Po & Beine schwer · B Oberkörper & Po · C Po & Beinrückseite | A Po Kraft · B Po & Beinrückseite · C Po-Volumen & Oberkörper |
-| 4 | A Ziehen · B Beine & Schultern · C Drücken & Rücken · D Oberkörper-Volumen | A Po & Beine schwer · B Rücken & Schultern · C Po & Beinrückseite · D Po-Pump & Oberkörper | A Po Kraft · B Oberkörper & Po · C Po & Beinrückseite · D Po-Volumen & Beine |
-| 5 | Ziehen · Drücken · Beine & Bauch · Rücken & Schultern · Oberkörper-Volumen | Po schwer · Oberkörper · Beine & Po · Schultern & Rücken · Po-Pump & Schultern | Po Kraft · Oberkörper · Po & Beinrückseite · Beine & Po · Po-Pump & Rücken |
+| 3 | Drücken & Beine · Ziehen · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite | Po & Beine · Po & Beinrückseite · Po & Oberkörper |
+| 4 | Ziehen · Beine · Drücken · Oberkörper | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Oberkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte |
+| 5 | Ziehen · Drücken · Beine · Rücken & Schultern · Oberkörper | Po & Beinrückseite · Oberkörper · Po & Beine · Schultern & Rücken · Po & Hüfte | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Hüfte · Po & Rücken |
+
+**Tagesnamen** (23.10.2026): Der Name sagt den Körperbereich, die Zeile darunter die Belastung ("Schwere Grundübungen", "Mittlere Gewichte", "Leichtere Gewichte, mehr Wiederholungen", bei gemischten Tagen z. B. "Rücken schwer, Po leicht"). Die Muskelgruppen in den Zeilen behalten ihre Namen (Glute Max, Glute & Quad usw., Nicoles Entscheidung).
 
 ### 3.4 Flexible Woche (Verallgemeinerung der Peach-Partnerzeilen)
 
 In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handgepflegte Partnerzeilen `t:[Tag,Zeile]` (Regel 14: fehleranfällig). In Gymcreator:
 - Jeder Archetyp hat **einen Slot-Pool** (z. B. `gmax_6-8_a`, `gmax_8-12_b`, `back_6-10_a`, …). Ein Slot = Kategorie + Wdh.-Bereich + Basis-Sätze, optional ein Hinweis (`focus`, z. B. "Ziehen von oben").
 - Die 3-/4-/5-Tage-Vorlagen sind nur **Verteilungen desselben Pools** auf Tage. Slots, die in beiden Vorlagen liegen, teilen automatisch Übung, Zusatzsätze und Verlauf. Slots, die es in der kleineren Vorlage nicht gibt, pausieren in der Woche.
-- Wochen-Art pro Woche (`weekType: 3|4|5`), Vorauswahl = Vorwoche, Umstellen einer Woche mit Werten → Rückfrage (wie Peach).
+- Wochenart pro Woche (`Week.days`), Vorauswahl = Vorwoche, Umstellen einer Woche, in der dadurch Zeilen mit Werten wegfallen → Rückfrage (wie Peach).
 - Vorwert-Suche läuft über **Übung + Wdh.-Bereich** (Peach `exKey`), eigener Slot zuerst, laufende Woche zählt nie (Peach-Regel 07.10.).
 
 **Zusätzlich (neu, Phase 2):**
@@ -97,41 +99,42 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 
 ### 3.5 Übungsbibliothek
 
-- **Umfang v1:** ~150–180 Übungen, deutsch + englisch benannt, keine Herstellernamen. Peachs 142 Übungen sind die Basis, bereinigt (Panatta/Precor-Varianten → eine generische Übung) und ergänzt um Bizeps/Trizeps-Breite, Waden, Körpergewicht/Band-Varianten.
-- **Felder je Übung:** `id`, `name {de,en}`, `category` (Peach-Kategorien + Waden; Rücken intern in vertikal/horizontal getaggt), `secondary[]`, `equipment` (Langhantel, Kurzhantel, Kabel, Maschine, Multipresse, Körpergewicht, Band), `pattern` (Hüftbeuge, Kniebeuge, horizontal/vertikal Ziehen/Drücken, Abduktion, …), `stars: {vform, sanduhr, peach}` (0–1, der Stern), `stretch: true/false` (gedehnte Position), `unilateral`, `assisted` (Gegengewicht → Logik dreht, Peach `ASSIST`), `tip {de,en}` (Format "Einstellung: … / Ausführung: …", aber geräteneutral: "Drehachse auf Kniehöhe" statt "Hebel 4 bei Panatta"), `why {de,en}` (ein Satz: warum diese Übung für dieses Ziel).
-- **Mein Gym (Equipment-Profil):** Checkliste beim Onboarding (Kabelzug? Multipresse? Hip-Thrust-Maschine? nur Kurzhanteln?). In der Übungsauswahl stehen Übungen mit vorhandener Ausstattung oben, die übrigen darunter (23.10.2026: frei wählbar, nichts ausgeblendet). **Gym-Wechsel-Modus** (Phase 2): zweites Profil "Hotel-Gym", die App tauscht die Übungen der Woche automatisch auf verfügbares Equipment.
+- **Umfang:** 200 Übungen (jede Muskelgruppe mindestens 7), deutsch + englisch benannt, keine Herstellernamen. Peachs Übungsliste ist die Basis, bereinigt (Hersteller-Varianten → eine generische Übung) und ergänzt um Bizeps/Trizeps, Waden, Körpergewicht- und Band-Varianten.
+- **Freie Wahl** (23.10.2026): Jede Planzeile ist eine Muskelgruppe; die Person wählt die Übung selbst aus allen Übungen dieser Gruppe. Sterne markieren die besten fürs Ziel, Übungen mit vorhandener Ausstattung stehen oben.
+- **Felder je Übung:** siehe `data/README.md` (u. a. `stars` je Ziel, `heavy`, `stretch`, `assisted` für Gegengewicht, `timed` für Halteübungen, geräteneutraler Tipp "Einstellung: … / Ausführung: …"). Ein "Warum diese Übung?"-Satz ist Phase 2.
+- **Mein Studio (Ausstattung):** Checkliste beim Onboarding (Kabelzug? Multipresse? Hip-Thrust-Maschine? nur Kurzhanteln?). In der Übungsauswahl stehen Übungen mit vorhandener Ausstattung oben, die übrigen darunter (23.10.2026: frei wählbar, nichts ausgeblendet). **Gym-Wechsel-Modus** (Phase 2): zweites Profil "Hotel-Gym", die App tauscht die Übungen der Woche automatisch auf verfügbares Equipment.
 - **Eigene Übungen:** Name + Kategorie + Equipment + optional Notiz. Laufen in Progression, Vorwert und Übersicht wie jede andere Übung. Werden im Backup mitgesichert. Kein Stern, kein Tipp (außer eigener Notiz).
 - **Pro Übung Notiz + Einstellung** (Peach `tip__ex__`, `set__ex__`) bleiben, übungsbasiert über alle Pläne.
 
 ### 3.6 Progressionsmodell (aus Peach, plus Einsteiger-Hilfen)
 
 Übernommen 1:1 (als reine Funktionen mit Tests portiert):
-- Vorwert = letzter Wert dieser Übung im **gleichen Wdh.-Bereich** aus einer **früheren Woche**, eigener Slot zuerst; Herkunft sichtbar ("zuletzt: Z2 W5 · Tag A")
+- Vorwert = letzter Wert dieser Übung im **gleichen Wdh.-Bereich** aus einer **früheren Woche**, eigener Slot zuerst; je Satz in der Spalte "Vorwoche", stammt er nicht aus der direkten Vorwoche, heißt die Spalte "Zuletzt" und die Herkunft steht darüber ("Aus Zyklus 2, Woche 5, Tag A")
 - **Gewicht schlägt Reps**; Reps als Durchschnitt je ausgefülltem Satz; Gewichtsspannen "40-45" und Komma "27,5" (`parseWeight`, `cmpWeight` über beide Grenzen); assistierte Übungen umgekehrt
-- Steigerungsregel: Obergrenze im 1. Satz → "▲ Gewicht steigern"; verschwindet live bei mehr Gewicht oder fertiger Übung
+- Steigerungsregel: Obergrenze im 1. Satz → "Gewicht steigern: heute 42,5 kg" (assistiert: "Hilfe senken"); verschwindet live bei mehr Gewicht oder fertiger Übung
 - Auto-Zusatzsatz nach 3 stagnierenden Wochenvergleichen (max. 5 Sätze), +/- manuell; Vererbung von Übung (über Lücken) und Zusatzsätzen (nur direkte Vorwoche)
-- Übungswechsel ab Woche 2: "nur diese Woche" / "ab jetzt im Zyklus"
+- Übungswechsel ab Woche 2: "Nur diese Woche" / "Ab jetzt"
 - Woche 1 = kein Vergleich; Woche 12 normal; kein Deload-Zwang
-- Status-Farben: grün gesteigert / blau mehr Reps / gelb gleich / rot weniger
+- Bewertung als Text und Farbe: "Mehr Gewicht" / "Mehr Wiederholungen" / "Gleich" / "Weniger"; assistiert "Weniger Hilfe" / "Mehr Hilfe", Halteübungen "Länger gehalten"
 
 Neu für eine breite Zielgruppe:
-- **Konkreter Vorschlag statt nur Badge:** "Letztes Mal 40 kg × 10/10/9 → heute 42,5 kg". Schrittweite je Equipment (Kurzhantel 2 kg, Langhantel 2,5 kg, Maschine "eine Stufe", Kabel 2,5 kg) – im Profil änderbar.
+- **Konkreter Vorschlag statt nur Badge:** "Gewicht steigern: heute 42,5 kg", daneben die Vorwoche je Satz. Schrittweite je Ausstattung (Kurzhantel 2 kg, Langhantel 2,5 kg, Maschine "eine Stufe", Kabel 2,5 kg), in den Einstellungen änderbar.
 - **Plateau-Tausch:** Wenn nach dem Auto-Zusatzsatz weitere 3 Wochen stagnieren → Vorschlag, die Übung gegen die nächstbeste Stern-Übung der Kategorie zu tauschen. Nur Vorschlag, nie automatisch.
 - **Pausentimer** mit Vorgabe je Bereich (6–8: 150 s, 6–10: 120 s, 8–12: 90 s, 12–15: 75 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
-- **Hantelscheiben-Rechner** (klein, beliebt, 30 Zeilen Code).
+- **Hantelscheiben-Rechner** (klein, beliebt), Phase 2.
 
 ### 3.7 Oberfläche für Einsteiger (das ist der eigentliche Unterschied zu Peach)
 
-Peach zeigt alles gleichzeitig. Gymcreator zeigt **eine Sache pro Screen** und legt Details darunter.
+Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im Training sind alle Übungen des Tages in einer Liste, aufgeklappt wird jeweils eine.
 
 | Screen | Inhalt | Peach-Unterschied |
 |---|---|---|
-| **Onboarding** (5 Schritte, je ein Screen) | Ziel per Silhouette → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Gym → "Dein Plan ist fertig" mit Wochenübersicht | gibt es in Peach nicht |
-| **Heute** (Startscreen) | Nächster Trainingstag als eine große Karte: Tagesname, Fokus, Dauer-Schätzung, "Training starten". Darunter: Woche x/12, Tage erledigt, ein Satz Wochen-Bilanz ("bei 6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
-| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz dazu/weniger, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
+| **Onboarding** (5 Schritte, je ein Screen) | Ziel per Pixel-Glyph → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen je Tag | gibt es in Peach nicht |
+| **Heute** (Startscreen) | Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Woche x/12, Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
+| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
 | **Plan** | Wochenansicht (3/4/5-Tage-Wahl für diese Woche), Tage mit Übungen, Zyklus/Woche-Auswahl (Raster wie Peach), Zyklus-Ende-Banner | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
-| **Einstellungen** | Profil, Ziel/Feinjustierung, Mein Gym, Schrittweiten, Deload opt-in, Sprache, Backup, Version | Peach: nur Backup unten in der Übersicht |
+| **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage), Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Deload, Sprache | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
 - **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
@@ -153,7 +156,7 @@ Angepasst:
 
 ### 3.9 Weitere Funktionen – priorisiert
 
-**MVP (Phase 1):** Onboarding, Generator (3 Ziele × 3/4/5 Tage, 2 Erfahrungsstufen), geführtes Training, Progression komplett, flexible Woche, Zyklen unbegrenzt, Übersicht/Verlauf, eigene Übungen, Mein Gym (einfach), Pausentimer, Backup Export/Import, PWA installierbar + offline.
+**MVP (Phase 1):** Onboarding, Generator (3 Ziele × 3/4/5 Tage, 2 Erfahrungsstufen), Training mit aufklappbaren Übungen, Progression komplett, flexible Woche, Zyklen unbegrenzt, Übersicht/Verlauf, eigene Übungen, Mein Gym (einfach), Pausentimer, Backup Export/Import, PWA installierbar + offline.
 
 **Phase 2 (Einsteiger-Polish + Differenzierung):**
 - **Form-Tracker:** Umfänge (Schulter, Brust, Taille, Hüfte, Po, Oberschenkel, Arm) monatlich eintragen; die App zeigt die **Kennzahl des gewählten Ziels** (V-Form: Schulter/Taille, Sanduhr: Hüfte/Taille, Apfel: Po/Taille) als Verlauf. Passt exakt zur Positionierung, 1 Screen.
@@ -173,7 +176,7 @@ Angepasst:
 ### 4.1 Stack (entschieden, Abschnitt 7)
 
 - **React 19 + Vite 8 + TypeScript 6** (strict), PWA über `vite-plugin-pwa` 2 (Service Worker, Manifest, Offline). TypeScript 7 wird von typescript-eslint noch nicht unterstützt (Stand 22.10.2026), deshalb 6.0. Schriften selbst gehostet über `@fontsource` (offline, kein Google-Abruf)
-- State: leichtgewichtig (Zustand), keine schwere Bibliothek
+- State: eigener kleiner Store über `useSyncExternalStore` (`src/ui/state/store.ts`), keine State-Bibliothek
 - Speicher: **Dexie (IndexedDB)** hinter einem `Storage`-Interface; localStorage nur für UI-Position (wie `peach_ui`)
 - Tests: **Vitest** (Generator + Progression), **Playwright** (Flows, iPhone 390/430 px, wie Peach `tests/`)
 - CI/CD: **GitHub Actions** → Lint, Tests, Build → Deploy auf GitHub Pages. Du brauchst lokal nichts.
@@ -185,56 +188,60 @@ Warum nicht eine HTML-Datei wie Peach: 9 Pläne + Generator + Bibliothek + Tests
 
 ```
 Gymcreator/
-  docs/            konzept.md, wissenschaft.md (Quellen), design-system.md, entscheidungen.md
-  data/            exercises.json, goals.json (Prioritäten + Volumen), templates.json (Splits)
+  docs/            konzept.md, wissenschaft.md (Begründung + Quellen), store-weg.md
+  data/            goals.json (Bereiche, Grenzen, Stufen, Wochenziele, Slot-Pools), templates.json (Tagesvorlagen),
+                   exercises.json (200 Übungen), README.md
+  scripts/         verify-plan-data.mjs (prüft alle 18 Pläne + Bibliothek), make-icons.mjs
   src/
-    core/          REINE LOGIK, keine UI, 100 % getestet
-      generator/   targets.ts, slots.ts, distribute.ts, validate.ts
-      progression/ weight.ts (parseWeight, cmpWeight), compare.ts (prog), history.ts (findLast), rules.ts (incDue, autoExtraSets), stats.ts
-      model/       types.ts, keys.ts, migrations.ts
-    storage/       interface.ts, dexie.ts, backup.ts  (später capacitor.ts)
-    ui/            screens/ (Onboarding, Today, Workout, Plan, Progress, Settings), components/, theme/tokens.css
-    i18n/          de.json, en.json
-  tests/           e2e Playwright
-  .github/workflows/ ci.yml (Test + Build + Pages)
+    core/          reine Logik ohne UI, mit Vitest-Tests
+      generator/   buildPlan.ts, validate.ts (Grenzen, Wochenziele, weeklyMuscles)
+      progression/ weight, compare, entries, history, state, rules, inherit, cycle, week, position
+      model/       types.ts, data.ts, exerciseCheck.ts
+    storage/       interface.ts, dexie.ts, backup.ts, migrations.ts  (später capacitor.ts)
+    ui/            App.tsx, screens/ (Onboarding, Today, DayView + ExerciseItem, PlanScreen, Progress, Settings),
+                   components/, state/ (store, model, ui, actions), theme/ (tokens.css, base.css, ui.css), brand/
+    i18n/          de.json, index.ts  (en.json in Phase 2)
+  tests/e2e/       Playwright
+  .github/workflows/ ci.yml (Lint, Typecheck, Vitest, Datenprüfung, Build, E2E, Pages)
 ```
 
 ### 4.3 Datenmodell (Kern, TypeScript-Interfaces)
 
 ```ts
+// vollständig in src/core/model/types.ts
 Profile   { goal:'vform'|'sanduhr'|'apfel', level:'beginner'|'advanced', days:3|4|5,
-            priorities: Record<Category,0|1|2|3>, equipment: Equipment[], increments: {...},
-            deload:boolean, lang:'de'|'en' }
-Slot      { id:'gmax_4-8_a', category, repRange:'4-8', baseSets:3, priority:1..3, order }
-Template  { days:3|4|5, dayPlan: { name, focus, color, slotIds:string[] }[] }
-Plan      { version:1, goal, slots:Slot[], templates:Template[] }        // vom Generator erzeugt
-Week      { cycle:number, week:1..12, days:3|4|5 }                       // Wochen-Art (Peach wt__)
+            equipment: string[], increments: Record<string, number|null>, lang:'de'|'en', createdAt }
+SlotDef   { id:'gmax_6-8_a', cat, range:'6-8', sets:3, focus? }             // Pool in data/goals.json
+PlanRow   { slotId, category, repRange, sets, priority, focus? }          // vom Generator erzeugt
+Plan      { version:1, goal, level, days, dayPlans:{ index, letter, name, focus, rows }[], paused }
+Week      { cycle:number, week:1..12, days:3|4|5 }                       // Wochenart (Peach wt__)
 Entry     { cycle, week, slotId, day, exerciseId, sets:{w:string,r:number|null}[],   // day = Tag in dieser Woche (nur Kontext)
             extraSets:number, category, repRange, baseSets,               // Kontext IM Eintrag (Peach r0/s0 immer)
             once?:boolean, baseExerciseId?:string }                       // "nur diese Woche" (Peach base)
 ExerciseNote    { exerciseId, note, setting }                             // Peach tip__ex__ / set__ex__
 CustomExercise  { id:'custom_…', name, category, equipment, note }
-BodyMetrics     { date, waist, hips, glutes, shoulders, chest, thigh, arm, weight }  // Phase 2
+BodyMetrics     { date, waist, hips, glutes, shoulders, chest, thigh, arm, weight }  // Phase 2, noch nicht angelegt
 ```
 
 Grundsätze (Lehren aus Peach-Regel 11, 13, 14, 15):
 - **Keys sind nie Positionen.** Entry-Key = `cycle:week:slotId`. Eine neue Zeile im Plan verschiebt nichts.
 - **Kontext steht im Eintrag.** Ändert sich später der Wdh.-Bereich eines Slots, bekommt er eine **neue Slot-ID**; alte Einträge behalten ihren Bereich. Keine `migGXRange`-Migrationen mehr.
-- **Plan-Version im Profil**, alte Zyklen zeigen den Plan, mit dem sie trainiert wurden (Peach `pv__`, aber als Feld, nicht als Marker-Key).
+- **Plan-Version** (`Plan.version`): Der Plan wird aus Profil und Daten neu erzeugt. Weil jeder Eintrag Kategorie, Bereich und Sätze selbst trägt, bleibt die Historie auch nach Plan-Änderungen lesbar.
 - **Schema-Version + Migrations-Liste** im Storage von Tag 1, jede Migration mit Test und Sicherheitskopie (Peach `peach_v4_pre_*`).
-- **Backup-Format** `{app:'gymcreator', schema:1, date, profile, plan, entries, notes, custom, metrics}`. Import validiert, fragt vor Überschreiben.
+- **Backup-Format** `{app:'gymcreator', schema:1, date, profile, entries, weeks, notes, custom}`. Import validiert, fragt vor dem Überschreiben und sichert den alten Stand.
 
 ### 4.4 Generator (deterministisch, reine Funktionen)
 
 ```
-targets(goal, level, days)      → Sätze je Kategorie (Tabelle 3.2 × Faktoren)
-slotPool(targets)               → Slots mit Bereich-Mix je Kategorie (Prio 3: 4-8 + 6-10 + 8-12; Prio 1: nur 8-12)
-distribute(slotPool, template)  → Tage mit Slots in Reihenfolge (Prio zuerst, Grund vor Isolation, Bauch zuletzt)
-validate(plan)                  → Fehlerliste: >10 anteilige Sätze je Muskel/Einheit, >20 Sätze/Einheit,
-                                  Prio-Muskel <2×/Woche, gleiche Übung 2× am Tag, Abweichung vom Ziel >1 Satz
+buildPlan(data, {goal, level, days})  → Tage mit Zeilen in Vorlagen-Reihenfolge; Einsteiger: 2 Sätze,
+                                         6-8/6-10 → 8-12, Zeilen mit beginner:false entfallen
+validatePlan(data, plan)              → Fehlerliste: Übungen/Sätze je Einheit (Stufe), Zeilen je Kategorie
+                                         und Tag (Hauptmuskelgruppe 2, sonst 1), >10 anteilige Sätze je Muskel
+                                         und Einheit, Wochenziel je Muskel verfehlt, Prio 3 <2×/Woche, Prio 0 im Plan
+weeklyMuscles(data, plan)             → anteilige Sätze je Muskel und Woche
 ```
 
-Tests: für alle 3 × 3 × 2 Kombinationen `validate` leer, Summen innerhalb ±2 Sätze der Tabelle, Determinismus (gleiche Eingabe → gleicher Plan), (Der Peach-P4-Regressionstest ist seit 23.10.2026 entfernt; stattdessen Wochenziele je Muskel.)
+Tests: alle 18 Kombinationen ohne Fehler, Wochensätze wie in `docs/wissenschaft.md`, Hauptmuskel mit mindestens 3 Bereichen, Einsteiger-Regeln, Determinismus. Dasselbe prüft `scripts/verify-plan-data.mjs` in CI.
 
 ### 4.5 Progressions-Engine (Port aus Peach, Quelle `/home/user/Trainingsapp/index.html`)
 
@@ -242,9 +249,9 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 
 | Peach-Funktion (Zeile) | Gymcreator `src/core/progression/` | Änderung beim Port |
 |---|---|---|
-| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`) |
+| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`); einzige Abweichung: bei Gegengewicht zählt 0 kg Hilfe als Bestwert statt als leer (23.10.2026) |
 | `prog` (1234), `rcol` (1196) | `compare.ts` ✅ (`progressStatus`, `repZone`) | 1:1: Gewicht zuerst, Reps als Durchschnitt; `isAssist` kommt aus dem Übungsdatensatz (`assisted: true`) statt aus dem Set `ASSIST` |
-| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `entries.ts` + `history.ts` ✅ | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie |
+| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `entries.ts` + `history.ts` ✅ | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie. Abweichung (23.10.2026): Einträge mit Wiederholungen gehen vor, weil Gewichte hier in die Folgesätze wandern und eine Woche mit nur Gewicht sonst den Vorwert verdeckt |
 | `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` ✅ (`rowState`, `weekStats`) | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
 | `incCand`/`incDue` (1557/1565) | `state.ts` ✅ (`increaseDue`), `rules.ts` ✅ (`suggestWeight`) | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
 | `autoExtraSets` (1314) | `rules.ts` ✅ | 1:1 (3 stagnierende Wochenvergleiche, gleiche Übung, max. 5 Sätze) |
@@ -257,7 +264,7 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 
 Tests (✅ `src/core/progression/scenarios.test.ts`): Peachs Browser-Tests `vorwert-vorwoche`, `vorwert-zyklusstart`, `verlauf-woche1-2`, `verlauf-planwechsel`, `steigerung`, `uebungswechsel`, `flex-woche` und `randfaelle` werden als **Vitest-Unit-Tests auf dem Kern** nachgebaut (gleiche Szenarien, gleiche erwarteten Vorwerte/Badges), plus die Funktionsfälle für `cmpWeight`/`prog`/`parseWeight` aus der Skill-Doku (Spannen, Komma, assistiert, leeres Feld).
 
-**Datenport (nur Inhalte, keine Dateien kopieren):** `EXERCISES` (Z. 292), `TIPS` (Z. 307–448), `REC` (Z. 691), `ASSIST` (Z. 697), `CC` (Z. 449), `P4`/`P3` (Z. 468–553) → `data/exercises.json` (Hersteller-Varianten zu je einer generischen Übung zusammengeführt, Tipps geräteneutral umformuliert, Sterne je Ziel neu vergeben) und `data/goals.json` (Peach-Spalte = dein P4/P3 als Regressionsziel).
+**Datenport (nur Inhalte, keine Dateien kopieren):** `EXERCISES` (Z. 292), `TIPS` (Z. 307–448), `REC` (Z. 691), `ASSIST` (Z. 697), `CC` (Z. 449), `P4`/`P3` (Z. 468–553) → `data/exercises.json` (Hersteller-Varianten zu je einer generischen Übung zusammengeführt, Tipps geräteneutral umformuliert, Sterne je Ziel neu vergeben). P4/P3 dienten anfangs als Vorlage für Apfel; seit 23.10.2026 gilt das eigene Volumen-Modell.
 
 ### 4.6 Weg in die Stores (Phase 3, Stand Recherche 22.10.2026)
 
@@ -284,7 +291,7 @@ Fakten, die den Plan beeinflussen:
 ## 5. Phasenplan
 
 **Phase 0 – Fundament (1–2 Sessions)**
-1. `docs/konzept.md` (dieses Konzept), `docs/wissenschaft.md` (Quellen + Volumen-Tabelle), `docs/entscheidungen.md`
+1. `docs/konzept.md` (dieses Konzept), `docs/wissenschaft.md` (Quellen + Volumen-Tabelle), `docs/store-weg.md`
 2. `data/exercises.json` v1 (Peach-Liste bereinigt + Sterne je Ziel + Equipment + Stretch-Flag), `data/goals.json`, `data/templates.json`
 3. Projekt-Setup (Vite, TS, Vitest, Playwright, ESLint), CI-Workflow, Pages-Deploy mit Platzhalter-Seite, Design-Tokens aus Peach als `tokens.css` (Quelle: `:root` in `index.html` Z. 18–51, `--bg` auf Cream, Zielakzente neu)
 
@@ -296,7 +303,7 @@ Fakten, die den Plan beeinflussen:
 5. ✅ UI: Heute + Training (23.10.: aufklappbare Übungen in der Tagesansicht statt Fokusansicht, Vorwoche je Satz, Timer, Badge, Vorschlag)
 6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
 7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup (Deload opt-in offen, Regel nicht festgelegt)
-8. 🟡 PWA-Feinschliff (Icon ✅, Manifest ✅, Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅; offen: Lighthouse, Nutzertest) (Icon, Manifest `display: standalone` – anders als Peach, weil der Speicher hier in der App lebt und das Backup Pflicht ist; dazu ein Hinweis beim ersten Start "Installiere die App auf dem Home-Screen", damit die Daten von Anfang an in einem Container liegen), Playwright-Flows, Nutzertest mit 3–5 Personen (die werden später auch die 12 Play-Tester)
+8. 🟡 PWA-Feinschliff: Icon ✅, Manifest `display: standalone` ✅ (anders als Peach, weil der Speicher in der App lebt), Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅. Offen: Lighthouse-Check in CI, Nutzertest mit 3–5 Personen (später auch die 12 Play-Tester)
 
 **Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
 
@@ -306,33 +313,26 @@ Fakten, die den Plan beeinflussen:
 
 ## 6. Verifikation
 
-- **Unit (Vitest):** Generator (alle 18 Kombinationen valide, Summen ±2, deterministisch, Peach-Regression), Progression (Peach-Fälle 1:1: Spannen, Komma, assistiert, Gewicht schlägt Reps, Durchschnitts-Reps, Vorwert eigener Slot zuerst, laufende Woche nie, Woche 1 kein Vergleich, Auto-Zusatzsatz frühestens Woche 5), Storage-Migrationen (Vorher/Nachher-Daten, Idempotenz), Backup-Rundreise.
-- **E2E (Playwright, 390 + 430 px):** Onboarding → Plan steht; Training eintragen → Badge/Vorschlag live; Woche 3 ↔ 4 ↔ 5 Tage umstellen → Übungen/Verlauf bleiben; eigene Übung anlegen und trainieren; Backup Export/Import; Offline-Start.
-- **CI:** alles grün vor Deploy; Lighthouse-PWA-Check.
-- **Manuell:** auf deinem iPhone installieren, einen echten Trainingstag mit dem Peach-Plan parallel eintragen und Vorwerte/Badges vergleichen.
+- **Unit (Vitest):** Generator (alle 18 Kombinationen valide, Wochenziele je Muskel, deterministisch), Progression (Peach-Fälle 1:1: Spannen, Komma, assistiert, Gewicht schlägt Reps, Durchschnitts-Reps, Vorwert eigener Slot zuerst, laufende Woche nie, Woche 1 kein Vergleich, Auto-Zusatzsatz frühestens Woche 5), Storage-Migrationen (Vorher/Nachher-Daten, Idempotenz), Backup-Rundreise.
+- **E2E (Playwright, 390 + 430 px):** Onboarding → Wochenplan; Übung wählen, eintragen, Neuladen; Woche 2 mit Vorwoche je Satz, Steigerungshinweis und Bewertung; Übungswechsel "Nur diese Woche"; Satz entfernen; Trainingstage aus den Einstellungen; Backup-Import; Manifest; Offline-Start. Offen: Umstellen im Plan mit Rückfrage und eigene Übung als E2E.
+- **CI:** alles grün vor Deploy. Offen: Lighthouse-PWA-Check.
+- **Manuell:** auf dem iPhone installieren, einen echten Trainingstag eintragen und Vorwerte, Hinweis und Bewertung mit Peach vergleichen (Logik ist gleich, Pläne sind verschieden).
 
 ---
 
-## 7. Entscheidungen (22.10.2026, von dir bestätigt)
+## 7. Entscheidungen (von dir bestätigt)
 
-1. **Stack:** React + Vite + TypeScript als PWA, später Capacitor + Codemagic
-2. **Plan-Erzeugung:** Generator aus Volumen-Zielen (Tabelle 3.2 als einzige Wissensquelle)
-3. **Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Pink)
-4. **MVP-Umfang:** Kern – Onboarding, Plan, geführtes Training, Progression, flexible Woche, eigene Übungen, Backup
-
-## 7a. Noch offen (blockiert nichts in Phase 0)
-
-5. ~~Peach-Quellcode~~ erledigt: liegt read-only in der Session (Abschnitt 1). In späteren Sessions, die am Port arbeiten (Phase 1, Schritt 2–3), das Trainingsapp-Repo wieder anhängen.
-6. ~~Branch~~ entschieden: **alles direkt auf `main`** (22.10.2026), wie bei Peach.
-
-## 7b. Phase 0 – Stand und Reihenfolge (Details in `UEBERGABE.md`)
-
-1. ✅ Projekt-Gerüst: Vite + React + TypeScript, ESLint, Vitest, Playwright, `vite-plugin-pwa`, GitHub-Actions-Workflow (Test → Build → Pages)
-2. ✅ `src/ui/theme/tokens.css` mit allen Peach-Tokens (Cream-Basis, Zielakzente, Tagesfarben A–E, Kategorie- und Fortschrittsfarben, Schatten, Radien, Fonts)
-3. ✅ `docs/konzept.md` (dieses Dokument), `docs/wissenschaft.md` (Tabelle 3.2 mit 26 Quellen), `docs/store-weg.md`; Entscheidungen stehen in Abschnitt 7 (keine eigene Datei)
-4. ✅ `data/goals.json` (Prioritäten + Slot-Pools), `data/templates.json` (Splits 3.3), `scripts/verify-plan-data.mjs` (grün, Peach 4/3 = P4/P3) · ✅ `data/exercises.json` v1 (180 Übungen, Peach-Liste bereinigt, Sterne je Ziel, Equipment, Stretch-Flag, geräteneutrale Tipps)
-5. ✅ `src/core/model/types.ts` (Datenmodell 4.3) + `src/core/generator/` mit Tests, inklusive Regressionstest: `apfel`, 4 Tage, Fortgeschritten ⇒ exakt dein Peach-P4 (Kategorien, Bereiche, Sätze, Reihenfolge je Tag)
-6. ✅ Platzhalter-Startseite live auf Pages, damit der Deploy-Weg von Anfang an steht
+1. **Stack:** React + Vite + TypeScript als PWA, später Capacitor + Codemagic (22.10.2026)
+2. **Plan-Erzeugung:** Generator aus `data/` (Wochenziele je Muskel + Tagesvorlagen) als einzige Wissensquelle (22.10., Volumen-Modell neu am 23.10.2026)
+3. **Design-Basis:** neutrale Cream-Basis `#FBF3E7` + Zielfarbe als Akzent (Sky / Lilac / Pink) (22.10.)
+4. **MVP-Umfang:** Onboarding, Plan, Training, Progression, flexible Woche, eigene Übungen, Backup (22.10.)
+5. **Branch:** alles direkt auf `main` (22.10.)
+6. **Archetypen:** V-Form, Sanduhr, Apfel; "Peach" erscheint nirgends in der Oberfläche (22.10.)
+7. **Gewicht pro Satz** (23.10.)
+8. **Volumen:** Fortgeschritten max. 7 Übungen / 18 Sätze pro Einheit für alle Ziele, Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×; Volumen wissenschaftlich begründet, nicht 1:1 Peach (23.10.)
+9. **Übungen frei wählbar** je Muskelgruppe, Sterne für das Ziel (23.10.)
+10. **Training:** Übungen in der Tagesliste aufklappen statt eigener Seite; ab Woche 2 Vorwoche je Satz, Steigerungshinweis und Bewertung sichtbar (23.10.)
+11. **Muskelgruppen-Namen bleiben** (Glute Max, Glute & Quad usw.), keine Benennung nach Übungen (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

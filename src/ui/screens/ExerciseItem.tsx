@@ -11,7 +11,7 @@ import { Check } from '../components/Check';
 import { ExercisePicker, StarIcon } from '../components/ExercisePicker';
 import { Sheet } from '../components/Sheet';
 import { StatusPill } from '../components/StatusPill';
-import { entryForEdit, saveEntry, withSetValue, type Position } from '../state/actions';
+import { entryForEdit, saveEntry, withExtraSets, withSetValue, type Position } from '../state/actions';
 import { exerciseName, incrementFor, slotLabel, type AppModel } from '../state/model';
 import { store } from '../state/store';
 
@@ -73,7 +73,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
     if (before === null && r !== null && i < st.totalSets - 1) onRest(restUntil(planData.goals.timing.restSeconds[st.repRange] ?? 0));
   };
 
-  const changeSets = (delta: number) => edit((e) => ({ ...e, extraSets: Math.max(0, e.extraSets + delta) }));
+  const changeSets = (delta: number) => {
+    const extra = Math.max(0, st.extraSets + delta);
+    const total = Math.min(planData.goals.limits.maxSetsPerSlot, st.baseSets + extra + st.autoExtra);
+    edit((e) => withExtraSets(e, extra, total));
+  };
 
   const pick = (next: string) => {
     setPicker(false);
@@ -118,11 +122,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
               </span>
             )}
           </span>
-          <span className="muted">{timed ? fmt(t.setsLineTimed, { sets: st.totalSets, range: range(st.repRange) }) : fmt(t.setsLine, { sets: st.totalSets, range: range(st.repRange) })}</span>
+          <span className="muted">{timed ? fmt(t.setsLineTimed, { sets: st.totalSets }) : fmt(t.setsLine, { sets: st.totalSets, range: range(st.repRange) })}</span>
         </span>
         <span className="exercise-row-side">
           {st.once && <span className="pill pill-dashed">{t.once}</span>}
-          {st.status && <StatusPill status={st.status} assisted={st.assisted} />}
+          {st.status && <StatusPill status={st.status} assisted={st.assisted} timed={timed} />}
           {st.done && (
             <span className="done-dot" aria-label={t.done}>
               <Check />

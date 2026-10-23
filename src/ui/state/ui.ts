@@ -16,12 +16,15 @@ export interface UiState {
 }
 
 const KEY = 'gymcreator_ui';
+/** Eine Pause, die laenger als das vorbei ist, wird beim Start nicht mehr angezeigt (App war zu). */
+const STALE_REST_MS = 10 * 60 * 1000;
 const initial: UiState = { tab: 'today', cycle: null, week: null, day: null, slot: null, restEndsAt: null };
 
 function load(): UiState {
   try {
     const raw = localStorage.getItem(KEY);
-    return raw ? { ...initial, ...(JSON.parse(raw) as Partial<UiState>) } : initial;
+    const state: UiState = raw ? { ...initial, ...(JSON.parse(raw) as Partial<UiState>) } : initial;
+    return state.restEndsAt !== null && state.restEndsAt < Date.now() - STALE_REST_MS ? { ...state, restEndsAt: null } : state;
   } catch {
     return initial;
   }

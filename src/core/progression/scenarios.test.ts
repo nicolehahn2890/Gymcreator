@@ -215,7 +215,7 @@ describe('Uebungswechsel (uebungswechsel)', () => {
     expect(exerciseChange(undefined, 2, st.inheritedExerciseId, HM)).toBe('ask');
   });
 
-  it('"nur diese Woche": W3 zeigt wieder die Standard-Uebung mit ihrem Vorwert aus W1', () => {
+  it('"nur diese Woche": W3 zeigt wieder die feste Uebung mit ihrem Vorwert aus W1', () => {
     const once = { ...applyExercise(createEntry(row, { cycle: 3, week: 2, day: row.day }, HT, 0), HM, true, HT), sets: [{ w: '90', r: null }] };
     expect(once).toMatchObject({ exerciseId: HM, once: true, baseExerciseId: HT });
     const data = [...w1, once];
@@ -252,7 +252,7 @@ describe('Uebungswechsel (uebungswechsel)', () => {
     expect(exerciseChange(undefined, 5, HT, '')).toBe('set');
   });
 
-  it('naechster Zyklus uebernimmt die Standard-Uebung, nicht den einmaligen Wechsel aus W12', () => {
+  it('naechster Zyklus uebernimmt die feste Uebung, nicht den einmaligen Wechsel aus W12', () => {
     const w12 = { ...applyExercise(createEntry(row, { cycle: 3, week: 12, day: row.day }, HM, 0), 'kickback_machine', true, HM), sets: [{ w: '40', r: 8 }] };
     const carried = carryOver([...w1, w12], 4, plans[4], categoryOf);
     expect(carried[S]).toBe(HM);
@@ -378,5 +378,30 @@ describe('Wochenbilanz und Hilfen', () => {
 
   it('findPrevious ohne Uebung liefert nichts', () => {
     expect(findPrevious(indexEntries([]), { cycle: 1, week: 2, slotId: 'x', exerciseId: '', repRange: '8-12' })).toBeNull();
+  });
+});
+
+describe('Randfaelle (Selbsttest 23.10.2026)', () => {
+  it('Woche mit nur eingetipptem Gewicht verdeckt nicht den Vorwert mit Wiederholungen', () => {
+    const HT = 'hip_thrust_barbell';
+    const data = [entry(1, 2, 'gmax_6-8_a', HT, '60', [8, 8, 8]), entry(1, 3, 'gmax_6-8_a', HT, '62,5', [])];
+    expect(rowState(context(data), rowOf('gmax_6-8_a'), at(1, 4)).previous?.entry.week).toBe(2);
+    const w4 = entry(1, 4, 'gmax_6-8_a', HT, '62,5', [8, 8, 8]);
+    expect(rowState(context([...data, w4]), rowOf('gmax_6-8_a'), at(1, 4)).status).toBe('w');
+  });
+
+  it('assistiert: 0 kg Hilfe ist Bestleistung, danach kein Hinweis "Hilfe senken"', () => {
+    const AP = 'assisted_pull_up_wide';
+    const w2 = entry(1, 2, 'back_6-10_a', AP, '10', [8, 8, 8]);
+    const w3 = entry(1, 3, 'back_6-10_a', AP, '0', [6, 6, 6]);
+    expect(rowState(context([w2, w3]), rowOf('back_6-10_a'), at(1, 3)).status).toBe('w');
+    const top = entry(1, 3, 'back_6-10_a', AP, '0', [10, 10, 10]);
+    expect(rowState(context([w2, top]), rowOf('back_6-10_a'), at(1, 4)).increaseDue).toBe(false);
+  });
+
+  it('Zeile ohne Werte nimmt nach dem Umstellen auf 3 Tage die Saetze des neuen Plans', () => {
+    const picked = entry(1, 1, 'gmed_8-12_a', 'abduction_machine', '', []);
+    expect(picked.baseSets).toBe(rowOf('gmed_8-12_a', 4).sets);
+    expect(rowState(context([picked]), rowOf('gmed_8-12_a', 3), at(1, 1)).baseSets).toBe(rowOf('gmed_8-12_a', 3).sets);
   });
 });

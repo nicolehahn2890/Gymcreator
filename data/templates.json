@@ -6,8 +6,8 @@
       "3": {
         "days": [
           {
-            "name": "Tag A – Po Kraft",
-            "focus": "Po schwer · Beinvorderseite · Rücken",
+            "name": "Tag A – Po & Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               "gmed_8-12_a",
@@ -26,7 +26,7 @@
           },
           {
             "name": "Tag B – Po & Beinrückseite",
-            "focus": "Hüftstreckung · Beinbeuger · Schultern",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               "gmed_12-15_a",
@@ -40,8 +40,8 @@
             ]
           },
           {
-            "name": "Tag C – Po-Volumen & Oberkörper",
-            "focus": "Po leicht · Rücken · Brust",
+            "name": "Tag C – Po & Oberkörper",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
               "gmax_12-15_a",
               "gmed_8-12_b",
@@ -63,8 +63,8 @@
       "4": {
         "days": [
           {
-            "name": "Tag A – Po Kraft",
-            "focus": "Po schwer · Beinvorderseite · Innenschenkel",
+            "name": "Tag A – Po & Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               {
@@ -85,7 +85,7 @@
           },
           {
             "name": "Tag B – Oberkörper & Po",
-            "focus": "Rücken · Schultern · Brust",
+            "focus": "Rücken schwer, Po leicht",
             "slots": [
               {
                 "id": "gmax_12-15_a",
@@ -107,7 +107,7 @@
           },
           {
             "name": "Tag C – Po & Beinrückseite",
-            "focus": "Hüftstreckung · Beinbeuger · Rücken",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               {
@@ -120,8 +120,8 @@
             ]
           },
           {
-            "name": "Tag D – Po-Volumen & Beine",
-            "focus": "Po mittel · Innenschenkel · Schultern",
+            "name": "Tag D – Po & Hüfte",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_b",
               "gmed_12-15_b",
@@ -142,8 +142,8 @@
       "5": {
         "days": [
           {
-            "name": "Tag A – Po Kraft",
-            "focus": "Po schwer · Beinvorderseite · Innenschenkel",
+            "name": "Tag A – Po & Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               {
@@ -160,7 +160,7 @@
           },
           {
             "name": "Tag B – Oberkörper",
-            "focus": "Rücken · Schultern · Brust",
+            "focus": "Rücken schwer, dazu Schultern und Brust",
             "slots": [
               "back_6-10_a",
               "shoulders_8-12_a",
@@ -179,7 +179,7 @@
           },
           {
             "name": "Tag C – Po & Beinrückseite",
-            "focus": "Hüftstreckung · Beinbeuger",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               "ghams_6-10_a",
@@ -191,8 +191,8 @@
             ]
           },
           {
-            "name": "Tag D – Beine & Po",
-            "focus": "Po mittel · Innenschenkel · Schultern",
+            "name": "Tag D – Po & Hüfte",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_b",
               {
@@ -208,8 +208,8 @@
             ]
           },
           {
-            "name": "Tag E – Po-Pump & Rücken",
-            "focus": "Po leicht · Hüfte · Rücken",
+            "name": "Tag E – Po & Rücken",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
               {
                 "id": "gmax_12-15_a",
@@ -227,8 +227,8 @@
       "3": {
         "days": [
           {
-            "name": "Tag A – Po & Beine schwer",
-            "focus": "Po schwer · Beinvorderseite · Schultern",
+            "name": "Tag A – Po & Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               "gmed_8-12_a",
@@ -243,7 +243,7 @@
           },
           {
             "name": "Tag B – Oberkörper & Po",
-            "focus": "Rücken · Schultern · Brust",
+            "focus": "Rücken schwer, Po leicht",
             "slots": [
               "gmax_12-15_a",
               {
@@ -261,7 +261,7 @@
           },
           {
             "name": "Tag C – Po & Beinrückseite",
-            "focus": "Hüftstreckung · Beinbeuger · Rücken",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               "ghams_6-10_a",
@@ -275,8 +275,8 @@
       "4": {
         "days": [
           {
-            "name": "Tag A – Po & Beine schwer",
-            "focus": "Po schwer · Beinvorderseite · Schultern",
+            "name": "Tag A – Po & Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               "gmed_8-12_a",
@@ -289,8 +289,8 @@
             ]
           },
           {
-            "name": "Tag B – Rücken & Schultern",
-            "focus": "Rücken · Schultern · Brust · Arme",
+            "name": "Tag B – Oberkörper",
+            "focus": "Rücken schwer, dazu Schultern und Arme",
             "slots": [
               "back_6-10_a",
               "shoulders_12-15_a",
@@ -308,7 +308,7 @@
           },
           {
             "name": "Tag C – Po & Beinrückseite",
-            "focus": "Hüftstreckung · Beinbeuger",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               {
@@ -324,8 +324,8 @@
             ]
           },
           {
-            "name": "Tag D – Po-Pump & Oberkörper",
-            "focus": "Po leicht · Rücken · Schultern",
+            "name": "Tag D – Po & Oberkörper",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
               "gmax_12-15_a",
               {
@@ -345,8 +345,8 @@
       "5": {
         "days": [
           {
-            "name": "Tag A – Po schwer",
-            "focus": "Po schwer · Hüftstreckung",
+            "name": "Tag A – Po & Beinrückseite",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
               "gmed_8-12_a",
@@ -363,7 +363,7 @@
           },
           {
             "name": "Tag B – Oberkörper",
-            "focus": "Rücken · Schultern · Brust · Arme",
+            "focus": "Rücken schwer, dazu Schultern und Arme",
             "slots": [
               "back_6-10_a",
               {
@@ -382,8 +382,8 @@
             ]
           },
           {
-            "name": "Tag C – Beine & Po",
-            "focus": "Beinvorderseite · Beinbeuger · Po",
+            "name": "Tag C – Po & Beine",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
               "gquad_6-10_a",
@@ -396,7 +396,7 @@
           },
           {
             "name": "Tag D – Schultern & Rücken",
-            "focus": "Schultern · Rücken · Bauch",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
               "shoulders_12-15_a",
               "back_8-12_a",
@@ -408,8 +408,8 @@
             ]
           },
           {
-            "name": "Tag E – Po-Pump & Schultern",
-            "focus": "Po leicht · Hüfte · Schultern",
+            "name": "Tag E – Po & Hüfte",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
               "gmax_12-15_a",
               "gmed_12-15_b",
@@ -431,7 +431,7 @@
         "days": [
           {
             "name": "Tag A – Drücken & Beine",
-            "focus": "Brust · Schultern · Trizeps · Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "chest_6-8_a",
               "shoulders_6-10_a",
@@ -448,8 +448,8 @@
             ]
           },
           {
-            "name": "Tag B – Ziehen & Schultern",
-            "focus": "Rücken breit · Rücken dick · Bizeps",
+            "name": "Tag B – Ziehen",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
@@ -462,8 +462,8 @@
             ]
           },
           {
-            "name": "Tag C – Oberkörper & Beinrückseite",
-            "focus": "Rücken · Brust · Schultern · Hüftstreckung",
+            "name": "Tag C – Ganzkörper",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_a",
               {
@@ -485,7 +485,7 @@
         "days": [
           {
             "name": "Tag A – Ziehen",
-            "focus": "Rücken breit · Rücken dick · Bizeps",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
@@ -501,8 +501,8 @@
             ]
           },
           {
-            "name": "Tag B – Beine & Schultern",
-            "focus": "Beinvorderseite · Hüftstreckung · Schultern",
+            "name": "Tag B – Beine",
+            "focus": "Schwere Grundübungen, dazu Schultern",
             "slots": [
               "gquad_6-10_a",
               "ghams_6-10_a",
@@ -519,8 +519,8 @@
             ]
           },
           {
-            "name": "Tag C – Drücken & Rücken",
-            "focus": "Brust · Schultern · Rücken · Trizeps",
+            "name": "Tag C – Drücken",
+            "focus": "Schwere Grundübungen, dazu Rudern",
             "slots": [
               "chest_6-8_a",
               "back_8-12_b",
@@ -533,8 +533,8 @@
             ]
           },
           {
-            "name": "Tag D – Oberkörper-Volumen",
-            "focus": "Rücken · Brust · Schultern",
+            "name": "Tag D – Oberkörper",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_a",
               "chest_8-12_a",
@@ -554,7 +554,7 @@
         "days": [
           {
             "name": "Tag A – Ziehen",
-            "focus": "Rücken breit · Rücken dick · Bizeps",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
@@ -568,7 +568,7 @@
           },
           {
             "name": "Tag B – Drücken",
-            "focus": "Brust · Schultern · Trizeps",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "chest_6-8_a",
               "shoulders_6-10_a",
@@ -580,8 +580,8 @@
             ]
           },
           {
-            "name": "Tag C – Beine & Bauch",
-            "focus": "Beinvorderseite · Hüftstreckung · Waden",
+            "name": "Tag C – Beine",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gquad_6-10_a",
               "ghams_6-10_a",
@@ -599,7 +599,7 @@
           },
           {
             "name": "Tag D – Rücken & Schultern",
-            "focus": "Rücken breit · Schultern · Trizeps",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_a",
               {
@@ -614,8 +614,8 @@
             ]
           },
           {
-            "name": "Tag E – Oberkörper-Volumen",
-            "focus": "Rücken · Brust · Schultern",
+            "name": "Tag E – Oberkörper",
+            "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_b",
               "chest_8-12_a",

@@ -61,7 +61,6 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay }: Props) {
           </button>
         ))}
       </div>
-      {plan.paused.length > 0 && <p className="muted plan-paused">{fmt(t.paused, { n: plan.paused.length })}</p>}
 
       <div className="stack plan-days">
         {plan.dayPlans.map((day) => (

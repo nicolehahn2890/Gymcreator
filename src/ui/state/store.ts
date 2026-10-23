@@ -81,6 +81,10 @@ export class AppStore {
     this.set(data);
     try {
       await persist();
+      if (this.state.saveError) {
+        this.state = { ...this.state, saveError: false };
+        this.emit();
+      }
     } catch {
       this.state = { ...this.state, saveError: true };
       this.emit();

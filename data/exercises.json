@@ -275,7 +275,7 @@
       "unilateral": false,
       "assisted": false,
       "timed": false,
-      "tip": { "de": "Einstellung: Rückenlage, Fußsohlen aneinander, Knie fallen nach außen, Fersen nah am Po.\nAusführung: Hüfte zügig hochdrücken und oben fest anspannen, kontrolliert ablassen. Mit Kurzhantel auf der Hüfte schwerer, ideal für hohe Wiederholungen." }
+      "tip": { "de": "Einstellung: Rückenlage, Fußsohlen aneinander, Knie fallen nach außen, Fersen nah am Po.\nAusführung: Hüfte zügig hochdrücken und oben fest anspannen, kontrolliert ablassen. Mit Kurzhantel auf der Hüfte schwerer, gut für hohe Wiederholungszahlen." }
     },
     {
       "id": "reverse_hyper",
@@ -579,7 +579,7 @@
       "unilateral": true,
       "assisted": false,
       "timed": true,
-      "tip": { "de": "Einstellung: Seitstütz auf dem Unterarm, oberes Bein auf einer Bank, unteres Bein frei. Zum Einstieg das Knie auf die Bank legen, später den Fuß.\nAusführung: Hüfte hochdrücken und halten, das obere Bein zieht dich aktiv nach oben. Gehaltene Sekunden ins Wiederholungsfeld eintragen." }
+      "tip": { "de": "Einstellung: Seitstütz auf dem Unterarm, oberes Bein auf einer Bank, unteres Bein frei. Zum Einstieg das Knie auf die Bank legen, später den Fuß.\nAusführung: Hüfte hochdrücken und halten, das obere Bein zieht dich aktiv nach oben. Gehaltene Sekunden eintragen." }
     },
     {
       "id": "sumo_rdl_barbell",

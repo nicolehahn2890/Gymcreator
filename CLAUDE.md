@@ -2,7 +2,7 @@
 
 > **ZUERST LESEN: Das Repo `nicolehahn2890/Trainingsapp` (Peach) ist NUR ZUM LESEN.** An diesem Repo wird absolut nichts geändert: keine Datei bearbeiten, nichts anlegen oder löschen, kein Commit, kein Push, kein Branch, kein PR, kein Issue-Kommentar. Kein `cd` mit Schreibbefehlen dorthin, nur mit absoluten Pfaden lesen. Gearbeitet wird ausschließlich im Repo `nicolehahn2890/Gymcreator`. (Nicoles ausdrückliche Anweisung, 22.10.2026)
 
-Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Apfel – der Apfel ist Nicoles Peach-Ziel), 3/4/5 Tage, Generator aus wissenschaftlich begründeten Volumen-Zielen, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
+Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Peach-App): Körperziel wählen (V-Form / Sanduhr / Apfel – der Apfel ist Nicoles Peach-Ziel), 3/4/5 Tage, Pläne aus wissenschaftlich begründeten Wochenzielen je Muskel, Übungen frei wählbar je Muskelgruppe, Progressionsmodell aus Peach, Neobrutalism-Design ohne Pfirsich, später App Store / Google Play. Konzept: `docs/konzept.md`. Aktueller Stand und nächste Schritte: `UEBERGABE.md`.
 
 ## Feste Regeln
 
@@ -12,7 +12,7 @@ Gymcreator ist eine Trainingsapp für andere Menschen (nicht Nicoles private Pea
 4. **Keys sind nie Positionen.** Einträge unter `cycle:week:slotId`; Kategorie, Wdh.-Bereich und Basis-Sätze stehen im Eintrag. Ändert sich Bereich oder Kategorie eines Slots → neue Slot-ID. Keine Migrationen, die Einträge verschieben.
 5. **Kern ohne UI.** `src/core/` enthält reine Funktionen mit explizitem Kontext (keine Globals), Vitest-Tests Pflicht. Peach-Progressionsregeln 1:1 (siehe `docs/konzept.md` 4.5).
 6. **Design-Tokens nur als `var(--...)`.** Keine Hex-Farben in Komponenten. Nur hell, Neobrutalism (Ink-Rahmen 2,5 px, harte Schatten ohne Blur, Archivo Black + Space Grotesk). Inputs 16 px (iOS-Zoom). Zielfarbe als Akzent, Cream-Basis.
-7. **Texte kurz, sachlich, ohne KI-Ton.** Keine Ausrufe-Floskeln, nichts doppelt anzeigen. Deutsch zuerst, alle Strings in `src/i18n/`. Für Endnutzer schreiben, nicht für Trainer.
+7. **Texte kurz, sachlich, ohne KI-Ton.** Keine Ausrufe-Floskeln, nichts doppelt anzeigen. Deutsch zuerst, alle Strings in `src/i18n/`. Für Endnutzer schreiben, nicht für Trainer. Muskelgruppen behalten ihre Namen (Glute Max, Glute & Quad …), nie nach Übungen benennen. Tagesnamen = Körperbereich („Tag A – Po & Beine“), Zeile darunter = Belastung („Schwere Grundübungen“).
 8. **Kleine Wünsche klein umsetzen.** Keine unnötige Komplexität, keine Absicherungen für Daten, die es nicht gibt. Nebeneffekte aktiv nennen.
 9. **Vor jedem Push:** Lint, Typecheck, Vitest, Build grün. Bei Logik-Änderungen am Kern zusätzlich die betroffenen Szenario-Tests. Erst melden, wenn geprüft.
 10. **Keine Modell-Namen** in Commits, Code oder Dateien (nur im Chat).

@@ -36,6 +36,7 @@ function isProfile(v: unknown): v is Profile {
     Array.isArray(v.equipment) &&
     v.equipment.every(isStr) &&
     isObj(v.increments) &&
+    Object.values(v.increments).every((n) => n === null || (typeof n === 'number' && n > 0)) &&
     (v.lang === 'de' || v.lang === 'en') &&
     isStr(v.createdAt)
   );
@@ -46,6 +47,8 @@ function isEntry(v: unknown): v is Entry {
     isObj(v) &&
     isInt(v.cycle) &&
     isInt(v.week) &&
+    v.cycle >= 1 &&
+    v.week >= 1 &&
     isInt(v.day) &&
     isStr(v.slotId) &&
     isStr(v.exerciseId) &&

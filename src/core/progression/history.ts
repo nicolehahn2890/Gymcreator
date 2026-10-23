@@ -1,13 +1,16 @@
 // Vorwert einer Zeile. Port aus Peach (findLastExData), Regeln 1:1:
 //  - Vorwerte haengen an Uebung + Wdh.-Bereich, nicht am Platz im Plan.
 //  - Die laufende Woche zaehlt nie (nur fruehere Wochen).
+//  - Eintraege mit Wiederholungen gehen vor; nur wenn es keine gibt, zaehlt ein Eintrag mit nur Gewicht.
+//    Abweichung von Peach: Gewichte wandern hier in die Folgesaetze, eine Woche mit nur eingetipptem
+//    Gewicht (Uebung ausgelassen) wuerde sonst den echten Vorwert verdecken.
 //  1. gleicher Bereich aus dem aktuellen Zyklus,
 //  2. sonst gleicher Bereich aus dem zuletzt trainierten Zyklus davor,
 //  3. sonst der juengste Wert in einem anderen Bereich, nur zur Orientierung (kein Vergleich).
 //  Steht die Uebung an mehreren Tagen, gewinnt die eigene Zeile (gleiche Slot-ID) aus demselben Zyklus.
 // Peachs Partnerzeilen (3/4 Tage) entfallen: gleiche Slot-ID = gleiche Zeile.
 import type { Entry, RepRange } from '../model/types';
-import { entryOrder, type EntryIndex } from './entries';
+import { entryOrder, hasReps, type EntryIndex } from './entries';
 
 export interface PreviousQuery {
   cycle: number;
@@ -26,7 +29,9 @@ export interface PreviousResult {
 export function findPrevious(index: EntryIndex, q: PreviousQuery): PreviousResult | null {
   if (!q.exerciseId) return null;
   const weekStart = entryOrder({ cycle: q.cycle, week: q.week, day: 0 });
-  const before = (index.byExercise.get(q.exerciseId) ?? []).filter((e) => entryOrder(e) < weekStart);
+  const earlier = (index.byExercise.get(q.exerciseId) ?? []).filter((e) => entryOrder(e) < weekStart);
+  const withReps = earlier.filter((e) => hasReps(e.sets));
+  const before = withReps.length ? withReps : earlier;
 
   // Juengster passender Eintrag; bei gleichem Stand die eigene Zeile
   const latest = (match: (e: Entry) => boolean = () => true): Entry | undefined => {

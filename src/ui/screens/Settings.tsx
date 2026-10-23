@@ -1,11 +1,14 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
-import { DAY_COUNTS, GOAL_IDS, LEVELS, type Profile } from '../../core/model/types';
+import { DAY_COUNTS, GOAL_IDS, LEVELS, type DaysPerWeek, type Profile } from '../../core/model/types';
+import { followingWeek } from '../../core/progression/position';
+import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, num, text } from '../../i18n';
 import { createBackup, parseBackup, serializeBackup } from '../../storage/backup';
 import type { StoredData } from '../../storage/interface';
 import { Check } from '../components/Check';
 import { Sheet } from '../components/Sheet';
+import type { Position } from '../state/actions';
 import type { AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Settings.css';
@@ -14,7 +17,7 @@ import './Settings.css';
 const WEIGHTED = ['barbell', 'dumbbell', 'cable', 'smith'];
 const today = () => new Date().toISOString().slice(0, 10);
 
-export function Settings({ model }: { model: AppModel }) {
+export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
   const t = text.settings;
   const profile = model.profile;
   const goals = planData.goals.goals;
@@ -30,6 +33,14 @@ export function Settings({ model }: { model: AppModel }) {
   }, []);
 
   const save = (patch: Partial<Profile>) => void store.saveProfile({ ...profile, ...patch });
+
+  // Gilt ab der aktuellen Woche. Fielen dort Zeilen mit Werten weg, ab der folgenden; spaetere Wochen erben das.
+  const setDays = (days: DaysPerWeek) => {
+    save({ days });
+    const conflict = pausedSlotsWithValues(model.data.entries, pos.cycle, pos.week, model.plans[days]).length > 0;
+    const from = conflict ? followingWeek(planData.goals.progression, pos.cycle, pos.week) : pos;
+    void store.putWeek({ ...from, days });
+  };
   const backupText = () => serializeBackup(createBackup(model.data, today()));
 
   const copy = async () => {
@@ -48,7 +59,8 @@ export function Settings({ model }: { model: AppModel }) {
     a.href = url;
     a.download = `gymcreator-backup-${today()}.json`;
     a.click();
-    URL.revokeObjectURL(url);
+    // Safari bricht den Download ab, wenn die Adresse sofort freigegeben wird
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
 
   const startImport = () => {
@@ -66,7 +78,7 @@ export function Settings({ model }: { model: AppModel }) {
     save({ increments: value.trim() === '' || Number.isNaN(n) || n <= 0 ? rest : { ...rest, [eq]: n } });
   };
 
-  const used = new Set(model.data.entries.map((e) => e.exerciseId));
+  const used = new Set(model.data.entries.flatMap((e) => [e.exerciseId, e.baseExerciseId ?? '']));
 
   return (
     <main className="screen settings">
@@ -103,7 +115,7 @@ export function Settings({ model }: { model: AppModel }) {
       <h3 className="field-label settings-label">{t.days}</h3>
       <div className="segmented">
         {DAY_COUNTS.map((d) => (
-          <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => save({ days: d })}>
+          <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => setDays(d)}>
             {fmt(text.common.days, { n: d })}
           </button>
         ))}
@@ -141,6 +153,7 @@ export function Settings({ model }: { model: AppModel }) {
               className="input"
               inputMode="decimal"
               placeholder={num(exerciseData.increments[eq] ?? 0)}
+              key={`${eq}:${profile.increments[eq] ?? ''}`}
               defaultValue={profile.increments[eq] != null ? num(profile.increments[eq] ?? 0) : ''}
               onBlur={(e) => setIncrement(eq, e.target.value)}
             />

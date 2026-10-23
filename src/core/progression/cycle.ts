@@ -2,7 +2,7 @@
 // 1. gleiche Slot-ID im zuletzt trainierten Zyklus davor (Kategorie muss passen),
 // 2. sonst eine Uebung derselben Kategorie aus diesem Zyklus, erst gleicher Bereich, dann beliebig,
 //    bevorzugt vom selben Tag; pro Tag keine Uebung doppelt.
-// Massgeblich ist die Standard-Uebung ("nur diese Woche" zaehlt nicht). Nur Vorbelegung, gespeichert
+// Massgeblich ist die feste Uebung der Zeile ("nur diese Woche" zaehlt nicht). Nur Vorbelegung, gespeichert
 // wird erst beim Eintragen. Zeilen mit eigener Auswahl im Zielzyklus bleiben, ihre Uebungen gelten als vergeben.
 import type { CategoryId, Entry, Plan } from '../model/types';
 import { baseExercise } from './entries';

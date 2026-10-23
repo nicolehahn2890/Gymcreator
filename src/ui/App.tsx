@@ -82,7 +82,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
         onOpenSlot={(s) => setUi({ slot: s })}
         restEndsAt={ui.restEndsAt}
         onRest={(restEndsAt) => setUi({ restEndsAt })}
-        onBack={() => setUi({ day: null, slot: null })}
+        onBack={() => setUi({ day: null, slot: null, restEndsAt: null })}
       />
     );
   } else if (ui.tab === 'plan') {
@@ -90,7 +90,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
   } else if (ui.tab === 'progress') {
     content = <Progress model={model} pos={pos} />;
   } else if (ui.tab === 'settings') {
-    content = <Settings model={model} />;
+    content = <Settings model={model} pos={pos} />;
   } else {
     content = <Today model={model} cycle={pos.cycle} week={pos.week} onOpenDay={openDay} onGoToWeek={goToWeek} />;
   }
@@ -103,7 +103,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
         </p>
       )}
       {content}
-      <TabBar tab={ui.tab} onChange={(tab) => setUi({ tab, day: null, slot: null })} />
+      <TabBar tab={ui.tab} onChange={(tab) => setUi({ tab, day: null, slot: null, restEndsAt: null })} />
     </>
   );
 }

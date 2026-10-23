@@ -48,10 +48,16 @@ export function Progress({ model, pos }: Props) {
             {rows.map(({ row, list, latest }) => {
               const assisted = model.exercises.get(latest.exerciseId)?.assisted ?? false;
               const same = (e: Entry | undefined) => !!e && e.exerciseId === latest.exerciseId && e.repRange === latest.repRange;
-              const values = list.map((e) => (e && hasValues(e) ? parseWeight(combinedWeight(e.sets), assisted) : 0));
-              const max = Math.max(...values, 1);
-              const min = Math.min(...values.filter((v) => v > 0), max);
-              const sameValues = list.map((e, i) => (same(e) ? (values[i] ?? 0) : 0)).filter((v) => v > 0);
+              // Wert je Woche; null = kein Gewicht. 0 kg zaehlt nur bei Gegengewicht (ohne Hilfe = Bestwert).
+              const values = list.map((e) => {
+                if (!e || !hasValues(e)) return null;
+                const w = combinedWeight(e.sets);
+                return w === '' || (!assisted && parseWeight(w) <= 0) ? null : parseWeight(w, assisted);
+              });
+              const known = values.filter((v): v is number => v !== null);
+              const max = Math.max(...known, 1);
+              const min = Math.min(...known, max);
+              const sameValues = list.flatMap((e, i) => (same(e) && values[i] != null ? [values[i] ?? 0] : []));
               const first = sameValues[0] ?? 0;
               const last = sameValues[sameValues.length - 1] ?? 0;
               const gain = sameValues.length >= 2 ? (assisted ? first - last : last - first) : 0;
@@ -64,9 +70,10 @@ export function Progress({ model, pos }: Props) {
                   <p className="muted">{range(latest.repRange)}</p>
                   <div className="bars" aria-hidden="true">
                     {values.map((v, i) => {
-                      const score = assisted && v > 0 ? max + min - v : v;
-                      const height = v > 0 ? Math.max(8, Math.round((score / max) * 100)) : 0;
-                      const cls = !v ? '' : !same(list[i]) ? ' other' : i + 1 === pos.week ? ' current' : '';
+                      // Gegengewicht: weniger Hilfe = hoeherer Balken
+                      const score = v === null ? 0 : assisted ? max + min - v : v;
+                      const height = v === null ? 0 : Math.max(8, Math.round((score / max) * 100));
+                      const cls = v === null ? '' : !same(list[i]) ? ' other' : i + 1 === pos.week ? ' current' : '';
                       return (
                         <span key={i} className="bar">
                           <span className={`bar-fill${cls}`} style={{ height: `${height}%` }} />

@@ -39,7 +39,7 @@ export function createEntry(row: PlanRow, q: { cycle: number; week: number; day:
 export type ExerciseChange = 'set' | 'ask' | 'unchanged';
 
 /**
- * Was beim Waehlen einer Uebung passiert (Peach selEx): Rueckfrage "Nur diese Woche / Ab jetzt im Zyklus"
+ * Was beim Waehlen einer Uebung passiert (Peach selEx): Rueckfrage "Nur diese Woche / Ab jetzt"
  * nur ab Woche 2, wenn es eine vererbte Uebung gibt und eine andere gewaehlt wird. Keine Frage beim
  * Leeren, in Woche 1, ohne Vorgeschichte, bei der vererbten Uebung oder unveraenderter Auswahl.
  */

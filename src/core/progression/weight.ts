@@ -41,13 +41,14 @@ export function weightBounds(w: WeightInput): WeightBounds | null {
 
 /**
  * 1 = mehr Leistung, -1 = weniger, 0 = gleich oder unbekannt (leeres Feld gilt nie als Abstieg).
+ * 0 kg gilt nur bei assistierten Uebungen als Wert (ohne Hilfe = Bestleistung), sonst als unbekannt.
  * Zuerst zaehlt der Bestwert (obere Grenze, assistiert die untere), bei Gleichstand die zweite Grenze:
  * 45 -> "40-45" ist weniger (ein Teil der Saetze lief mit 40), "40-45" -> 45 ist mehr.
  */
 export function cmpWeight(current: WeightInput, previous: WeightInput, assisted = false): -1 | 0 | 1 {
   const c = weightBounds(current);
   const p = weightBounds(previous);
-  if (!c || !p || c.hi <= 0 || p.hi <= 0) return 0;
+  if (!c || !p || (!assisted && (c.hi <= 0 || p.hi <= 0))) return 0;
   const cBest = assisted ? c.lo : c.hi;
   const pBest = assisted ? p.lo : p.hi;
   if (cBest !== pBest) return (assisted ? cBest < pBest : cBest > pBest) ? 1 : -1;
