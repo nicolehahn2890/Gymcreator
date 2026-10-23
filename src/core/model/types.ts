@@ -230,7 +230,7 @@ export interface Week {
   cycle: number;
   week: number;
   days: DaysPerWeek;
-  /** Kurz-Modus dieser Woche je Slot-ID: gewaehlte Zeit und gekuerzte Satzzahl. Gilt nur fuer diese Woche. */
+  /** Kurz-Modus dieser Woche je Slot-ID: Obergrenze der Zeit (short.minutes) und Saetze (volle Saetze, 0 = heute ausgelassen). */
   short?: Record<string, ShortSlot>;
 }
 

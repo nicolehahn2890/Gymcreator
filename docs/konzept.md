@@ -169,7 +169,7 @@ Angepasst:
 
 **Später (nur wenn Store läuft):** Cloud-Backup/Account (DSGVO-Aufwand!), Apple Health/Google Fit, Trainer-Modus (Plan an jemanden schicken), Spanisch, Watch/Widgets.
 
-**Bewusst nicht:** Ernährungs-Tracking, Social Feed, Streak-Druck/Schuld-Mechaniken, KI-Chat-Coach (API-Kosten, Datenschutz, Haftung), Supersätze als Standard.
+**Bewusst nicht:** Ernährungs-Tracking, Social Feed, Streak-Druck/Schuld-Mechaniken, KI-Chat-Coach (API-Kosten, Datenschutz, Haftung), Supersätze (Nicoles Entscheidung 23.10.2026).
 
 ---
 

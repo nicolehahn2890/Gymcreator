@@ -16,7 +16,7 @@ export interface RowContext {
   isAssisted: (exerciseId: string) => boolean;
   /** Aus dem Zyklus davor uebernommene Uebung (carryOver), falls vorhanden. */
   carried: (slotId: string) => string | undefined;
-  /** Kurz-Modus dieser Woche: gekuerzte Satzzahl je Slot-ID (0 = heute ausgelassen). */
+  /** Kurz-Modus dieser Woche: Saetze je Slot-ID (volle Saetze, 0 = heute ausgelassen). */
   short?: Record<string, number>;
 }
 
@@ -33,7 +33,7 @@ export interface RowState {
   extraSets: number;
   autoExtra: number;
   totalSets: number;
-  /** Saetze fuer "fertig": im Kurz-Modus weniger, die uebrigen sind freiwillig. */
+  /** Saetze fuer "fertig"; im Kurz-Modus die dort gespeicherte Zahl, Saetze darueber sind freiwillig. */
   targetSets: number;
   /** Kurz-Modus: Uebung heute ausgelassen (kann trotzdem eingetragen werden, dann mit allen Saetzen). */
   skipped: boolean;

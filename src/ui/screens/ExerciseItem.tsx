@@ -171,7 +171,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                   const prevSet = prev?.sets[i];
                   const zone = timed ? null : repZone(set.r, st.repRange);
                   const filled = set.r !== null && set.r > 0;
-                  // Kurz-Modus: Saetze ueber der gekuerzten Zahl sind freiwillig
+                  // Saetze ueber dem Ziel fuer "fertig" (targetSets) sind freiwillig
                   const optional = i >= st.targetSets;
                   const aria = (field: string) => fmt(optional ? t.optionalSetAria : t.setAria, { n: i + 1, field });
                   return (
