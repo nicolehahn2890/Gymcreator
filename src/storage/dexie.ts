@@ -40,9 +40,14 @@ class GymDb extends Dexie {
 }
 
 const weekKey = (w: Pick<Week, 'cycle' | 'week'>) => `${w.cycle}:${w.week}`;
-const strip = <T extends object>(row: T & { key?: string; id?: string }, drop: 'key' | 'id'): T => {
-  const copy = { ...row };
-  delete copy[drop];
+const withoutKey = <T extends object>(row: T & { key: string }): T => {
+  const copy: T & { key?: string } = { ...row };
+  delete copy.key;
+  return copy;
+};
+const withoutId = <T extends object>(row: T & { id: string }): T => {
+  const copy: T & { id?: string } = { ...row };
+  delete copy.id;
   return copy;
 };
 
@@ -64,9 +69,9 @@ export class DexieStorage implements Storage {
       db.meta.get('schema'),
     ]);
     const data: StoredData = {
-      profile: profileRow ? strip(profileRow, 'id') : null,
-      entries: entries.map((e) => strip(e, 'key')),
-      weeks: weeks.map((w) => strip(w, 'key')),
+      profile: profileRow ? withoutId(profileRow) : null,
+      entries: entries.map((e) => withoutKey(e)),
+      weeks: weeks.map((w) => withoutKey(w)),
       notes,
       custom,
     };
