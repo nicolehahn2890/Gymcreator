@@ -152,7 +152,7 @@ Grundlage ist das Design System **Rexy** (Neobrutalism, übernommen am 23.10., A
 - **Palette** (seit 23.10. aus Florians Marketing-Kit): Pink `#FF199B` (Haut der Rexe), Cyan `#00DDE8`, Neongelb `#F5FF00`, dazu Lime, Violett und Koralle. Tagesfarben A Pink / B Cyan / C Gelb / D Lime / E Violett. Kategorie- und Fortschrittsfarben aus Rexy.
 - **Kein Pfirsich.** Marke: Wortmarke als gelbes Schild mit pinkem Versatz. Die drei Ziele haben je einen Rex: in der Zielwahl das Motiv im Ink-Rahmen, in den Einstellungen freigestellt ohne Hintergrund.
 - **Zielfarbe als Akzent:** V-Form Cyan, Sanduhr Gelb, Apfel Pink (Feld `accent` in `data/goals.json`, leicht änderbar).
-- **Hintergrund:** Cream `#FDF9E9` für alle.
+- **Hintergrund:** Cream `#FFF9E5` für alle.
 - **Dark Mode:** nicht im MVP (wie Peach), aber fest für später eingeplant (Entscheidung 23.10.). Weil alle Farben Tokens sind, kommt er als eigener Token-Satz – Store-Nutzer fragen danach.
 
 ### 3.9 Weitere Funktionen – priorisiert
@@ -350,8 +350,9 @@ Fakten, die den Plan beeinflussen:
 22. **Jede normale Einheit dauert 60–90 Minuten** (23.10.)
 23. **Keine feste Grenze für Sätze oder Übungen je Einheit** (23.10.): Die geschätzten 18 Sätze / 7 Übungen waren nicht belegt. Es gelten 60–90 Minuten und höchstens 10 anteilige Sätze je Muskel und Einheit
 24. **Keine Erfahrungsstufen** (23.10.): ein Plan je Ziel und Tagesanzahl für alle, ohne Hinweis auf eine Zielgruppe
-25. **Design System Rexy** (23.10.): Cream `#FDF9E9`, Zielfarben V-Form Cyan / Sanduhr Gelb / Apfel Pink, Wortmarke im Kopf, Rexe in Zielwahl und Einstellungen (dort freigestellt), Stand-Pillen einheitlich in der Tagesfarbe, aktuelle Woche im Fortschritt Cyan (bei V-Form Pink)
+25. **Design System Rexy** (23.10.): Cream-Basis (Werte seit 27 aus dem Marketing-Kit), Zielfarben V-Form Cyan / Sanduhr Gelb / Apfel Pink, Wortmarke im Kopf, Rexe in Zielwahl und Einstellungen (dort freigestellt), Stand-Pillen einheitlich in der Tagesfarbe, aktuelle Woche im Fortschritt Cyan (bei V-Form Pink)
 26. **App heißt Rexy** und hat 3 Reiter (23.10.): "Heute" heißt jetzt "Plan", der frühere Reiter "Plan" (zeigte dasselbe) ist weg. Die Übungsliste der Woche klappt auf der Startseite bei Bedarf auf ("Übungen anzeigen"), mit Tage-Wahl für diese Woche und Zyklus-Hinweis; Ziel und "Plan neu einrichten" nur noch in den Einstellungen
+27. **Florians Marketing-Kit gilt für Design System und App** (23.10.): Farben (Pink `#FF199B`, Cyan `#00DDE8`, Gelb `#F5FF00`, Lime `#C8FF00`, Violett `#9B5CFF`, Koralle `#FF714F`, Ink `#101010`, Cream `#FFF9E5`) und Schriften Bowlby One SC + Inter; App-Icon ist der Rex-Kopf; Rex-Reaktionen und -Posen als `RexMoment` bei fertiger Woche, Woche 12 und leerem Fortschritt
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 
