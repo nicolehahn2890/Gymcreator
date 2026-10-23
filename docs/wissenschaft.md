@@ -1,6 +1,6 @@
 # Trainingswissenschaftliche Grundlage
 
-Stand: 23.10.2026 (Volumen-Modell neu). Diese Datei begründet die Zahlen in `data/goals.json` (Wochenziele je Muskel, Grenzen, Wdh.-Bereiche, Stufen) und `data/templates.json` (Tagesvorlagen). Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
+Stand: 23.10.2026 (Volumen-Modell neu, Quellen online geprüft). Diese Datei begründet die Zahlen in `data/goals.json` (Wochenziele je Muskel, Grenzen, Wdh.-Bereiche, Stufen) und `data/templates.json` (Tagesvorlagen). Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
 
 ## Grundsatz
 
@@ -8,35 +8,39 @@ Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie mögli
 
 ## Regeln und ihre Evidenz
 
-| Parameter | Regel in Gymcreator | Evidenz (Kurzform) |
-|---|---|---|
-| Wochenvolumen je Muskel | Je Ziel und Stufe eine **Zielspanne pro Muskel** (`targets`), anteilig gezählt (direkte Übung 1, Mitarbeit 0,5, z. B. Kniebeuge = Oberschenkel 1 + Po 0,5). Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel/Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 6–14, Nebenmuskeln 2–7 (Erhalt bis leichter Aufbau), unerwünschte 0 | Dosis-Wirkung mit abnehmendem Grenznutzen: Schoenfeld 2017 (≥ 10 > < 5 Sätze/Woche), Baz-Valle 2022 (12–20 für Trainierte), Pelland 2026 (anteilige Zählung erklärt die Daten am besten, Zuwachs flacht ab). Erhalt mit etwa einem Drittel des Aufbauvolumens (Bickel 2011) |
-| Mehr Tage | Mehr Tage verteilen **ungefähr dasselbe Wochenvolumen** auf kürzere Einheiten (+ 0–10 %), statt es zu verdoppeln: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen | Bei gleichem Volumen bringt mehr Frequenz kaum etwas (Schoenfeld 2019, Pelland 2026). Der Vorteil vieler Tage ist die kürzere, frischere Einheit |
-| Grenzen je Einheit | Höchstens **10 anteilige Sätze je Muskel und Einheit**. Fortgeschritten 3–7 Übungen und **max. 18 Sätze** (ca. 55–60 Min.), Einsteiger 3–6 Übungen und max. 12 Sätze. **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Vorgabe 23.10.2026: Vielfalt statt mehrerer gleichartiger Übungen) | Remmert 2025 (Preprint): ab ~11 anteiligen Sätzen pro Einheit kein Zusatznutzen. 18 Sätze sind ein Praxiswert für Dauer und Qualität der letzten Sätze |
-| Frequenz | Prio-3-Kategorien mindestens 2× pro Woche, Hauptmuskel 3–4× | Vor allem, um die Grenze je Einheit einzuhalten; bei gleichem Volumen kein eigener Effekt (Schoenfeld 2019) |
-| Wdh.-Bereiche | **6–8** schwere Grundübung (je Hauptmuskel 1× pro Woche), **6–10** weitere Grundübungen, **8–12** Maschinen, Kabel, Isolation, **12–15** Isolation für kleine Muskeln und Pump | Hypertrophie über ~6–30 Wdh. gleich, wenn nah am Versagen (Schoenfeld 2017 Last-Meta, Lopez 2021); Kraft profitiert von schwerer Last (Schoenfeld 2021). 4–8 ist entfallen: kaum mehr Muskel, höheres Gelenk- und Technikrisiko |
-| Wellen über die Woche | Der Hauptmuskel bekommt an verschiedenen Tagen verschiedene Bereiche: z. B. Apfel 3 Tage Po **6–8 / 8–12 / 12–15**, V-Form Rücken 6–8 und 6–10 an einem Tag, 8–12 am anderen. Jeder Fortgeschrittenen-Plan hat beim Hauptmuskel mindestens 3 Bereiche (Test) | Wellenförmige (DUP) und lineare Periodisierung bringen gleich viel Muskel (Grgic 2017), DUP etwas mehr Kraft (Rhea 2002). Vorteil hier: schwere Last für Kraft, leichtere Sätze für Volumen ohne zusätzliche Gelenkbelastung |
-| Warum 8–12 statt 10–12 | Gewichtssprünge an Maschinen und Kabeln sind groß (eine Stufe ist oft 5–10 %). Ein Bereich von 4 Wdh. fängt einen Sprung auf, ohne den Bereich zu verlassen | Praxis der doppelten Progression, keine Studienfrage |
-| Intensität | 0–3 Wdh. in Reserve, schwere Grundübung 2–4. Hinweis im Onboarding, kein Pflichtfeld | Robinson 2024 (näher am Versagen = etwas mehr Hypertrophie, Kraft unverändert), Refalo 2023 (Versagen vs. nicht: ES 0,19, trivial) |
-| Übungsauswahl | **Frei je Muskelgruppe** (Nicoles Vorgabe 23.10.2026), 200 Übungen, jede Kategorie mindestens 7. **Stern** = beste Wahl fürs Ziel, mit **Stretch-Bias** (Last in der gedehnten Position: sitzender Beinbeuger, RDL, Überzug, Schrägbank-Flys, Kabel-Seitheben, Überkopf-Trizeps, Preacher Curls). Volle Bewegung, keine "Partials only" | Maeo 2021 (sitzender > liegender Beinbeuger, ~14 % vs. ~9 %), Pedrosa 2022, Kassiano 2023, Maeo 2023 (Trizeps Überkopf ~1,4×), Wolf 2023 Meta, Wolf 2025 RCT, Strey 2026 Meta (lange > kurze Partials, ES 0,28) |
-| Po | Hip Thrust **und** tiefe kniedominante Übung: gleich gut für Glute Max, tiefe Kniebeuge zusätzlich für Adduktoren. Glute Med wächst durch Grundübungen nicht → direkte Abduktion. Adduktor magnus ist Hüftstrecker → eigene Kategorie | Plotkin 2023 (HT = SQ für Glute Max; SQ > HT für Quads/Adduktoren; Glute Med/Min ~kein Wachstum bei beiden), Kubo 2019. **Keine Hypertrophie-Studie zu Glute-Med-Abduktion** – Annahme aus Anatomie/EMG |
-| V-Form / Taille | Seitheben für Schulterbreite (belegt), vertikaler Zug für Lat (EMG-basiert). "Keine schweren Seitbeugen" ist Praxis-Vorsicht, keine Studienlage. Taille ist vor allem Körperfett | Larsen 2025 (Seitheben +3–5 % in 8 Wochen). Oblique-Training → dickere Taille: **kein Trial** |
-| Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne und Zeilen-Hinweis (`focus`) hinterlegt | Chaves 2020 (Schrägbank, klein, Untrainierte), Maeo 2023, Pedrosa 2023, Kassiano 2025 |
-| Volumen-Steigerung | Konservativ: Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel) | Enes 2024 (MSSE 56(3):553–563): mehr Sätze brachten Kraft, Hypertrophie-Unterschied nicht signifikant; Autoregulation des Volumens ≈ festes Volumen (Remmert, Preprint) |
-| Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht (Hinweis mit Vorschlag in der Übung) | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst; Autoregulation ≈ fest (Greig 2021, Larsen 2021) |
-| Einsteiger | **Nur 3 oder 4 Tage** (5 Tage ergäben Einheiten mit 6 Sätzen, das lohnt den Weg ins Studio nicht; Entscheidung 23.10.2026). Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen (meist Bauch, zweite Isolation, Arme). Ergebnis: 24–34 Sätze pro Woche, 6–10 je Einheit, etwa 55–65 % des Fortgeschrittenen-Volumens. Jeder Zielmuskel bekommt mindestens 4 anteilige Sätze pro Woche auf 2 Einheiten | Einsteiger wachsen schon mit wenig Volumen und jeder Last (Lopez 2021, Currier 2023: mehrere Sätze > ein Satz). ACSM 2009: Einsteiger 8–12 Wdh., 1–3 Sätze |
-| Deload | Standard: keine. Opt-in in den Einstellungen (noch nicht gebaut) | Coleman 2024 (n = 39 Trainierte, 9 Wochen: Hypertrophie gleich, Kraft eher ohne Deload-Woche), Pancar 2026 (Untrainierte: kein Unterschied) |
-| Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Praxis (Peach), keine Studienfrage |
+Spalte **Art**: **belegt** = von Studien gestützt; **teilweise** = die Richtung ist belegt, die konkreten Zahlen sind eigene Festlegung; **Festlegung** = Praxiswert oder Entscheidung, keine Studie. Quellen am 23.10.2026 online geprüft (Status in der Quellenliste).
+
+| Parameter | Regel in Gymcreator | Art | Evidenz (Kurzform) |
+|---|---|---|---|
+| Wochenvolumen je Muskel | Je Ziel und Stufe eine **Zielspanne pro Muskel** (`targets`), anteilig gezählt (direkte Übung 1, Mitarbeit 0,5, z. B. Kniebeuge = Oberschenkel 1 + Po 0,5). Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel/Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0 | teilweise | Mehr Volumen bringt mehr, mit abnehmendem Grenznutzen: Schoenfeld 2017 (+0,37 % Zuwachs je Wochensatz; der Vergleich ≥ 10 vs. < 5 Sätze ist nur ein Trend, p = 0,074), Baz-Valle 2022 (12–20 Sätze, aber nur junge trainierte Männer, 6 Studien), Pelland 2026 (anteilige Zählung erklärt die Daten am besten). Erhalt mit wenig Volumen: Bickel 2011 (bei Jungen hielt schon 1/9 der Dosis die Muskeln, bei Älteren reichte 1/3 nicht). **Die konkreten Spannen sind Festlegung**, ebenso die Übertragung "Nebenmuskel braucht wenig" |
+| Mehr Tage | Mehr Tage verteilen **ungefähr dasselbe Wochenvolumen** auf kürzere Einheiten (+ 0–10 %): Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen | teilweise | Bei gleichem Volumen kein nachweisbarer Frequenz-Effekt auf die Hypertrophie (Schoenfeld 2019, Pelland 2026; für Kraft ein kleiner). Die + 0–10 % sind Festlegung |
+| Grenzen je Einheit | Höchstens **10 anteilige Sätze je Muskel und Einheit**. Fortgeschritten 3–7 Übungen und **max. 18 Sätze** (ca. 55–60 Min.), Einsteiger 3–6 Übungen und max. 12 Sätze. **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Vorgabe 23.10.2026) | teilweise | Remmert 2025 (Preprint): ab ~11 anteiligen Sätzen pro Einheit kein **nachweisbarer** Zusatznutzen; 10 ist davon abgeleitet. 18/12 Sätze und 7/6 Übungen sind Festlegung (Dauer, Qualität der letzten Sätze) |
+| Frequenz | Prio-3-Kategorien mindestens 2× pro Woche, Hauptmuskel 3–4× | Festlegung | Organisatorisch, damit die Grenze je Einheit hält. Ein eigener Effekt ist nicht belegt (Schoenfeld 2019) |
+| Wdh.-Bereiche | **6–8** schwere Grundübung (je Hauptmuskel 1× pro Woche), **6–10** weitere Grundübungen, **8–12** Maschinen, Kabel, Isolation, **12–15** Isolation für kleine Muskeln | teilweise | Hypertrophie über ein breites Lastspektrum gleich, wenn nah am Versagen (Schoenfeld 2017 Last-Meta, Lopez 2021); Kraft besser mit schwerer Last (Lopez 2021, Schoenfeld 2021). Die Bereichsgrenzen, ihre Zuordnung und "4–8 entfällt" sind Festlegung |
+| Wellen über die Woche | Der Hauptmuskel bekommt an verschiedenen Tagen verschiedene Bereiche: z. B. Apfel 3 Tage Po **6–8 / 8–12 / 12–15**. Jeder Fortgeschrittenen-Plan hat beim Hauptmuskel mindestens 3 Bereiche (Test) | Festlegung | Für die Hypertrophie kein Vorteil gegenüber gleichbleibenden Bereichen (Grgic 2017, d = −0,02). Mehr Kraft mit Wellen nur in einer kleinen Studie (Rhea 2002, 20 Männer). Gewählt für Abwechslung und weil schwere und leichte Tage sich gut verteilen |
+| Warum 8–12 statt 10–12 | Gewichtssprünge an Maschinen und Kabeln sind groß (eine Stufe ist oft 5–10 %). Ein Bereich von 4 Wdh. fängt einen Sprung auf | Festlegung | Praxis der doppelten Progression |
+| Intensität | 0–3 Wdh. in Reserve, schwere Grundübung 2–4. Hinweis im Onboarding, kein Pflichtfeld | teilweise | Robinson 2024 (Nähe zum Versagen wirkt auf die Hypertrophie, kaum auf die Kraft), Refalo 2023 (Versagen vs. nicht: ES 0,19, trivial). Die Zahlen 0–3/2–4 sind Festlegung |
+| Übungsauswahl | **Frei je Muskelgruppe** (Nicoles Vorgabe 23.10.2026), 200 Übungen, jede Kategorie mindestens 7. **Stern** = beste Wahl fürs Ziel, mit **Stretch-Bias** (z. B. sitzender Beinbeuger, RDL, Schrägbank-Flys, Seitheben, Überkopf-Trizeps, Preacher Curls). Volle Bewegung, keine "Partials only" | teilweise | Belegt: sitzender > liegender Beinbeuger (Maeo 2021, +14 % vs. +9 %), Trizeps über Kopf (Maeo 2023, ~1,4–1,5-fach), gedehnte Teilbewegung bei Untrainierten (Pedrosa 2022 Beinstrecker, Kassiano 2023 Waden), lange > kurze Partials (Strey 2026); bei Trainierten lange Partials = volle Bewegung (Wolf 2025). **Ohne eigene Studie:** Sterne für RDL und Schrägbank-Flys; Seitheben am Kabel und mit Kurzhantel wirken gleich (Larsen 2025), beide haben den Stern. Die Zahl 200 und "mindestens 7" sind Festlegung |
+| Po | Hip Thrust **und** tiefe kniedominante Übung: gleich gut für Glute Max, tiefe Kniebeuge zusätzlich für Adduktoren. Glute Med wächst durch Grundübungen nicht → direkte Abduktion. Adduktor magnus ist Hüftstrecker → eigene Kategorie | teilweise | Plotkin 2023 (34 Untrainierte: Hip Thrust = Kniebeuge für Glute Max; Kniebeuge besser für Oberschenkel und Adduktoren; Glute Med/Min wuchsen kaum), Kubo 2019 (tiefe vs. halbe Kniebeuge: Glute Max +6,7 % vs. +2,2 %). **Keine Hypertrophie-Studie zur Abduktion** – Annahme aus Anatomie/EMG |
+| V-Form / Taille | Seitheben für Schulterbreite, vertikaler Zug für den Lat. "Keine schweren Seitbeugen" ist Praxis-Vorsicht. Taille ist vor allem Körperfett | teilweise | Larsen 2025 (Seitheben +3,3–4,6 % in 8 Wochen, ohne Kontrollgruppe). Lat-Zug und Seitbeugen: keine Hypertrophie-Studie (EMG bzw. Annahme) |
+| Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne und Zeilen-Hinweis (`focus`) | teilweise | Chaves 2020 (Schrägbank nur an 1 von 3 Messstellen überlegen, Untrainierte), Maeo 2023, Pedrosa 2023 und Kassiano 2025 (Preacher mehr distal, Schrägbank-Curl mehr proximal; Untrainierte) |
+| Volumen-Steigerung | Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel) | Festlegung | Gestützt, aber nicht belegt: Enes 2024 (mehr Sätze brachten Kraft, Hypertrophie nicht signifikant, p = 0,067); Remmert (Preprint, nur Bizeps, 34 Trainierte): Autoregulation = festes Volumen |
+| Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht | teilweise | Last- und Wdh.-Progression gleichwertig (Plotkin 2022). Die doppelte Progression selbst hat keinen eigenen RCT |
+| Einsteiger | **Nur 3 oder 4 Tage** (5 Tage ergäben Einheiten mit 6 Sätzen; Entscheidung 23.10.2026). Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen. 24–34 Sätze pro Woche, 6–10 je Einheit; jeder Zielmuskel mindestens 4 anteilige Sätze pro Woche auf 2 Einheiten | teilweise | ACSM 2009: Einsteiger 1–3 Sätze, 8–12 Wdh. Jede Last wirkt, wenn nah am Versagen (Lopez 2021). Mehrere Sätze besser als einer (Currier 2023, nicht speziell Einsteiger). 2 Sätze, 55–65 % des Volumens und die Mindestzahl 4 sind Festlegung |
+| Deload | Standard: keine. Opt-in (noch nicht gebaut) | belegt | Coleman 2024 (39 Trainierte: Hypertrophie gleich, Kraft eher ohne; der Deload war eine Woche komplette Pause), Pancar 2026 (19 untrainierte Männer, Deload in Woche 4 und 8: kein Unterschied) |
+| Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Festlegung | Praxis (Peach) |
 
 ## Korrekturen und Vorbehalte aus der Recherche
 
-- Pelland et al. ist seit Dez. 2025 begutachtet (Sports Med 2026;56(2):481–505). Die Zahlen "4 Sätze Minimum / ~31 Sätze Obergrenze" stammen aus dem Preprint 2024 und Sekundärquellen, nicht aus dem Endtext.
-- Remmert (Grenze pro Einheit) und die Volumen-Autoregulation sind Preprints. Gymcreator bleibt mit 10 anteiligen Sätzen bewusst darunter.
-- Die Zielspannen sind eine begründete Festlegung aus den Metaanalysen, keine Werte aus einer einzelnen Studie. Menschen reagieren individuell sehr unterschiedlich; deshalb gibt es den Auto-Zusatzsatz bei Stillstand.
-- Lange Partials sind vor allem bei Untrainierten und Einzelgelenk-Übungen überlegen; bei Trainierten gleich volle ROM. Deshalb "Stretch-Bias", nicht "Partials".
-- Glute-Med-Abduktion und Oblique/Taille beruhen auf Anatomie/EMG, nicht auf Hypertrophie-Studien.
-- Doppelte Progression hat keinen eigenen RCT; sie ist die praktikable Umsetzung der belegten Gleichwertigkeit von Last- und Wdh.-Progression.
-- Die Apfel-Pläne sind **nicht** mehr Nicoles Peach-Plan (P3/P4). Der ist ihr persönlicher Plan mit deutlich mehr Volumen; für Gymcreator gilt das Modell oben (Entscheidung 23.10.2026).
+- **Prüfung 23.10.2026:** Alle Quellen online über PubMed, PMC und Verlagsseiten gesucht. Direkte Abrufe waren aus der Arbeitsumgebung gesperrt; geprüft wurde über die Suchtreffer. Bei Schoenfeld 2017 (Volumen) und Kubo 2019 stammen die genauen Zahlen aus Sekundärquellen.
+- Korrigiert: Schoenfeld 2017 belegt den Zuwachs je Satz, der Vergleich ≥ 10 vs. < 5 ist nur ein Trend. Bickel 2011 belegt "ein Drittel reicht zum Erhalt" nicht allgemein (bei Jungen reichte 1/9, bei Älteren 1/3 nicht). Lopez 2021 belegt "jede Last", nicht "wenig Volumen". Larsen 2025 stützt keinen Vorrang für Kabel-Seitheben. "Greig 2021" (Autoregulation) ist ein Konzeptpapier ohne Ergebnisvergleich und ist entfernt.
+- Remmert (Grenze pro Einheit) und die Volumen-Autoregulation sind Preprints.
+- Der ACSM Position Stand von 2009 hat laut Recherche seit März 2026 einen Nachfolger (Phillips et al., Med Sci Sports Exerc 2026, Übersicht über Reviews). **Noch nicht gelesen und nicht eingearbeitet.**
+- Vereinfachung im Muskelmodell: Die Kniebeuge zählt für den Po nur 0,5, obwohl Plotkin 2023 und Kubo 2019 eher für eine volle Anrechnung beim Glute Max sprechen. Das Po-Volumen bei Apfel und Sanduhr ist dadurch eher unterschätzt (vorsichtige Seite).
+- Viele Studien betreffen Untrainierte, junge Männer oder einzelne Muskeln. Die Übertragung auf andere Gruppen ist Annahme.
+- Die Zielspannen sind eine Festlegung aus den Metaanalysen, keine Werte aus einer einzelnen Studie. Menschen reagieren individuell sehr unterschiedlich; deshalb gibt es den Auto-Zusatzsatz bei Stillstand.
+- Lange Partials sind vor allem bei Untrainierten und Einzelgelenk-Übungen überlegen; bei Trainierten gleich volle Bewegung. Deshalb "Stretch-Bias", nicht "Partials".
+- Die Apfel-Pläne sind **nicht** Nicoles Peach-Plan (P3/P4). Der ist ihr persönlicher Plan mit deutlich mehr Volumen; für Gymcreator gilt das Modell oben (Entscheidung 23.10.2026).
 
 ## Verifizierte Volumen (aus `data/`, geprüft mit `scripts/verify-plan-data.mjs`)
 
@@ -86,35 +90,38 @@ Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich) druckt `node scrip
 
 ## Quellen
 
-1. Pelland JC, Remmert JF, Robinson ZP, Hinson SR, Zourdos MC. Sports Med 2026;56(2):481–505 (online 4.12.2025). https://link.springer.com/article/10.1007/s40279-025-02344-w
-2. Remmert JF et al. "Is There Too Much of a Good Thing?" SportRxiv 2025 (Preprint). https://sportrxiv.org/index.php/server/preprint/view/537
-3. Remmert JF et al. Set-volume autoregulation, SportRxiv (Preprint). https://sportrxiv.org/index.php/server/preprint/view/1108
-4. Schoenfeld BJ, Ogborn D, Krieger JW. J Sports Sci 2017;35(11):1073–1082 (Dosis-Wirkung Wochenvolumen).
-5. Baz-Valle E, Balsalobre-Fernández C, Alix-Fages C, Santos-Concejero J. J Hum Kinet 2022;81:199–210.
-6. Schoenfeld BJ, Grgic J, Krieger J. J Sports Sci 2019;37(11):1286–1295 (Frequenz, volumen-gleich).
-7. Lopez P et al. Med Sci Sports Exerc 2021;53(6):1206–1216 (Last und Hypertrophie). https://jyx.jyu.fi/handle/123456789/75929
-8. Robinson ZP et al. Sports Med 2024;54:2209–2231. https://link.springer.com/article/10.1007/s40279-024-02069-2
-9. Refalo MC et al. Sports Med 2023;53:649–665. https://pmc.ncbi.nlm.nih.gov/articles/PMC9935748
-10. Enes A et al. Med Sci Sports Exerc 2024;56(3):553–563. https://pubmed.ncbi.nlm.nih.gov/37796222/
-11. Coleman M et al. PeerJ 2024;12:e16777. https://peerj.com/articles/16777
-12. Wolf M et al. Int J Strength Cond 2023;3(1) (Meta ROM). https://journal.iusca.org/index.php/Journal/article/view/182
-13. Wolf M et al. PeerJ 2025;13:e18904 (RCT lange Partials, Trainierte). https://peerj.com/articles/18904/
-14. Strey B, Irigoyen A, McMahon G, Pinto RS. Sport Sci Health 2026;22(1). https://link.springer.com/article/10.1007/s11332-025-01586-5
-15. Maeo S et al. Med Sci Sports Exerc 2021;53(4):825–837 (sitzender vs. liegender Beinbeuger).
-16. Maeo S et al. Eur J Sport Sci 2023;23(7):1240–1250 (Trizeps Überkopf). https://pubmed.ncbi.nlm.nih.gov/35819335/
-17. Pedrosa GF et al. Eur J Sport Sci 2022 (Beinstrecker, gedehnte Teilbewegung).
-18. Pedrosa GF et al. Sports 2023;11(2):39 (Bizeps ROM). https://www.mdpi.com/2075-4663/11/2/39
-19. Kassiano W et al. Int J Sports Med 2025 (Preacher vs. Schrägbank-Curls). https://www.thieme-connect.com/products/ejournals/abstract/10.1055/a-2517-0509
-20. Plotkin DL et al. Front Physiol 2023;14:1279170 (Hip Thrust vs. Kniebeuge). https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1279170/full
-21. Kubo K et al. Eur J Appl Physiol 2019 (tiefe vs. halbe Kniebeuge). https://highfit.com.br/wp-content/uploads/2019/06/KEITARO-KUBO-2019.pdf
-22. Plotkin DL et al. PeerJ 2022 (Last- vs. Wdh.-Progression). https://www.researchgate.net/publication/364069602
-23. Larsen S et al. Front Physiol 2025 (Seitheben). https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12277279/
-24. Chaves SFN et al. Int J Exerc Sci 2020;13(6) (Schrägbank, obere Brust). https://digitalcommons.wku.edu/ijes/vol13/iss6/12
-25. Currier BS et al. Br J Sports Med 2023;57:1211–1220. https://pmc.ncbi.nlm.nih.gov/articles/PMC10579494/
-26. Pancar et al. 2026, Sci Rep (Deload, Untrainierte). Registrierung: https://clinicaltrials.gov/study/NCT06825052
-27. Bickel CS, Cross JM, Bamman MM. Med Sci Sports Exerc 2011;43(7):1177–1187 (Erhalt mit reduziertem Volumen).
-28. Grgic J, Mikulic P, Podnar H, Pedisic Z. PeerJ 2017;5:e3695 (lineare vs. wellenförmige Periodisierung, Hypertrophie).
-29. Rhea MR, Ball SD, Phillips WT, Burkett LN. J Strength Cond Res 2002;16(2):250–255 (wellenförmige Periodisierung, Kraft).
-30. American College of Sports Medicine. Med Sci Sports Exerc 2009;41(3):687–708 (Position Stand Krafttraining).
-31. Schoenfeld BJ, Grgic J, Ogborn D, Krieger JW. J Strength Cond Res 2017;31(12):3508–3523 (Last-Meta: niedrige vs. hohe Last).
-32. Schoenfeld BJ, Grgic J, Van Every DW, Plotkin DL. Sports 2021;9(2):32 (Wiederholungs-Kontinuum: Kraft, Hypertrophie, Ausdauer).
+Status nach der Online-Prüfung am 23.10.2026: **bestätigt** (gefunden, stützt die Aussage), **korrigiert** (Angabe oder Aussage angepasst), **Preprint** (nicht begutachtet).
+
+1. Pelland JC, Remmert JF, Robinson ZP, Hinson SR, Zourdos MC. Sports Med 2026;56(2):481–505 (online 4.12.2025), PMID 41343037. **bestätigt.** https://link.springer.com/article/10.1007/s40279-025-02344-w
+2. Remmert JF et al. "Is There Too Much of a Good Thing?" SportRxiv 2025, DOI 10.51224/SRXIV.537. **Preprint, bestätigt.** https://sportrxiv.org/index.php/server/preprint/view/537
+3. Remmert JF et al. The Effect of Set Volume Autoregulation on Hypertrophy. SportRxiv. **Preprint, bestätigt** (34 Trainierte, nur Bizepscurl). https://sportrxiv.org/index.php/server/preprint/view/1108
+4. Schoenfeld BJ, Ogborn D, Krieger JW. J Sports Sci 2017;35(11):1073–1082, DOI 10.1080/02640414.2016.1210197. **korrigiert** (Kategorienvergleich nur Trend).
+5. Baz-Valle E, Balsalobre-Fernández C, Alix-Fages C, Santos-Concejero J. J Hum Kinet 2022;81:199–210. **bestätigt** (junge trainierte Männer).
+6. Schoenfeld BJ, Grgic J, Krieger J. J Sports Sci 2019;37(11):1286–1295, DOI 10.1080/02640414.2018.1555906. **bestätigt.**
+7. Lopez P et al. Med Sci Sports Exerc 2021;53(6):1206–1216, DOI 10.1249/MSS.0000000000002585. **bestätigt** (Aussage auf "jede Last" begrenzt). https://jyx.jyu.fi/handle/123456789/75929
+8. Robinson ZP et al. Sports Med 2024;54(9):2209–2231. **bestätigt.** https://link.springer.com/article/10.1007/s40279-024-02069-2
+9. Refalo MC et al. Sports Med 2023;53(3):649–665. **bestätigt.** https://pmc.ncbi.nlm.nih.gov/articles/PMC9935748
+10. Enes A, De Souza EO, Souza-Junior TP. Med Sci Sports Exerc 2024;56(3):553–563. **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/37796222/
+11. Coleman M et al. PeerJ 2024;12:e16777. **bestätigt** (Deload = eine Woche Pause). https://peerj.com/articles/16777
+12. Wolf M et al. Int J Strength Cond 2023;3(1), DOI 10.47206/ijsc.v3i1.182. **bestätigt.** https://journal.iusca.org/index.php/Journal/article/view/182
+13. Wolf M et al. PeerJ 2025;13:e18904. **bestätigt** (lange Partials = volle Bewegung bei Trainierten). https://peerj.com/articles/18904/
+14. Strey B, Irigoyen A, McMahon G, Pinto RS. Sport Sci Health 2026;22, Art. 33. **bestätigt.** https://link.springer.com/article/10.1007/s11332-025-01586-5
+15. Maeo S et al. Greater Hamstrings Muscle Hypertrophy but Similar Damage Protection after Training at Long versus Short Muscle Lengths. Med Sci Sports Exerc 2021;53(4):825–837. **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/33009197/
+16. Maeo S et al. Eur J Sport Sci 2023;23(7):1240–1250. **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/35819335/
+17. Pedrosa GF et al. Eur J Sport Sci 2022;22(8):1250–1260, DOI 10.1080/17461391.2021.1927199 (Beinstrecker, gedehnte Teilbewegung, 45 untrainierte Frauen). **korrigiert** (Fundstelle ergänzt).
+18. Pedrosa GF et al. Sports 2023;11(2):39 (Bizeps ROM). **bestätigt.** https://www.mdpi.com/2075-4663/11/2/39
+19. Kassiano W et al. Int J Sports Med 2025;46(5):334–343 (Preacher vs. Schrägbank-Curls, 63 untrainierte Frauen). **korrigiert** (Fundstelle ergänzt). https://pubmed.ncbi.nlm.nih.gov/39809454/
+20. Plotkin DL et al. Front Physiol 2023;14:1279170 (Hip Thrust vs. Kniebeuge, 34 Untrainierte). **bestätigt.** https://www.frontiersin.org/journals/physiology/articles/10.3389/fphys.2023.1279170/full
+21. Kubo K et al. Eur J Appl Physiol 2019;119(9):1933–1942, DOI 10.1007/s00421-019-04181-y (tiefe vs. halbe Kniebeuge, n = 17). **bestätigt über Sekundärquellen** (Link durch DOI ersetzt). https://doi.org/10.1007/s00421-019-04181-y
+22. Plotkin DL et al. PeerJ 2022;10:e14142 (Last- vs. Wdh.-Progression). **korrigiert** (Fundstelle). https://peerj.com/articles/14142/
+23. Larsen S et al. Dumbbell versus cable lateral raises. Front Physiol 2025;16:1611468. **korrigiert** (Kabel = Kurzhantel, keine Kontrollgruppe). https://pmc.ncbi.nlm.nih.gov/articles/PMC12277279/
+24. Chaves SFN et al. Int J Exerc Sci 2020;13(6):859–872 (Schrägbank, obere Brust). **bestätigt** (nur 1 von 3 Messstellen). https://pmc.ncbi.nlm.nih.gov/articles/PMC7449336/
+25. Currier BS et al. Br J Sports Med 2023;57(18):1211–1220. **bestätigt** (nicht speziell Einsteiger). https://pmc.ncbi.nlm.nih.gov/articles/PMC10579494/
+26. Pancar et al. Sci Rep 2026, DOI 10.1038/s41598-026-40612-5 (Deload, 19 untrainierte Männer). **korrigiert** (Fundstelle ergänzt). https://www.nature.com/articles/s41598-026-40612-5
+27. Bickel CS, Cross JM, Bamman MM. Med Sci Sports Exerc 2011;43(7):1177–1187 (Erhalt mit reduziertem Volumen). **korrigiert** (Aussage). https://pubmed.ncbi.nlm.nih.gov/21131862/
+28. Grgic J, Mikulic P, Podnar H, Pedisic Z. PeerJ 2017;5:e3695 (lineare vs. wellenförmige Periodisierung, 13 Studien). **bestätigt.** https://pmc.ncbi.nlm.nih.gov/articles/PMC5571788/
+29. Rhea MR, Ball SD, Phillips WT, Burkett LN. J Strength Cond Res 2002;16(2):250–255 (wellenförmige Periodisierung, Kraft, 20 Männer). **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/11991778/
+30. American College of Sports Medicine. Med Sci Sports Exerc 2009;41(3):687–708 (Position Stand Krafttraining). **bestätigt;** Nachfolger 2026 noch nicht eingearbeitet.
+31. Schoenfeld BJ, Grgic J, Ogborn D, Krieger JW. J Strength Cond Res 2017;31(12):3508–3523, DOI 10.1519/JSC.0000000000002200 (niedrige vs. hohe Last). **bestätigt.**
+32. Schoenfeld BJ, Grgic J, Van Every DW, Plotkin DL. Sports 2021;9(2):32, DOI 10.3390/sports9020032 (Wiederholungs-Kontinuum). **bestätigt.**
+33. Kassiano W et al. J Strength Cond Res 2023;37(9):1746–1753 (Waden, gedehnte Teilbewegung +15,2 % vs. +6,7 %). **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/37015016/

@@ -64,7 +64,7 @@
 
 Kurzfassung:
 
-- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 6–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon.
+- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon. Welche Zahlen belegt sind und welche Festlegung, steht je Regel in `docs/wissenschaft.md` (Quellen am 23.10.2026 online geprüft).
 - **Grenzen je Einheit:** Fortgeschritten 3–7 Übungen und max. 18 Sätze, Einsteiger 3–6 Übungen und max. 12 Sätze; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
 - **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–34.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).

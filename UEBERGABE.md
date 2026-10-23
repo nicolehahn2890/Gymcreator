@@ -13,7 +13,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Design | Neobrutalism, Cream-Basis, Zielfarbe als Akzent, kein Pfirsich, nur hell |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
-| Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md`. Nicht 1:1 Peach |
+| Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach |
 | Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele), Einsteiger max. 6 / 12. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | Fortgeschrittene 3/4/5, **Einsteiger nur 3/4** |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
@@ -57,6 +57,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - **Sicherheitskopie und Migrationen**: Die Kopie vor einem Import trägt keine Schema-Version. Sobald es eine Migration (Schema 2) gibt, muss "Wiederherstellen" sie durch `migrate` schicken.
 - **Ziel- oder Stufenwechsel mitten im Zyklus**: Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID). Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
 - **Lighthouse-PWA-Check** in CI fehlt.
+- **Wissenschaft**: Neuer ACSM Position Stand 2026 (Nachfolger von 2009) noch nicht gelesen. Die Kniebeuge zählt im Muskelmodell nur 0,5 für den Po, die Studien sprechen eher für mehr (Vorbehalt in `docs/wissenschaft.md`).
 - **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode, Hantelscheiben-Rechner.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
