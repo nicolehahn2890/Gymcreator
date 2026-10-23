@@ -10,7 +10,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 |---|---|
 | Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`). Final. **"Peach" erscheint nirgends in der Oberfläche** (gekauftes Fremdprogramm) |
 | Stack | React 19 + Vite 8 + TypeScript 6 als PWA auf GitHub Pages; später Capacitor 8 + Codemagic |
-| Design | Neobrutalism, Cream-Basis, Zielfarbe als Akzent, kein Pfirsich, nur hell |
+| Design | Neobrutalism, Cream-Basis, Zielfarbe als Akzent, kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2, Nicole 23.10.) |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach |
@@ -53,21 +53,21 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 
 Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
-**Tests:** 126 Vitest + 14 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Tests:** 126 Vitest + 15 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
 - **Sicherheitskopie und Migrationen**: Die Kopie vor einem Import trägt keine Schema-Version. Sobald es eine Migration (Schema 2) gibt, muss "Wiederherstellen" sie durch `migrate` schicken.
 - **Ziel- oder Stufenwechsel mitten im Zyklus**: Plan wird sofort neu gerechnet, Einträge bleiben (Schlüssel = Slot-ID). Slots, die es im neuen Plan nicht gibt, tauchen in diesem Zyklus nicht mehr auf.
-- **Lighthouse-PWA-Check** in CI fehlt.
+- **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
 - **Wissenschaft**: Neuer ACSM Position Stand 2026 (Nachfolger von 2009) noch nicht gelesen.
-- **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode, Hantelscheiben-Rechner.
+- **Phase 2**: Kurz-Modus, Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
 ## 4. Nächste Schritte
 
-1. Lighthouse-PWA-Check in CI.
-2. Phase 2 nach Priorität: Kurz-Modus, Plateau-Tausch, Form-Tracker.
+1. Kurz-Modus (Nicoles Wahl 23.10.), vorher Fragen an Nicole.
+2. Phase 2 danach: Plateau-Tausch, Form-Tracker.
 3. Nutzertest, wenn Nicole Zeit hat.
 
 ## 5. Verbindliche Details
@@ -84,6 +84,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 ```
 npm run check                                   # Lint, Typecheck, Vitest, verify:data, Build
 npm run build && PW_CHROMIUM_PATH=/opt/pw-browsers/chromium npm run test:e2e
+CHROME_PATH=/opt/pw-browsers/chromium-1194/chrome-linux/chrome npm run lighthouse   # nach dem Build
 node scripts/verify-plan-data.mjs               # nach jeder Änderung an data/
 ```
 

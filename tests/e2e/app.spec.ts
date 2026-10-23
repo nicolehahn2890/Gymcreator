@@ -1,4 +1,7 @@
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { chromium, expect, test, type Locator, type Page } from '@playwright/test';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 async function onboard(page: Page, goal: string, level: string, days: number) {
   await page.goto('./');
@@ -148,6 +151,16 @@ test('Manifest ist erreichbar und standalone', async ({ page, request }) => {
   const manifest = await res.json();
   expect(manifest.display).toBe('standalone');
   expect(manifest.name).toBe('Gymcreator');
+});
+
+test('Chrome haelt die App fuer installierbar', async ({ baseURL }) => {
+  // Eigenes Profil statt Inkognito-Kontext, sonst meldet Chrome immer "in-incognito"
+  const context = await chromium.launchPersistentContext(mkdtempSync(join(tmpdir(), 'gymcreator-')), test.info().project.use.launchOptions);
+  const page = await context.newPage();
+  await page.goto(baseURL ?? '');
+  const cdp = await context.newCDPSession(page);
+  await expect.poll(async () => (await cdp.send('Page.getInstallabilityErrors')).installabilityErrors, { timeout: 10_000 }).toEqual([]);
+  await context.close();
 });
 
 test('startet offline, sobald der Service Worker aktiv ist', async ({ page, context }) => {

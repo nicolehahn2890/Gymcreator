@@ -152,7 +152,7 @@ Angepasst:
 - **Kein Pfirsich.** Marke: Pixel-Art-Wortmarke "GC" oder eine Pixel-Hantel im Cream-Kreis mit Ink-Rahmen (gleiche Bauweise wie das Peach-Icon). Die drei Ziele bekommen je ein abstraktes Pixel-Glyph (V, Sanduhr, Apfel) für Onboarding und Profil.
 - **Zielfarbe als Akzent:** V-Form Sky `#8CCBE8`, Sanduhr Lilac `#B49DF2`, Apfel Pink `#F18FB6` (Feld `accent` in `data/goals.json`, leicht änderbar).
 - **Hintergrund:** neutrale Cream-Basis `#FBF3E7` statt Lavendel für alle (Lavendel bleibt Sanduhr-Akzent). Entschieden, Abschnitt 7.
-- **Dark Mode:** nicht im MVP (wie Peach). Weil alle Farben Tokens sind, bleibt er als späterer Token-Satz möglich – Store-Nutzer fragen danach.
+- **Dark Mode:** nicht im MVP (wie Peach), aber fest für später eingeplant (Entscheidung 23.10.). Weil alle Farben Tokens sind, kommt er als eigener Token-Satz – Store-Nutzer fragen danach.
 
 ### 3.9 Weitere Funktionen – priorisiert
 
@@ -303,7 +303,7 @@ Fakten, die den Plan beeinflussen:
 5. ✅ UI: Heute + Training (23.10.: aufklappbare Übungen in der Tagesansicht statt Fokusansicht, Vorwoche je Satz, Timer, Badge, Vorschlag)
 6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
 7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup
-8. 🟡 PWA-Feinschliff: Icon ✅, Manifest `display: standalone` ✅ (anders als Peach, weil der Speicher in der App lebt), Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅. Offen: Lighthouse-Check in CI, Nutzertest mit 3–5 Personen (später auch die 12 Play-Tester)
+8. 🟡 PWA-Feinschliff: Icon ✅, Manifest `display: standalone` ✅ (anders als Peach, weil der Speicher in der App lebt), Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅, Installierbarkeit (Chrome) und Lighthouse in CI ✅. Offen: Nutzertest mit 3–5 Personen (später auch die 12 Play-Tester)
 
 **Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
 
@@ -315,7 +315,7 @@ Fakten, die den Plan beeinflussen:
 
 - **Unit (Vitest):** Generator (alle 15 erlaubten Kombinationen valide, Wochenziele je Muskel, deterministisch), Progression (Peach-Fälle 1:1: Spannen, Komma, assistiert, Gewicht schlägt Reps, Durchschnitts-Reps, Vorwert eigener Slot zuerst, laufende Woche nie, Woche 1 kein Vergleich, Auto-Zusatzsatz frühestens Woche 5), Storage-Migrationen (Vorher/Nachher-Daten, Idempotenz), Backup-Rundreise.
 - **E2E (Playwright, 390 + 430 px):** Onboarding → Wochenplan; Übung wählen, eintragen, Neuladen; Woche 2 mit Vorwoche je Satz, Steigerungshinweis und Bewertung; Übungswechsel "Nur diese Woche"; Satz entfernen; Trainingstage aus den Einstellungen; Backup-Import; Manifest; Offline-Start. Offen: Umstellen im Plan mit Rückfrage und eigene Übung als E2E.
-- **CI:** alles grün vor Deploy. Offen: Lighthouse-PWA-Check.
+- **CI:** alles grün vor Deploy, inklusive Installierbarkeit (Chrome prüft selbst, `Page.getInstallabilityErrors`) und Lighthouse (Barrierefreiheit und Best Practices min. 0,95, Performance nur Info). Die PWA-Kategorie gibt es seit Lighthouse 12 nicht mehr.
 - **Manuell:** auf dem iPhone installieren, einen echten Trainingstag eintragen und Vorwerte, Hinweis und Bewertung mit Peach vergleichen (Logik ist gleich, Pläne sind verschieden).
 
 ---
@@ -341,6 +341,7 @@ Fakten, die den Plan beeinflussen:
 17. **Pausentimer nur per Knopf** in der aufgeklappten Übung, kein automatischer Start (23.10.)
 18. **Wochenwahl auch auf "Heute"**, gleiche Pfeile und gleiches Raster wie im Plan (23.10.)
 19. **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.)
+20. **Dark Mode kommt später** (Phase 2) als eigener Token-Satz; bis dahin nur hell (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 
