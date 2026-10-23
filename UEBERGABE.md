@@ -84,6 +84,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in Plan (`components/GoalChip.tsx`) und Einstellungen. `webp` ist im Offline-Cache.
 - Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` hat nur noch die Hantel fürs App-Icon.
 - Plan-Kopf zeigt Rex, Ziel-Pille und „4 Tage pro Woche“ statt „Dein Plan: Apfel · 4 Tage pro Woche“ (E2E angepasst).
+- Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche.
 
 **Tests:** 131 Vitest + 17 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
 - Onboarding, freie Übungswahl, Pause nur per Knopf
@@ -107,7 +108,6 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 - **App-Icon und Favicon** zeigen noch die Pixel-Hantel in den Farben vor Rexy (`scripts/make-icons.mjs`); neu gestalten mit der Store-Vorbereitung (Rex).
-- **Design System Rexy** weicht an drei Stellen von der App ab, wie Nicole es am 23.10. wollte: Stand-Pille bei Tag A und E in der Tagesfarbe (Rexy: Cream), freigestellte Rexe ohne Hintergrund im Ziel-Chip (Rexy: Kopf im runden Rahmen), aktuelle Woche im Fortschritt (in Rexy nicht festgelegt). Bei Gelegenheit im Design System nachziehen.
 - **Pausentimer bei 360 px:** „Pause 2:30“ bricht in zwei Zeilen um, funktioniert aber.
 
 ## 4. Nächste Schritte
