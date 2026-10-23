@@ -120,7 +120,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 Neu für eine breite Zielgruppe:
 - **Konkreter Vorschlag statt nur Badge:** "Gewicht steigern: heute 42,5 kg", daneben die Vorwoche je Satz. Schrittweite je Ausstattung (Kurzhantel 2 kg, Langhantel 2,5 kg, Maschine "eine Stufe", Kabel 2,5 kg), in den Einstellungen änderbar.
 - **Plateau-Tausch:** Wenn nach dem Auto-Zusatzsatz weitere 3 Wochen stagnieren → Vorschlag, die Übung gegen die nächstbeste Stern-Übung der Kategorie zu tauschen. Nur Vorschlag, nie automatisch.
-- **Pausentimer** mit Vorgabe je Bereich (6–8: 150 s, 6–10: 120 s, 8–12: 90 s, 12–15: 75 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
+- **Pausentimer nur auf Wunsch** (Knopf "Pause starten" in der aufgeklappten Übung, startet nie von selbst), Dauer je Bereich (6–8: 150 s, 6–10: 120 s, 8–12: 90 s, 12–15: 75 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
 - **Hantelscheiben-Rechner** (klein, beliebt), Phase 2.
 
 ### 3.7 Oberfläche für Einsteiger (das ist der eigentliche Unterschied zu Peach)
@@ -130,11 +130,11 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 | Screen | Inhalt | Peach-Unterschied |
 |---|---|---|
 | **Onboarding** (5 Schritte, je ein Screen) | Ziel per Pixel-Glyph → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen je Tag | gibt es in Peach nicht |
-| **Heute** (Startscreen) | Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Woche x/12, Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
-| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
-| **Plan** | Wochenansicht (3/4/5-Tage-Wahl für diese Woche), Tage mit Übungen, Zyklus/Woche-Auswahl (Raster wie Peach), Zyklus-Ende-Banner | wie Peach, aber ruhiger |
+| **Heute** (Startscreen) | Wochenwahl mit Pfeilen wie im Plan ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
+| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
+| **Plan** | Oben "Dein Plan: Ziel · Stufe · Tage" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
-| **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage), Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
+| **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage) mit "Plan neu einrichten", Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
 
 Regeln für Übersichtlichkeit:
 - **Bottom-Tab-Bar** mit 4 Tabs (Heute · Plan · Fortschritt · Einstellungen) statt Header-Pills.
@@ -338,6 +338,9 @@ Fakten, die den Plan beeinflussen:
 14. **Logo oben auf jeder Seite** führt zurück auf "Heute" (23.10.)
 15. **Kein Deload.** Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht; das erklärt der Plan (23.10.)
 16. **Kniebeuge zählt für den Po weiter 0,5** im Muskelmodell (23.10.)
+17. **Pausentimer nur per Knopf** in der aufgeklappten Übung, kein automatischer Start (23.10.)
+18. **Wochenwahl auch auf "Heute"**, gleiche Pfeile und gleiches Raster wie im Plan (23.10.)
+19. **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

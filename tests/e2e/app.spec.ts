@@ -43,6 +43,9 @@ test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt 
   const inputs = first.locator('.set-row input');
   await inputs.nth(0).fill('100');
   await inputs.nth(1).fill('8');
+  // Pause nur auf Knopfdruck
+  await expect(page.getByRole('timer')).toHaveCount(0);
+  await first.getByRole('button', { name: /^Pause starten/ }).click();
   await expect(page.getByRole('timer')).toBeVisible();
 
   await page.reload();
@@ -56,10 +59,9 @@ test('Training: Uebung frei waehlen, Werte bleiben nach Neuladen, Woche 2 zeigt 
   await first.locator('.exercise-row').click();
   await expect(first.locator('.set-row input').nth(0)).toHaveValue('100');
 
-  // Woche 2: Vorwoche je Satz, Steigerungshinweis (8 von 6-8 im 1. Satz), Bewertung im Kopf
-  await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await page.getByRole('button', { name: 'Nächste Woche' }).click();
+  // Woche 2 direkt auf Heute: Vorwoche je Satz, Steigerungshinweis (8 von 6-8 im 1. Satz), Bewertung im Kopf
   await page.getByRole('button', { name: 'Heute', exact: true }).click();
+  await page.getByRole('button', { name: 'Nächste Woche' }).click();
   await expect(page.getByText('Zyklus 1 · Woche 2 von 12')).toBeVisible();
   await page.getByRole('button', { name: 'Training starten' }).click();
   await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Langhantel)');
@@ -322,4 +324,39 @@ test('Kein Deload: Plan erklaert den leichteren Start, Woche 12 und Zyklus 2 eri
   await page.getByRole('button', { name: 'Zur Startseite' }).click();
   await expect(page.getByText('Zyklus 2 · Woche 1 von 12')).toBeVisible();
   await expect(page.getByText(/Woche 1 von Zyklus 2: Starte mit 5–10 % weniger Gewicht als zuletzt/)).toBeVisible();
+});
+
+test('Plan neu einrichten: aus Plan und Einstellungen, Abbrechen aendert nichts, Verlauf bleibt', async ({ page }) => {
+  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const first = page.locator('.exercise-item').first();
+  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
+  await fillSets(first, '100', '8');
+
+  // Einstellungen: Assistent oeffnen und abbrechen
+  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
+  await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
+  await expect(page.getByRole('button', { name: /Apfel/ })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Abbrechen' }).click();
+  await expect(page.getByRole('heading', { name: 'Einstellungen' })).toBeVisible();
+
+  // Plan: Ziel wechseln und uebernehmen
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.getByText('Dein Plan: Apfel · Fortgeschritten · 4 Tage pro Woche')).toBeVisible();
+  await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
+  await page.getByRole('button', { name: /Sanduhr/ }).click();
+  for (let i = 0; i < 4; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
+  await expect(page.getByText('Dein Verlauf bleibt erhalten.')).toBeVisible();
+  await page.getByRole('button', { name: 'Übernehmen' }).click();
+  await expect(page.getByText('Dein Plan: Sanduhr · Fortgeschritten · 4 Tage pro Woche')).toBeVisible();
+  await expect(page.getByText('Zyklus 1 · Woche 1 von 12')).toBeVisible();
+
+  // zurueck auf Apfel: die eingetragenen Werte sind noch da
+  await page.getByRole('button', { name: 'Plan neu einrichten' }).click();
+  await page.getByRole('button', { name: /Apfel/ }).click();
+  for (let i = 0; i < 4; i += 1) await page.getByRole('button', { name: 'Weiter' }).click();
+  await page.getByRole('button', { name: 'Übernehmen' }).click();
+  await expect(page.locator('.plan-day').first()).toContainText('Hip Thrust (Langhantel)');
+  await noOverflow(page);
 });

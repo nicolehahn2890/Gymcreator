@@ -5,7 +5,7 @@ import { PixelGlyph } from '../brand/PixelGlyph';
 import { HomeContext } from '../state/home';
 
 /** Logo oben auf jeder Seite; ein Tipp fuehrt auf die Startseite "Heute". */
-export function AppHeader({ sub }: { sub?: string }) {
+export function AppHeader() {
   const goHome = useContext(HomeContext);
   return (
     <header className="app-head">
@@ -15,7 +15,6 @@ export function AppHeader({ sub }: { sub?: string }) {
         </span>
         <span className="wordmark-small">{text.app.name}</span>
       </button>
-      {sub && <p className="muted app-sub">{sub}</p>}
     </header>
   );
 }

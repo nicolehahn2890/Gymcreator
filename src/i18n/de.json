@@ -33,7 +33,9 @@
     "honestText": "Training baut die Muskeln auf, die deine Figur formen. Wie sichtbar sie sind, hängt vor allem vom Körperfettanteil ab und damit von der Ernährung.",
     "effortText": "Geh in jedem Satz nah an deine Grenze: Am Ende sollten höchstens noch 3 Wiederholungen möglich sein.",
     "start": "Plan starten",
-    "planHint": "Für jede Muskelgruppe wählst du die Übung selbst. Ein Stern markiert die besten für dein Ziel."
+    "planHint": "Für jede Muskelgruppe wählst du die Übung selbst. Ein Stern markiert die besten für dein Ziel.",
+    "apply": "Übernehmen",
+    "keepHistory": "Dein Verlauf bleibt erhalten."
   },
   "equipment": {
     "barbell": "Langhantel und SZ-Stange",
@@ -107,6 +109,7 @@
       "rTimed": "Länger gehalten"
     },
     "rest": "Pause",
+    "restStart": "Pause starten ({time})",
     "restPlus": "+30 Sek.",
     "restStop": "Beenden",
     "restOver": "Pause zu Ende",
@@ -141,7 +144,9 @@
   },
   "plan": {
     "title": "Plan",
-    "cycleWeek": "Zyklus {cycle} · Woche {week}",
+    "yourPlan": "Dein Plan",
+    "summary": "Dein Plan: {goal} · {level} · {days} Tage pro Woche",
+    "setup": "Plan neu einrichten",
     "cycleNote": "Ein Zyklus hat {weeks} Wochen, eine Pause-Woche gibt es nicht. Im nächsten Zyklus startest du mit {from}–{to} % weniger Gewicht und steigerst dich wieder.",
     "prevWeek": "Vorherige Woche",
     "nextWeek": "Nächste Woche",

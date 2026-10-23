@@ -6,7 +6,7 @@ import { combinedWeight, getEntry } from '../../core/progression/entries';
 import { applyExercise, exerciseChange } from '../../core/progression/inherit';
 import { suggestWeight } from '../../core/progression/rules';
 import { rowState, type RowContext } from '../../core/progression/state';
-import { fmt, num, range, text } from '../../i18n';
+import { fmt, mmss, num, range, text } from '../../i18n';
 import { Check } from '../components/Check';
 import { ExercisePicker, StarIcon } from '../components/ExercisePicker';
 import { Sheet } from '../components/Sheet';
@@ -67,11 +67,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
     }
     const n = value.trim() === '' ? null : parseInt(value, 10);
     const r = n === null || Number.isNaN(n) ? null : n;
-    const before = st.sets[i]?.r ?? null;
     edit((e) => withSetValue(e, st.totalSets, i, { r }));
-    // Pause startet, sobald ein Satz Wiederholungen bekommt (nicht nach dem letzten)
-    if (before === null && r !== null && i < st.totalSets - 1) onRest(restUntil(planData.goals.timing.restSeconds[st.repRange] ?? 0));
   };
+
+  // Pause nur auf Wunsch: Dauer je Wdh.-Bereich aus data/goals.json
+  const restSeconds = planData.goals.timing.restSeconds[st.repRange] ?? 0;
 
   const changeSets = (delta: number) => {
     const extra = Math.max(0, st.extraSets + delta);
@@ -206,6 +206,11 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
                 <button type="button" className="btn btn-small" disabled={st.extraSets === 0} onClick={() => changeSets(-1)}>
                   {t.removeSet}
                 </button>
+                {restSeconds > 0 && (
+                  <button type="button" className="btn btn-small" onClick={() => onRest(restUntil(restSeconds))}>
+                    {fmt(t.restStart, { time: mmss(restSeconds) })}
+                  </button>
+                )}
               </div>
               {st.autoExtra > 0 && <p className="muted">{t.autoSet}</p>}
 

@@ -14,20 +14,28 @@ const STEPS = 5;
 /** Ausstattung, die man nicht abwaehlen kann. */
 const ALWAYS = 'bodyweight';
 
-export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
+interface Props {
+  /** Vorhandenes Profil: Einrichtung vorausgefuellt neu durchgehen ("Plan neu einrichten"); der Verlauf bleibt. */
+  initial?: Profile;
+  onDone: (profile: Profile) => void;
+  onCancel?: () => void;
+}
+
+export function Onboarding({ initial, onDone, onCancel }: Props) {
   const t = text.onboarding;
   const goals = planData.goals.goals;
   const levelText: Record<Level, string> = { beginner: t.beginnerText, advanced: t.advancedText };
   const [step, setStep] = useState(0);
-  const [goal, setGoal] = useState<GoalId | null>(null);
-  const [level, setLevel] = useState<Level | null>(null);
-  const [days, setDays] = useState<DaysPerWeek | null>(null);
-  const [equipment, setEquipment] = useState<string[]>(exerciseData.equipment);
+  const [goal, setGoal] = useState<GoalId | null>(initial?.goal ?? null);
+  const [level, setLevel] = useState<Level | null>(initial?.level ?? null);
+  const [days, setDays] = useState<DaysPerWeek | null>(initial?.days ?? null);
+  const [equipment, setEquipment] = useState<string[]>(initial?.equipment ?? exerciseData.equipment);
 
   const accent = goal ? ({ '--accent': `var(--${goals[goal].accent})` } as CSSProperties) : undefined;
   const ready = [goal, level, days, equipment.length > 0, true][step];
 
-  const profile: Profile | null = goal && level && days ? { goal, level, days, equipment, increments: {}, lang: 'de', createdAt: '' } : null;
+  const base = initial ?? { increments: {}, lang: 'de' as const, createdAt: '' };
+  const profile: Profile | null = goal && level && days ? { ...base, goal, level, days, equipment } : null;
   const preview = useMemo(() => (goal && level && days ? buildPlan(planData, { goal, level, days }) : null), [goal, level, days]);
 
   const toggleEquipment = (id: string) =>
@@ -129,6 +137,7 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
             {fmt(t.planSummary, { days: profile.days, sets: totalSets(preview) })}
           </p>
           <p>{t.planHint}</p>
+          {initial && <p className="muted">{t.keepHistory}</p>}
           {preview.dayPlans.map((day) => (
             <article key={day.index} className="card day-preview" style={{ background: `var(--day-${day.letter.toLowerCase()})` }}>
               <h2 className="day-preview-title">{day.name}</h2>
@@ -153,18 +162,29 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
       )}
 
       <div className="onboarding-actions">
-        {step > 0 && (
+        {step > 0 ? (
           <button type="button" className="btn" onClick={() => setStep(step - 1)}>
             {text.common.back}
           </button>
+        ) : (
+          onCancel && (
+            <button type="button" className="btn" onClick={onCancel}>
+              {text.common.cancel}
+            </button>
+          )
         )}
         {step < STEPS - 1 ? (
           <button type="button" className="btn btn-primary" disabled={!ready} onClick={() => setStep(step + 1)}>
             {text.common.next}
           </button>
         ) : (
-          <button type="button" className="btn btn-primary" disabled={!profile} onClick={() => profile && onDone({ ...profile, createdAt: new Date().toISOString().slice(0, 10) })}>
-            {t.start}
+          <button
+            type="button"
+            className="btn btn-primary"
+            disabled={!profile}
+            onClick={() => profile && onDone(initial ? profile : { ...profile, createdAt: new Date().toISOString().slice(0, 10) })}
+          >
+            {initial ? t.apply : t.start}
           </button>
         )}
       </div>

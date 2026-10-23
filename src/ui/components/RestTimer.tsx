@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { text } from '../../i18n';
+import { mmss, text } from '../../i18n';
 
 interface Props {
   endsAt: number;
   onChange: (endsAt: number | null) => void;
 }
 
-const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
 /** Pausentimer ueber einen Zeitstempel: laeuft korrekt weiter, auch wenn die App im Hintergrund war. */
 export function RestTimer({ endsAt, onChange }: Props) {

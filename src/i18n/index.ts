@@ -23,3 +23,8 @@ export function range(r: string): string {
 export function shortDayName(name: string): string {
   return name.replace(/^Tag \w \u2013 /, '');
 }
+
+/** Sekunden als Minuten:Sekunden: 90 -> "1:30". */
+export function mmss(seconds: number): string {
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+}

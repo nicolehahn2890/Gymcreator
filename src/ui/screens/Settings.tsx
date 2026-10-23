@@ -1,16 +1,14 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
 import { effectiveDays } from '../../core/generator/buildPlan';
-import { GOAL_IDS, LEVELS, type DaysPerWeek, type Profile } from '../../core/model/types';
-import { followingWeek } from '../../core/progression/position';
-import { pausedSlotsWithValues } from '../../core/progression/week';
+import { GOAL_IDS, LEVELS, type Profile } from '../../core/model/types';
 import { fmt, num, text } from '../../i18n';
 import { createBackup, parseBackup, serializeBackup } from '../../storage/backup';
 import type { StoredData } from '../../storage/interface';
 import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { Sheet } from '../components/Sheet';
-import type { Position } from '../state/actions';
+import { saveProfile, type Position } from '../state/actions';
 import { dayOptions, type AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Settings.css';
@@ -19,7 +17,7 @@ import './Settings.css';
 const WEIGHTED = ['barbell', 'dumbbell', 'cable', 'smith'];
 const today = () => new Date().toISOString().slice(0, 10);
 
-export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
+export function Settings({ model, pos, onSetup }: { model: AppModel; pos: Position; onSetup: () => void }) {
   const t = text.settings;
   const profile = model.profile;
   const goals = planData.goals.goals;
@@ -34,15 +32,7 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
     void store.lastSafetyCopy().then(setSafety);
   }, []);
 
-  const save = (patch: Partial<Profile>) => void store.saveProfile({ ...profile, ...patch });
-
-  // Gilt ab der aktuellen Woche. Fielen dort Zeilen mit Werten weg, ab der folgenden; spaetere Wochen erben das.
-  const setDays = (days: DaysPerWeek) => {
-    save({ days });
-    const conflict = pausedSlotsWithValues(model.data.entries, pos.cycle, pos.week, model.plans[days]).length > 0;
-    const from = conflict ? followingWeek(planData.goals.progression, pos.cycle, pos.week) : pos;
-    void store.putWeek({ ...from, days });
-  };
+  const save = (patch: Partial<Profile>) => saveProfile(model, pos, { ...profile, ...patch });
   const backupText = () => serializeBackup(createBackup(model.data, today()));
 
   const copy = async () => {
@@ -89,6 +79,9 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
 
       <h2 className="section-title">{t.profile}</h2>
       <p className="muted">{t.changeNote}</p>
+      <button type="button" className="btn btn-small settings-setup" onClick={onSetup}>
+        {text.plan.setup}
+      </button>
 
       <h3 className="field-label settings-label">{t.goal}</h3>
       <div className="segmented">
@@ -118,7 +111,7 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
       <h3 className="field-label settings-label">{t.days}</h3>
       <div className="segmented">
         {dayOptions(model).map((d) => (
-          <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => setDays(d)}>
+          <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => save({ days: d })}>
             {fmt(text.common.days, { n: d })}
           </button>
         ))}

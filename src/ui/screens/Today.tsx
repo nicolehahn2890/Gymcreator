@@ -4,6 +4,7 @@ import { weekStats } from '../../core/progression/state';
 import { fmt, shortDayName, text } from '../../i18n';
 import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
+import { WeekNav } from '../components/WeekNav';
 import { planFor, rowContext, type AppModel } from '../state/model';
 import './Today.css';
 
@@ -32,7 +33,8 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
 
   return (
     <main className="screen today">
-      <AppHeader sub={fmt(t.weekLine, { cycle, week, weeks: rules.cycleWeeks })} />
+      <AppHeader />
+      <WeekNav model={model} pos={{ cycle, week }} onGoToWeek={onGoToWeek} />
 
       {week < rules.compareFromWeek && (
         <p className="note today-note">

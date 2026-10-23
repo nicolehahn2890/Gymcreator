@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { latestWeek } from '../core/progression/position';
 import { rowState } from '../core/progression/state';
 import { text } from '../i18n';
@@ -13,6 +13,7 @@ import { Today } from './screens/Today';
 import { planFor, rowContext, type AppModel } from './state/model';
 import { store, useAppState } from './state/store';
 import { useUiState } from './state/ui';
+import { saveProfile } from './state/actions';
 
 export function App() {
   const state = useAppState();
@@ -50,6 +51,7 @@ export function App() {
 
 function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
   const [ui, setUi] = useUiState();
+  const [setup, setSetup] = useState(false);
   const latest = latestWeek(model.index);
   const pos = { cycle: ui.cycle ?? latest.cycle, week: ui.week ?? latest.week };
   const plan = planFor(model, pos.cycle, pos.week);
@@ -62,7 +64,7 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [ui.tab, day]);
+  }, [ui.tab, day, setup]);
 
   const goToWeek = (cycle: number, week: number) => setUi({ cycle, week, day: null, slot: null });
   // Tag oeffnen: die erste Uebung ohne alle Saetze ist gleich aufgeklappt
@@ -71,6 +73,21 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
     const first = plan.dayPlans[d]?.rows.find((r) => !rowState(ctx, r, pos).done);
     setUi({ day: d, slot: first?.slotId ?? null });
   };
+
+  // Plan neu einrichten (aus Plan und Einstellungen): Assistent mit dem aktuellen Profil, Verlauf bleibt
+  if (setup) {
+    return (
+      <Onboarding
+        initial={model.profile}
+        onCancel={() => setSetup(false)}
+        onDone={(profile) => {
+          saveProfile(model, pos, profile);
+          setSetup(false);
+          setUi({ tab: 'plan', day: null, slot: null, restEndsAt: null });
+        }}
+      />
+    );
+  }
 
   let content;
   if (day !== null) {
@@ -87,11 +104,11 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
       />
     );
   } else if (ui.tab === 'plan') {
-    content = <PlanScreen model={model} pos={pos} onGoToWeek={goToWeek} onOpenDay={openDay} />;
+    content = <PlanScreen model={model} pos={pos} onGoToWeek={goToWeek} onOpenDay={openDay} onSetup={() => setSetup(true)} />;
   } else if (ui.tab === 'progress') {
     content = <Progress model={model} pos={pos} />;
   } else if (ui.tab === 'settings') {
-    content = <Settings model={model} pos={pos} />;
+    content = <Settings model={model} pos={pos} onSetup={() => setSetup(true)} />;
   } else {
     content = <Today model={model} cycle={pos.cycle} week={pos.week} onOpenDay={openDay} onGoToWeek={goToWeek} />;
   }

@@ -1,12 +1,13 @@
-.week-nav {
-  display: flex;
-  align-items: center;
+.plan-profile {
+  display: grid;
+  justify-items: start;
   gap: 10px;
-  margin-top: 8px;
+  margin: 4px 0 18px;
+  background: var(--paper);
 }
 
-.week-label {
-  flex: 1;
+.plan-profile-text {
+  font-weight: 700;
 }
 
 .plan-days {
@@ -49,47 +50,6 @@
 .plan-day-sets {
   flex-shrink: 0;
   font-weight: 700;
-}
-
-.week-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
-.week-cell {
-  min-height: 48px;
-  background: var(--field-bg);
-  color: var(--ink);
-  border: 2px solid var(--ink);
-  border-radius: var(--r-pill);
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.week-cell.has {
-  background: var(--accent);
-}
-
-.week-cell[aria-current='true'] {
-  background: var(--ink);
-  color: var(--cream);
-}
-
-.week-legend {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 10px;
-}
-
-.week-dot {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  background: var(--accent);
-  border: 2px solid var(--ink);
-  border-radius: 50%;
 }
 
 .plan-cycle-note {

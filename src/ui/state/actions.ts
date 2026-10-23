@@ -1,8 +1,12 @@
-// Aenderungen aus der Oberflaeche: Eintraege anlegen/aendern, Wochenart festhalten.
-import type { Entry, Plan, PlanRow, SetValue } from '../../core/model/types';
+// Aenderungen aus der Oberflaeche: Eintraege anlegen/aendern, Wochenart festhalten, Profil uebernehmen.
+import { buildPlan } from '../../core/generator/buildPlan';
+import { planData } from '../../core/model/data';
+import type { Entry, Plan, PlanRow, Profile, SetValue } from '../../core/model/types';
 import { getEntry, hasValues } from '../../core/progression/entries';
 import { createEntry } from '../../core/progression/inherit';
+import { followingWeek } from '../../core/progression/position';
 import type { RowState } from '../../core/progression/state';
+import { pausedSlotsWithValues } from '../../core/progression/week';
 import type { AppModel } from './model';
 import { store } from './store';
 
@@ -24,6 +28,20 @@ export function entryForEdit(model: AppModel, row: PlanRow, pos: Position, day: 
 /** Zusatzsaetze setzen; Werte entfernter Saetze werden geloescht, damit sie in spaeteren Vergleichen nicht mitzaehlen. */
 export function withExtraSets(entry: Entry, extraSets: number, totalSets: number): Entry {
   return { ...entry, extraSets, sets: entry.sets.slice(0, totalSets) };
+}
+
+/**
+ * Speichert ein geaendertes Profil (Einstellungen oder "Plan neu einrichten"); der Verlauf bleibt.
+ * Neue Standard-Tage gelten ab der angezeigten Woche, fielen dort Zeilen mit Werten weg, ab der folgenden;
+ * spaetere Wochen erben das.
+ */
+export function saveProfile(model: AppModel, pos: Position, next: Profile): void {
+  void store.saveProfile(next);
+  if (next.days === model.profile.days) return;
+  const plan = buildPlan(planData, { goal: next.goal, level: next.level, days: next.days });
+  const conflict = pausedSlotsWithValues(model.data.entries, pos.cycle, pos.week, plan).length > 0;
+  const from = conflict ? followingWeek(planData.goals.progression, pos.cycle, pos.week) : pos;
+  void store.putWeek({ ...from, days: next.days });
 }
 
 /** Speichert den Eintrag; beim ersten Eintrag einer Woche wird die Wochenart festgehalten. */
