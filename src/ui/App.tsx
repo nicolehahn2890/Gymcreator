@@ -67,10 +67,13 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
   }, [ui.tab, day, setup]);
 
   const goToWeek = (cycle: number, week: number) => setUi({ cycle, week, day: null, slot: null });
-  // Tag oeffnen: die erste Uebung ohne alle Saetze ist gleich aufgeklappt
+  // Tag oeffnen: die erste Uebung ohne alle Saetze ist gleich aufgeklappt (im Kurz-Modus ausgelassene nicht)
   const openDay = (d: number) => {
     const ctx = rowContext(model, pos.cycle, pos.week);
-    const first = plan.dayPlans[d]?.rows.find((r) => !rowState(ctx, r, pos).done);
+    const first = plan.dayPlans[d]?.rows.find((r) => {
+      const st = rowState(ctx, r, pos);
+      return !st.done && !st.skipped;
+    });
     setUi({ day: d, slot: first?.slotId ?? null });
   };
 

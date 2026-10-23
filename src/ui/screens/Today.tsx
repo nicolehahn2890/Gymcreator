@@ -5,7 +5,7 @@ import { fmt, shortDayName, text } from '../../i18n';
 import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { WeekNav } from '../components/WeekNav';
-import { dayMinutes, planFor, rowContext, type AppModel } from '../state/model';
+import { dayMinutes, dayRows, planFor, rowContext, type AppModel } from '../state/model';
 import './Today.css';
 
 interface Props {
@@ -50,7 +50,7 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
             {nextDay.name}
           </h1>
           <p className="next-focus">{nextDay.focus}</p>
-          <p className="next-meta">{fmt(t.meta, { n: nextDay.rows.length, min: dayMinutes(ctx, nextDay, { cycle, week }) })}</p>
+          <p className="next-meta">{fmt(t.meta, { n: dayRows(ctx, nextDay, { cycle, week }).filter((r) => r.target > 0).length, min: dayMinutes(ctx, nextDay, { cycle, week }) })}</p>
           <button type="button" className="btn btn-block" onClick={() => onOpenDay(nextDay.index)}>
             {t.start}
           </button>

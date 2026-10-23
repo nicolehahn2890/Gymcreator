@@ -69,7 +69,7 @@ function isWeek(v: unknown): v is Week {
     isInt(v.cycle) &&
     isInt(v.week) &&
     DAY_COUNTS.includes(v.days as never) &&
-    (v.short === undefined || (isObj(v.short) && Object.values(v.short).every((s) => isObj(s) && isInt(s.minutes) && isInt(s.sets) && s.sets >= 1)))
+    (v.short === undefined || (isObj(v.short) && Object.values(v.short).every((s) => isObj(s) && isInt(s.minutes) && isInt(s.sets) && s.sets >= 0)))
   );
 }
 

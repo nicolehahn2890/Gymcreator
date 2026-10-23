@@ -59,6 +59,8 @@ export interface Limits {
   /** Zeilen je Kategorie und Tag (Hauptmuskelgruppe: maxSlotsMainCategoryPerDay). */
   maxSlotsPerCategoryPerDay: number;
   maxSlotsMainCategoryPerDay: number;
+  /** Dauer jeder normalen Einheit in Minuten [min, max] laut Schaetzung (timing). */
+  sessionMinutes: [number, number];
 }
 
 export interface LevelRules {
@@ -96,10 +98,17 @@ export interface Timing {
   setSeconds: number;
   /** Pausenvorgabe je Wdh.-Bereich in Sekunden. */
   restSeconds: Record<RepRange, number>;
-  /** Wechsel, Einstellen und Aufwaermen je Uebung in Sekunden. */
-  exerciseSeconds: number;
-  /** Zeiten (Minuten), die der Kurz-Modus anbietet. */
-  shortMinutes: number[];
+  /** Aufwaermsaetze, Einstellen und Wechsel je Uebung in Sekunden, nach Bereich (schwer = mehr Aufwaermsaetze). */
+  exerciseSeconds: Record<RepRange, number>;
+}
+
+/** Kurz-Modus: angebotene Zeiten und die Mindestdosis, unter der ein Kurz-Training nicht angeboten wird. */
+export interface ShortRules {
+  minutes: number[];
+  /** So viele Uebungen bleiben mindestens. */
+  minExercises: number;
+  /** So viele Saetze behaelt jede verbleibende Uebung mindestens. */
+  minSets: number;
 }
 
 export interface GoalsData {
@@ -109,6 +118,7 @@ export interface GoalsData {
   levels: Record<Level, LevelRules>;
   progression: ProgressionRules;
   timing: Timing;
+  short: ShortRules;
   categories: Record<CategoryId, CategoryDef>;
   goals: Record<GoalId, GoalDef>;
 }

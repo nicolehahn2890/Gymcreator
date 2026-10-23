@@ -1,11 +1,12 @@
-// Wo steht die Person: Tagesstand, naechster Tag, aktuelle Woche, Dauer-Schaetzung.
-import type { PlanDay, PlanRow, ProgressionRules, Timing } from '../model/types';
+// Wo steht die Person: Tagesstand, naechster Tag, aktuelle Woche.
+import type { PlanDay, ProgressionRules } from '../model/types';
 import { hasValues, type EntryIndex } from './entries';
 import { rowState, type RowContext } from './state';
 
 export interface DayProgress {
   /** Zeilen mit allen Saetzen eingetragen. */
   done: number;
+  /** Zeilen des Tages; im Kurz-Modus ohne die ausgelassenen (ausser sie wurden doch eingetragen). */
   total: number;
   /** Mindestens ein Wert eingetragen = Tag trainiert. */
   started: boolean;
@@ -13,13 +14,17 @@ export interface DayProgress {
 
 export function dayProgress(ctx: RowContext, day: PlanDay, q: { cycle: number; week: number }): DayProgress {
   let done = 0;
+  let total = 0;
   let started = false;
   for (const row of day.rows) {
     const st = rowState(ctx, row, q);
+    const values = st.sets.length > 0 && hasValues({ sets: st.sets });
+    if (st.skipped && !values) continue;
+    total++;
     if (st.done) done++;
-    if (st.sets.length && hasValues({ sets: st.sets })) started = true;
+    if (values) started = true;
   }
-  return { done, total: day.rows.length, started };
+  return { done, total, started };
 }
 
 /** Erster Tag der Woche ohne Eintraege; null = alle Tage trainiert. */
@@ -41,10 +46,4 @@ export function latestWeek(index: EntryIndex): { cycle: number; week: number } {
     if (e.cycle > best.cycle || (e.cycle === best.cycle && e.week > best.week)) best = { cycle: e.cycle, week: e.week };
   }
   return best;
-}
-
-/** Geschaetzte Dauer in Minuten (auf 5 gerundet): Saetze x (Satzdauer + Pause des Bereichs) + Wechsel je Uebung. */
-export function estimateMinutes(rows: readonly Pick<PlanRow, 'sets' | 'repRange'>[], timing: Timing): number {
-  const seconds = rows.reduce((sum, r) => sum + r.sets * (timing.setSeconds + (timing.restSeconds[r.repRange] ?? 0)) + timing.exerciseSeconds, 0);
-  return Math.max(5, Math.round(seconds / 300) * 5);
 }

@@ -64,11 +64,11 @@
 
 Kurzfassung:
 
-- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), **jede Prio-3-Muskelgruppe mindestens 10** (ACSM 2026, seit 23.10.), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon. Welche Zahlen belegt sind und welche Festlegung, steht je Regel in `docs/wissenschaft.md` (Quellen am 23.10.2026 online geprüft).
-- **Grenzen je Einheit:** Fortgeschritten 3–7 Übungen und max. 18 Sätze, Einsteiger 3–6 Übungen und max. 12 Sätze; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
-- **Mehr Tage = kürzere Einheiten**, nur wenig mehr Volumen: Fortgeschritten 48–53 Sätze bei 3 Tagen, 55–59 bei 4 und 5 Tagen (etwa 10–20 % mehr, weil die Grenze je Einheit die 3-Tage-Pläne begrenzt). Einsteiger 24–34.
+- **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 12–24 (Po bei Apfel und Sanduhr, Rücken bei V-Form), **jede Prio-3-Muskelgruppe mindestens 10** (ACSM 2026, seit 23.10.), Prio 2 etwa 4–12, Prio 1 0–8, unerwünschte 0. Welche Zahlen belegt sind und welche Festlegung, steht je Regel in `docs/wissenschaft.md` (Quellen am 23.10.2026 online geprüft).
+- **Grenzen je Einheit:** 60–90 Minuten; Fortgeschritten 5–7 Übungen und max. 18 Sätze, Einsteiger 6 Übungen mit je 3 Sätzen; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
+- **Jede Einheit 60–90 Minuten** (Nicoles Vorgabe, 23.10.2026; geprüft mit realistischer Zeitrechnung: Pausen 1:30–3 Min. je Bereich, Aufwärmsätze je Übung). Mehr Tage bringen damit mehr Wochenvolumen: Fortgeschritten 52–53 Sätze bei 3 Tagen, 68–70 bei 4, 84–86 bei 5; Einsteiger 54 bzw. 72.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
-- **Einsteiger:** nur 3 oder 4 Tage pro Woche, 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
+- **Einsteiger:** nur 3 oder 4 Tage pro Woche, 6 Übungen mit je 3 Sätzen, 6–8 und 6–10 werden 8–12, die Zeile mit `beginner: false` entfällt.
 - Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, 12-Wochen-Zyklus. Kein Deload: Der nächste Zyklus beginnt mit 5–10 % weniger Gewicht, erklärt im Plan und auf "Heute".
 
 Die Apfel-Pläne sind nicht mehr Nicoles Peach-Plan P3/P4 (der Regressionstest dazu ist entfernt).
@@ -79,9 +79,9 @@ Je Ziel und Tagesanzahl eine Vorlage in `data/templates.json`. Die Vorlage legt 
 
 | Tage | V-Form | Sanduhr | Apfel |
 |---|---|---|---|
-| 3 | Drücken & Beine · Oberkörper · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite | Po & Beine · Po & Beinrückseite · Po & Oberkörper |
-| 4 | Rücken & Brust · Beine · Drücken · Oberkörper | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Oberkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte |
-| 5 | Rücken & Brust · Drücken · Beine · Rücken & Schultern · Oberkörper | Po & Beinrückseite · Oberkörper · Po & Beine · Schultern & Rücken · Po & Hüfte | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Hüfte · Po & Rücken |
+| 3 | Brust, Schultern & Beine · Oberkörper · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite | Po & Beine · Po & Beinrückseite · Po & Oberkörper |
+| 4 | Rücken & Arme · Beine & Schultern · Brust & Schultern · Oberkörper | Po & Beine · Oberkörper · Po & Beinrückseite · Po & Oberkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte |
+| 5 | Rücken & Arme · Brust & Schultern · Beine · Oberkörper · Oberkörper & Beine | Po & Beinrückseite · Oberkörper · Po & Beine · Oberkörper & Po · Ganzkörper | Po & Beine · Oberkörper & Po · Po & Beinrückseite · Po & Hüfte · Po & Oberkörper |
 
 **Tagesnamen** (23.10.2026): Der Name sagt den Körperbereich, die Zeile darunter die Belastung ("Schwere Grundübungen", "Mittlere Gewichte", "Leichtere Gewichte, mehr Wiederholungen", bei gemischten Tagen z. B. "Rücken schwer, Po leicht"). Die Muskelgruppen in den Zeilen behalten ihre Namen (Glute Max, Glute & Quad usw., Nicoles Entscheidung).
 
@@ -94,7 +94,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 - Vorwert-Suche läuft über **Übung + Wdh.-Bereich** (Peach `exKey`), eigener Slot zuerst, laufende Woche zählt nie (Peach-Regel 07.10.).
 
 **Zusätzlich (neu, Phase 2):**
-- **Kurz-Modus** (umgesetzt 23.10.2026): oben in der Tagesansicht "Zeit heute: Normal / 45 Min. / 30 Min." (angeboten wird nur, was kürzer und erreichbar ist). Alle Übungen bleiben, **jede bekommt weniger Sätze** (immer einen Satz bei der Übung mit den meisten, bei Gleichstand bei niedrigerer Priorität, mindestens 1). Die weggefallenen Sätze stehen ausgegraut als freiwillig da; "fertig" zählt mit der gekürzten Zahl. Gilt nur für diesen Tag in dieser Woche (`Week.short`, Schlüssel = Slot-ID), der Plan zeigt "Kurz-Modus: 30 Min." am Tag.
+- **Kurz-Modus** (umgesetzt 23.10.2026, abends neu): oben in der Tagesansicht "Zeit heute: Normal / 60 Min. / 45 Min." (angeboten wird nur, was kürzer ist und noch genug Training enthält). **Zuerst fallen ganze Übungen weg**, niedrigste Priorität fürs Ziel zuerst, Isolation vor Grundübung; Prio-3-Übungen bleiben immer. Erst danach bekommen die verbleibenden Übungen weniger Sätze, nie unter 2, mindestens 3 Übungen bleiben (`short` in goals.json). Ausgelassene Übungen stehen unten unter "Heute ausgelassen" und können trotzdem gemacht werden; gekürzte Sätze stehen ausgegraut als freiwillig da. Gilt nur für diesen Tag in dieser Woche (`Week.short`, Schlüssel = Slot-ID), der Plan zeigt "Kurz-Modus: 45 Min." am Tag. 30 Minuten gibt es nicht: das wären höchstens 2 Übungen.
 - **2-Tage-Notfallwoche**: zwei Ganzkörper-Einheiten nur mit Prio-3/2-Slots (Urlaub, Krankheit). Erhält den Zyklus statt ihn zu brechen.
 
 ### 3.5 Übungsbibliothek
@@ -120,7 +120,7 @@ In Peach sind 3- und 4-Tage-Plan zwei getrennte Tabellen, verbunden über handge
 Neu für eine breite Zielgruppe:
 - **Konkreter Vorschlag statt nur Badge:** "Gewicht steigern: heute 42,5 kg", daneben die Vorwoche je Satz. Schrittweite je Ausstattung (Kurzhantel 2 kg, Langhantel 2,5 kg, Maschine "eine Stufe", Kabel 2,5 kg), in den Einstellungen änderbar.
 - **Plateau-Tausch:** Wenn nach dem Auto-Zusatzsatz weitere 3 Wochen stagnieren → Vorschlag, die Übung gegen die nächstbeste Stern-Übung der Kategorie zu tauschen. Nur Vorschlag, nie automatisch.
-- **Pausentimer nur auf Wunsch** (Knopf "Pause starten" in der aufgeklappten Übung, startet nie von selbst), Dauer je Bereich (6–8: 150 s, 6–10: 120 s, 8–12: 90 s, 12–15: 75 s), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
+- **Pausentimer nur auf Wunsch** (Knopf "Pause starten" in der aufgeklappten Übung, startet nie von selbst), Dauer je Bereich (6–8: 3 Min., 6–10: 2:30, 8–12: 2 Min., 12–15: 1:30), Vibration, läuft im Hintergrund weiter (Zeitstempel, nicht Intervall).
 - **Hantelscheiben-Rechner** (klein, beliebt), Phase 2.
 
 ### 3.7 Oberfläche für Einsteiger (das ist der eigentliche Unterschied zu Peach)
@@ -131,7 +131,7 @@ Peach zeigt alles gleichzeitig. Gymcreator zeigt pro Screen eine Hauptsache; im 
 |---|---|---|
 | **Onboarding** (5 Schritte, je ein Screen) | Ziel per Pixel-Glyph → Erfahrung (Einsteiger/Fortgeschritten) → Tage pro Woche → Mein Studio → "Dein Wochenplan" mit Muskelgruppen je Tag | gibt es in Peach nicht |
 | **Heute** (Startscreen) | Wochenwahl mit Pfeilen wie im Plan ("Zyklus 1 · Woche 1 von 12", Antippen öffnet das Wochenraster). Nächster Trainingstag als eine große Karte: Tagesname, Belastung, Dauer-Schätzung, "Training starten". Darunter: Tage erledigt, Wochen-Bilanz ("6 von 18 Übungen gesteigert") | ersetzt Header-Pills + Accordion-Kacheln |
-| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Oben "Zeit heute" mit geschätzter Dauer und Kurz-Modus (Normal / 45 / 30 Min.). Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
+| **Training** (Tagesansicht zum Aufklappen, 23.10.2026) | Oben "Zeit heute" mit geschätzter Dauer und Kurz-Modus (Normal / 60 / 45 Min.). Alle Übungen des Tages untereinander; Kopfzeile mit Muskelgruppe, gewählter Übung (Stern), Sätze × Bereich, Bewertung (Mehr Gewicht / Mehr Wiederholungen / Gleich / Weniger, assistiert: Weniger/Mehr Hilfe) und Haken. Antippen klappt die Übung **in der Liste** auf: Steigerungshinweis mit Vorschlag ("Gewicht steigern: heute 42,5 kg"), Sätze als Zeilen (kg · Wdh. · **Vorwoche je Satz** · Haken), Satz hinzufügen/entfernen, Übung tauschen, Ausführung und Einstellung/Notiz eingeklappt, "Nächste Übung". Beim Öffnen eines Tages ist die erste offene Übung aufgeklappt. Pausentimer nur per Knopf, dann unten fest | Peach: alle Übungen eines Tages mit allen Feldern aufgeklappt |
 | **Plan** | Oben "Dein Plan: Ziel · Stufe · Tage" mit "Plan neu einrichten" (Einrichtung erneut, vorausgefüllt, Verlauf bleibt). Wochenwahl wie auf Heute, Hinweis zum Zyklus, 3/4/5-Tage-Wahl für diese Woche, Tage mit Übungen | wie Peach, aber ruhiger |
 | **Fortschritt** | Pro Übung Verlauf (Kapsel-Balken wie Peach), Wochen-Bilanz, Form-Tracker (Phase 2) | Peach-Übersicht + neu |
 | **Einstellungen** | Profil (Ziel, Erfahrung, Trainingstage) mit "Plan neu einrichten", Mein Studio, Gewichtsschritte, eigene Übungen, Backup, Version. Später: Feinjustierung, Sprache | Peach: nur Backup unten in der Übersicht |
@@ -342,7 +342,8 @@ Fakten, die den Plan beeinflussen:
 18. **Wochenwahl auch auf "Heute"**, gleiche Pfeile und gleiches Raster wie im Plan (23.10.)
 19. **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung erneut durchgehen, vorausgefüllt; der Verlauf bleibt (23.10.)
 20. **Dark Mode kommt später** (Phase 2) als eigener Token-Satz; bis dahin nur hell (23.10.)
-21. **Kurz-Modus:** bei jeder Übung weniger Sätze statt ganze Übungen weglassen; Zeit wählen (30 oder 45 Min.); Schalter oben in der Tagesansicht; weggefallene Sätze ausgegraut, trotzdem eintragbar (23.10.)
+21. **Kurz-Modus** (neu am 23.10. abends, nach Nicoles Rückmeldung "1 Satz je Übung ist Murks"): erst Übungen nach Priorität weglassen, dann Sätze kürzen (min. 2), min. 3 Übungen; Zeiten 60 und 45 Min., nur wenn sinnvoll; ausgelassene Übungen unten, trotzdem machbar
+22. **Jede normale Einheit dauert 60–90 Minuten** (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

@@ -237,7 +237,10 @@ test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstelle
   await onboard(page, 'Apfel', 'Fortgeschritten', 4);
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
   await page.locator('.plan-day').nth(3).click();
-  const dayD = page.locator('.exercise-item').first();
+  // Tag D, 2. Zeile (Glute Max) gibt es im 3-Tage-Plan nicht
+  const dayD = page.locator('.exercise-item').nth(1);
+  await expect(dayD.locator('.exercise-row-cat')).toHaveText('Glute Max');
+  await dayD.locator('.exercise-row').click();
   await pickExercise(page, dayD, 'Glute Bridge (Langhantel)');
   await fillSets(dayD, '70', '10');
   await page.getByRole('button', { name: 'Zurück' }).click();
@@ -252,8 +255,9 @@ test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstelle
   await page.getByRole('button', { name: '4 Tage' }).click();
   await expect(page.locator('.plan-day')).toHaveCount(4);
   await page.locator('.plan-day').nth(3).click();
-  // die erledigte Uebung ist zu, aufgeklappt ist die naechste offene
-  const done = page.locator('.exercise-item').first();
+  // die erledigte Uebung ist zu, aufgeklappt ist die erste offene
+  await expect(page.locator('.exercise-item').first().locator('.exercise-row')).toHaveAttribute('aria-expanded', 'true');
+  const done = page.locator('.exercise-item').nth(1);
   await expect(done.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'false');
   await done.locator('.exercise-row').click();
   await expect(done.locator('.set-row input').first()).toHaveValue('70');
@@ -374,43 +378,54 @@ test('Plan neu einrichten: aus Plan und Einstellungen, Abbrechen aendert nichts,
   await noOverflow(page);
 });
 
-test('Kurz-Modus: 30 Min. kuerzt die Saetze, ausgegraute Saetze sind freiwillig, Normal stellt zurueck', async ({ page }) => {
+test('Kurz-Modus: 45 Min. laesst die unwichtigsten Uebungen weg, sie bleiben unten machbar; Normal stellt zurueck', async ({ page }) => {
   await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await expect(page.getByText('7 Übungen · ca. 70 Min.')).toBeVisible();
   await page.getByRole('button', { name: 'Training starten' }).click();
   const time = page.getByRole('group', { name: 'Zeit heute' });
+  await expect(time.getByRole('button')).toHaveText(['Normal', '60 Min.', '45 Min.']);
   await expect(time.getByRole('button', { name: 'Normal' })).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.getByText('ca. 60 Min.')).toBeVisible();
-  await time.getByRole('button', { name: '30 Min.' }).click();
-  await expect(page.getByText('ca. 30 Min.')).toBeVisible();
-  await expect(page.getByText('Jede Übung mit weniger Sätzen. Ausgegraute Sätze sind freiwillig.')).toBeVisible();
+  await expect(page.getByText('ca. 70 Min.')).toBeVisible();
 
-  // Hip Thrust: statt 3 nur 2 Saetze noetig, der 3. ist freiwillig
-  const first = page.locator('.exercise-item').first();
-  await expect(first.locator('.exercise-row')).not.toContainText('3 × 6–8 Wdh.');
-  await first.getByRole('button', { name: 'Übung wählen', exact: true }).click();
-  await page.getByRole('dialog').getByRole('button', { name: 'Hip Thrust (Langhantel)' }).click();
-  const target = Number((await first.locator('.exercise-row .muted').textContent())?.split(' ')[0]);
-  expect(target).toBeLessThan(3);
-  await expect(first.locator('.set-row.set-optional')).toHaveCount(3 - target);
-  await expect(first.getByRole('textbox', { name: `Satz ${target + 1}, freiwillig, kg` })).toBeVisible();
-  for (let i = 0; i < target; i++) {
-    await first.getByRole('textbox', { name: `Satz ${i + 1}, kg` }).fill('100');
-    await first.getByRole('textbox', { name: `Satz ${i + 1}, Wdh.` }).fill('8');
-  }
-  await expect(first.locator('.exercise-row').getByLabel('erledigt')).toBeVisible();
+  await time.getByRole('button', { name: '45 Min.' }).click();
+  await expect(page.getByText('ca. 40 Min.')).toBeVisible();
+  await expect(page.getByText('Die wichtigsten Übungen bleiben. Die übrigen stehen unten und sind heute freiwillig.')).toBeVisible();
+  // oben die drei Po- und Beinuebungen mit allen Saetzen, unten die ausgelassenen
+  const main = page.locator('main > .exercise-list > .exercise-item');
+  await expect(main.locator('.exercise-row-cat')).toHaveText(['Glute Max', 'Glute & Quad', 'Glute Med']);
+  await expect(main.first().locator('.exercise-row')).toContainText('3 × 6–8 Wdh.');
+  const skipped = page.getByRole('region', { name: 'Heute ausgelassen' });
+  await expect(skipped.locator('.exercise-item')).toHaveCount(4);
 
-  // Plan zeigt den Kurz-Modus am Tag A, nicht an den anderen Tagen
+  // eine ausgelassene Uebung laesst sich trotzdem eintragen
+  const extra = skipped.locator('.exercise-item').first();
+  await extra.locator('.exercise-row').click();
+  await expect(extra.getByRole('button', { name: 'Übung wählen', exact: true })).toBeVisible();
+
+  // Plan zeigt den Kurz-Modus am Tag A und die ausgelassenen Uebungen
   await page.getByRole('button', { name: 'Plan', exact: true }).click();
-  await expect(page.locator('.plan-day').first().getByText('Kurz-Modus: 30 Min.')).toBeVisible();
-  await expect(page.getByText('Kurz-Modus: 30 Min.')).toHaveCount(1);
-  await page.locator('.plan-day').first().click();
+  const dayA = page.locator('.plan-day').first();
+  await expect(dayA.getByText('Kurz-Modus: 45 Min.')).toBeVisible();
+  await expect(dayA.getByText('ausgelassen')).toHaveCount(4);
+  await expect(page.getByText('Kurz-Modus: 45 Min.')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Zur Startseite' }).click();
+  await expect(page.getByText('3 Übungen · ca. 40 Min.')).toBeVisible();
+  await page.getByRole('button', { name: 'Training starten' }).click();
 
-  // bleibt nach Neuladen, gilt nur fuer diesen Tag; Normal stellt zurueck
+  // bleibt nach Neuladen; Normal stellt zurueck
   await page.reload();
-  await expect(time.getByRole('button', { name: '30 Min.' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(time.getByRole('button', { name: '45 Min.' })).toHaveAttribute('aria-pressed', 'true');
   await time.getByRole('button', { name: 'Normal' }).click();
-  await expect(page.getByText('ca. 60 Min.')).toBeVisible();
-  await expect(first.locator('.exercise-row')).toContainText('3 × 6–8 Wdh.');
-  await expect(first.locator('.exercise-row').getByLabel('erledigt')).toHaveCount(0);
+  await expect(page.getByText('ca. 70 Min.')).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Heute ausgelassen' })).toHaveCount(0);
+  await expect(main).toHaveCount(7);
   await noOverflow(page);
+});
+
+test('Kurz-Modus: Einheiten mit 60 Min. bieten nur 45 Min. an', async ({ page }) => {
+  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.locator('.plan-day').nth(1).click();
+  await expect(page.getByText('ca. 60 Min.')).toBeVisible();
+  await expect(page.getByRole('group', { name: 'Zeit heute' }).getByRole('button')).toHaveText(['Normal', '45 Min.']);
 });

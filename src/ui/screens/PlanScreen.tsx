@@ -8,7 +8,7 @@ import { AppHeader } from '../components/AppHeader';
 import { Sheet } from '../components/Sheet';
 import { WeekNav } from '../components/WeekNav';
 import type { Position } from '../state/actions';
-import { dayOptions, daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
+import { dayMinutes, dayOptions, dayRows, daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Plan.css';
 
@@ -73,6 +73,9 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
           <button key={day.index} type="button" className="card plan-day" style={{ background: `var(--day-${day.letter.toLowerCase()})` }} onClick={() => onOpenDay(day.index)}>
             <span className="plan-day-title">{day.name}</span>
             <span className="plan-day-focus">{day.focus}</span>
+            <span className="plan-day-meta">
+              {fmt(text.today.meta, { n: dayRows(ctx, day, pos).filter((r) => r.target > 0).length, min: dayMinutes(ctx, day, pos) })}
+            </span>
             {day.rows.some((r) => short?.[r.slotId]) && (
               <span className="pill plan-day-short">{fmt(t.shortActive, { min: day.rows.map((r) => short?.[r.slotId]?.minutes).find((m) => m !== undefined) ?? 0 })}</span>
             )}
@@ -82,7 +85,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay, onSetup }: Props
                 return (
                   <span key={row.slotId} className="plan-day-row">
                     <span>{st.exerciseId ? exerciseName(model, st.exerciseId) : slotLabel(row)}</span>
-                    <span className="plan-day-sets">{fmt(text.workout.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
+                    <span className="plan-day-sets">{st.skipped ? t.skippedRow : fmt(text.workout.setsLine, { sets: st.targetSets, range: range(st.repRange) })}</span>
                   </span>
                 );
               })}

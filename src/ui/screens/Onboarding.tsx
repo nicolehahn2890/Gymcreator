@@ -2,7 +2,7 @@ import { useMemo, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, GOAL_IDS, LEVELS, type DaysPerWeek, type GoalId, type Level, type Profile } from '../../core/model/types';
 import { buildPlan } from '../../core/generator/buildPlan';
-import { totalSets } from '../../core/generator/validate';
+import { estimateMinutes, totalSets } from '../../core/generator/validate';
 import { fmt, range, shortDayName, text } from '../../i18n';
 import { GOAL_GLYPHS } from '../brand/pixels';
 import { PixelGlyph } from '../brand/PixelGlyph';
@@ -141,6 +141,7 @@ export function Onboarding({ initial, onDone, onCancel }: Props) {
           {preview.dayPlans.map((day) => (
             <article key={day.index} className="card day-preview" style={{ background: `var(--day-${day.letter.toLowerCase()})` }}>
               <h2 className="day-preview-title">{day.name}</h2>
+              <p className="day-preview-meta">{fmt(text.today.meta, { n: day.rows.length, min: estimateMinutes(day.rows, planData.goals.timing) })}</p>
               <ul className="day-preview-list">
                 {day.rows.map((row) => (
                   <li key={row.slotId}>

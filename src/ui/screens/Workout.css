@@ -309,3 +309,11 @@
 .set-optional {
   opacity: 0.45;
 }
+
+.skipped-list {
+  margin-top: 8px;
+}
+
+.exercise-item.skipped:not(.open) {
+  opacity: 0.55;
+}

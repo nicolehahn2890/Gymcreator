@@ -14,7 +14,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe bei Fortgeschrittenen mindestens 10** anteilige Sätze pro Woche (`levels.advanced.minWeeklySetsPrio3`) |
-| Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele), Einsteiger max. 6 / 12. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
+| Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele, in der Praxis 15–18 Sätze), Einsteiger 6 Übungen mit je 3 Sätzen. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
 | Tage | Fortgeschrittene 3/4/5, **Einsteiger nur 3/4** |
 | Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
 | Logo | Logo oben auf jeder Seite führt auf „Heute“ |
@@ -24,7 +24,8 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
 | Namen | **Muskelgruppen behalten ihre Namen** (Glute Max, Glute & Quad …). Tage heißen nach Körperbereich („Tag A – Po & Beine“), darunter die Belastung („Schwere Grundübungen“) |
 | Training | Übungen **in der Tagesliste aufklappen**. Ab Woche 2 Vorwoche je Satz, Steigerungshinweis, Bewertung (assistiert: Weniger/Mehr Hilfe) |
-| Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / 45 / 30 Min. **Jede Übung bekommt weniger Sätze** (keine fällt weg), weggefallene Sätze ausgegraut und freiwillig, gilt nur für den Tag dieser Woche |
+| Dauer | **Jede normale Einheit 60–90 Minuten** (Nicole, 23.10.), geprüft mit realistischer Zeitrechnung (Pausen 1:30–3 Min., Aufwärmsätze je Übung) |
+| Kurz-Modus | Oben in der Tagesansicht "Zeit heute": Normal / 60 / 45 Min. **Erst fallen Übungen nach Priorität weg, dann Sätze (min. 2), min. 3 Übungen**; Prio 3 bleibt immer. Zeiten nur, wenn sinnvoll (keine 30 Min.). Ausgelassene Übungen unten, trotzdem machbar. Gilt nur für den Tag dieser Woche |
 | Pausentimer | **Nur per Knopf** "Pause starten" in der aufgeklappten Übung, startet nie von selbst |
 | Aufbau | Wochenwahl mit Pfeilen auf **Heute und Plan** (gleiches Raster). **"Plan neu einrichten"** im Plan und in den Einstellungen: Einrichtung vorausgefüllt erneut, Verlauf bleibt |
 
@@ -34,12 +35,12 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 
 | Bereich | Dateien | Inhalt |
 |---|---|---|
-| Daten | `data/goals.json`, `templates.json`, `exercises.json` | Bereiche, Grenzen, Stufen, Progression, Pausen; je Ziel Prioritäten, Hauptmuskelgruppe, Wochenziele, Slot-Pool; 9 Tagesvorlagen in Trainingsreihenfolge; 200 Übungen mit Sternen und Tipps |
-| Generator | `src/core/generator/` | `buildPlan` (Vorlage + Stufe → Tage), `validatePlan` (alle Grenzen und Wochenziele), `weeklyMuscles` |
-| Progression | `src/core/progression/` | `weight`, `compare`, `entries`, `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Bewertung, Steigerungshinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, "Nur diese Woche"), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (nächster Tag, Dauer). Peach-Szenarien in `scenarios.test.ts` |
+| Daten | `data/goals.json`, `templates.json`, `exercises.json` | Bereiche, Grenzen (inkl. 60–90 Min. je Einheit), Stufen, Progression, Zeitmodell (Pausen, Aufwärmsätze), Kurz-Modus-Regeln; je Ziel Prioritäten, Hauptmuskelgruppe, Wochenziele, Slot-Pool; 9 Tagesvorlagen (57 Einheiten) in Trainingsreihenfolge; 200 Übungen mit Sternen und Tipps |
+| Generator | `src/core/generator/` | `buildPlan` (Vorlage + Stufe → Tage), `validatePlan` (alle Grenzen, Wochenziele und die Dauer je Einheit), `weeklyMuscles`, `estimateMinutes` (Dauer-Schätzung) |
+| Progression | `src/core/progression/` | `weight`, `compare`, `entries`, `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Bewertung, Steigerungshinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, "Nur diese Woche"), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (Tagesstand, nächster Tag), `short` (Kurz-Modus). Peach-Szenarien in `scenarios.test.ts` |
 | Speicher | `src/storage/` | Dexie (IndexedDB) hinter einer Schnittstelle, Backup (Export/Import mit Prüfung), Sicherheitskopie vor Import, Migrations-Gerüst (Schema 1) |
 | Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Wochenwahl (`components/WeekNav`, Heute und Plan), Kurz-Modus (Tagesansicht, Kern `core/progression/short.ts`), Onboarding (5 Schritte, auch als "Plan neu einrichten"), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Profilzeile, Woche, Tage je Woche), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` |
-| Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 15 Pläne (Einsteiger ohne 5 Tage), prüft Grenzen, Wochenziele und die Bibliothek, druckt Pläne und Wochenvolumen je Muskel |
+| Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 15 Pläne (Einsteiger ohne 5 Tage), prüft Grenzen, Wochenziele, Dauer jeder Einheit und die Bibliothek, druckt alle Einheiten mit Minuten und das Wochenvolumen je Muskel |
 
 **Selbsttest am 23.10.** (Browser-Durchläufe aller Pläne und Abläufe, unabhängiger Code-Review). Behoben:
 - Gewicht tippen ("27,5") kam in den Folgesätzen nur als "2" an.
@@ -52,9 +53,11 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 - Zeilen mit gewählter Übung, aber ohne Werte, behielten nach dem Umstellen der Wochenart die alten Sätze.
 - Kleineres: Backup-Download auf iOS, Gewichtsschritte nach Import, Prüfung der Backup-Werte, Speicherfehler-Hinweis, Löschen eigener Übungen.
 
-Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Dauer-Schätzung rechnet jetzt Wechsel und Aufwärmen mit (120 s je Übung). ACSM-Abgleich: Apfel Glute Med 8 → 10, Sanduhr Schultern bei 4 Tagen 9 → 10, V-Form Brust 8 → 10 (dritte Brustübung, Flys 2 × 12–15, am Rücken-Tag; Tagesname dort „Oberkörper“ bzw. „Rücken & Brust“). Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. ACSM-Abgleich: jede Prio-3-Muskelgruppe bei Fortgeschrittenen mindestens 10 Sätze pro Woche.
 
-**Tests:** 132 Vitest + 16 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Kurz-Modus, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Neuverteilung am 23.10. abends** (Nicoles Rückmeldung: Kurz-Modus mit 1 Satz je Übung ist Murks, normale Einheit soll 60–90 Minuten dauern): Mit realistischer Zeitrechnung (Pausen 1:30–3 Min. nach Singer 2024 und Schoenfeld 2016, Aufwärmsätze je Übung) lagen 47 von 57 Einheiten unter 60 Minuten. Alle Vorlagen sind neu verteilt, jede Einheit liegt jetzt bei 60–70 Minuten, das prüft `validatePlan`. Folgen: Bei 4 und 5 Tagen gibt es mehr Wochenvolumen (Fortgeschritten 68–70 bzw. 84–86 Sätze), Einsteiger haben 6 Übungen mit je 3 Sätzen (54 bzw. 72 Sätze). Der Kurz-Modus lässt zuerst unwichtige Übungen weg und bietet nur 60/45 Min. an. Neue Slots in allen drei Pools; vorhandene Slot-IDs sind unverändert. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+
+**Tests:** 134 Vitest + 17 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Pause nur per Knopf, Kurz-Modus mit ausgelassenen Übungen, Kurz-Zeiten je Einheit, Speichern über Neuladen, Auf-/Zuklappen, Wochenwahl auf Heute, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Zyklus-Hinweise ohne Deload, Plan neu einrichten aus Plan und Einstellungen mit Abbrechen und erhaltenem Verlauf, Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen). Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,98. `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
@@ -63,6 +66,8 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - **Lighthouse** prüft nur die Startseite (Einrichtung). Heute, Training und Plan deckt nur der E2E-Test "Namen für Screenreader" ab.
 - **Wissenschaft**: ACSM Position Stand 2026 eingearbeitet, aber nur über Abstract, Pressemitteilung und Sekundärquellen (Volltext aus der Sandbox gesperrt). Die Tabelle mit den genauen Empfehlungen bei Gelegenheit im Volltext prüfen.
 - **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
+- **Einsteiger-Volumen**: Durch die 60-Minuten-Vorgabe trainieren Einsteiger fast so viel wie Fortgeschrittene (54/72 Sätze). Studien stützen das (Radaelli 2015), im Nutzertest beobachten, ob es Einsteiger überfordert.
+- **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
 
 ## 4. Nächste Schritte

@@ -125,7 +125,7 @@ describe('Backup', () => {
     expect(parseBackup(JSON.stringify({ ...good, custom: [{ id: 'x', name: 'a', category: 'gmax', equipment: [], note: '' }] }))).toEqual({ ok: false, error: 'shape' });
     expect(parseBackup(JSON.stringify({ ...good, profile: { ...profile, increments: { barbell: '2.5' } } }))).toEqual({ ok: false, error: 'shape' });
     expect(parseBackup(JSON.stringify({ ...good, entries: [{ ...entry(1), week: 0 }] }))).toEqual({ ok: false, error: 'shape' });
-    expect(parseBackup(JSON.stringify({ ...good, weeks: [{ cycle: 1, week: 2, days: 3, short: { x: { minutes: 30, sets: 0 } } }] }))).toEqual({ ok: false, error: 'shape' });
+    expect(parseBackup(JSON.stringify({ ...good, weeks: [{ cycle: 1, week: 2, days: 3, short: { x: { minutes: 30, sets: -1 } } }] }))).toEqual({ ok: false, error: 'shape' });
   });
 
   it('nimmt Leerzeichen und Zeilenumbrueche um den Text an', () => {

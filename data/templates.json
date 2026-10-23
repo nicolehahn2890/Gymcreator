@@ -10,14 +10,11 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              "gmed_8-12_a",
               "gquad_6-10_a",
+              "gmed_8-12_a",
               "add_8-12_a",
               "back_6-10_a",
-              {
-                "id": "shoulders_12-15_b",
-                "beginner": false
-              },
+              "shoulders_12-15_b",
               {
                 "id": "abs_8-12_a",
                 "beginner": false
@@ -29,37 +26,31 @@
             "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
-              {
-                "id": "gmed_12-15_a",
-                "sets": 4
-              },
               "ghams_6-10_a",
               "hams_8-12_a",
+              "gmed_12-15_a",
               "shoulders_8-12_a",
-              {
-                "id": "abs_8-12_b",
-                "beginner": false
-              }
+              "abs_8-12_b"
             ]
           },
           {
             "name": "Tag C – Po & Oberkörper",
             "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
-              "gquad_8-12_a",
+              {
+                "id": "gquad_8-12_a",
+                "sets": 3
+              },
               "gmax_12-15_a",
               {
                 "id": "gmed_8-12_b",
-                "sets": 3
+                "sets": 4
               },
-              {
-                "id": "add_8-12_b",
-                "beginner": false
-              },
+              "add_8-12_b",
               "back_8-12_a",
               "shoulders_12-15_a",
               {
-                "id": "chest_8-12_a",
+                "id": "abs_8-12_c",
                 "beginner": false
               }
             ]
@@ -73,39 +64,33 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              {
-                "id": "gmed_8-12_a",
-                "sets": 3
-              },
               "gquad_6-10_a",
+              "gmed_8-12_a",
               "add_8-12_a",
-              {
-                "id": "shoulders_8-12_a",
-                "beginner": false
-              },
-              {
-                "id": "abs_8-12_a",
-                "beginner": false
-              }
+              "shoulders_8-12_a",
+              "abs_8-12_a"
             ]
           },
           {
             "name": "Tag B – Oberkörper & Po",
             "focus": "Rücken schwer, Po leicht",
             "slots": [
+              "back_6-10_a",
+              "chest_8-12_a",
+              {
+                "id": "shoulders_12-15_b",
+                "sets": 3
+              },
               {
                 "id": "gmax_12-15_a",
-                "beginner": false
+                "sets": 3
               },
               {
-                "id": "gmed_12-15_a",
-                "sets": 2
+                "id": "gmed_8-12_b",
+                "sets": 3
               },
-              "back_6-10_a",
-              "shoulders_12-15_b",
               {
-                "id": "chest_8-12_a",
-                "sets": 3,
+                "id": "hams_8-12_b",
                 "beginner": false
               },
               "abs_8-12_b"
@@ -116,28 +101,35 @@
             "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
-              {
-                "id": "gmed_8-12_b",
-                "beginner": false,
-                "sets": 3
-              },
               "ghams_6-10_a",
               "hams_8-12_a",
+              "gmed_12-15_a",
+              "add_8-12_b",
               "back_8-12_a"
             ]
           },
           {
             "name": "Tag D – Po & Hüfte",
-            "focus": "Mittlere Gewichte",
+            "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
-              "gmax_8-12_b",
-              "gquad_8-12_a",
-              "gmed_12-15_b",
               {
-                "id": "add_8-12_b",
+                "id": "gquad_8-12_a",
+                "sets": 3
+              },
+              {
+                "id": "gmax_8-12_b",
+                "sets": 3
+              },
+              {
+                "id": "gmed_12-15_b",
+                "sets": 3
+              },
+              "back_8-12_b",
+              "shoulders_12-15_a",
+              {
+                "id": "quads_8-12_a",
                 "beginner": false
               },
-              "shoulders_12-15_a",
               "abs_8-12_c"
             ]
           }
@@ -150,29 +142,32 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              {
-                "id": "gmed_8-12_a",
-                "sets": 3
-              },
               "gquad_6-10_a",
+              "gmed_8-12_a",
               "add_8-12_a",
+              "shoulders_8-12_a",
               "abs_8-12_a"
             ]
           },
           {
-            "name": "Tag B – Oberkörper",
-            "focus": "Rücken schwer, dazu Schultern und Brust",
+            "name": "Tag B – Oberkörper & Po",
+            "focus": "Rücken schwer, Po leicht",
             "slots": [
               "back_6-10_a",
-              "shoulders_8-12_a",
+              "chest_8-12_a",
               {
-                "id": "chest_8-12_a",
+                "id": "shoulders_12-15_b",
                 "sets": 3
               },
               {
-                "id": "gmed_12-15_a",
-                "sets": 2
+                "id": "gmax_12-15_a",
+                "sets": 3
               },
+              {
+                "id": "gmed_8-12_b",
+                "sets": 3
+              },
+              "hams_8-12_b",
               "abs_8-12_b"
             ]
           },
@@ -183,31 +178,47 @@
               "gmax_8-12_a",
               "ghams_6-10_a",
               "hams_8-12_a",
-              {
-                "id": "gmed_8-12_b",
-                "sets": 3
-              }
+              "gmed_12-15_a",
+              "add_8-12_b",
+              "back_8-12_a"
             ]
           },
           {
             "name": "Tag D – Po & Hüfte",
             "focus": "Mittlere Gewichte",
             "slots": [
-              "gmax_8-12_b",
-              "gquad_8-12_a",
-              "add_8-12_b",
-              "shoulders_12-15_b",
+              {
+                "id": "gquad_8-12_a",
+                "sets": 3
+              },
+              {
+                "id": "gmax_8-12_b",
+                "sets": 3
+              },
+              {
+                "id": "gmed_12-15_b",
+                "sets": 3
+              },
+              "quads_8-12_a",
+              "back_8-12_b",
+              "shoulders_12-15_a",
               "abs_8-12_c"
             ]
           },
           {
-            "name": "Tag E – Po & Rücken",
+            "name": "Tag E – Po & Oberkörper",
             "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
-              "gmax_12-15_a",
-              "gmed_12-15_b",
-              "back_8-12_a",
-              "shoulders_12-15_a"
+              "gquad_8-12_b",
+              "ghams_8-12_a",
+              {
+                "id": "gmax_12-15_b",
+                "sets": 2
+              },
+              "gmed_8-12_c",
+              "chest_8-12_b",
+              "shoulders_8-12_b",
+              "abs_8-12_d"
             ]
           }
         ]
@@ -221,29 +232,27 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              "gmed_8-12_a",
               "gquad_6-10_a",
               "quads_8-12_a",
+              "gmed_8-12_a",
               "shoulders_8-12_a",
-              {
-                "id": "abs_8-12_a",
-                "beginner": false
-              }
+              "abs_8-12_a"
             ]
           },
           {
             "name": "Tag B – Oberkörper & Po",
             "focus": "Rücken schwer, Po leicht",
             "slots": [
-              "gmax_12-15_a",
-              "gmed_12-15_a",
               "back_6-10_a",
-              "shoulders_12-15_a",
               "chest_8-12_a",
+              "shoulders_12-15_a",
+              "gmax_12-15_a",
+              "gmed_8-12_b",
               {
-                "id": "abs_8-12_b",
+                "id": "biceps_8-12_a",
                 "beginner": false
-              }
+              },
+              "abs_8-12_b"
             ]
           },
           {
@@ -254,7 +263,8 @@
               "ghams_6-10_a",
               "hams_8-12_a",
               "back_8-12_a",
-              "shoulders_12-15_b"
+              "shoulders_12-15_b",
+              "abs_8-12_c"
             ]
           }
         ]
@@ -266,13 +276,11 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              "gmed_8-12_a",
               "gquad_6-10_a",
               "quads_8-12_a",
-              {
-                "id": "shoulders_8-12_a",
-                "sets": 4
-              }
+              "gmed_8-12_a",
+              "shoulders_8-12_a",
+              "abs_8-12_a"
             ]
           },
           {
@@ -280,17 +288,15 @@
             "focus": "Rücken schwer, dazu Schultern und Arme",
             "slots": [
               "back_6-10_a",
-              "shoulders_12-15_a",
               "chest_8-12_a",
+              "shoulders_12-15_a",
+              "biceps_8-12_a",
+              "triceps_8-12_a",
               {
-                "id": "biceps_8-12_a",
+                "id": "gmed_12-15_a",
                 "beginner": false
               },
-              {
-                "id": "triceps_8-12_a",
-                "beginner": false
-              },
-              "abs_8-12_a"
+              "abs_8-12_b"
             ]
           },
           {
@@ -298,11 +304,16 @@
             "focus": "Mittlere Gewichte",
             "slots": [
               "gmax_8-12_a",
-              "gmed_12-15_a",
               "ghams_6-10_a",
               "hams_8-12_a",
+              "gmed_12-15_b",
+              "back_8-12_a",
               {
-                "id": "abs_8-12_b",
+                "id": "shoulders_12-15_b",
+                "sets": 2
+              },
+              {
+                "id": "abs_8-12_c",
                 "beginner": false
               }
             ]
@@ -311,15 +322,17 @@
             "name": "Tag D – Po & Oberkörper",
             "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
+              "gquad_8-12_a",
+              "gmax_8-12_b",
+              "back_8-12_b",
+              "hams_8-12_b",
+              {
+                "id": "shoulders_8-12_c",
+                "sets": 3
+              },
               "gmax_12-15_a",
               {
-                "id": "gquad_8-12_a",
-                "beginner": false
-              },
-              "back_8-12_a",
-              "shoulders_12-15_b",
-              {
-                "id": "abs_8-12_c",
+                "id": "abs_8-12_d",
                 "beginner": false
               }
             ]
@@ -333,9 +346,13 @@
             "focus": "Schwere Grundübungen",
             "slots": [
               "gmax_6-8_a",
-              "gmed_8-12_a",
               "ghams_6-10_a",
-              "shoulders_8-12_c",
+              "hams_8-12_a",
+              "gmed_8-12_a",
+              {
+                "id": "shoulders_8-12_c",
+                "sets": 3
+              },
               "abs_8-12_a"
             ]
           },
@@ -344,49 +361,53 @@
             "focus": "Rücken schwer, dazu Schultern und Arme",
             "slots": [
               "back_6-10_a",
-              {
-                "id": "shoulders_8-12_a",
-                "sets": 3
-              },
+              "shoulders_6-10_a",
               "chest_8-12_a",
               "biceps_8-12_a",
-              "triceps_8-12_a"
+              "triceps_8-12_a",
+              "abs_8-12_b"
             ]
           },
           {
             "name": "Tag C – Po & Beine",
             "focus": "Mittlere Gewichte",
             "slots": [
-              "gmax_8-12_a",
               "gquad_6-10_a",
-              "hams_8-12_a",
-              {
-                "id": "quads_8-12_a",
-                "sets": 2
-              }
-            ]
-          },
-          {
-            "name": "Tag D – Schultern & Rücken",
-            "focus": "Leichtere Gewichte, mehr Wiederholungen",
-            "slots": [
-              "shoulders_12-15_a",
-              "back_8-12_a",
+              "gmax_8-12_a",
+              "quads_8-12_a",
+              "hams_8-12_b",
               "gmed_12-15_a",
-              "abs_8-12_b"
+              "shoulders_12-15_a",
+              "abs_8-12_c"
             ]
           },
           {
-            "name": "Tag E – Po & Hüfte",
+            "name": "Tag D – Oberkörper & Po",
+            "focus": "Mittlere Gewichte",
+            "slots": [
+              "back_8-12_a",
+              "shoulders_8-12_a",
+              "chest_8-12_b",
+              "biceps_8-12_b",
+              "triceps_8-12_b",
+              "gmax_12-15_a",
+              "gmed_12-15_b"
+            ]
+          },
+          {
+            "name": "Tag E – Ganzkörper",
             "focus": "Leichtere Gewichte, mehr Wiederholungen",
             "slots": [
-              "gmax_12-15_a",
-              "gmed_12-15_b",
+              "gquad_8-12_a",
+              "ghams_8-12_a",
               {
-                "id": "shoulders_12-15_b",
+                "id": "back_8-12_b",
                 "sets": 2
               },
-              "abs_8-12_c"
+              "gmed_8-12_b",
+              "shoulders_12-15_b",
+              "gmax_12-15_b",
+              "abs_8-12_d"
             ]
           }
         ]
@@ -396,7 +417,7 @@
       "3": {
         "days": [
           {
-            "name": "Tag A – Drücken & Beine",
+            "name": "Tag A – Brust, Schultern & Beine",
             "focus": "Schwere Grundübungen",
             "slots": [
               "chest_6-8_a",
@@ -404,31 +425,22 @@
               "gquad_6-10_a",
               {
                 "id": "quads_8-12_a",
-                "beginner": false
+                "sets": 2
               },
-              {
-                "id": "triceps_8-12_a",
-                "beginner": false
-              },
-              "calves_8-12_a"
+              "triceps_8-12_a",
+              "abs_8-12_a"
             ]
           },
           {
             "name": "Tag B – Oberkörper",
-            "focus": "Schwere Grundübungen",
+            "focus": "Rücken schwer, dazu Schultern und Arme",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
               "shoulders_8-12_a",
               "biceps_8-12_a",
-              {
-                "id": "chest_12-15_a",
-                "beginner": false
-              },
-              {
-                "id": "abs_8-12_a",
-                "beginner": false
-              }
+              "chest_12-15_a",
+              "abs_8-12_b"
             ]
           },
           {
@@ -436,17 +448,11 @@
             "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_a",
-              {
-                "id": "back_8-12_b",
-                "beginner": false
-              },
+              "back_8-12_b",
               "chest_8-12_a",
               "ghams_6-10_a",
-              {
-                "id": "shoulders_12-15_b",
-                "beginner": false
-              },
-              "abs_8-12_b"
+              "shoulders_12-15_b",
+              "abs_8-12_c"
             ]
           }
         ]
@@ -454,56 +460,42 @@
       "4": {
         "days": [
           {
-            "name": "Tag A – Rücken & Brust",
+            "name": "Tag A – Rücken & Arme",
             "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
-              {
-                "id": "shoulders_12-15_b",
-                "beginner": false
-              },
               "biceps_8-12_a",
-              {
-                "id": "chest_12-15_a",
-                "beginner": false
-              },
-              {
-                "id": "abs_8-12_a",
-                "beginner": false
-              }
+              "shoulders_12-15_b",
+              "chest_12-15_a",
+              "abs_8-12_a"
             ]
           },
           {
-            "name": "Tag B – Beine",
-            "focus": "Schwere Grundübungen, dazu Schultern",
+            "name": "Tag B – Beine & Schultern",
+            "focus": "Schwere Grundübungen",
             "slots": [
               "gquad_6-10_a",
               "ghams_6-10_a",
-              {
-                "id": "quads_8-12_a",
-                "beginner": false
-              },
+              "quads_8-12_a",
+              "hams_8-12_a",
               {
                 "id": "calves_8-12_a",
-                "sets": 3,
-                "beginner": false
+                "sets": 3
               },
               "shoulders_12-15_a"
             ]
           },
           {
-            "name": "Tag C – Drücken",
+            "name": "Tag C – Brust & Schultern",
             "focus": "Schwere Grundübungen, dazu Rudern",
             "slots": [
               "chest_6-8_a",
-              "back_8-12_b",
               "shoulders_6-10_a",
+              "back_8-12_b",
               "triceps_8-12_a",
-              {
-                "id": "abs_8-12_b",
-                "beginner": false
-              }
+              "calves_12-15_a",
+              "abs_8-12_c"
             ]
           },
           {
@@ -512,14 +504,13 @@
             "slots": [
               "back_8-12_a",
               "chest_8-12_a",
-              {
-                "id": "shoulders_8-12_a",
-                "sets": 3
-              },
+              "shoulders_8-12_a",
               {
                 "id": "triceps_8-12_b",
-                "beginner": false
-              }
+                "sets": 3
+              },
+              "back_12-15_a",
+              "abs_8-12_d"
             ]
           }
         ]
@@ -527,30 +518,26 @@
       "5": {
         "days": [
           {
-            "name": "Tag A – Rücken & Brust",
+            "name": "Tag A – Rücken & Arme",
             "focus": "Schwere Grundübungen",
             "slots": [
               "back_6-10_a",
               "back_6-8_a",
               "biceps_8-12_a",
-              {
-                "id": "shoulders_12-15_b",
-                "sets": 2
-              },
-              {
-                "id": "chest_12-15_a",
-                "beginner": false
-              }
+              "shoulders_12-15_b",
+              "chest_12-15_a",
+              "abs_8-12_a"
             ]
           },
           {
-            "name": "Tag B – Drücken",
+            "name": "Tag B – Brust & Schultern",
             "focus": "Schwere Grundübungen",
             "slots": [
               "chest_6-8_a",
               "shoulders_6-10_a",
+              "back_8-12_b",
               "triceps_8-12_a",
-              "abs_8-12_a"
+              "abs_8-12_b"
             ]
           },
           {
@@ -564,29 +551,41 @@
                 "id": "calves_8-12_a",
                 "sets": 3
               },
-              "abs_8-12_b"
+              "shoulders_12-15_a",
+              "abs_8-12_c"
             ]
           },
           {
-            "name": "Tag D – Rücken & Schultern",
+            "name": "Tag D – Oberkörper",
             "focus": "Mittlere Gewichte",
             "slots": [
               "back_8-12_a",
-              {
-                "id": "shoulders_8-12_a",
-                "sets": 3
-              },
-              "triceps_8-12_b",
-              "calves_12-15_a"
+              "shoulders_8-12_a",
+              "chest_8-12_b",
+              "biceps_8-12_b",
+              "back_12-15_a",
+              "calves_12-15_a",
+              "abs_8-12_d"
             ]
           },
           {
-            "name": "Tag E – Oberkörper",
+            "name": "Tag E – Oberkörper & Beine",
             "focus": "Mittlere Gewichte",
             "slots": [
-              "back_8-12_b",
+              {
+                "id": "back_8-12_c",
+                "sets": 4
+              },
               "chest_8-12_a",
-              "shoulders_12-15_a"
+              "gquad_8-12_a",
+              {
+                "id": "shoulders_8-12_b",
+                "sets": 4
+              },
+              {
+                "id": "triceps_12-15_a",
+                "sets": 3
+              }
             ]
           }
         ]

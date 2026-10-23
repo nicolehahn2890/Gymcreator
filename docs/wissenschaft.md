@@ -1,10 +1,10 @@
 # Trainingswissenschaftliche Grundlage
 
-Stand: 23.10.2026 (Volumen-Modell neu, Quellen online geprüft, mit dem ACSM Position Stand 2026 abgeglichen). Diese Datei begründet die Zahlen in `data/goals.json` (Wochenziele je Muskel, Grenzen, Wdh.-Bereiche, Stufen) und `data/templates.json` (Tagesvorlagen). Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
+Stand: 23.10.2026 (Volumen-Modell neu, Quellen online geprüft, mit dem ACSM Position Stand 2026 abgeglichen; abends alle 57 Einheiten auf 60–90 Minuten mit realistischer Zeitrechnung neu verteilt, Kurz-Modus neu). Diese Datei begründet die Zahlen in `data/goals.json` (Wochenziele je Muskel, Grenzen, Wdh.-Bereiche, Stufen) und `data/templates.json` (Tagesvorlagen). Wo die Evidenz dünn ist, steht das dabei – die App verspricht nichts, was die Studienlage nicht hergibt.
 
 ## Grundsatz
 
-Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie möglich**. Jeder Plan (3 Ziele, Fortgeschrittene 3/4/5 Tage, Einsteiger 3/4 Tage = 15 Pläne) muss im Prüfskript `scripts/verify-plan-data.mjs` die Wochenziele je Muskel, die Grenzen je Einheit und die Stufen-Regeln einhalten. Die Übungen wählt die Person selbst, je Zeile aus der passenden Muskelgruppe; ein Stern markiert die besten Übungen für ihr Ziel.
+Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie möglich**. Jeder Plan (3 Ziele, Fortgeschrittene 3/4/5 Tage, Einsteiger 3/4 Tage = 15 Pläne mit zusammen 57 Einheiten) muss im Prüfskript `scripts/verify-plan-data.mjs` die Wochenziele je Muskel, die Grenzen je Einheit, die Dauer (60–90 Minuten je Einheit, Nicoles Vorgabe) und die Stufen-Regeln einhalten. Die Übungen wählt die Person selbst, je Zeile aus der passenden Muskelgruppe; ein Stern markiert die besten Übungen für ihr Ziel.
 
 ## Regeln und ihre Evidenz
 
@@ -12,10 +12,10 @@ Spalte **Art**: **belegt** = von Studien gestützt; **teilweise** = die Richtung
 
 | Parameter | Regel in Gymcreator | Art | Evidenz (Kurzform) |
 |---|---|---|---|
-| Wochenvolumen je Muskel | Je Ziel und Stufe eine **Zielspanne pro Muskel** (`targets`), anteilig gezählt (direkte Übung 1, Mitarbeit 0,5, z. B. Kniebeuge = Oberschenkel 1 + Po 0,5). Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel/Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 4–14, Nebenmuskeln 2–7, unerwünschte 0. **Jede Prio-3-Muskelgruppe mindestens 10** (`levels.advanced.minWeeklySetsPrio3`, geprüft in `validatePlan`) | teilweise | ACSM 2026: etwa 10 Sätze je Muskelgruppe und Woche für Hypertrophie, mehr bringt weiter etwas (laut Pressemitteilung). Mehr Volumen bringt mehr, mit abnehmendem Grenznutzen: Schoenfeld 2017 (+0,37 % Zuwachs je Wochensatz; der Vergleich ≥ 10 vs. < 5 Sätze ist nur ein Trend, p = 0,074), Baz-Valle 2022 (12–20 Sätze, aber nur junge trainierte Männer, 6 Studien), Pelland 2026 (anteilige Zählung erklärt die Daten am besten). Erhalt mit wenig Volumen: Bickel 2011 (bei Jungen hielt schon 1/9 der Dosis die Muskeln, bei Älteren reichte 1/3 nicht). **Die konkreten Spannen sind Festlegung**, ebenso die Übertragung "Nebenmuskel braucht wenig" |
-| Mehr Tage | Mehr Tage verteilen **ähnliches Wochenvolumen** auf kürzere Einheiten: Fortgeschritten 48–53 Sätze bei 3 Tagen, 55–59 bei 4 und 5 Tagen (etwa 10–20 % mehr; die Grenze je Einheit begrenzt die 3-Tage-Pläne) | teilweise | Bei gleichem Volumen kein nachweisbarer Frequenz-Effekt auf die Hypertrophie (Schoenfeld 2019, Pelland 2026; für Kraft ein kleiner). Die Unterschiede zwischen 3, 4 und 5 Tagen sind Festlegung. (Bis 23.10. stand hier "+ 0–10 %"; das stimmte schon vorher nicht, Sanduhr hatte 48 zu 56.) |
-| Grenzen je Einheit | Höchstens **10 anteilige Sätze je Muskel und Einheit**. Fortgeschritten 3–7 Übungen und **max. 18 Sätze** (ca. 55–60 Min.), Einsteiger 3–6 Übungen und max. 12 Sätze. **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Vorgabe 23.10.2026) | teilweise | Remmert 2025 (Preprint): ab ~11 anteiligen Sätzen pro Einheit kein **nachweisbarer** Zusatznutzen; 10 ist davon abgeleitet. 18/12 Sätze und 7/6 Übungen sind Festlegung (Dauer, Qualität der letzten Sätze) |
-| Frequenz | Prio-3-Kategorien mindestens 2× pro Woche, Hauptmuskel 3–4× | teilweise | ACSM 2026: mindestens 2× pro Woche. Bei gleichem Volumen ist ein eigener Effekt höherer Frequenz nicht belegt (Schoenfeld 2019); 3–4× beim Hauptmuskel ist organisatorisch, damit die Grenze je Einheit hält |
+| Wochenvolumen je Muskel | Je Ziel und Stufe eine **Zielspanne pro Muskel** (`targets`), anteilig gezählt (direkte Übung 1, Mitarbeit 0,5, z. B. Kniebeuge = Oberschenkel 1 + Po 0,5). Fortgeschritten: Hauptmuskel 12–24 (Po bei Apfel/Sanduhr, Rücken bei V-Form; 3 Tage am unteren, 5 Tage am oberen Ende), **jede weitere Prio-3-Muskelgruppe mindestens 10** (`levels.advanced.minWeeklySetsPrio3`, geprüft in `validatePlan`), Prio 2 etwa 4–12, Prio 1 0–8, unerwünschte 0 (indirekte Mitarbeit erlaubt, z. B. Bizeps beim Rudern) | teilweise | ACSM 2026: etwa 10 Sätze je Muskelgruppe und Woche für Hypertrophie, mehr bringt weiter etwas (laut Pressemitteilung). Mehr Volumen bringt mehr, mit abnehmendem Grenznutzen: Schoenfeld 2017 (+0,37 % Zuwachs je Wochensatz; der Vergleich ≥ 10 vs. < 5 Sätze ist nur ein Trend, p = 0,074), Baz-Valle 2022 (12–20 Sätze, aber nur junge trainierte Männer, 6 Studien), Pelland 2026 (anteilige Zählung erklärt die Daten am besten). Erhalt mit wenig Volumen: Bickel 2011 (bei Jungen hielt schon 1/9 der Dosis die Muskeln, bei Älteren reichte 1/3 nicht). **Die konkreten Spannen sind Festlegung**, ebenso die Übertragung "Nebenmuskel braucht wenig" |
+| Mehr Tage | **Jede Einheit dauert 60–90 Minuten**, also bringen mehr Tage mehr Wochenvolumen: Fortgeschritten 52–53 Sätze bei 3 Tagen, 68–70 bei 4, 84–86 bei 5; Einsteiger 54 bzw. 72. Der Zuwachs geht vor allem an Hauptmuskel und Prio-3-Muskeln | teilweise | Mehr Wochenvolumen bringt mehr Hypertrophie, mit abnehmendem Grenznutzen (Schoenfeld 2017, Pelland 2026); pro Einheit bringt ein Muskel über ~11 anteilige Sätze nichts Nachweisbares mehr (Remmert 2025, Preprint), mehr Volumen geht also nur über mehr Tage. Bei gleichem Volumen bringt mehr Frequenz allein nichts (Schoenfeld 2019). Die 60–90 Minuten sind Nicoles Vorgabe (23.10.2026); die Obergrenzen der Wochenziele (Hauptmuskel 24) sind Festlegung |
+| Grenzen je Einheit | **60–90 Minuten** (`limits.sessionMinutes`, Schätzung siehe Dauer). Höchstens **10 anteilige Sätze je Muskel und Einheit**. Fortgeschritten 5–7 Übungen und **max. 18 Sätze** (in der Praxis 15–18), Einsteiger 5–6 Übungen mit je 3 Sätzen. **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Vorgabe 23.10.2026) | teilweise | Remmert 2025 (Preprint): ab ~11 anteiligen Sätzen pro Einheit kein **nachweisbarer** Zusatznutzen; 10 ist davon abgeleitet. 7 Übungen / 18 Sätze und 60–90 Minuten sind Nicoles Vorgaben |
+| Frequenz | Prio-3-Kategorien mindestens 2× pro Woche, Hauptmuskel 3–5× | teilweise | ACSM 2026: mindestens 2× pro Woche. Bei gleichem Volumen ist ein eigener Effekt höherer Frequenz nicht belegt (Schoenfeld 2019); 3–5× beim Hauptmuskel ist organisatorisch, damit die Grenze je Einheit hält |
 | Wdh.-Bereiche | **6–8** schwere Grundübung (je Hauptmuskel 1× pro Woche), **6–10** weitere Grundübungen, **8–12** Maschinen, Kabel, Isolation, **12–15** Isolation für kleine Muskeln | teilweise | Hypertrophie über ein breites Lastspektrum gleich, wenn nah am Versagen (Schoenfeld 2017 Last-Meta, Lopez 2021); Kraft besser mit schwerer Last (Lopez 2021, Schoenfeld 2021). Die Bereichsgrenzen, ihre Zuordnung und "4–8 entfällt" sind Festlegung |
 | Wellen über die Woche | Der Hauptmuskel bekommt an verschiedenen Tagen verschiedene Bereiche: z. B. Apfel 3 Tage Po **6–8 / 8–12 / 12–15**. Jeder Fortgeschrittenen-Plan hat beim Hauptmuskel mindestens 3 Bereiche (Test) | Festlegung | Für die Hypertrophie kein Vorteil gegenüber gleichbleibenden Bereichen (Grgic 2017, d = −0,02); ACSM 2026: komplexe Methoden sind nicht nötig. Mehr Kraft mit Wellen nur in einer kleinen Studie (Rhea 2002, 20 Männer). Gewählt für Abwechslung und weil schwere und leichte Tage sich gut verteilen |
 | Warum 8–12 statt 10–12 | Gewichtssprünge an Maschinen und Kabeln sind groß (eine Stufe ist oft 5–10 %). Ein Bereich von 4 Wdh. fängt einen Sprung auf | Festlegung | Praxis der doppelten Progression |
@@ -26,10 +26,12 @@ Spalte **Art**: **belegt** = von Studien gestützt; **teilweise** = die Richtung
 | Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne und Zeilen-Hinweis (`focus`) | teilweise | Chaves 2020 (Schrägbank nur an 1 von 3 Messstellen überlegen, Untrainierte), Maeo 2023, Pedrosa 2023 und Kassiano 2025 (Preacher mehr distal, Schrägbank-Curl mehr proximal; Untrainierte) |
 | Volumen-Steigerung | Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel) | Festlegung | Gestützt, aber nicht belegt: Enes 2024 (mehr Sätze brachten Kraft, Hypertrophie nicht signifikant, p = 0,067); Remmert (Preprint, nur Bizeps, 34 Trainierte): Autoregulation = festes Volumen |
 | Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht | teilweise | Last- und Wdh.-Progression gleichwertig (Plotkin 2022). Die doppelte Progression selbst hat keinen eigenen RCT |
-| Einsteiger | **Nur 3 oder 4 Tage** (5 Tage ergäben Einheiten mit 6 Sätzen; Entscheidung 23.10.2026). Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen. 24–34 Sätze pro Woche, 6–10 je Einheit; jeder Zielmuskel mindestens 4 anteilige Sätze pro Woche auf 2 Einheiten | teilweise | ACSM 2009: Einsteiger 1–3 Sätze, 8–12 Wdh. Jede Last wirkt, wenn nah am Versagen (Lopez 2021). Mehrere Sätze besser als einer (Currier 2023, nicht speziell Einsteiger). 2 Sätze, 55–65 % des Volumens und die Mindestzahl 4 sind Festlegung |
+| Einsteiger | **Nur 3 oder 4 Tage** (Entscheidung 23.10.2026). Gleiche Tage wie Fortgeschrittene, aber **6 Übungen mit je 3 Sätzen** (18 Sätze, ca. 60 Minuten), 6–8 und 6–10 werden **8–12**, die Zeile mit `beginner: false` entfällt. 54 Sätze pro Woche bei 3 Tagen, 72 bei 4. Der Unterschied zu Fortgeschrittenen liegt bei Last und Übungszahl, nicht beim Volumen | teilweise | ACSM 2009: Einsteiger 8–12 Wdh. (8–12 RM), 2–3 Tage pro Woche. Auch Untrainierte bauen mit mehr Sätzen mehr auf: Radaelli 2015 (48 untrainierte Männer, 6 Monate: 5 Sätze je Übung > 3 > 1). Jede Last wirkt, wenn nah am Versagen (Lopez 2021). 3 Sätze je Übung und 6 Übungen ergeben sich aus der Vorgabe 60 Minuten; der 4-Tage-Plan liegt mit 72 Sätzen hoch, ist aber eine bewusste Wahl der Person |
 | Kein Deload, leichter Zyklusstart | Es gibt keine Deload-Woche. Nach 12 Wochen beginnt der nächste Zyklus mit **5–10 % weniger Gewicht** (`progression.nextCycleLighterPct`), Woche 1 ohne Vergleich; erklärt im Plan und auf "Heute" (Entscheidung 23.10.2026) | teilweise | Eine Deload-Woche brachte keinen Vorteil: Coleman 2024 (39 Trainierte: Hypertrophie gleich, Kraft eher ohne; der Deload war eine Woche komplette Pause), Pancar 2026 (19 untrainierte Männer, Deload in Woche 4 und 8: kein Unterschied). Die 5–10 % sind Festlegung |
 | Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Festlegung | Praxis (Peach) |
-| Kurz-Modus | Für einzelne Tage 45 oder 30 Min.: **jede Übung bekommt weniger Sätze**, mindestens 1 (Nicoles Entscheidung 23.10.2026). Dauer-Schätzung: Satz 45 s + Pause des Bereichs + 120 s Wechsel/Aufwärmen je Übung (`timing`) | teilweise | Ein Satz nah am Versagen wirkt schon, mehrere wirken mehr (Currier 2023, Schoenfeld 2017, Pelland 2026); für einzelne kurze Tage ist der Verlust klein. Die Steigerung hängt am 1. Satz, die Bewertung am Schnitt je Satz; beides bleibt gültig. Nebenwirkung: Ohne die ermüdeten letzten Sätze fällt der Schnitt eher höher aus, die Bewertung zeigt dann leichter "Mehr Wiederholungen". Die Zeiten der Schätzung sind Festlegung |
+| Pausen | Pausenvorgabe je Bereich: **6–8: 3 Min., 6–10: 2:30, 8–12: 2 Min., 12–15: 1:30** (`timing.restSeconds`, auch der Pausentimer) | teilweise | Singer 2024 (Bayes-Metaanalyse, 9 Studien): Pausen über 60 s bringen etwas mehr Hypertrophie, über 90 s kein erkennbarer Zusatznutzen mehr; Schoenfeld 2016 (21 Trainierte: 3 Min. > 1 Min. für Kraft und Muskeldicke bei Grundübungen). Daher nie unter 90 s, bei schweren Grundübungen länger, damit die Sätze gut bleiben. Die genauen Werte sind Festlegung |
+| Dauer einer Einheit | Schätzung: je Satz 45 s plus Pause, je Übung Aufwärmsätze und Wechsel nach Bereich (**6–8: 4 Min., 6–10: 3, 8–12: 2, 12–15: 1:30**, `timing.exerciseSeconds`), angezeigt in 5-Minuten-Schritten. Jede normale Einheit 60–90 Minuten (geprüft) | Festlegung | Praxiswerte. Iversen 2021: Aufwärmen übungsbezogen (Aufwärmsätze), kein langes allgemeines Aufwärmen nötig. Die alte Schätzung (bis 23.10. abends) rechnete ohne Aufwärmsätze und mit kürzeren Pausen und lag 15–20 Minuten zu niedrig |
+| Kurz-Modus | Einzelne Tage in **60 oder 45 Minuten** (nur angeboten, wenn kürzer als normal und sinnvoll). **Zuerst fallen ganze Übungen weg**: niedrigste Priorität fürs Ziel zuerst, Isolation vor Grundübung; **Prio-3-Übungen bleiben immer**. Erst danach bekommen die verbleibenden Übungen weniger Sätze, nie unter **2**; es bleiben mindestens **3 Übungen** (`short` in goals.json). Geht das nicht, gibt es die Zeit nicht (z. B. 30 Minuten: das wären höchstens 2 Übungen). Ausgelassene Übungen stehen unten und können trotzdem gemacht werden | teilweise | Iversen 2021 (Übersicht zu zeitsparendem Training): Grundübungen bevorzugen, Wochenvolumen zählt mehr als die einzelne Einheit, mindestens ~4 Wochensätze je Muskel. Mehrere Sätze je Übung wirken besser als einer (Radaelli 2015, Currier 2023), daher mindestens 2. Die Reihenfolge folgt den Zielprioritäten. Mindestwerte 2 Sätze / 3 Übungen sind Festlegung. Die alte Fassung (jede Übung weniger Sätze, bis 1 Satz) ist verworfen |
 
 ## Korrekturen und Vorbehalte aus der Recherche
 
@@ -56,55 +58,57 @@ Currier BS et al. (Vorsitz Stuart Phillips), Med Sci Sports Exerc 2026;58(4):851
 | Maschinen und freie Gewichte gleichwertig | Übungen frei wählbar | passt |
 | Komplexe Methoden nicht nötig | Wellen über die Woche sind Festlegung für Abwechslung, kein behaupteter Vorteil | passt |
 
-Umsetzung V-Form: Die Brust bekommt eine dritte Übung (Flys 2 × 12–15, gedehnte Position) am Rücken-Tag, statt die beiden Brustzeilen auf 5 Sätze zu erhöhen. So bleiben 4 Sätze je Übung, der Auto-Zusatzsatz bleibt möglich, und die Brust wird 3× pro Woche trainiert. Der Tag heißt jetzt „Oberkörper“ (3 Tage) bzw. „Rücken & Brust“ (4 und 5 Tage).
+Umsetzung V-Form: Die Brust bekommt eine dritte Übung (Flys 2 × 12–15, gedehnte Position) am Rücken-Tag, statt die beiden Brustzeilen auf 5 Sätze zu erhöhen. So bleiben 4 Sätze je Übung, der Auto-Zusatzsatz bleibt möglich, und die Brust wird 3× pro Woche trainiert. (Seit der Neuverteilung am Abend heißt dieser Tag „Oberkörper“ bzw. „Rücken & Arme“.)
 
 Bewusst unter 10 bleiben die Prio-2-Muskeln (z. B. Rücken bei Apfel und Sanduhr: 6). Sie werden trainiert, aber nicht maximal aufgebaut; das ist die Priorisierung des Körperziels innerhalb von max. 18 Sätzen je Einheit. Einsteiger haben keine Untergrenze von 10, weil bei Untrainierten auch wenig Volumen wirkt.
 
 ## Verifizierte Volumen (aus `data/`, geprüft mit `scripts/verify-plan-data.mjs`)
 
-Anteilige Sätze pro Woche (Fortgeschritten 3 / 4 / 5 Tage, Einsteiger 3 / 4 Tage), daneben die Zielspanne aus `targets`.
+Anteilige Sätze pro Woche (Fortgeschritten 3 / 4 / 5 Tage, Einsteiger 3 / 4 Tage), daneben die Zielspanne aus `targets`, unten Sätze und geschätzte Minuten je Einheit.
 
-Anpassung 23.10.2026 (abends): Apfel bekommt eine zweite kniebetonte Übung (Ausfallschritt oder Split Squat, belastet den Po stark mit) statt des zweiten Hüftbeuge-Slots, Oberschenkel vorne 3 → 5, Beinrückseite 8 → 6. Sanduhr-Einsteiger bekommen Glute Med an zwei Tagen (2 → 4). ACSM-Abgleich (23.10.2026): Prio-3-Muskelgruppen bei Fortgeschrittenen mindestens 10 (siehe oben).
+Neu verteilt am 23.10.2026 (abends): Jede Einheit dauert mit realistischer Zeitrechnung 60–90 Minuten (vorher lagen 47 von 57 Einheiten darunter, Einsteiger und 4/5-Tage-Pläne bei 20–55 Minuten). Fortgeschrittene haben dadurch bei 4 und 5 Tagen mehr Wochenvolumen, Einsteiger 3 statt 2 Sätze je Übung. V-Form: Tagesnamen nach Körperbereich (z. B. „Brust, Schultern & Beine“ statt „Drücken & Beine“).
 
 ### Fortgeschritten
 
 | Muskel | Apfel | Ziel | Sanduhr | Ziel | V-Form | Ziel |
 |---|---|---|---|---|---|---|
-| Po (Glute Max) | 14 / 16 / 16 | 12–17 | 12 / 13,5 / 12 | 11–16 | 3 / 3 / 3 | 2–7 |
-| Hüfte außen (Glute Med) | 10 / 10 / 10 | 10–12 | 4 / 4 / 6 | 4–8 | 0 / 0 / 0 | 0 |
-| Beinrückseite | 6 / 6 / 6 | 6–10 | 6 / 6 / 6 | 5–10 | 3 / 3 / 3 | 3–6 |
-| Oberschenkel vorne | 5 / 5 / 5 | 4–7 | 6 / 9 / 5 | 5–10 | 6 / 6 / 6 | 5–9 |
-| Adduktoren | 4 / 4 / 4 | 3–6 | 0 / 0 / 0 | 0–4 | 0 / 0 / 0 | 0 |
-| Rücken | 6 / 6 / 6 | 6–10 | 6 / 6 / 6 | 6–10 | 12 / 12 / 12 | 12–16 |
-| Schultern | 7 / 7 / 7 | 6–9 | 10 / 10 / 10 | 10–14 | 10 / 12 / 11 | 10–14 |
-| Brust | 2 / 3 / 3 | 0–4 | 3 / 3 / 3 | 2–5 | 10 / 10 / 10 | 10–13 |
-| Bizeps | 3 / 3 / 3 | 0–5 | 3 / 5 / 5 | 3–7 | 9 / 9 / 9 | 6–10 |
-| Trizeps | 1 / 1,5 / 1,5 | 0–3 | 1,5 / 3,5 / 3,5 | 1–5 | 8 / 10 / 10 | 5–10 |
-| Waden | 0 / 0 / 0 | 0 | 0 / 0 / 0 | 0 | 2 / 3 / 5 | 2–6 |
-| Bauch | 4 / 6 / 6 | 2–6 | 4 / 6 / 6 | 2–6 | 4 / 4 / 4 | 2–6 |
-| **Sätze gesamt** | 52 / 57 / 57 |  | 48 / 57 / 55 |  | 53 / 58 / 59 |  |
-| Sätze je Einheit | 16–18 / 12–16 / 9–13 |  | 15–17 / 13–15 / 9–13 |  | 17–18 / 12–16 / 10–14 |  |
+| Po (Glute Max) | 14,5 / 18,5 / 23,5 | 12–24 | 12 / 15,5 / 18 | 12–24 | 3 / 3 / 4,5 | 2–8 |
+| Hüfte außen (Glute Med) | 10 / 12 / 15 | 10–16 | 4 / 6 / 8 | 4–10 | 0 / 0 / 0 | 0 |
+| Beinrückseite | 6 / 8 / 11 | 5–12 | 6 / 8 / 11 | 5–12 | 3 / 5 / 3 | 2–8 |
+| Oberschenkel vorne | 6 / 8 / 11 | 4–12 | 6 / 9 / 9 | 5–12 | 5 / 6 / 9 | 4–10 |
+| Adduktoren | 4 / 4 / 4 | 2–8 | 0 / 0 / 0 | 0–6 | 0 / 0 / 0 | 0 |
+| Rücken | 6 / 9 / 9 | 6–12 | 6 / 9 / 8 | 6–12 | 12 / 14 / 18 | 12–24 |
+| Schultern | 7 / 8 / 10 | 6–12 | 10 / 12 / 16 | 10–20 | 10 / 13 / 17 | 10–20 |
+| Brust | 0 / 2 / 4 | 0–6 | 3 / 3 / 5 | 2–8 | 10 / 10 / 13 | 10–18 |
+| Bizeps | 3 / 4,5 / 4,5 | 0–8 | 5 / 6,5 / 8 | 2–10 | 9 / 10 / 14 | 4–14 |
+| Trizeps | 0 / 1 / 2 | 0–4 | 1,5 / 3,5 / 6,5 | 1–8 | 8 / 11 / 12,5 | 4–14 |
+| Waden | 0 / 0 / 0 | 0 | 0 / 0 / 0 | 0 | 0 / 5 / 5 | 0–8 |
+| Bauch | 6 / 6 / 8 | 2–8 | 6 / 8 / 8 | 2–8 | 6 / 6 / 8 | 2–8 |
+| **Sätze gesamt** | 53 / 69 / 86 |   | 52 / 70 / 85 |   | 52 / 68 / 84 |  |
+| Sätze je Einheit | 17–18 / 16–18 / 16–18 |   | 17–18 / 17–18 / 15–18 |   | 17–18 / 16–18 / 15–18 |  |
+| Minuten je Einheit | 60–70 / 60–65 / 60–65 |   | 60–65 / 60–65 / 60–65 |   | 60–70 / 60–65 / 60 |  |
 
 ### Einsteiger
 
 | Muskel | Apfel | Ziel | Sanduhr | Ziel | V-Form | Ziel |
 |---|---|---|---|---|---|---|
-| Po (Glute Max) | 10 / 10 | 7–11 | 8 / 8 | 6–10 | 2 / 2 | 1–5 |
-| Hüfte außen (Glute Med) | 6 / 6 | 4–6 | 4 / 4 | 4–6 | 0 / 0 | 0 |
-| Beinrückseite | 4 / 4 | 3–7 | 4 / 4 | 3–6 | 2 / 2 | 2–4 |
-| Oberschenkel vorne | 4 / 4 | 3–5 | 4 / 4 | 3–6 | 2 / 2 | 2–6 |
-| Adduktoren | 2 / 2 | 0–4 | 0 / 0 | 0–3 | 0 / 0 | 0 |
-| Rücken | 4 / 4 | 3–6 | 4 / 4 | 3–6 | 6 / 8 | 6–10 |
-| Schultern | 4 / 4 | 2–6 | 6 / 6 | 4–8 | 4 / 6 | 4–8 |
-| Brust | 0 / 0 | 0–3 | 2 / 2 | 0–4 | 4 / 4 | 4–8 |
-| Bizeps | 2 / 2 | 0–3 | 2 / 2 | 1–4 | 5 / 6 | 3–6 |
-| Trizeps | 0 / 0 | 0–2 | 1 / 1 | 0–3 | 2 / 4 | 2–6 |
-| Waden | 0 / 0 | 0 | 0 / 0 | 0 | 2 / 0 | 0–4 |
-| Bauch | 0 / 4 | 0–4 | 0 / 2 | 0–4 | 2 / 0 | 0–4 |
-| **Sätze gesamt** | 30 / 34 |  | 30 / 32 |  | 24 / 26 |  |
-| Sätze je Einheit | 10 / 8–10 |  | 10 / 6–10 |  | 8 / 6–8 |  |
+| Po (Glute Max) | 16,5 / 19,5 | 8–20 | 12 / 16,5 | 8–20 | 3 / 3 | 0–6 |
+| Hüfte außen (Glute Med) | 9 / 12 | 6–12 | 6 / 6 | 2–8 | 0 / 0 | 0 |
+| Beinrückseite | 6 / 6 | 3–9 | 6 / 9 | 3–9 | 3 / 6 | 0–6 |
+| Oberschenkel vorne | 6 / 6 | 3–9 | 6 / 9 | 3–9 | 6 / 6 | 3–9 |
+| Adduktoren | 6 / 6 | 2–8 | 0 / 0 | 0–4 | 0 / 0 | 0 |
+| Rücken | 6 / 9 | 3–9 | 6 / 9 | 3–9 | 12 / 15 | 8–18 |
+| Schultern | 9 / 9 | 3–10 | 9 / 12 | 6–14 | 9 / 12 | 6–14 |
+| Brust | 0 / 3 | 0–6 | 3 / 3 | 0–6 | 9 / 9 | 6–14 |
+| Bizeps | 3 / 4,5 | 0–6 | 3 / 7,5 | 0–8 | 9 / 10,5 | 3–14 |
+| Trizeps | 0 / 1,5 | 0–4 | 1,5 / 4,5 | 0–6 | 7,5 / 10,5 | 3–12 |
+| Waden | 0 / 0 | 0 | 0 / 0 | 0 | 0 / 6 | 0–6 |
+| Bauch | 3 / 9 | 0–9 | 9 / 6 | 0–9 | 9 / 9 | 0–9 |
+| **Sätze gesamt** | 54 / 72 |   | 54 / 72 |   | 54 / 72 |  |
+| Sätze je Einheit | 18 / 18 |   | 18 / 18 |   | 18 / 18 |  |
+| Minuten je Einheit | 60 / 60 |   | 60 / 60 |   | 60 / 60 |  |
 
-Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich) druckt `node scripts/verify-plan-data.mjs` für alle 15 Pläne aus.
+Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich, Minuten) druckt `node scripts/verify-plan-data.mjs` für alle 15 Pläne aus.
 
 ## Quellen
 
@@ -144,3 +148,7 @@ Status nach der Online-Prüfung am 23.10.2026: **bestätigt** (gefunden, stützt
 32. Schoenfeld BJ, Grgic J, Van Every DW, Plotkin DL. Sports 2021;9(2):32, DOI 10.3390/sports9020032 (Wiederholungs-Kontinuum). **bestätigt.**
 33. Kassiano W et al. J Strength Cond Res 2023;37(9):1746–1753 (Waden, gedehnte Teilbewegung +15,2 % vs. +6,7 %). **bestätigt.** https://pubmed.ncbi.nlm.nih.gov/37015016/
 34. Currier BS et al. American College of Sports Medicine Position Stand. Resistance Training Prescription for Muscle Function, Hypertrophy, and Physical Performance in Healthy Adults: An Overview of Reviews. Med Sci Sports Exerc 2026;58(4):851–872, DOI 10.1249/MSS.0000000000003897. **über Suchtreffer bestätigt, Volltext nicht gelesen.**
+35. Singer A, Wolf M, Generoso L, Arias E, Delcastillo K, Echevarria E, Martinez A, Androulakis Korakakis P, Refalo MC, Swinton PA, Schoenfeld BJ. Give it a rest: a systematic review with Bayesian meta-analysis on the effect of inter-set rest interval duration on muscle hypertrophy. Front Sports Act Living 2024;6:1429789, DOI 10.3389/fspor.2024.1429789. **über Suchtreffer bestätigt** (über 60 s etwas besser, über 90 s kein erkennbarer Zusatznutzen). https://pmc.ncbi.nlm.nih.gov/articles/PMC11349676/
+36. Schoenfeld BJ et al. Longer interset rest periods enhance muscle strength and hypertrophy in resistance-trained men. J Strength Cond Res 2016;30(7):1805–1812, DOI 10.1519/JSC.0000000000001272. **über Sekundärquellen bestätigt** (21 Trainierte, 3 vs. 1 Min.).
+37. Iversen VM, Norum M, Schoenfeld BJ, Fimland MS. No Time to Lift? Designing Time-Efficient Training Programs for Strength and Hypertrophy: A Narrative Review. Sports Med 2021;51(10):2079–2095, DOI 10.1007/s40279-021-01490-1. **über Suchtreffer bestätigt.** https://pmc.ncbi.nlm.nih.gov/articles/PMC8449772/
+38. Radaelli R et al. Dose-response of 1, 3, and 5 sets of resistance exercise on strength, local muscular endurance, and hypertrophy. J Strength Cond Res 2015;29(5):1349–1358, DOI 10.1519/JSC.0000000000000758. **über Suchtreffer bestätigt** (48 untrainierte Männer, 6 Monate). https://pubmed.ncbi.nlm.nih.gov/25546444/

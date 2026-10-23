@@ -34,6 +34,10 @@
   font-weight: 600;
 }
 
+.plan-day-meta {
+  font-size: var(--fs-small);
+}
+
 .plan-day-short {
   justify-self: start;
   margin-top: 2px;

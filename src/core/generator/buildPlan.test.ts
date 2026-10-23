@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { planData } from '../model/data';
 import { DAY_COUNTS, GOAL_IDS, LEVELS } from '../model/types';
 import { buildPlan, effectiveDays } from './buildPlan';
-import { totalSets, validatePlan, weeklyMuscles } from './validate';
+import { estimateMinutes, totalSets, validatePlan, weeklyMuscles } from './validate';
 
 const combos = GOAL_IDS.flatMap((goal) => LEVELS.flatMap((level) => planData.goals.levels[level].days.map((days) => ({ goal, level, days }))));
 
@@ -17,10 +17,22 @@ describe('buildPlan', () => {
     for (const req of combos) expect(buildPlan(planData, req)).toEqual(buildPlan(planData, req));
   });
 
+  it('jede Einheit dauert laut Schaetzung 60-90 Minuten (limits.sessionMinutes)', () => {
+    const [min, max] = planData.goals.limits.sessionMinutes;
+    expect([min, max]).toEqual([60, 90]);
+    for (const req of combos) {
+      for (const day of buildPlan(planData, req).dayPlans) {
+        const minutes = estimateMinutes(day.rows, planData.goals.timing);
+        expect(minutes, `${req.goal}/${req.level}/${req.days}/${day.letter}`).toBeGreaterThanOrEqual(min);
+        expect(minutes, `${req.goal}/${req.level}/${req.days}/${day.letter}`).toBeLessThanOrEqual(max);
+      }
+    }
+  });
+
   it('Wochensaetze wie in docs/wissenschaft.md', () => {
     const expected = {
-      advanced: { apfel: [52, 57, 57], sanduhr: [48, 57, 55], vform: [53, 58, 59] },
-      beginner: { apfel: [30, 34], sanduhr: [30, 32], vform: [24, 26] },
+      advanced: { apfel: [53, 69, 86], sanduhr: [52, 70, 85], vform: [52, 68, 84] },
+      beginner: { apfel: [54, 72], sanduhr: [54, 72], vform: [54, 72] },
     };
     for (const level of LEVELS) {
       for (const goal of GOAL_IDS) {
@@ -30,10 +42,10 @@ describe('buildPlan', () => {
     }
   });
 
-  it('Apfel 3 Tage: Po wellenfoermig 6-8 / 8-12 / 12-15, Wochenvolumen Po 14', () => {
+  it('Apfel 3 Tage: Po wellenfoermig 6-8 / 8-12 / 12-15, Wochenvolumen Po 14,5', () => {
     const plan = buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 });
     expect(plan.dayPlans.map((d) => d.rows.find((r) => r.category === 'gmax')?.repRange)).toEqual(['6-8', '8-12', '12-15']);
-    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 10, hams: 6, quads: 5 });
+    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14.5, gluteMed: 10, hams: 6, quads: 6 });
   });
 
   it('Einsteiger waehlen 3 oder 4 Tage; 5 Tage aus alten Wochen werden 4', () => {
@@ -86,12 +98,19 @@ describe('buildPlan', () => {
     const dayA = plan.dayPlans[0];
     if (!dayA) throw new Error('kein Tag');
     const extra = { slotId: 'x', category: 'back', repRange: '8-12', sets: 5, priority: 2 as const };
-    const broken = { ...plan, dayPlans: [{ ...dayA, rows: [...dayA.rows, extra] }, ...plan.dayPlans.slice(1)] };
+    const calves = { slotId: 'y', category: 'calves', repRange: '12-15', sets: 2, priority: 0 as const };
+    const broken = { ...plan, dayPlans: [{ ...dayA, rows: [...dayA.rows, extra, calves] }, ...plan.dayPlans.slice(1)] };
     const codes = validatePlan(planData, broken).map((i) => i.code);
     expect(codes).toContain('session-exercises');
     expect(codes).toContain('session-sets');
     expect(codes).toContain('category-day');
     expect(codes).toContain('target');
+  });
+
+  it('meldet zu kurze Einheiten', () => {
+    const plan = buildPlan(planData, { goal: 'sanduhr', level: 'advanced', days: 4 });
+    const short = { ...plan, dayPlans: plan.dayPlans.map((d) => ({ ...d, rows: d.rows.slice(0, 3) })) };
+    expect(validatePlan(planData, short).filter((i) => i.code === 'session-minutes')).toHaveLength(4);
   });
 
   it('meldet Prio-3-Muskeln unter dem Mindestvolumen (nur Fortgeschrittene)', () => {
@@ -123,6 +142,7 @@ describe('Einsteiger (data/goals.json levels.beginner)', () => {
       const advIds = adv.dayPlans[i]?.rows.map((r) => r.slotId) ?? [];
       expect(day.rows.map((r) => r.slotId)).toEqual(advIds.filter((id) => !dropped.includes(id)));
     });
-    expect(totalSets(beg)).toBeLessThan(totalSets(adv));
+    // weniger Uebungen je Einheit als Fortgeschrittene, dafuer einheitlich 3 Saetze
+    beg.dayPlans.forEach((day, i) => expect(day.rows.length).toBeLessThanOrEqual(adv.dayPlans[i]?.rows.length ?? 0));
   });
 });

@@ -5,8 +5,9 @@ import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanDay, type PlanRow, type Profile } from '../../core/model/types';
 import { carryOver } from '../../core/progression/cycle';
 import { indexEntries, type EntryIndex } from '../../core/progression/entries';
+import type { ShortContext } from '../../core/progression/short';
 import { rowState, type RowContext } from '../../core/progression/state';
-import { estimateMinutes } from '../../core/progression/position';
+import { estimateMinutes } from '../../core/generator/validate';
 import { weekDays } from '../../core/progression/week';
 import { text } from '../../i18n';
 import type { StoredData } from '../../storage/interface';
@@ -95,13 +96,16 @@ export function dayMinutes(ctx: RowContext, day: PlanDay, pos: { cycle: number; 
   return estimateMinutes(dayRows(ctx, day, pos).map((r) => ({ repRange: r.repRange, sets: r.target })), planData.goals.timing);
 }
 
-/** Zeilen eines Tages mit den Saetzen dieser Woche (Zusatzsaetze, Kurz-Modus) fuer Dauer-Schaetzung und Kurz-Modus. */
+/** Zeilen eines Tages mit den Saetzen dieser Woche (Zusatzsaetze) und dem Ziel im Kurz-Modus (0 = ausgelassen). */
 export function dayRows(ctx: RowContext, day: PlanDay, pos: { cycle: number; week: number }) {
   return day.rows.map((row) => {
     const st = rowState(ctx, row, pos);
-    return { slotId: row.slotId, repRange: st.repRange, priority: row.priority, sets: st.totalSets, target: st.targetSets };
+    return { slotId: row.slotId, repRange: st.repRange, priority: row.priority, sets: st.totalSets, target: st.skipped ? 0 : st.targetSets };
   });
 }
+
+/** Regeln fuer den Kurz-Modus aus data/goals.json. */
+export const shortContext: ShortContext = { timing: planData.goals.timing, rules: planData.goals.short, ranges: planData.goals.ranges };
 
 /** Muskelgruppe der Zeile, mit Hinweis aus dem Slot: "Rücken · Ziehen von oben". */
 export function slotLabel(row: Pick<PlanRow, 'category' | 'focus'>): string {

@@ -110,7 +110,7 @@ export function ExerciseItem({ model, plan, ctx, pos, day, row, open, onToggle, 
   const repLabel = timed ? t.seconds : t.reps;
 
   return (
-    <li className={`exercise-item${open ? ' open' : ''}`} style={{ '--cat': `var(--cat-${row.category})` } as CSSProperties}>
+    <li className={`exercise-item${open ? ' open' : ''}${st.skipped ? ' skipped' : ''}`} style={{ '--cat': `var(--cat-${row.category})` } as CSSProperties}>
       <button ref={headRef} type="button" className="exercise-row" aria-expanded={open} aria-controls={panelId} onClick={onToggle}>
         <span className="exercise-row-main">
           <span className="exercise-row-cat">{slotLabel(row)}</span>

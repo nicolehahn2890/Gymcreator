@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { planData } from '../model/data';
 import { indexEntries } from './entries';
-import { dayProgress, estimateMinutes, followingWeek, latestWeek, nextDayIndex } from './position';
+import { estimateMinutes } from '../generator/validate';
+import { dayProgress, followingWeek, latestWeek, nextDayIndex } from './position';
 import { context, entry, plans } from './testing';
 
 describe('Position und Dauer', () => {
@@ -34,13 +35,13 @@ describe('Position und Dauer', () => {
     expect(latestWeek(indexEntries([]))).toEqual({ cycle: 1, week: 1 });
   });
 
-  it('Dauer-Schaetzung je Tag in 5-Minuten-Schritten, jeder Bereich hat eine Pause', () => {
-    for (const r of planData.goals.ranges) expect(planData.goals.timing.restSeconds[r], r).toBeGreaterThan(0);
-    for (const day of plans[4].dayPlans) {
-      const min = estimateMinutes(day.rows, planData.goals.timing);
-      expect(min % 5).toBe(0);
-      expect(min).toBeGreaterThanOrEqual(20);
-      expect(min).toBeLessThanOrEqual(75);
-    }
+  it('Dauer-Schaetzung in 5-Minuten-Schritten; Pausen mindestens 90 s, schwere Bereiche laenger', () => {
+    const { restSeconds, exerciseSeconds } = planData.goals.timing;
+    for (const r of planData.goals.ranges) expect(restSeconds[r], r).toBeGreaterThanOrEqual(90);
+    expect(restSeconds['6-8'] ?? 0).toBeGreaterThan(restSeconds['8-12'] ?? 0);
+    expect(exerciseSeconds['6-8'] ?? 0).toBeGreaterThan(exerciseSeconds['12-15'] ?? 0);
+    for (const day of plans[4].dayPlans) expect(estimateMinutes(day.rows, planData.goals.timing) % 5).toBe(0);
+    // 3 x 8-12: 3 x (45 + 120) + 120 = 615 s; ausgelassene Zeilen (0 Saetze) zaehlen nicht
+    expect(estimateMinutes([{ sets: 3, repRange: '8-12' }, { sets: 0, repRange: '6-8' }], planData.goals.timing)).toBe(10);
   });
 });

@@ -1,6 +1,7 @@
 // Prueft einen erzeugten Plan gegen data/goals.json: Grenzen (limits), Stufen-Regeln (levels),
-// Wochenziele je Muskel (targets), Prioritaeten und das Mindestvolumen der Prio-3-Muskeln (levels.minWeeklySetsPrio3).
-import type { Plan, PlanData, PlanIssue } from '../model/types';
+// Wochenziele je Muskel (targets), Prioritaeten, das Mindestvolumen der Prio-3-Muskeln (levels.minWeeklySetsPrio3)
+// und die Dauer jeder Einheit (limits.sessionMinutes, Schaetzung aus timing).
+import type { Plan, PlanData, PlanIssue, PlanRow, Timing } from '../model/types';
 
 export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
   const { limits, categories, ranges } = data.goals;
@@ -20,6 +21,9 @@ export function validatePlan(data: PlanData, plan: Plan): PlanIssue[] {
     }
     const sessionSets = day.rows.reduce((sum, r) => sum + r.sets, 0);
     if (sessionSets > rules.maxSetsPerSession) error('session-sets', `${day.name}: ${sessionSets} Saetze > ${rules.maxSetsPerSession}`);
+    const minutes = estimateMinutes(day.rows, data.goals.timing);
+    const [minMinutes, maxMinutes] = limits.sessionMinutes;
+    if (minutes < minMinutes || minutes > maxMinutes) error('session-minutes', `${day.name}: ca. ${minutes} Min. (${minMinutes}-${maxMinutes})`);
 
     const perCategory = new Map<string, number>();
     const fractional = new Map<string, number>();
@@ -85,4 +89,22 @@ export function weeklyMuscles(data: PlanData, plan: Plan): Record<string, number
 
 export function totalSets(plan: Plan): number {
   return plan.dayPlans.reduce((sum, d) => sum + d.rows.reduce((s, r) => s + r.sets, 0), 0);
+}
+
+type Timed = Pick<PlanRow, 'sets' | 'repRange'>;
+
+/**
+ * Dauer einer Einheit (timing): je Satz Satzdauer und Pause des Bereichs, je Uebung Aufwaermsaetze und Wechsel
+ * (schwere Bereiche brauchen mehr Aufwaermsaetze). Zeilen mit 0 Saetzen (Kurz-Modus: ausgelassen) zaehlen nicht.
+ */
+export function estimateSeconds(rows: readonly Timed[], timing: Timing): number {
+  return rows.reduce(
+    (sum, r) => (r.sets > 0 ? sum + r.sets * (timing.setSeconds + (timing.restSeconds[r.repRange] ?? 0)) + (timing.exerciseSeconds[r.repRange] ?? 0) : sum),
+    0,
+  );
+}
+
+/** Geschaetzte Dauer in Minuten, auf 5 gerundet (so wird sie angezeigt und geprueft). */
+export function estimateMinutes(rows: readonly Timed[], timing: Timing): number {
+  return Math.max(5, Math.round(estimateSeconds(rows, timing) / 300) * 5);
 }
