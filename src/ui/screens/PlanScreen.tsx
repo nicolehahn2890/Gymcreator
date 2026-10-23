@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { planData } from '../../core/model/data';
-import { DAY_COUNTS, type DaysPerWeek } from '../../core/model/types';
+import type { DaysPerWeek } from '../../core/model/types';
 import { hasValues } from '../../core/progression/entries';
 import { followingWeek } from '../../core/progression/position';
 import { rowState } from '../../core/progression/state';
 import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, range, text } from '../../i18n';
+import { AppHeader } from '../components/AppHeader';
 import { Sheet } from '../components/Sheet';
 import type { Position } from '../state/actions';
-import { daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
+import { dayOptions, daysFor, exerciseName, rowContext, slotLabel, type AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Plan.css';
 
@@ -39,6 +40,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay }: Props) {
 
   return (
     <main className="screen">
+      <AppHeader />
       <h1 className="screen-title">{t.title}</h1>
 
       <div className="week-nav">
@@ -55,7 +57,7 @@ export function PlanScreen({ model, pos, onGoToWeek, onOpenDay }: Props) {
 
       <h2 className="section-title">{t.daysThisWeek}</h2>
       <div className="segmented" role="group" aria-label={t.daysThisWeek}>
-        {DAY_COUNTS.map((d) => (
+        {dayOptions(model).map((d) => (
           <button key={d} type="button" className="btn btn-small" aria-pressed={d === days} onClick={() => chooseDays(d)}>
             {fmt(text.common.days, { n: d })}
           </button>

@@ -1,5 +1,5 @@
 // Prueft data/goals.json + data/templates.json (+ data/exercises.json) mit dem echten Generator aus src/core:
-// alle Ziele x Stufen x 3/4/5 Tage erzeugen und gegen die Grenzen pruefen (Uebungen und Saetze je Einheit,
+// alle Ziele x Stufen x erlaubte Tage (levels.days) erzeugen und gegen die Grenzen pruefen (Uebungen und Saetze je Einheit,
 // Zeilen je Kategorie und Tag, anteilige Saetze je Muskel und Einheit, Wochenziele je Muskel, Frequenz Prio 3,
 // Prio 0 nicht im Plan) und die Uebungsbibliothek gegen Kategorien und Slots.
 // Aufruf: node scripts/verify-plan-data.mjs  (im Repo-Root, Node >= 22.18 wegen TypeScript-Import).
@@ -25,7 +25,7 @@ for (const goal of Object.keys(data.goals.goals)) {
   for (const s of goalDef.slots) if (s.id !== `${s.cat}_${s.range}_${s.id.at(-1)}`) fail(`${goal}: Slot-ID ${s.id} passt nicht zu ${s.cat}/${s.range}`);
   console.log(`\n=== ${goal} - Pool ${goalDef.slots.length} Slots, Hauptmuskelgruppe ${goalDef.mainCategory}`);
   for (const level of Object.keys(data.goals.levels)) {
-    for (const days of [3, 4, 5]) {
+    for (const days of data.goals.levels[level].days) {
       let plan;
       try {
         plan = buildPlan(data, { goal, level, days });

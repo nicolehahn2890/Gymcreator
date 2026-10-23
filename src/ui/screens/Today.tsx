@@ -2,8 +2,7 @@ import { planData } from '../../core/model/data';
 import { dayProgress, estimateMinutes, followingWeek, nextDayIndex } from '../../core/progression/position';
 import { weekStats } from '../../core/progression/state';
 import { fmt, shortDayName, text } from '../../i18n';
-import { DUMBBELL } from '../brand/pixels';
-import { PixelGlyph } from '../brand/PixelGlyph';
+import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { planFor, rowContext, type AppModel } from '../state/model';
 import './Today.css';
@@ -33,15 +32,7 @@ export function Today({ model, cycle, week, onOpenDay, onGoToWeek }: Props) {
 
   return (
     <main className="screen today">
-      <header className="today-head">
-        <span className="brand-badge-small">
-          <PixelGlyph pattern={DUMBBELL} size={28} />
-        </span>
-        <div>
-          <p className="wordmark-small">{text.app.name}</p>
-          <p className="muted">{fmt(t.weekLine, { cycle, week, weeks: rules.cycleWeeks })}</p>
-        </div>
-      </header>
+      <AppHeader sub={fmt(t.weekLine, { cycle, week, weeks: rules.cycleWeeks })} />
 
       {week < rules.compareFromWeek && <p className="note today-note">{t.firstWeek}</p>}
       {week === rules.cycleWeeks && <p className="note today-note">{fmt(t.cycleEnd, { cycle, next: cycle + 1 })}</p>}

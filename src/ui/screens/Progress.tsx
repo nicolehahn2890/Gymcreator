@@ -4,6 +4,7 @@ import { combinedWeight, getEntry, hasValues } from '../../core/progression/entr
 import { weekStats } from '../../core/progression/state';
 import { parseWeight } from '../../core/progression/weight';
 import { fmt, num, range, shortDayName, text } from '../../i18n';
+import { AppHeader } from '../components/AppHeader';
 import type { Position } from '../state/actions';
 import { exerciseName, planFor, rowContext, type AppModel } from '../state/model';
 import './Progress.css';
@@ -26,6 +27,7 @@ export function Progress({ model, pos }: Props) {
 
   return (
     <main className="screen">
+      <AppHeader />
       <h1 className="screen-title">{t.title}</h1>
       <p className="muted">{fmt(t.cycle, { cycle: pos.cycle })}</p>
       {stats.total > 0 && <p className="note progress-balance">{fmt(t.week, { week: pos.week, improved: stats.improved, total: stats.total })}</p>}

@@ -1,4 +1,4 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 
 async function onboard(page: Page, goal: string, level: string, days: number) {
   await page.goto('./');
@@ -160,4 +160,151 @@ test('startet offline, sobald der Service Worker aktiv ist', async ({ page, cont
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Welche Körperform ist dein Ziel?' })).toBeVisible();
   await context.setOffline(false);
+});
+
+async function pickExercise(page: Page, item: Locator, name: string) {
+  await item.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByRole('dialog').getByRole('button', { name }).click();
+}
+
+async function fillSets(item: Locator, weight: string, reps: string) {
+  const inputs = item.locator('.set-row input');
+  const n = await inputs.count();
+  for (let i = 0; i < n; i += 2) {
+    await inputs.nth(i).fill(weight);
+    await inputs.nth(i + 1).fill(reps);
+  }
+}
+
+async function nextWeekViaPlan(page: Page) {
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.getByRole('button', { name: 'Nächste Woche' }).click();
+}
+
+test('Logo fuehrt von jeder Seite zurueck auf Heute', async ({ page }) => {
+  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  for (const tab of ['Plan', 'Fortschritt', 'Einstellungen']) {
+    await page.getByRole('button', { name: tab, exact: true }).click();
+    await page.getByRole('button', { name: 'Zur Startseite' }).click();
+    await expect(page.getByRole('button', { name: 'Training starten' })).toBeVisible();
+  }
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  await expect(page.locator('.exercise-item').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Zur Startseite' }).click();
+  await expect(page.getByRole('button', { name: 'Training starten' })).toBeVisible();
+});
+
+test('Einsteiger koennen nur 3 oder 4 Tage waehlen', async ({ page }) => {
+  await page.goto('./');
+  await page.getByRole('button', { name: /Sanduhr/ }).click();
+  await page.getByRole('button', { name: 'Weiter' }).click();
+  await page.getByRole('button', { name: /Einsteiger/ }).click();
+  await page.getByRole('button', { name: 'Weiter' }).click();
+  await expect(page.getByRole('button', { name: /^5 Tage/ })).toHaveCount(0);
+  await page.getByRole('button', { name: /^4 Tage/ }).click();
+  await page.getByRole('button', { name: 'Weiter' }).click();
+  await page.getByRole('button', { name: 'Weiter' }).click();
+  await page.getByRole('button', { name: 'Plan starten' }).click();
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.getByRole('button', { name: '5 Tage' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
+  await expect(page.getByRole('button', { name: '5 Tage' })).toHaveCount(0);
+  // Wechsel auf Fortgeschritten bietet 5 Tage an, zurueck auf Einsteiger macht aus 5 wieder 4
+  await page.getByRole('button', { name: 'Fortgeschritten' }).click();
+  await page.getByRole('button', { name: '5 Tage' }).click();
+  await page.getByRole('button', { name: 'Einsteiger' }).click();
+  await expect(page.getByRole('button', { name: '4 Tage' })).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(4);
+});
+
+test('Plan: Umstellen auf 3 Tage fragt nach, wenn Werte wegfallen; Zurueckstellen bringt sie wieder', async ({ page }) => {
+  await onboard(page, 'Apfel', 'Fortgeschritten', 4);
+  await page.getByRole('button', { name: 'Plan', exact: true }).click();
+  await page.locator('.plan-day').nth(3).click();
+  const dayD = page.locator('.exercise-item').first();
+  await pickExercise(page, dayD, 'Glute Bridge (Langhantel)');
+  await fillSets(dayD, '70', '10');
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await page.getByRole('button', { name: '3 Tage' }).click();
+  await expect(page.getByRole('dialog', { name: 'Woche 1 auf 3 Tage umstellen?' })).toBeVisible();
+  await page.getByRole('button', { name: 'Abbrechen' }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(4);
+  await page.getByRole('button', { name: '3 Tage' }).click();
+  await page.getByRole('button', { name: 'Umstellen' }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(3);
+  await expect(page.getByText('Glute Bridge (Langhantel)')).toHaveCount(0);
+  await page.getByRole('button', { name: '4 Tage' }).click();
+  await expect(page.locator('.plan-day')).toHaveCount(4);
+  await page.locator('.plan-day').nth(3).click();
+  // die erledigte Uebung ist zu, aufgeklappt ist die naechste offene
+  const done = page.locator('.exercise-item').first();
+  await expect(done.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'false');
+  await done.locator('.exercise-row').click();
+  await expect(done.locator('.set-row input').first()).toHaveValue('70');
+});
+
+test('Eigene Uebung ueber zwei Wochen, langer Name ohne Ueberlauf, Fortschritt rechnet richtig', async ({ page }) => {
+  const name = 'Hüftstrecken am Kabel mit Fußschlaufe, kniend auf der Bank, langsame Ausführung';
+  await onboard(page, 'Apfel', 'Fortgeschritten', 3);
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const first = page.locator('.exercise-item').first();
+  const second = page.locator('.exercise-item').nth(1);
+  await pickExercise(page, first, 'Hip Thrust (Langhantel)');
+  await fillSets(first, '100', '8');
+  await second.locator('.exercise-row').click();
+  await second.getByRole('button', { name: 'Übung wählen', exact: true }).click();
+  await page.getByLabel('Eigene Übung anlegen').fill(name);
+  await page.getByRole('button', { name: 'Anlegen', exact: true }).click();
+  await expect(second.locator('.exercise-row-name')).toHaveText(name);
+  await fillSets(second, '30', '12');
+  await noOverflow(page);
+
+  for (const [w, own] of [['102,5', '32,5'], ['105', '35']] as const) {
+    await nextWeekViaPlan(page);
+    await page.getByRole('button', { name: 'Heute', exact: true }).click();
+    await page.getByRole('button', { name: 'Training starten' }).click();
+    await expect(first.locator('.exercise-row-name')).toHaveText('Hip Thrust (Langhantel)');
+    await fillSets(first, w, '8');
+    await second.locator('.exercise-row').click();
+    await expect(second.locator('.exercise-row-name')).toHaveText(name);
+    await expect(second.locator('.set-head')).toContainText('Vorwoche');
+    await fillSets(second, own, '12');
+    await expect(second.locator('.exercise-row').getByText('Mehr Gewicht')).toBeVisible();
+    await page.getByRole('button', { name: 'Zur Startseite' }).click();
+  }
+
+  await page.getByRole('button', { name: 'Fortschritt', exact: true }).click();
+  const ht = page.locator('.progress-card', { hasText: 'Hip Thrust (Langhantel)' });
+  await expect(ht.getByText('+5 kg')).toBeVisible();
+  await expect(ht.locator('.bar-fill[style*="height"]:not([style*="height: 0%"])')).toHaveCount(3);
+  await expect(page.locator('.progress-card', { hasText: name }).getByText('+5 kg')).toBeVisible();
+  await noOverflow(page);
+
+  await page.getByRole('button', { name: 'Einstellungen', exact: true }).click();
+  await expect(page.locator('.custom-list')).toContainText(name);
+  await expect(page.locator('.custom-list').getByRole('button', { name: 'Löschen' })).toHaveCount(0);
+  await noOverflow(page);
+});
+
+test('Bedienbarkeit: Knoepfe und Felder haben Namen, aufgeklappt ist ausgezeichnet', async ({ page }) => {
+  await onboard(page, 'V-Form', 'Fortgeschritten', 4);
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const first = page.locator('.exercise-item').first();
+  await pickExercise(page, first, 'Klimmzug assistiert breit');
+  await expect(first.locator('.exercise-row')).toHaveAttribute('aria-expanded', 'true');
+  await expect(page.getByLabel('Satz 1, Hilfe kg')).toBeVisible();
+  await expect(page.getByLabel('Satz 1, Wdh.')).toBeVisible();
+  for (const screen of ['Heute', 'Plan', 'Fortschritt', 'Einstellungen']) {
+    if (screen !== 'Heute') await page.getByRole('button', { name: screen, exact: true }).click();
+    const unnamed = await page.evaluate(() =>
+      [...document.querySelectorAll('button, input, textarea')]
+        .filter((el) => {
+          const label = el.getAttribute('aria-label') || (el as HTMLElement).innerText.trim() || (el.id && document.querySelector(`label[for="${el.id}"]`)) || el.closest('label');
+          return !label;
+        })
+        .map((el) => el.outerHTML.slice(0, 80)),
+    );
+    expect(unnamed, screen).toEqual([]);
+  }
 });

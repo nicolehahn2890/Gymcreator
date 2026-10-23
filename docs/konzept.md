@@ -66,9 +66,9 @@ Kurzfassung:
 
 - **Wochenziele je Muskel** (`targets`, anteilig gezählt: direkt 1, Mitarbeit 0,5) je Ziel und Stufe. Fortgeschritten: Hauptmuskel 11–17 (Po bei Apfel und Sanduhr, Rücken bei V-Form), weitere Zielmuskeln 6–14, Nebenmuskeln 2–7, unerwünschte 0. Einsteiger etwa 55–65 % davon.
 - **Grenzen je Einheit:** Fortgeschritten 3–7 Übungen und max. 18 Sätze, Einsteiger 3–6 Übungen und max. 12 Sätze; max. 10 anteilige Sätze je Muskel; **Hauptmuskelgruppe max. 2 Zeilen pro Tag, alle anderen 1** (Nicoles Entscheidung).
-- **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–32.
+- **Mehr Tage = kürzere Einheiten**, nicht mehr Volumen: Fortgeschritten 48–51 Sätze bei 3 Tagen, 55–57 bei 4 und 5 Tagen. Einsteiger 24–34.
 - **Wdh.-Bereiche** 6–8 (schwere Grundübung), 6–10 (weitere Grundübungen), 8–12 (Maschine, Kabel, Isolation), 12–15 (kleine Muskeln, Pump). 4–8 entfällt. Der Hauptmuskel bekommt **wellenförmig** verschiedene Bereiche an verschiedenen Tagen (z. B. Po 6–8 / 8–12 / 12–15).
-- **Einsteiger:** 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
+- **Einsteiger:** nur 3 oder 4 Tage pro Woche, 2 Sätze je Zeile, 6–8 und 6–10 werden 8–12, Zeilen mit `beginner: false` entfallen.
 - Unverändert: Intensität 0–3 Wdh. in Reserve, Stretch-Bias bei den Sternen, Po/Glute-Med-Regeln, doppelte Progression, Auto-Zusatzsatz, kein Deload als Standard, 12-Wochen-Zyklus.
 
 Die Apfel-Pläne sind nicht mehr Nicoles Peach-Plan P3/P4 (der Regressionstest dazu ist entfernt).
@@ -156,7 +156,7 @@ Angepasst:
 
 ### 3.9 Weitere Funktionen – priorisiert
 
-**MVP (Phase 1):** Onboarding, Generator (3 Ziele × 3/4/5 Tage, 2 Erfahrungsstufen), Training mit aufklappbaren Übungen, Progression komplett, flexible Woche, Zyklen unbegrenzt, Übersicht/Verlauf, eigene Übungen, Mein Gym (einfach), Pausentimer, Backup Export/Import, PWA installierbar + offline.
+**MVP (Phase 1):** Onboarding, Generator (3 Ziele, Fortgeschrittene 3/4/5 Tage, Einsteiger 3/4 Tage), Training mit aufklappbaren Übungen, Progression komplett, flexible Woche, Zyklen unbegrenzt, Übersicht/Verlauf, eigene Übungen, Mein Studio (einfach), Pausentimer, Backup Export/Import, PWA installierbar + offline.
 
 **Phase 2 (Einsteiger-Polish + Differenzierung):**
 - **Form-Tracker:** Umfänge (Schulter, Brust, Taille, Hüfte, Po, Oberschenkel, Arm) monatlich eintragen; die App zeigt die **Kennzahl des gewählten Ziels** (V-Form: Schulter/Taille, Sanduhr: Hüfte/Taille, Apfel: Po/Taille) als Verlauf. Passt exakt zur Positionierung, 1 Screen.
@@ -191,7 +191,7 @@ Gymcreator/
   docs/            konzept.md, wissenschaft.md (Begründung + Quellen), store-weg.md
   data/            goals.json (Bereiche, Grenzen, Stufen, Wochenziele, Slot-Pools), templates.json (Tagesvorlagen),
                    exercises.json (200 Übungen), README.md
-  scripts/         verify-plan-data.mjs (prüft alle 18 Pläne + Bibliothek), make-icons.mjs
+  scripts/         verify-plan-data.mjs (prüft alle 15 Pläne + Bibliothek), make-icons.mjs
   src/
     core/          reine Logik ohne UI, mit Vitest-Tests
       generator/   buildPlan.ts, validate.ts (Grenzen, Wochenziele, weeklyMuscles)
@@ -241,7 +241,7 @@ validatePlan(data, plan)              → Fehlerliste: Übungen/Sätze je Einhei
 weeklyMuscles(data, plan)             → anteilige Sätze je Muskel und Woche
 ```
 
-Tests: alle 18 Kombinationen ohne Fehler, Wochensätze wie in `docs/wissenschaft.md`, Hauptmuskel mit mindestens 3 Bereichen, Einsteiger-Regeln, Determinismus. Dasselbe prüft `scripts/verify-plan-data.mjs` in CI.
+Tests: alle 15 erlaubten Kombinationen ohne Fehler, Wochensätze wie in `docs/wissenschaft.md`, Hauptmuskel mit mindestens 3 Bereichen, Einsteiger-Regeln, Determinismus. Dasselbe prüft `scripts/verify-plan-data.mjs` in CI.
 
 ### 4.5 Progressions-Engine (Port aus Peach, Quelle `/home/user/Trainingsapp/index.html`)
 
@@ -249,9 +249,9 @@ Befund aus dem Code: Die Logik ist sauber, hängt aber überall an Globals (`S`,
 
 | Peach-Funktion (Zeile) | Gymcreator `src/core/progression/` | Änderung beim Port |
 |---|---|---|
-| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`); einzige Abweichung: bei Gegengewicht zählt 0 kg Hilfe als Bestwert statt als leer (23.10.2026) |
+| `parseWeight` (1200), `weightBounds` (1212), `cmpWeight` (1224) | `weight.ts` ✅ | 1:1, inklusive assistierter Richtung (`inv`); einzige Abweichung: bei Gegengewicht zählt 0 kg Hilfe als Bestwert statt als leer (23.10.2026, von Nicole bestätigt) |
 | `prog` (1234), `rcol` (1196) | `compare.ts` ✅ (`progressStatus`, `repZone`) | 1:1: Gewicht zuerst, Reps als Durchschnitt; `isAssist` kommt aus dem Übungsdatensatz (`assisted: true`) statt aus dem Set `ASSIST` |
-| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `entries.ts` + `history.ts` ✅ | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie. Abweichung (23.10.2026): Einträge mit Wiederholungen gehen vor, weil Gewichte hier in die Folgesätze wandern und eine Woche mit nur Gewicht sonst den Vorwert verdeckt |
+| `exOrd` (1339), `exKey` (1351), `exIndex` (1352), `findLastExData` (1394) | `entries.ts` + `history.ts` ✅ | Index über `exerciseId + repRange` aus den Einträgen (Bereich steht im Eintrag, kein `repRange(plan)`-Lookup, kein `r0`). Regeln bleiben: gleicher Bereich im aktuellen Zyklus → sonst gleicher Bereich im zuletzt trainierten Zyklus davor → sonst Orientierung; eigener Slot zuerst; laufende Woche zählt nie. Abweichung (23.10.2026, von Nicole bestätigt): Einträge mit Wiederholungen gehen vor, weil Gewichte hier in die Folgesätze wandern und eine Woche mit nur Gewicht sonst den Vorwert verdeckt |
 | `exState` (1513), `exDone` (1446), `weekStats` (1462) | `state.ts` ✅ (`rowState`, `weekStats`) | eine Zustandsquelle für Badge, Vorschlag, Haken, Wochenbilanz (wie Peach); `s0`/`r0` entfallen, weil `baseSets`/`repRange` immer im Eintrag stehen |
 | `incCand`/`incDue` (1557/1565) | `state.ts` ✅ (`increaseDue`), `rules.ts` ✅ (`suggestWeight`) | 1:1 (Obergrenze im 1. Satz, nur Vorwert aus dieser/Vorwoche desselben Zyklus, weg bei mehr Gewicht oder fertig). Neu dazu: `suggestWeight()` mit Schrittweite je Equipment |
 | `autoExtraSets` (1314) | `rules.ts` ✅ | 1:1 (3 stagnierende Wochenvergleiche, gleiche Übung, max. 5 Sätze) |
@@ -313,7 +313,7 @@ Fakten, die den Plan beeinflussen:
 
 ## 6. Verifikation
 
-- **Unit (Vitest):** Generator (alle 18 Kombinationen valide, Wochenziele je Muskel, deterministisch), Progression (Peach-Fälle 1:1: Spannen, Komma, assistiert, Gewicht schlägt Reps, Durchschnitts-Reps, Vorwert eigener Slot zuerst, laufende Woche nie, Woche 1 kein Vergleich, Auto-Zusatzsatz frühestens Woche 5), Storage-Migrationen (Vorher/Nachher-Daten, Idempotenz), Backup-Rundreise.
+- **Unit (Vitest):** Generator (alle 15 erlaubten Kombinationen valide, Wochenziele je Muskel, deterministisch), Progression (Peach-Fälle 1:1: Spannen, Komma, assistiert, Gewicht schlägt Reps, Durchschnitts-Reps, Vorwert eigener Slot zuerst, laufende Woche nie, Woche 1 kein Vergleich, Auto-Zusatzsatz frühestens Woche 5), Storage-Migrationen (Vorher/Nachher-Daten, Idempotenz), Backup-Rundreise.
 - **E2E (Playwright, 390 + 430 px):** Onboarding → Wochenplan; Übung wählen, eintragen, Neuladen; Woche 2 mit Vorwoche je Satz, Steigerungshinweis und Bewertung; Übungswechsel "Nur diese Woche"; Satz entfernen; Trainingstage aus den Einstellungen; Backup-Import; Manifest; Offline-Start. Offen: Umstellen im Plan mit Rückfrage und eigene Übung als E2E.
 - **CI:** alles grün vor Deploy. Offen: Lighthouse-PWA-Check.
 - **Manuell:** auf dem iPhone installieren, einen echten Trainingstag eintragen und Vorwerte, Hinweis und Bewertung mit Peach vergleichen (Logik ist gleich, Pläne sind verschieden).
@@ -333,6 +333,9 @@ Fakten, die den Plan beeinflussen:
 9. **Übungen frei wählbar** je Muskelgruppe, Sterne für das Ziel (23.10.)
 10. **Training:** Übungen in der Tagesliste aufklappen statt eigener Seite; ab Woche 2 Vorwoche je Satz, Steigerungshinweis und Bewertung sichtbar (23.10.)
 11. **Muskelgruppen-Namen bleiben** (Glute Max, Glute & Quad usw.), keine Benennung nach Übungen (23.10.)
+12. **Einsteiger nur 3 oder 4 Tage**; 5 Tage mit 6 Sätzen pro Einheit ergeben keinen Sinn (23.10.)
+13. **Zwei Abweichungen von der Peach-Logik bestätigt:** Vorwert bevorzugt Wochen mit Wiederholungen; bei Gegengewicht zählt 0 kg Hilfe als Bestwert (23.10.)
+14. **Logo oben auf jeder Seite** führt zurück auf "Heute" (23.10.)
 
 ## 8. Annahmen, solange nichts anderes gesagt ist
 

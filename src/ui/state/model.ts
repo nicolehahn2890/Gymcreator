@@ -1,6 +1,6 @@
 // Abgeleitete Daten fuer die Oberflaeche: Plaene je Wochenart, Uebungs-Lookup, Kontext fuer den
 // Progressions-Kern. Wird bei jeder Datenaenderung neu gebaut (unveraenderlich).
-import { buildPlan } from '../../core/generator/buildPlan';
+import { buildPlan, effectiveDays } from '../../core/generator/buildPlan';
 import { exerciseData, planData } from '../../core/model/data';
 import { DAY_COUNTS, type CategoryId, type DaysPerWeek, type Focus, type GoalId, type Plan, type PlanRow, type Profile } from '../../core/model/types';
 import { carryOver } from '../../core/progression/cycle';
@@ -57,7 +57,12 @@ export function buildModel(data: StoredData, profile: Profile): AppModel {
 }
 
 export function daysFor(model: AppModel, cycle: number, week: number): DaysPerWeek {
-  return weekDays(model.data.weeks, cycle, week, model.profile.days);
+  return effectiveDays(planData, model.profile.level, weekDays(model.data.weeks, cycle, week, model.profile.days));
+}
+
+/** Waehlbare Tage pro Woche fuer die Stufe des Profils. */
+export function dayOptions(model: AppModel): DaysPerWeek[] {
+  return planData.goals.levels[model.profile.level].days;
 }
 
 export function planFor(model: AppModel, cycle: number, week: number): Plan {

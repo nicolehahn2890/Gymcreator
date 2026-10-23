@@ -10,6 +10,16 @@ export interface PlanRequest {
 
 const DAY_LETTERS = 'ABCDEFG';
 
+/**
+ * Tage pro Woche, die fuer die Stufe gelten. Ein nicht erlaubter Wert (z. B. 5 Tage aus einer alten Woche
+ * nach dem Wechsel auf Einsteiger) wird zum naechstkleineren erlaubten.
+ */
+export function effectiveDays(data: PlanData, level: Level, days: DaysPerWeek): DaysPerWeek {
+  const allowed = data.goals.levels[level].days;
+  if (allowed.includes(days)) return days;
+  return allowed.filter((d) => d < days).at(-1) ?? allowed[0] ?? days;
+}
+
 export function buildPlan(data: PlanData, { goal, level, days }: PlanRequest): Plan {
   const goalDef = data.goals.goals[goal];
   const template = data.templates.goals[goal]?.[`${days}`];

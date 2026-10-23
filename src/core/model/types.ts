@@ -62,6 +62,8 @@ export interface Limits {
 }
 
 export interface LevelRules {
+  /** Waehlbare Trainingstage pro Woche (Einsteiger ohne 5 Tage). */
+  days: DaysPerWeek[];
   minExercisesPerSession: number;
   maxExercisesPerSession: number;
   maxSetsPerSession: number;

@@ -341,3 +341,44 @@
   box-shadow: var(--sh-card);
   font-weight: 700;
 }
+
+/* Logo oben auf jeder Seite, fuehrt auf "Heute" */
+.app-head {
+  margin-bottom: 18px;
+}
+
+.app-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--ink);
+}
+
+.app-sub {
+  margin-top: 4px;
+}
+
+.brand-badge-small {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  border: var(--bw) solid var(--ink);
+  border-radius: 50%;
+  box-shadow: var(--sh-xs);
+}
+
+.wordmark-small {
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+}

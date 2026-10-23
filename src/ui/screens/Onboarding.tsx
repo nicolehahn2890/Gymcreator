@@ -66,7 +66,16 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
         <section className="stack">
           <h1 className="screen-title">{t.levelTitle}</h1>
           {LEVELS.map((id) => (
-            <button key={id} type="button" className="choice" aria-pressed={level === id} onClick={() => setLevel(id)}>
+            <button
+              key={id}
+              type="button"
+              className="choice"
+              aria-pressed={level === id}
+              onClick={() => {
+                setLevel(id);
+                if (days && !planData.goals.levels[id].days.includes(days)) setDays(null);
+              }}
+            >
               <span>
                 <span className="choice-title">{t[id]}</span>
                 <span className="choice-text">{levelText[id]}</span>
@@ -80,7 +89,7 @@ export function Onboarding({ onDone }: { onDone: (profile: Profile) => void }) {
         <section className="stack">
           <h1 className="screen-title">{t.daysTitle}</h1>
           <p className="muted">{t.daysHint}</p>
-          {DAY_COUNTS.map((n) => (
+          {(level ? planData.goals.levels[level].days : DAY_COUNTS).map((n) => (
             <button key={n} type="button" className="choice" aria-pressed={days === n} onClick={() => setDays(n)}>
               <span>
                 <span className="choice-title">{fmt(text.common.days, { n })}</span>

@@ -1,15 +1,17 @@
 import { useEffect, useState, type CSSProperties } from 'react';
 import { exerciseData, planData } from '../../core/model/data';
-import { DAY_COUNTS, GOAL_IDS, LEVELS, type DaysPerWeek, type Profile } from '../../core/model/types';
+import { effectiveDays } from '../../core/generator/buildPlan';
+import { GOAL_IDS, LEVELS, type DaysPerWeek, type Profile } from '../../core/model/types';
 import { followingWeek } from '../../core/progression/position';
 import { pausedSlotsWithValues } from '../../core/progression/week';
 import { fmt, num, text } from '../../i18n';
 import { createBackup, parseBackup, serializeBackup } from '../../storage/backup';
 import type { StoredData } from '../../storage/interface';
+import { AppHeader } from '../components/AppHeader';
 import { Check } from '../components/Check';
 import { Sheet } from '../components/Sheet';
 import type { Position } from '../state/actions';
-import type { AppModel } from '../state/model';
+import { dayOptions, type AppModel } from '../state/model';
 import { store } from '../state/store';
 import './Settings.css';
 
@@ -82,6 +84,7 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
 
   return (
     <main className="screen settings">
+      <AppHeader />
       <h1 className="screen-title">{t.title}</h1>
 
       <h2 className="section-title">{t.profile}</h2>
@@ -106,7 +109,7 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
       <h3 className="field-label settings-label">{t.level}</h3>
       <div className="segmented">
         {LEVELS.map((id) => (
-          <button key={id} type="button" className="btn btn-small" aria-pressed={profile.level === id} onClick={() => save({ level: id })}>
+          <button key={id} type="button" className="btn btn-small" aria-pressed={profile.level === id} onClick={() => save({ level: id, days: effectiveDays(planData, id, profile.days) })}>
             {text.onboarding[id]}
           </button>
         ))}
@@ -114,7 +117,7 @@ export function Settings({ model, pos }: { model: AppModel; pos: Position }) {
 
       <h3 className="field-label settings-label">{t.days}</h3>
       <div className="segmented">
-        {DAY_COUNTS.map((d) => (
+        {dayOptions(model).map((d) => (
           <button key={d} type="button" className="btn btn-small" aria-pressed={profile.days === d} onClick={() => setDays(d)}>
             {fmt(text.common.days, { n: d })}
           </button>

@@ -1,6 +1,7 @@
 {
   "app": {
     "name": "Gymcreator",
+    "home": "Zur Startseite",
     "version": "Version",
     "loading": "Wird geladen",
     "loadError": "Deine Daten konnten nicht geladen werden. Lade die Seite bitte neu.",

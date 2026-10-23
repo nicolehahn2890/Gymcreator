@@ -15,6 +15,9 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel und Stufe, begründet in `docs/wissenschaft.md`. Nicht 1:1 Peach |
 | Grenzen je Einheit | Fortgeschritten **max. 7 Übungen / 18 Sätze** (alle Ziele), Einsteiger max. 6 / 12. **Hauptmuskelgruppe max. 2× pro Tag, alle anderen 1×** |
+| Tage | Fortgeschrittene 3/4/5, **Einsteiger nur 3/4** |
+| Peach-Abweichungen | Vorwert bevorzugt Wochen mit Wiederholungen; Gegengewicht 0 kg = Bestwert. **Von Nicole bestätigt** |
+| Logo | Logo oben auf jeder Seite führt auf „Heute“ |
 | Wdh.-Bereiche | 6–8 / 6–10 / 8–12 / 12–15, Hauptmuskel wellenförmig über die Woche |
 | Übungen | **Frei wählbar je Muskelgruppe**, keine Vorgabe. Sterne = beste Wahl fürs Ziel. 200 Übungen |
 | Namen | **Muskelgruppen behalten ihre Namen** (Glute Max, Glute & Quad …). Tage heißen nach Körperbereich („Tag A – Po & Beine“), darunter die Belastung („Schwere Grundübungen“) |
@@ -30,10 +33,10 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 | Generator | `src/core/generator/` | `buildPlan` (Vorlage + Stufe → Tage), `validatePlan` (alle Grenzen und Wochenziele), `weeklyMuscles` |
 | Progression | `src/core/progression/` | `weight`, `compare`, `entries`, `history` (Vorwert), `state` (Zeilen-Zustand: Übung, Sätze, Vorwert, Bewertung, Steigerungshinweis, Haken, Wochenbilanz), `rules` (Auto-Zusatzsatz, Gewichtsvorschlag), `inherit` (Vererbung, "Nur diese Woche"), `cycle` (Übernahme in neuen Zyklus), `week` (Wochenart), `position` (nächster Tag, Dauer). Peach-Szenarien in `scenarios.test.ts` |
 | Speicher | `src/storage/` | Dexie (IndexedDB) hinter einer Schnittstelle, Backup (Export/Import mit Prüfung), Sicherheitskopie vor Import, Migrations-Gerüst (Schema 1) |
-| Oberfläche | `src/ui/` | Onboarding (5 Schritte), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Woche, 3/4/5 Tage), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` |
-| Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 18 Pläne, prüft Grenzen, Wochenziele und die Bibliothek, druckt Pläne und Wochenvolumen je Muskel |
+| Oberfläche | `src/ui/` | Logo-Kopf (`components/AppHeader`), Onboarding (5 Schritte), Heute, Tagesansicht mit aufklappbaren Übungen (`DayView`, `ExerciseItem`), Plan (Woche, Tage je Woche), Fortschritt (Balken), Einstellungen (Profil, Mein Studio, Gewichtsschritte, eigene Übungen, Backup). Zustand: `state/store.ts`, `state/model.ts`, `state/ui.ts` (Position in localStorage), `state/actions.ts` |
+| Prüfskript | `scripts/verify-plan-data.mjs` | erzeugt alle 15 Pläne (Einsteiger ohne 5 Tage), prüft Grenzen, Wochenziele und die Bibliothek, druckt Pläne und Wochenvolumen je Muskel |
 
-**Selbsttest am 23.10.** (Browser-Durchläufe aller 18 Pläne und Abläufe, unabhängiger Code-Review). Behoben:
+**Selbsttest am 23.10.** (Browser-Durchläufe aller Pläne und Abläufe, unabhängiger Code-Review). Behoben:
 - Gewicht tippen ("27,5") kam in den Folgesätzen nur als "2" an.
 - Halteübungen zeigten "2 × 8–12 Sek."; jetzt "2 Sätze halten", Bewertung "Länger gehalten".
 - Ein entfernter Zusatzsatz zählte in späteren Wochen weiter (falsche Bewertung "Weniger").
@@ -44,9 +47,9 @@ Phase 0 und Phase 1 (MVP) sind fertig und live: https://nicolehahn2890.github.io
 - Zeilen mit gewählter Übung, aber ohne Werte, behielten nach dem Umstellen der Wochenart die alten Sätze.
 - Kleineres: Backup-Download auf iOS, Gewichtsschritte nach Import, Prüfung der Backup-Werte, Speicherfehler-Hinweis, Löschen eigener Übungen.
 
-Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
+Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesnamen). Danach: Einsteiger nur 3/4 Tage, Apfel Oberschenkel vorne 3 → 5, Sanduhr-Einsteiger Glute Med 2 → 4, Logo führt auf „Heute“. Testeinträge aus den Plänen vor dem 23.10. (Slot-IDs wie `gmax_4-8_a`) tauchen im neuen Plan nicht mehr auf; zum Testen die Website-Daten löschen.
 
-**Tests:** 131 Vitest + 7 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Speichern über Neuladen, Auf-/Zuklappen, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Backup-Import, Manifest, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+**Tests:** 126 Vitest + 12 Playwright-Abläufe auf 390 und 430 px (Onboarding, freie Übungswahl, Speichern über Neuladen, Auf-/Zuklappen, Vorwoche je Satz, Steigerungshinweis und Bewertung, Übungswechsel, Satz entfernen, Trainingstage aus den Einstellungen, Logo, Einsteiger-Tage, Umstellen im Plan mit Rückfrage, eigene Übung über drei Wochen, Fortschritt, langer Name, Namen für Screenreader, Backup-Import, Manifest, Offline-Start, kein waagerechtes Scrollen). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 

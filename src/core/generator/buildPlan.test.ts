@@ -1,10 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { planData } from '../model/data';
 import { DAY_COUNTS, GOAL_IDS, LEVELS } from '../model/types';
-import { buildPlan } from './buildPlan';
+import { buildPlan, effectiveDays } from './buildPlan';
 import { totalSets, validatePlan, weeklyMuscles } from './validate';
 
-const combos = GOAL_IDS.flatMap((goal) => LEVELS.flatMap((level) => DAY_COUNTS.map((days) => ({ goal, level, days }))));
+const combos = GOAL_IDS.flatMap((goal) => LEVELS.flatMap((level) => planData.goals.levels[level].days.map((days) => ({ goal, level, days }))));
 
 describe('buildPlan', () => {
   it.each(combos)('$goal / $level / $days Tage: alle Grenzen und Wochenziele eingehalten', (req) => {
@@ -20,11 +20,11 @@ describe('buildPlan', () => {
   it('Wochensaetze wie in docs/wissenschaft.md', () => {
     const expected = {
       advanced: { apfel: [50, 55, 55], sanduhr: [48, 56, 55], vform: [51, 56, 57] },
-      beginner: { apfel: [30, 32, 32], sanduhr: [28, 30, 32], vform: [24, 26, 30] },
+      beginner: { apfel: [30, 34], sanduhr: [30, 32], vform: [24, 26] },
     };
     for (const level of LEVELS) {
       for (const goal of GOAL_IDS) {
-        const got = DAY_COUNTS.map((days) => totalSets(buildPlan(planData, { goal, level, days })));
+        const got = planData.goals.levels[level].days.map((days) => totalSets(buildPlan(planData, { goal, level, days })));
         expect(got, `${goal}/${level}`).toEqual(expected[level][goal]);
       }
     }
@@ -33,7 +33,15 @@ describe('buildPlan', () => {
   it('Apfel 3 Tage: Po wellenfoermig 6-8 / 8-12 / 12-15, Wochenvolumen Po 14', () => {
     const plan = buildPlan(planData, { goal: 'apfel', level: 'advanced', days: 3 });
     expect(plan.dayPlans.map((d) => d.rows.find((r) => r.category === 'gmax')?.repRange)).toEqual(['6-8', '8-12', '12-15']);
-    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 8, hams: 8 });
+    expect(weeklyMuscles(planData, plan)).toMatchObject({ gluteMax: 14, gluteMed: 8, hams: 6, quads: 5 });
+  });
+
+  it('Einsteiger waehlen 3 oder 4 Tage; 5 Tage aus alten Wochen werden 4', () => {
+    expect(planData.goals.levels.beginner.days).toEqual([3, 4]);
+    expect(planData.goals.levels.advanced.days).toEqual([...DAY_COUNTS]);
+    expect(effectiveDays(planData, 'beginner', 5)).toBe(4);
+    expect(effectiveDays(planData, 'beginner', 3)).toBe(3);
+    expect(effectiveDays(planData, 'advanced', 5)).toBe(5);
   });
 
   it('Hauptmuskelgruppe bekommt bei Fortgeschrittenen mindestens drei Bereiche pro Woche', () => {
@@ -90,7 +98,7 @@ describe('buildPlan', () => {
 describe('Einsteiger (data/goals.json levels.beginner)', () => {
   const rules = planData.goals.levels.beginner;
 
-  it.each(GOAL_IDS.flatMap((goal) => DAY_COUNTS.map((days) => ({ goal, days }))))('$goal / $days Tage', ({ goal, days }) => {
+  it.each(GOAL_IDS.flatMap((goal) => rules.days.map((days) => ({ goal, days }))))('$goal / $days Tage', ({ goal, days }) => {
     const adv = buildPlan(planData, { goal, level: 'advanced', days });
     const beg = buildPlan(planData, { goal, level: 'beginner', days });
     const template = planData.templates.goals[goal][`${days}`].days;

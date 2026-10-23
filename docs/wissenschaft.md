@@ -4,7 +4,7 @@ Stand: 23.10.2026 (Volumen-Modell neu). Diese Datei begründet die Zahlen in `da
 
 ## Grundsatz
 
-Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie möglich**. Jeder Plan (3 Ziele × 2 Stufen × 3/4/5 Tage = 18 Pläne) muss im Prüfskript `scripts/verify-plan-data.mjs` die Wochenziele je Muskel, die Grenzen je Einheit und die Stufen-Regeln einhalten. Die Übungen wählt die Person selbst, je Zeile aus der passenden Muskelgruppe; ein Stern markiert die besten Übungen für ihr Ziel.
+Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie möglich**. Jeder Plan (3 Ziele, Fortgeschrittene 3/4/5 Tage, Einsteiger 3/4 Tage = 15 Pläne) muss im Prüfskript `scripts/verify-plan-data.mjs` die Wochenziele je Muskel, die Grenzen je Einheit und die Stufen-Regeln einhalten. Die Übungen wählt die Person selbst, je Zeile aus der passenden Muskelgruppe; ein Stern markiert die besten Übungen für ihr Ziel.
 
 ## Regeln und ihre Evidenz
 
@@ -24,7 +24,7 @@ Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie mögli
 | Regionen | Schrägbank für obere Brust, Überkopf-Strecken für langen Trizepskopf, Preacher Curls für distalen Bizeps – als Sterne und Zeilen-Hinweis (`focus`) hinterlegt | Chaves 2020 (Schrägbank, klein, Untrainierte), Maeo 2023, Pedrosa 2023, Kassiano 2025 |
 | Volumen-Steigerung | Konservativ: Auto-Zusatzsatz +1 nach 3 stagnierenden Wochen, max. 5 Sätze je Zeile (Peach-Regel) | Enes 2024 (MSSE 56(3):553–563): mehr Sätze brachten Kraft, Hypertrophie-Unterschied nicht signifikant; Autoregulation des Volumens ≈ festes Volumen (Remmert, Preprint) |
 | Progression | Doppelte Progression: Obergrenze im 1. Satz erreicht → nächstes Mal mehr Gewicht (Hinweis mit Vorschlag in der Übung) | Last- ≈ Wdh.-Progression (Plotkin 2022); kein RCT zur doppelten Progression selbst; Autoregulation ≈ fest (Greig 2021, Larsen 2021) |
-| Einsteiger | Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen (meist Bauch, zweite Isolation, Arme). Ergebnis: 24–32 Sätze pro Woche, 6–10 je Einheit, etwa 55–65 % des Fortgeschrittenen-Volumens, Hauptmuskel 6–10 anteilige Sätze | Einsteiger wachsen schon mit wenig Volumen und jeder Last (Lopez 2021, Currier 2023: mehrere Sätze > ein Satz). ACSM 2009: Einsteiger 8–12 Wdh., 1–3 Sätze |
+| Einsteiger | **Nur 3 oder 4 Tage** (5 Tage ergäben Einheiten mit 6 Sätzen, das lohnt den Weg ins Studio nicht; Entscheidung 23.10.2026). Gleiche Tage wie Fortgeschrittene, aber **2 Sätze je Zeile**, 6–8 und 6–10 werden **8–12**, Zeilen mit `beginner: false` entfallen (meist Bauch, zweite Isolation, Arme). Ergebnis: 24–34 Sätze pro Woche, 6–10 je Einheit, etwa 55–65 % des Fortgeschrittenen-Volumens. Jeder Zielmuskel bekommt mindestens 4 anteilige Sätze pro Woche auf 2 Einheiten | Einsteiger wachsen schon mit wenig Volumen und jeder Last (Lopez 2021, Currier 2023: mehrere Sätze > ein Satz). ACSM 2009: Einsteiger 8–12 Wdh., 1–3 Sätze |
 | Deload | Standard: keine. Opt-in in den Einstellungen (noch nicht gebaut) | Coleman 2024 (n = 39 Trainierte, 9 Wochen: Hypertrophie gleich, Kraft eher ohne Deload-Woche), Pancar 2026 (Untrainierte: kein Unterschied) |
 | Zyklus | 12 Wochen, Woche 1 leichter Einstieg ohne Vergleich, unbegrenzt viele Zyklen | Praxis (Peach), keine Studienfrage |
 
@@ -40,7 +40,9 @@ Ziel ist Muskelaufbau mit **so viel Volumen wie nötig, nicht so viel wie mögli
 
 ## Verifizierte Volumen (aus `data/`, geprüft mit `scripts/verify-plan-data.mjs`)
 
-Anteilige Sätze pro Woche für 3 / 4 / 5 Tage, daneben die Zielspanne aus `targets`.
+Anteilige Sätze pro Woche (Fortgeschritten 3 / 4 / 5 Tage, Einsteiger 3 / 4 Tage), daneben die Zielspanne aus `targets`.
+
+Anpassung 23.10.2026 (abends): Apfel bekommt eine zweite kniebetonte Übung (Ausfallschritt oder Split Squat, belastet den Po stark mit) statt des zweiten Hüftbeuge-Slots, Oberschenkel vorne 3 → 5, Beinrückseite 8 → 6. Sanduhr-Einsteiger bekommen Glute Med an zwei Tagen (2 → 4).
 
 ### Fortgeschritten
 
@@ -48,8 +50,8 @@ Anteilige Sätze pro Woche für 3 / 4 / 5 Tage, daneben die Zielspanne aus `targ
 |---|---|---|---|---|---|---|
 | Po (Glute Max) | 14 / 16 / 16 | 12–17 | 12 / 13,5 / 12 | 11–16 | 3 / 3 / 3 | 2–7 |
 | Hüfte außen (Glute Med) | 8 / 8 / 8 | 6–10 | 4 / 4 / 6 | 4–8 | 0 / 0 / 0 | 0 |
-| Beinrückseite | 8 / 8 / 8 | 6–10 | 6 / 6 / 6 | 5–10 | 3 / 3 / 3 | 3–6 |
-| Oberschenkel vorne | 3 / 3 / 3 | 3–7 | 6 / 9 / 5 | 5–10 | 6 / 6 / 6 | 5–9 |
+| Beinrückseite | 6 / 6 / 6 | 6–10 | 6 / 6 / 6 | 5–10 | 3 / 3 / 3 | 3–6 |
+| Oberschenkel vorne | 5 / 5 / 5 | 4–7 | 6 / 9 / 5 | 5–10 | 6 / 6 / 6 | 5–9 |
 | Adduktoren | 4 / 4 / 4 | 3–6 | 0 / 0 / 0 | 0–4 | 0 / 0 / 0 | 0 |
 | Rücken | 6 / 6 / 6 | 6–10 | 6 / 6 / 6 | 6–10 | 12 / 12 / 12 | 12–16 |
 | Schultern | 7 / 7 / 7 | 6–9 | 10 / 9 / 10 | 9–14 | 10 / 12 / 11 | 9–14 |
@@ -65,22 +67,22 @@ Anteilige Sätze pro Woche für 3 / 4 / 5 Tage, daneben die Zielspanne aus `targ
 
 | Muskel | Apfel | Ziel | Sanduhr | Ziel | V-Form | Ziel |
 |---|---|---|---|---|---|---|
-| Po (Glute Max) | 10 / 9 / 9 | 7–11 | 8 / 8 / 8 | 6–10 | 2 / 2 / 2 | 1–5 |
-| Hüfte außen (Glute Med) | 6 / 6 / 4 | 4–6 | 2 / 2 / 4 | 2–6 | 0 / 0 / 0 | 0 |
-| Beinrückseite | 6 / 4 / 4 | 3–7 | 4 / 4 / 4 | 3–6 | 2 / 2 / 2 | 2–4 |
-| Oberschenkel vorne | 2 / 2 / 2 | 2–5 | 4 / 4 / 4 | 3–6 | 2 / 2 / 2 | 2–6 |
-| Adduktoren | 2 / 2 / 2 | 0–4 | 0 / 0 / 0 | 0–3 | 0 / 0 / 0 | 0 |
-| Rücken | 4 / 4 / 4 | 3–6 | 4 / 4 / 4 | 3–6 | 6 / 8 / 8 | 6–10 |
-| Schultern | 4 / 4 / 6 | 2–6 | 6 / 6 / 6 | 4–8 | 4 / 6 / 6 | 4–8 |
-| Brust | 0 / 0 / 0 | 0–3 | 2 / 2 / 2 | 0–4 | 4 / 4 / 4 | 4–8 |
-| Bizeps | 2 / 2 / 2 | 0–3 | 2 / 2 / 2 | 1–4 | 5 / 6 / 6 | 3–6 |
-| Trizeps | 0 / 0 / 0 | 0–2 | 1 / 1 / 1 | 0–3 | 2 / 4 / 6 | 2–6 |
-| Waden | 0 / 0 / 0 | 0 | 0 / 0 / 0 | 0 | 2 / 0 / 0 | 0–4 |
-| Bauch | 0 / 4 / 4 | 0–4 | 0 / 2 / 2 | 0–4 | 2 / 0 / 2 | 0–4 |
-| **Sätze gesamt** | 30 / 32 / 32 |  | 28 / 30 / 32 |  | 24 / 26 / 30 |  |
-| Sätze je Einheit | 10 / 8 / 6–8 |  | 8–10 / 6–10 / 6–8 |  | 8 / 6–8 / 6 |  |
+| Po (Glute Max) | 10 / 10 | 7–11 | 8 / 8 | 6–10 | 2 / 2 | 1–5 |
+| Hüfte außen (Glute Med) | 6 / 6 | 4–6 | 4 / 4 | 4–6 | 0 / 0 | 0 |
+| Beinrückseite | 4 / 4 | 3–7 | 4 / 4 | 3–6 | 2 / 2 | 2–4 |
+| Oberschenkel vorne | 4 / 4 | 3–5 | 4 / 4 | 3–6 | 2 / 2 | 2–6 |
+| Adduktoren | 2 / 2 | 0–4 | 0 / 0 | 0–3 | 0 / 0 | 0 |
+| Rücken | 4 / 4 | 3–6 | 4 / 4 | 3–6 | 6 / 8 | 6–10 |
+| Schultern | 4 / 4 | 2–6 | 6 / 6 | 4–8 | 4 / 6 | 4–8 |
+| Brust | 0 / 0 | 0–3 | 2 / 2 | 0–4 | 4 / 4 | 4–8 |
+| Bizeps | 2 / 2 | 0–3 | 2 / 2 | 1–4 | 5 / 6 | 3–6 |
+| Trizeps | 0 / 0 | 0–2 | 1 / 1 | 0–3 | 2 / 4 | 2–6 |
+| Waden | 0 / 0 | 0 | 0 / 0 | 0 | 2 / 0 | 0–4 |
+| Bauch | 0 / 4 | 0–4 | 0 / 2 | 0–4 | 2 / 0 | 0–4 |
+| **Sätze gesamt** | 30 / 34 |  | 30 / 32 |  | 24 / 26 |  |
+| Sätze je Einheit | 10 / 8–10 |  | 10 / 6–10 |  | 8 / 6–8 |  |
 
-Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich) druckt `node scripts/verify-plan-data.mjs` für alle 18 Pläne aus.
+Die Tagesvorlagen selbst (Tagesname, Zeilen, Sätze, Bereich) druckt `node scripts/verify-plan-data.mjs` für alle 15 Pläne aus.
 
 ## Quellen
 

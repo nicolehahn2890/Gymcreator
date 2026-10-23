@@ -1,3 +1,4 @@
+import { AppHeader } from '../components/AppHeader';
 import { RestTimer } from '../components/RestTimer';
 import { planFor, rowContext, type AppModel } from '../state/model';
 import type { Position } from '../state/actions';
@@ -26,6 +27,7 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
 
   return (
     <main className="screen">
+      <AppHeader />
       <button type="button" className="btn-quiet back-link" onClick={onBack}>
         {text.common.back}
       </button>

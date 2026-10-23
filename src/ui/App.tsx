@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { latestWeek } from '../core/progression/position';
 import { rowState } from '../core/progression/state';
 import { text } from '../i18n';
+import { HomeContext } from './state/home';
 import { TabBar } from './components/TabBar';
 import { DayView } from './screens/DayView';
 import { Onboarding } from './screens/Onboarding';
@@ -95,8 +96,10 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
     content = <Today model={model} cycle={pos.cycle} week={pos.week} onOpenDay={openDay} onGoToWeek={goToWeek} />;
   }
 
+  const goHome = () => setUi({ tab: 'today', day: null, slot: null, restEndsAt: null });
+
   return (
-    <>
+    <HomeContext.Provider value={goHome}>
       {saveError && (
         <p className="save-warn" role="alert">
           {text.app.saveError}
@@ -104,6 +107,6 @@ function Shell({ model, saveError }: { model: AppModel; saveError: boolean }) {
       )}
       {content}
       <TabBar tab={ui.tab} onChange={(tab) => setUi({ tab, day: null, slot: null, restEndsAt: null })} />
-    </>
+    </HomeContext.Provider>
   );
 }
