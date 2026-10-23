@@ -334,6 +334,12 @@
   margin-top: 8px;
 }
 
+/* Training geschafft: Rex-Kopf mit Schatten wie eine Karte, direkt unter der letzten Uebung */
+.day-done {
+  margin-top: 16px;
+  box-shadow: var(--sh-card);
+}
+
 .exercise-item.skipped:not(.open) {
   opacity: 0.55;
 }

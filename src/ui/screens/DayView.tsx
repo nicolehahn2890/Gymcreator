@@ -2,9 +2,12 @@ import { planData } from '../../core/model/data';
 import type { PlanRow } from '../../core/model/types';
 import { dayProgress } from '../../core/progression/position';
 import { shortSets } from '../../core/progression/short';
+import { weekStats } from '../../core/progression/state';
+import { dayDoneRex } from '../brand/rex';
 import { AppHeader } from '../components/AppHeader';
 import { Arrow } from '../components/Arrow';
 import { RestTimer } from '../components/RestTimer';
+import { RexMoment } from '../components/RexMoment';
 import { dayMinutes, dayRows, isShortDay, planFor, rowContext, shortContext, type AppModel } from '../state/model';
 import { setShort, type Position } from '../state/actions';
 import { fmt, text } from '../../i18n';
@@ -42,6 +45,8 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
   const rest = dayPlan.rows.filter((r) => skipped.has(r.slotId));
   const order = [...main, ...rest];
   const progress = dayProgress(ctx, dayPlan, pos);
+  const dayDone = progress.total > 0 && progress.done === progress.total;
+  const improved = dayDone ? weekStats(ctx, [dayPlan], pos).improved : 0;
   const color = `var(--day-${dayPlan.letter.toLowerCase()})`;
 
   const item = (row: PlanRow) => {
@@ -102,6 +107,11 @@ export function DayView({ model, pos, day, openSlot, onOpenSlot, restEndsAt, onR
         </section>
       )}
       <ol className="exercise-list">{main.map(item)}</ol>
+      {dayDone && (
+        <RexMoment image={dayDoneRex(pos.cycle, pos.week, day)} title={t.dayDone} titleId="day-done-title" level={2} className="day-done">
+          {fmt(improved > 0 ? t.dayDoneImproved : t.dayDoneText, { done: progress.done, total: progress.total, improved })}
+        </RexMoment>
+      )}
       {rest.length > 0 && (
         <section className="skipped-list" aria-labelledby="skipped-title">
           <h2 id="skipped-title" className="section-title">

@@ -471,6 +471,39 @@ test('Kurz-Modus "30-45 Min.": 4 Uebungen fuers Ziel mit allen Saetzen und norma
   await noOverflow(page);
 });
 
+test('Training geschafft: nach der letzten Uebung gratuliert ein Rex, am naechsten Tag ein anderer', async ({ page }) => {
+  await onboard(page, 'Apfel', 3);
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const items = page.locator('main > .exercise-list > .exercise-item');
+  const done = page.getByRole('region', { name: 'Training geschafft' });
+  const n = await items.count();
+  for (let i = 0; i < n; i += 1) {
+    await expect(done).toHaveCount(0);
+    const item = items.nth(i);
+    await item.locator('.exercise-row').click();
+    await page.getByRole('dialog').locator('.picker-option').first().click();
+    await fillSets(item, '20', '10');
+  }
+  await expect(done).toBeVisible();
+  await expect(done).toContainText(`${n} von ${n} Übungen eingetragen.`);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+  const rexA = await done.locator('img').getAttribute('src');
+  await noOverflow(page);
+
+  // Tag B: anderer Rex
+  await page.getByRole('button', { name: 'Zurück' }).click();
+  await page.getByRole('button', { name: 'Training starten' }).click();
+  const m = await items.count();
+  for (let i = 0; i < m; i += 1) {
+    const item = items.nth(i);
+    await item.locator('.exercise-row').click();
+    await page.getByRole('dialog').locator('.picker-option').first().click();
+    await fillSets(item, '20', '10');
+  }
+  await expect(done).toBeVisible();
+  expect(await done.locator('img').getAttribute('src')).not.toBe(rexA);
+});
+
 test('Kurz-Modus: auch Einheiten mit 60 Min. bieten nur "30-45 Min." an', async ({ page }) => {
   await onboard(page, 'Apfel', 3);
   await page.getByRole('button', { name: 'Plan', exact: true }).click();

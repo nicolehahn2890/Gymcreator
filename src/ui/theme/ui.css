@@ -103,6 +103,12 @@
   text-transform: uppercase;
 }
 
+/* Neben dem Rex-Kopf kleiner, damit "Training geschafft" in eine Zeile passt (wie im Design System) */
+.rex-moment:not(.rex-moment-pose) .rex-moment-title {
+  font-size: var(--fs-card-title);
+  line-height: 20px;
+}
+
 .rex-moment-pose {
   flex-direction: column;
   gap: 10px;
