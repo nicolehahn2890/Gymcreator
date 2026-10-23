@@ -317,14 +317,14 @@ Fakten, die den Plan beeinflussen:
 3. Projekt-Setup (Vite, TS, Vitest, Playwright, ESLint), CI-Workflow, Pages-Deploy mit Platzhalter-Seite, Design-Tokens aus Peach als `tokens.css` (Quelle: `:root` in `index.html` Z. 18–51, `--bg` auf Cream, Zielakzente neu)
 
 **Phase 1 – MVP Web (mehrere Sessions, jede für sich testbar)**
-1. Core: Datenmodell, Storage (Dexie) + Backup, Migrations-Gerüst
-2. Core: Generator + Tests (inkl. Regressionstest gegen deinen P4/P3)
-3. Core: Progressions-Engine portiert + Peach-Testfälle grün
-4. UI: Onboarding → Plan-Ansicht
-5. UI: Heute + geführtes Training (Fokusansicht, Sätze, Timer, Badge, Vorschlag)
-6. UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
-7. UI: Fortschritt/Verlauf, Einstellungen, Backup
-8. PWA-Feinschliff (Icon, Manifest `display: standalone` – anders als Peach, weil der Speicher hier in der App lebt und das Backup Pflicht ist; dazu ein Hinweis beim ersten Start "Installiere die App auf dem Home-Screen", damit die Daten von Anfang an in einem Container liegen), Playwright-Flows, Nutzertest mit 3–5 Personen (die werden später auch die 12 Play-Tester)
+1. ✅ Core: Datenmodell, Storage (Dexie) + Backup, Migrations-Gerüst
+2. ✅ Core: Generator + Tests (inkl. Regressionstest gegen deinen P4/P3), Standard-Übung je Slot
+3. ✅ Core: Progressions-Engine portiert + Peach-Testfälle grün
+4. ✅ UI: Onboarding → Plan-Ansicht
+5. ✅ UI: Heute + geführtes Training (Fokusansicht, Sätze, Timer, Badge, Vorschlag)
+6. ✅ UI: flexible Woche, Zyklen, Übungswechsel-Abfrage, eigene Übungen, Mein Gym
+7. ✅ UI: Fortschritt/Verlauf, Einstellungen, Backup (Deload opt-in offen, Regel nicht festgelegt)
+8. 🟡 PWA-Feinschliff (Icon ✅, Manifest ✅, Installationshinweis ✅, Playwright-Flows ✅, Offline-Start ✅; offen: Lighthouse, Nutzertest) (Icon, Manifest `display: standalone` – anders als Peach, weil der Speicher hier in der App lebt und das Backup Pflicht ist; dazu ein Hinweis beim ersten Start "Installiere die App auf dem Home-Screen", damit die Daten von Anfang an in einem Container liegen), Playwright-Flows, Nutzertest mit 3–5 Personen (die werden später auch die 12 Play-Tester)
 
 **Phase 2 – Polish + Differenzierung** (Form-Tracker, Kurz-Modus, Feinjustierung, Plateau-Tausch, Illustrationen, EN, Dark Mode)
 

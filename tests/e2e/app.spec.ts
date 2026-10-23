@@ -111,3 +111,17 @@ test('Manifest ist erreichbar und standalone', async ({ page, request }) => {
   expect(manifest.display).toBe('standalone');
   expect(manifest.name).toBe('Gymcreator');
 });
+
+test('startet offline, sobald der Service Worker aktiv ist', async ({ page, context }) => {
+  await page.goto('./');
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  // erst nach einem Neuladen kontrolliert der Service Worker die Seite
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
+  await context.setOffline(true);
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Welche Form willst du trainieren?' })).toBeVisible();
+  await context.setOffline(false);
+});
