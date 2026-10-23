@@ -11,7 +11,7 @@ Für die nächste Claude-Session. Reihenfolge zum Einlesen: `CLAUDE.md` (Regeln,
 | Name | **Rexy** (Nicole, 23.10.): Wortmarke, Seitentitel, Manifest, Backup-Dateiname. Repo, Web-Adresse `/Gymcreator/` und interne Kennungen (Datenbank `gymcreator`, `gymcreator_ui`, Backup-Feld `app`) bleiben, sonst wären gespeicherte Daten und alte Backups weg |
 | Archetypen | **V-Form, Sanduhr, Apfel** (Ziel-ID `apfel`). Final. **"Peach" erscheint nirgends in der Oberfläche** (gekauftes Fremdprogramm) |
 | Stack | React 19 + Vite 8 + TypeScript 6 als PWA auf GitHub Pages; später Capacitor 8 + Codemagic |
-| Design | **Design System „Rexy“** (Neobrutalism, Nicole 23.10.): Rexy-Palette Pink / Cyan / Neongelb, dazu Lime und Violett; Cream-Basis `#FDF9E9`; Zielfarbe als Akzent (V-Form Cyan, Sanduhr Gelb, Apfel Pink); Tage A Pink, B Cyan, C Gelb, D Lime, E Violett; Stand-Pillen in der Tagesfarbe auf Ink, **auch bei Pink und Violett** (Nicole); aktuelle Woche im Fortschritt Cyan, bei V-Form Pink (nicht Schwarz, Nicole). Rexe in Zielwahl (Motiv) und Einstellungen (freigestellt, ohne Hintergrund). Kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2) |
+| Design | **Design System „Rexy“** (Neobrutalism, Nicole 23.10.): Farben und Schriften aus Flos Marketing-Kit (Nicole 23.10.: "alles aufs Kit umstellen"): Pink `#FF199B` / Cyan `#00DDE8` / Neongelb `#F5FF00`, dazu Lime, Violett und Koralle (noch ohne Rolle); Cream-Basis `#FFF9E5`; Bowlby One SC + Inter; Zielfarbe als Akzent (V-Form Cyan, Sanduhr Gelb, Apfel Pink); Tage A Pink, B Cyan, C Gelb, D Lime, E Violett; Stand-Pillen in der Tagesfarbe auf Ink, **auch bei Pink und Violett** (Nicole); aktuelle Woche im Fortschritt Cyan, bei V-Form Pink (nicht Schwarz, Nicole). Rexe in Zielwahl (Motiv) und Einstellungen (freigestellt, ohne Hintergrund). Kein Pfirsich, vorerst nur hell; **Dark Mode später** als eigener Token-Satz (Phase 2) |
 | Branch | **Alles direkt auf `main`**. GitHub Pages: Quelle "GitHub Actions" |
 | Gewicht | **pro Satz**. Für den Vergleich werden die Satzgewichte als Spanne gelesen (kleinstes–größtes = Peachs Gewichtsrahmen) |
 | Volumen | Wochenziele je Muskel (anteilig) je Ziel, begründet in `docs/wissenschaft.md` (je Regel gekennzeichnet: belegt / teilweise / Festlegung; Quellen am 23.10. online geprüft). Nicht 1:1 Peach. Seit dem ACSM-Abgleich: **jede Prio-3-Muskelgruppe mindestens 10** anteilige Sätze pro Woche (`limits.minWeeklySetsPrio3`) |
@@ -83,10 +83,15 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - Bausteine wie in Rexy: Wortmarke im klebenden Kopf, Tab-Leiste als Pillen, Wochenwahl mit runden Cyan-Pfeilen, Muskelgruppe als farbiges Badge, Stand-Pille (`.count-pill`) auf der Startseite und im Tageskopf, Satz hinzufügen/entfernen als runde +/−-Knöpfe, Stern auf goldener Scheibe, Zurück/Schließen/Abbrechen als umrandete Knöpfe ohne Schatten, Disabled = halbe Deckkraft, Fokus-Ring Ink.
 - Hauptknopf auf einer Tageskarte in der Zielfarbe nimmt die Flächenfarbe (Regel in `ui.css`).
 - Rex-Bilder in `src/ui/brand/rex/` (Zuordnung in `brand/rex.ts`): volle Motive 252×363 für die Zielwahl (aus dem Design System, nur verkleinert), freigestellte Rexe von Nicole als Icons in den Einstellungen (`GoalChip` im Plan-Kopf ist mit dem Reiter Plan entfallen). `webp` ist im Offline-Cache.
-- Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` hat nur noch die Hantel fürs App-Icon.
-- Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche. Seit Version 13: Wortmarke „Rexy“, drei Reiter, Beispiel „Plan“ mit aufklappbarer Übungsliste; `GoalChip` bleibt als Baustein, die App nutzt ihn derzeit nicht.
+- Pixel-Glyphen der Ziele und `PixelGlyph.tsx` sind entfernt; `brand/pixels.ts` (Hantel) ist mit dem neuen App-Icon entfallen.
+- Das Design System ist auf dem Stand der App (23.10.): Stand-Pille immer in der Tagesfarbe, `GoalChip` mit freigestelltem Rex (`rex-*-icon.webp`, Quelle `rexe-freigestellt.webp` in der Gruppe Rexe), Token `bar-current` für die aktuelle Woche. Seit Version 13: Wortmarke „Rexy“, drei Reiter, Beispiel „Plan“ mit aufklappbarer Übungsliste; `GoalChip` bleibt als Baustein, die App nutzt ihn derzeit nicht. Seit Version 14: Marketing-Kit (unten); die App ist damit wieder auf dem Stand des Design Systems.
 
 **Rexy und drei Reiter (23.10.)**, Nicoles Wunsch: App heißt Rexy; Reiter "Heute" heißt "Plan", der doppelte Reiter "Plan" ist weg (`PlanScreen`, `Plan.css`, `GoalChip` gelöscht). Die Planliste ist auf der Startseite aufklappbar (Abschnitt 1, Aufbau). Ein gemerkter Reiter "plan" aus älteren Ständen öffnet die Startseite. Bereits installierte Home-Bildschirm-Apps behalten auf dem iPhone den alten Namen, bis man sie neu hinzufügt.
+
+**Marketing-Kit übernommen (23.10.)**, Nicoles Wunsch: Florians Rexy-Marketing-Kit ist zuerst ins Design System gegangen (Version 14: Kit-Farben und -Schriften, Gruppen App-Icon, Posen, Reaktionen, Hintergründe, Marketing-Layouts, Kapitel Marketing, Baustein `RexMoment`), dann in die App. Das Kit selbst liegt bei Nicole lokal (`Projekt Rexy/rexy-marketing-kit`), nicht im Repo.
+- Farben und Schriften: `tokens.css` mit den Kit-Werten, Tokennamen unverändert. Bowlby One SC über `@fontsource`, Inter als variable Schrift in einer Datei (nur latin) über `theme/fonts.css`; vier statische Inter-Dateien hatten die Startseite messbar langsamer gemacht. Den verringerten Buchstabenabstand der Titel gibt es nicht mehr (Bowlby wirkt sonst gequetscht); Bildschirmtitel haben 40 px Zeilenabstand, weil die Umlaut-Punkte sonst an die Zeile darüber stoßen.
+- App-Icon: Quelle `src/ui/brand/rexy-app-icon-1024.png`; `scripts/make-icons.mjs` verkleinert daraus `favicon.png`, Apple-Icon, 192/512 und das maskierbare Icon (Rex auf 80 % auf der Randfarbe). Installierte Home-Bildschirm-Apps zeigen es erst nach erneutem Hinzufügen.
+- `RexMoment` (`components/RexMoment.tsx`, Stil in `ui.css`): fertige Woche mit dem ganzen Rex "Kleiner Sieg" über Titel und Knopf; Woche 12 mit Rex-Kopf "Wow" am Zyklus-Hinweis (ist Woche 12 schon fertig, bleibt der Hinweis ohne Rex, einer pro Ansicht); Fortschritt ohne Werte mit "Let's go". Bilder verkleinert in `brand/rex/` (5–21 KB), Texte unverändert.
 
 **Tests:** 131 Vitest + 18 Playwright-Abläufe auf 390 und 430 px. Die Abläufe:
 - Onboarding, freie Übungswahl, Pause nur per Knopf
@@ -98,7 +103,7 @@ Texte und Tagesnamen sind überarbeitet (kürzer, ohne Fachjargon in den Tagesna
 - Zyklus-Hinweise ohne Deload, Plan neu einrichten aus den Einstellungen mit Abbrechen und erhaltenem Verlauf
 - Backup-Import, Manifest, Installierbarkeit laut Chrome, Offline-Start, kein waagerechtes Scrollen
 
-Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Performance 0,94 (seit den Rex-Bildern auf der Startseite, vorher 0,98). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
+Lighthouse: Barrierefreiheit und Best Practices 1,0. Performance auf Nicoles PC im Median aus 5 Läufen 0,95, der Stand vor dem Marketing-Kit in derselben Messreihe 0,97 (die Werte schwanken je Lauf um bis zu 0,04; in der Sandbox früher 0,94). `node scripts/verify-plan-data.mjs` → `ALLE PRUEFUNGEN GRUEN (0 Warnungen)`.
 
 ## 3. Bewusst noch offen
 
@@ -109,14 +114,13 @@ Lighthouse (`npm run lighthouse`): Barrierefreiheit und Best Practices 1,0, Perf
 - **Phase 2**: Plateau-Tausch, Form-Tracker, Feinjustierung, Englisch, Dark Mode (eigener Token-Satz), Hantelscheiben-Rechner.
 - **Zeitmodell**: Die Schätzung (Satz 45 s, Pausen, Aufwärmsätze) ist eine Festlegung; im Nutzertest mit echten Trainingszeiten vergleichen.
 - **Nutzertest** mit 3–5 Personen, gleichzeitig die 12 Play-Tester sammeln.
-- **App-Icon und Favicon** zeigen noch die Pixel-Hantel in den Farben vor Rexy (`scripts/make-icons.mjs`); neu gestalten mit der Store-Vorbereitung (Rex).
 - **Pausentimer bei 360 px:** „Pause 2:30“ bricht in zwei Zeilen um, funktioniert aber.
 
 ## 4. Nächste Schritte
 
 1. Phase 2: Plateau-Tausch oder Form-Tracker (vorher Nicole fragen, welches zuerst).
 2. Nutzertest vorbereiten und die 12 Play-Tester sammeln.
-3. Store-Vorbereitung (Capacitor, Datenschutzseite, Icon).
+3. Store-Vorbereitung (Capacitor, Datenschutzseite; das App-Icon steht seit 23.10.). Store-Grafiken aus dem Kapitel Marketing des Design Systems bauen.
 
 ## 5. Verbindliche Details
 
@@ -138,3 +142,5 @@ node scripts/verify-plan-data.mjs               # nach jeder Änderung an data/
 ```
 
 `github.io` ist aus der Sandbox nicht erreichbar (Proxy 403); den Deploy über die Actions-Läufe prüfen.
+
+Auf Nicoles Windows-PC (`C:\Users\nicol\.claude\Projekt Gymcreator`): Chrome statt Sandbox-Chromium, also `PW_CHROMIUM_PATH="C:/Program Files/Google/Chrome/Application/chrome.exe"` für E2E und `make-icons.mjs`. `npm run lighthouse` startet dort nicht (das Skript ruft `node_modules/.bin/vite` ohne `.cmd` auf); dann `npx vite preview` laufen lassen und `npx lighthouse` direkt aufrufen. Gepusht wird mit dem Privatkonto `nicolehahn2890`; die Windows-Anmeldung nimmt sonst das Firmenkonto und bekommt 403.

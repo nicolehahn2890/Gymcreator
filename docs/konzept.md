@@ -147,9 +147,9 @@ Regeln für Übersichtlichkeit:
 
 ### 3.8 Design-System
 
-Grundlage ist das Design System **Rexy** (Neobrutalism, übernommen am 23.10., Abschnitt 7 Nr. 25): vorerst nur hell (Dark Mode siehe unten), alle Tokens in einem `:root`, Ink `#181016`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Archivo Black (Display, Uppercase) + Space Grotesk (400–700), Fokus-Ring in Ink, Disabled mit halber Deckkraft, Press-Interaktion, 16-px-Inputs.
+Grundlage ist das Design System **Rexy** (Neobrutalism, übernommen am 23.10., Abschnitt 7 Nr. 25): vorerst nur hell (Dark Mode siehe unten), alle Tokens in einem `:root`, Ink `#101010`, Rahmen 2,5 px, harte Schatten ohne Blur, Pills, Fonts Bowlby One SC (Display, Uppercase) + Inter (400–700), Fokus-Ring in Ink, Disabled mit halber Deckkraft, Press-Interaktion, 16-px-Inputs.
 
-- **Palette:** Pink `#F6409F` (Haut der Rexe), Cyan `#22E3F0`, Neongelb `#FAF22E`, dazu Lime und Violett. Tagesfarben A Pink / B Cyan / C Gelb / D Lime / E Violett. Kategorie- und Fortschrittsfarben aus Rexy.
+- **Palette** (seit 23.10. aus Florians Marketing-Kit): Pink `#FF199B` (Haut der Rexe), Cyan `#00DDE8`, Neongelb `#F5FF00`, dazu Lime, Violett und Koralle. Tagesfarben A Pink / B Cyan / C Gelb / D Lime / E Violett. Kategorie- und Fortschrittsfarben aus Rexy.
 - **Kein Pfirsich.** Marke: Wortmarke als gelbes Schild mit pinkem Versatz. Die drei Ziele haben je einen Rex: in der Zielwahl das Motiv im Ink-Rahmen, in den Einstellungen freigestellt ohne Hintergrund.
 - **Zielfarbe als Akzent:** V-Form Cyan, Sanduhr Gelb, Apfel Pink (Feld `accent` in `data/goals.json`, leicht änderbar).
 - **Hintergrund:** Cream `#FDF9E9` für alle.
@@ -359,4 +359,4 @@ Fakten, die den Plan beeinflussen:
 - Kein Account, keine Cloud, keine Datenerhebung (DSGVO-minimal), Backup lokal
 - 12-Wochen-Zyklen, kein Deload, Woche 1 ohne Vergleich – wie Peach; der nächste Zyklus startet 5–10 % leichter
 - Peach bleibt unverändert deine private App; Gymcreator ist ein eigenes Produkt mit eigenem Speicher
-- Das App-Icon (noch Pixel-Hantel) kann Florian mit der Store-Vorbereitung neu gestalten, passend zu Rexy
+- Das App-Icon ist seit 23.10. der Rex-Kopf aus Florians Marketing-Kit
